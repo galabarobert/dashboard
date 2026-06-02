@@ -2,86 +2,37 @@
 <html lang="sk">
 <head>
 <meta charset="UTF-8">
-<title>Apple Dashboard</title>
+<title>Apple Dashboard PRO</title>
 
 <style>
 body {
     margin:0;
     background: linear-gradient(135deg,#0a0a0a,#1a1a1a);
     color:white;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI";
     overflow:hidden;
 }
 
-/* GLASS PANEL */
 .glass {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.06);
     backdrop-filter: blur(12px);
     border-radius: 20px;
     padding: 15px;
-    box-shadow: 0 0 30px rgba(255,255,255,0.1);
 }
 
-/* glow */
-.glow {
-    text-shadow:0 0 15px rgba(255,255,255,0.5);
-}
+.glow { text-shadow:0 0 15px rgba(255,255,255,0.5); }
 
-/* VRABLE */
-#location {
-    position:absolute;
-    top:25px;
-    left:40px;
-    font-size:52px;
-}
+#location { position:absolute; top:25px; left:40px; font-size:54px; }
+#tempNow { margin-top:20px; font-size:32px; }
 
-/* teplota */
-#tempNow {
-    margin-top:10px;
-    font-size:32px;
-}
+#clock-box { position:absolute; top:20px; right:40px; text-align:right; }
+#time { font-size:170px; }
+#dateWeek { font-size:38px; }
 
-/* hodiny */
-#clock-box {
-    position:absolute;
-    top:20px;
-    right:40px;
-    text-align:right;
-}
-#time {
-    font-size:170px;
-    font-weight:600;
-}
-#dateWeek {
-    font-size:34px;
-}
+#weather { position:absolute; top:160px; left:40px; font-size:32px; line-height:1.8; }
+#moon { position:absolute; top:360px; left:40px; font-size:34px; }
+#nameday { position:absolute; top:360px; right:40px; font-size:32px; }
 
-/* počasie */
-#weather {
-    position:absolute;
-    top:140px;
-    left:40px;
-    font-size:32px;
-    line-height:1.6;
-}
-
-/* mesiac */
-#moon {
-    position:absolute;
-    top:340px;
-    left:40px;
-    font-size:34px;
-}
-
-/* meniny */
-#nameday {
-    position:absolute;
-    top:360px;
-    right:40px;
-    font-size:32px;
-}
-
-/* svet */
 #world {
     position:absolute;
     bottom:30px;
@@ -90,52 +41,28 @@ body {
     justify-content:center;
     gap:60px;
 }
+.city { text-align:center; font-size:26px; }
+.place { margin-bottom:10px; }
 
-.city {
-    text-align:center;
-    font-size:26px;
-}
-
-.place {
-    margin-bottom:8px;
-}
-
-/* fade animacia */
-.fade {
-    animation: fadeIn 1s ease;
-}
-
-@keyframes fadeIn {
-    from {opacity:0; transform:translateY(10px);}
-    to {opacity:1;}
-}
 </style>
 </head>
 
 <body>
 
-<!-- VRABLE -->
-<div id="location" class="glow fade">
+<div id="location" class="glow">
     Vráble
     <div id="tempNow"></div>
 </div>
 
-<!-- CLOCK -->
 <div id="clock-box">
     <div id="time" class="glow"></div>
-    <div id="dateWeek" class="fade"></div>
+    <div id="dateWeek"></div>
 </div>
 
-<!-- POČASIE -->
-<div id="weather" class="glass fade"></div>
+<div id="weather" class="glass"></div>
+<div id="moon" class="glass glow"></div>
+<div id="nameday" class="glass"></div>
 
-<!-- MESIAC -->
-<div id="moon" class="glass glow fade"></div>
-
-<!-- MENINY -->
-<div id="nameday" class="glass fade"></div>
-
-<!-- SVET -->
 <div id="world">
 
     <div class="city glass">
@@ -177,15 +104,18 @@ function getISOWeek(d){
 // čas
 function updateTime(){
     const now=new Date();
-
     time.innerText = now.toLocaleTimeString("sk-SK");
+
+    let d = now.toLocaleDateString("sk-SK",{weekday:"long"});
+    d = d.charAt(0).toUpperCase()+d.slice(1);
+
     dateWeek.innerText =
-        now.toLocaleDateString("sk-SK",
-        {weekday:"long",year:"numeric",month:"long",day:"numeric"})
-        + " • týždeň " + getISOWeek(now);
+        d+" "+
+        now.toLocaleDateString("sk-SK",{day:"numeric",month:"long",year:"numeric"})
+        +" • týždeň "+getISOWeek(now);
 }
 
-// svet časy
+// ✅ SVETOVÉ ČASY 24H (FIX)
 function world(){
     const zones={
         ramos:"America/Monterrey",
@@ -196,15 +126,15 @@ function world(){
 
     for(let id in zones){
         document.getElementById(id).innerText =
-        new Date().toLocaleTimeString("en-US",{timeZone:zones[id]});
+        new Date().toLocaleTimeString("sk-SK",{
+            timeZone:zones[id],
+            hour12:false
+        });
     }
 }
 
 // meniny
-const namedays={
-    "6-2":"Karolína",
-    "6-3":"Lenka"
-};
+const namedays={"6-2":"Karolína","6-3":"Lenka"};
 
 function updateNameday(){
     const d=new Date();
@@ -215,36 +145,33 @@ function updateNameday(){
     const tomorrow=(t.getMonth()+1)+"-"+t.getDate();
 
     nameday.innerHTML =
-    "Dnes má meniny: "+(namedays[today]||"...")+"<br>"+
-    "Zajtra má meniny: "+(namedays[tomorrow]||"...");
+        "Dnes má meniny: "+(namedays[today]||"...")+"<br><br>"+
+        "Zajtra má meniny: "+(namedays[tomorrow]||"...");
 }
 
-// presná fáza mesiaca
+// mesiac
 function updateMoon(){
     const now=new Date();
     const cycle=29.53058867;
     const base=new Date(Date.UTC(2000,0,6,18,14));
-    const days=(now-base)/86400000;
-    const phase=(days%cycle+cycle)%cycle;
+    const phase=((now-base)/86400000)%cycle;
 
     let text="";
-    if(phase<1) text="🌑 Nov";
-    else if(phase<7.4) text="🌒 Dorastajúci kosák";
-    else if(phase<9.2) text="🌓 Prvá štvrť";
-    else if(phase<14.8) text="🌔 Dorastajúci mesiac";
-    else if(phase<16.6) text="🌕 Spln";
-    else if(phase<22.1) text="🌖 Ubúdajúci mesiac";
-    else if(phase<24) text="🌗 Posledná štvrť";
-    else text="🌘 Ubúdajúci kosák";
+    if(phase<7.4) text="🌑 Nov";
+    else if(phase<14.8) text="🌓 Prvá štvrť";
+    else if(phase<22.1) text="🌕 Spln";
+    else text="🌗 Posledná štvrť";
 
     moon.innerText=text;
 }
 
-// ikonky
+// ikonky iOS style
 function icon(t){
-    if(t>30) return "☀️";
-    if(t>20) return "⛅";
-    return "🌧️";
+    if(t>=30) return "☀️";
+    if(t>=24) return "🌤️";
+    if(t>=20) return "🌥️";
+    if(t>=15) return "🌧️";
+    return "🌩️";
 }
 
 // lokálne počasie
@@ -252,7 +179,6 @@ async function loadWeather(){
     const res=await fetch(
     "https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&daily=temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe/Bratislava"
     );
-
     const data=await res.json();
     const d=data.daily;
 
@@ -260,12 +186,13 @@ async function loadWeather(){
         "Aktuálna teplota: "+Math.round(data.current_weather.temperature)+"°";
 
     weather.innerHTML =
-    "Dnes: "+icon(d.temperature_2m_max[0])+" "+Math.round(d.temperature_2m_max[0])+"° / "+Math.round(d.temperature_2m_min[0])+"°<br>"+
+    "<br>"+
+    "Dnes: "+icon(d.temperature_2m_max[0])+" "+Math.round(d.temperature_2m_max[0])+"° / "+Math.round(d.temperature_2m_min[0])+"°<br><br>"+
     "Zajtra: "+icon(d.temperature_2m_max[1])+" "+Math.round(d.temperature_2m_max[1])+"° / "+Math.round(d.temperature_2m_min[1])+"°<br>"+
     "Pozajtra: "+icon(d.temperature_2m_max[2])+" "+Math.round(d.temperature_2m_max[2])+"° / "+Math.round(d.temperature_2m_min[2])+"°";
 }
 
-// svet počasie MAX
+// svet počasie (max)
 async function worldWeather(){
     const cities={
         ramos:[25.54,-100.94,"ramosw"],
@@ -283,14 +210,14 @@ async function worldWeather(){
 
         const data=await res.json();
 
-        const temp = Math.round(data.daily.temperature_2m_max[0]);
+        const temp=Math.round(data.daily.temperature_2m_max[0]);
 
         document.getElementById(id).innerText =
             icon(temp)+" "+temp+"°";
     }
 }
 
-// LOOP
+// loop
 setInterval(()=>{
     updateTime();
     world();
@@ -308,4 +235,3 @@ worldWeather();
 
 </body>
 </html>
-``
