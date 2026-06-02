@@ -13,7 +13,6 @@ body {
     overflow:hidden;
 }
 
-/* glass */
 .glass {
     background: rgba(255,255,255,0.06);
     backdrop-filter: blur(10px);
@@ -27,18 +26,31 @@ body {
 
 /* layout */
 #location { position:absolute; top:20px; left:40px; font-size:54px; }
-#tempNow { margin-top:20px; font-size:32px; }
+
+#tempNow {
+    margin-top:10px;
+    font-size:32px;
+}
 
 #clock-box { position:absolute; top:20px; right:40px; text-align:right; }
 #time { font-size:160px; }
 #dateWeek { font-size:36px; }
 
+/* ✅ POČASIE layout */
 #weather {
     position:absolute;
-    top:160px;
+    top:150px;
     left:40px;
     font-size:32px;
-    line-height:1.8;
+}
+
+.weather-today {
+    margin-top:20px;   /* ✅ 1 riadok medzera od teploty */
+}
+
+.weather-next {
+    margin-top:10px;   /* ✅ menšia medzera = "pol riadku efekt" */
+    line-height:1.6;
 }
 
 #nameday {
@@ -58,9 +70,7 @@ body {
     gap:60px;
 }
 
-.city {
-    text-align:center;
-}
+.city { text-align:center; }
 
 .place {
     display:flex;
@@ -73,13 +83,10 @@ body {
 
 .flag {
     width:32px;
-    height:22px;
-    object-fit:cover;
-    border-radius:4px;
 }
 
 .city-time {
-    font-size:40px; /* ✅ VEĽKÉ */
+    font-size:40px;
     margin-bottom:6px;
 }
 
@@ -109,7 +116,7 @@ body {
 
     <div class="city glass">
         <div class="place">
-            <img class="flag" src="https://flagcdn.com/w40/mx.png">
+            <img src="https://flagcdn.com/w40/mx.png" class="flag">
             Mexiko – Ramos Arizpe
         </div>
         <div class="city-time" id="ramos"></div>
@@ -118,7 +125,7 @@ body {
 
     <div class="city glass">
         <div class="place">
-            <img class="flag" src="https://flagcdn.com/w40/us.png">
+            <img src="https://flagcdn.com/w40/us.png" class="flag">
             USA – Detroit
         </div>
         <div class="city-time" id="detroit"></div>
@@ -127,7 +134,7 @@ body {
 
     <div class="city glass">
         <div class="place">
-            <img class="flag" src="https://flagcdn.com/w40/in.png">
+            <img src="https://flagcdn.com/w40/in.png" class="flag">
             India – Pune
         </div>
         <div class="city-time" id="pune"></div>
@@ -136,7 +143,7 @@ body {
 
     <div class="city glass">
         <div class="place">
-            <img class="flag" src="https://flagcdn.com/w40/cn.png">
+            <img src="https://flagcdn.com/w40/cn.png" class="flag">
             Čína – Suzhou
         </div>
         <div class="city-time" id="suzhou"></div>
@@ -171,7 +178,15 @@ function updateTime(){
         +" • týždeň "+getISOWeek(now);
 }
 
-// svet čas 24h
+// názvy dní
+function getDayName(offset){
+    const d = new Date();
+    d.setDate(d.getDate()+offset);
+    let name = d.toLocaleDateString("sk-SK",{weekday:"long"});
+    return name.charAt(0).toUpperCase()+name.slice(1);
+}
+
+// svet čas
 function world(){
     const zones={
         ramos:"America/Monterrey",
@@ -193,20 +208,21 @@ function updateNameday(){
         "Zajtra má meniny: Lenka";
 }
 
-// Google-like ikonky
+// ikonky
 function icon(t){
-    if(t>=30) return "☀️";      // slnko
-    if(t>=24) return "🌤️";     // polojasno
-    if(t>=20) return "⛅";      // oblaky
-    if(t>=15) return "🌧️";     // dážď
+    if(t>=30) return "☀️";
+    if(t>=24) return "🌤️";
+    if(t>=20) return "🌥️";
+    if(t>=15) return "🌧️";
     return "🌩️";
 }
 
-// počasie
+// ✅ POČASIE s layoutom
 async function loadWeather(){
     const res=await fetch(
     "https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&daily=temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe/Bratislava"
     );
+
     const data=await res.json();
     const d=data.daily;
 
@@ -214,9 +230,15 @@ async function loadWeather(){
         "Aktuálna teplota: "+Math.round(data.current_weather.temperature)+"°";
 
     document.getElementById("weather").innerHTML =
-        "Dnes: "+icon(d.temperature_2m_max[0])+" "+Math.round(d.temperature_2m_max[0])+"° / "+Math.round(d.temperature_2m_min[0])+"°<br>"+
-        "Zajtra: "+icon(d.temperature_2m_max[1])+" "+Math.round(d.temperature_2m_max[1])+"° / "+Math.round(d.temperature_2m_min[1])+"°<br>"+
-        "Pozajtra: "+icon(d.temperature_2m_max[2])+" "+Math.round(d.temperature_2m_max[2])+"° / "+Math.round(d.temperature_2m_min[2])+"°";
+        `<div class="weather-today">
+            Dnes: ${icon(d.temperature_2m_max[0])} ${Math.round(d.temperature_2m_max[0])}° / ${Math.round(d.temperature_2m_min[0])}°
+        </div>
+
+        <div class="weather-next">
+            ${getDayName(1)}: ${icon(d.temperature_2m_max[1])} ${Math.round(d.temperature_2m_max[1])}° / ${Math.round(d.temperature_2m_min[1])}°<br>
+            ${getDayName(2)}: ${icon(d.temperature_2m_max[2])} ${Math.round(d.temperature_2m_max[2])}° / ${Math.round(d.temperature_2m_min[2])}°<br>
+            ${getDayName(3)}: ${icon(d.temperature_2m_max[3])} ${Math.round(d.temperature_2m_max[3])}° / ${Math.round(d.temperature_2m_min[3])}°
+        </div>`;
 }
 
 // svet počasie
@@ -229,16 +251,13 @@ async function worldWeather(){
     };
 
     for(let key in cities){
-        const [lat,lon,id]=cities[key];
-
         const res=await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=auto`
+        `https://api.open-meteo.com/v1/forecast?latitude=${cities[key][0]}&longitude=${cities[key][1]}&daily=temperature_2m_max&timezone=auto`
         );
-
         const data=await res.json();
         const temp=Math.round(data.daily.temperature_2m_max[0]);
 
-        document.getElementById(id).innerText =
+        document.getElementById(cities[key][2]).innerText =
             icon(temp)+" "+temp+"°";
     }
 }
@@ -257,9 +276,7 @@ loadWeather();
 worldWeather();
 
 // auto refresh
-setInterval(()=>{
-    location.reload();
-},900000);
+setInterval(()=>location.reload(),900000);
 
 </script>
 
