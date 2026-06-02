@@ -7,10 +7,11 @@
 <style>
 body {
     margin:0;
-    background: linear-gradient(135deg,#0a0a0a,#1a1a1a);
+    background: #0a0a0a; /* fallback vždy tmavé */
     color:white;
     font-family: -apple-system, Segoe UI;
     overflow:hidden;
+    transition: background 1s ease;
 }
 
 /* GLASS */
@@ -21,10 +22,7 @@ body {
     padding: 15px;
 }
 
-/* glow */
-.glow {
-    text-shadow:0 0 15px rgba(255,255,255,0.4);
-}
+.glow { text-shadow:0 0 15px rgba(255,255,255,0.4); }
 
 /* layout */
 #location { position:absolute; top:20px; left:40px; font-size:54px; }
@@ -169,7 +167,7 @@ function updateMoon(){
     document.getElementById("moon").innerText=text;
 }
 
-// ikonky (iOS feel)
+// ikonky
 function icon(t){
     if(t>=30) return "☀️";
     if(t>=24) return "🌤️";
@@ -178,7 +176,24 @@ function icon(t){
     return "🌩️";
 }
 
-// hlavné počasie
+// ✅ GRADIENT PODĽA TEPLOTY (TMAVÝ)
+function setGradient(temp){
+    let bg = "";
+
+    if(temp >= 30){
+        bg = "linear-gradient(135deg,#3b1f00,#000000)";
+    } 
+    else if(temp >= 20){
+        bg = "linear-gradient(135deg,#1a2a33,#000000)";
+    } 
+    else {
+        bg = "linear-gradient(135deg,#0a1a2a,#000000)";
+    }
+
+    document.body.style.background = bg;
+}
+
+// počasie
 async function loadWeather(){
     const res=await fetch(
     "https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&daily=temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe/Bratislava"
@@ -186,8 +201,13 @@ async function loadWeather(){
     const data=await res.json();
     const d=data.daily;
 
+    const currentTemp = Math.round(data.current_weather.temperature);
+
     document.getElementById("tempNow").innerText =
-        "Aktuálna teplota: "+Math.round(data.current_weather.temperature)+"°";
+        "Aktuálna teplota: "+currentTemp+"°";
+
+    // ✅ nastav gradient
+    setGradient(currentTemp);
 
     document.getElementById("weather").innerHTML =
         "<br>"+
@@ -196,7 +216,7 @@ async function loadWeather(){
         "Pozajtra: "+icon(d.temperature_2m_max[2])+" "+Math.round(d.temperature_2m_max[2])+"° / "+Math.round(d.temperature_2m_min[2])+"°";
 }
 
-// svet počasie (max)
+// svet počasie
 async function worldWeather(){
     const cities={
         ramos:[25.54,-100.94,"ramosw"],
@@ -221,14 +241,14 @@ async function worldWeather(){
     }
 }
 
-// loop (refresh údajov)
+// loop
 setInterval(()=>{
     updateTime();
     world();
     updateMoon();
 },1000);
 
-// INIT
+// init
 updateTime();
 world();
 updateMoon();
