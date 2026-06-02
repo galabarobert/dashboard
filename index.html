@@ -5,35 +5,26 @@
 <title>Dashboard</title>
 
 <style>
-body{
-    margin:0;
-    background:#000;
-    color:white;
-    font-family:-apple-system,Segoe UI;
-}
+body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
 
-.glass{
+.glass {
     background:rgba(255,255,255,0.06);
     backdrop-filter:blur(10px);
     border-radius:20px;
     padding:15px;
 }
 
-.glow{text-shadow:0 0 15px rgba(255,255,255,0.4);}
+.glow {text-shadow:0 0 15px rgba(255,255,255,0.4);}
 
-#location{position:absolute;top:20px;left:40px;font-size:54px;}
-#tempNow{margin-top:10px;font-size:32px;}
+#location {position:absolute;top:20px;left:40px;font-size:68px;}
+#tempNow {margin-top:12px;font-size:32px;}
 
-#clock-box{position:absolute;top:20px;right:40px;text-align:right;}
-#time{font-size:160px;}
-#dateWeek{font-size:36px;}
+#clock-box {position:absolute;top:20px;right:40px;text-align:right;}
+#time {font-size:200px;}
+#dateWeek {font-size:36px;}
 
-#weather{position:absolute;top:150px;left:40px;font-size:32px;}
-.weather-today{margin-top:20px;}
-.divider{height:1px;background:rgba(255,255,255,0.2);margin:10px 0;}
-.weather-next{margin-top:5px;line-height:1.8;}
-
-#nameday{position:absolute;top:300px;right:40px;font-size:32px;}
+#weather {position:absolute;top:220px;left:40px;font-size:32px;line-height:1.6;}
+#nameday {position:absolute;top:380px;right:40px;font-size:32px;}
 
 #world{
     position:absolute;
@@ -45,19 +36,10 @@ body{
 }
 
 .city{text-align:center;}
-
-.place{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:22px;
-    margin-bottom:10px;
-}
-
+.place{display:flex;align-items:center;gap:10px;font-size:22px;margin-bottom:10px;}
 .flag{width:28px;height:18px;}
-
 .city-time{font-size:40px;}
-.city-weather{font-size:26px;}
+.city-weather{font-size:26px;margin-top:5px;}
 
 #shiftBox{
     position:absolute;
@@ -67,6 +49,7 @@ body{
     font-size:38px;
     text-align:center;
 }
+#lunchTime{font-size:28px;margin-bottom:10px;}
 </style>
 </head>
 
@@ -86,43 +69,32 @@ body{
 <div id="nameday" class="glass"></div>
 
 <div id="shiftBox" class="glass">
+    <div id="lunchTime"></div>
     <div id="shiftTime"></div>
 </div>
 
 <div id="world">
 
 <div class="city glass">
-    <div class="place">
-        <img class="flag" src="https://flagcdn.com/w40/mx.png">
-        Mexiko – Ramos Arizpe
-    </div>
+    <div class="place"><img class="flag" src="https://flagcdn.com/w40/mx.png"> Mexiko – Ramos Arizpe</div>
     <div id="ramos" class="city-time"></div>
     <div id="ramosw" class="city-weather"></div>
 </div>
 
 <div class="city glass">
-    <div class="place">
-        <img class="flag" src="https://flagcdn.com/w40/us.png">
-        USA – Detroit
-    </div>
+    <div class="place"><img class="flag" src="https://flagcdn.com/w40/us.png"> USA – Detroit</div>
     <div id="detroit" class="city-time"></div>
     <div id="detroitw" class="city-weather"></div>
 </div>
 
 <div class="city glass">
-    <div class="place">
-        <img class="flag" src="https://flagcdn.com/w40/in.png">
-        India – Pune
-    </div>
+    <div class="place"><img class="flag" src="https://flagcdn.com/w40/in.png"> India – Pune</div>
     <div id="pune" class="city-time"></div>
     <div id="punew" class="city-weather"></div>
 </div>
 
 <div class="city glass">
-    <div class="place">
-        <img class="flag" src="https://flagcdn.com/w40/cn.png">
-        Čína – Suzhou
-    </div>
+    <div class="place"><img class="flag" src="https://flagcdn.com/w40/cn.png"> Čína – Suzhou</div>
     <div id="suzhou" class="city-time"></div>
     <div id="suzhouw" class="city-weather"></div>
 </div>
@@ -131,113 +103,89 @@ body{
 
 <script>
 
-function getISOWeek(d){
-    const date=new Date(d);
-    date.setDate(date.getDate()+3-(date.getDay()+6)%7);
-    const week1=new Date(date.getFullYear(),0,4);
-    return 1+Math.round(((date-week1)/86400000)/7);
+// FORMAT
+function format(sec){
+sec=Math.floor(sec);
+let h=Math.floor(sec/3600);
+let m=Math.floor((sec%3600)/60);
+let s=sec%60;
+return `${h}h ${m}m ${s}s`;
 }
 
-function updateTime(){
-    const n=new Date();
-    time.innerText=n.toLocaleTimeString("sk-SK");
-
-    let d=n.toLocaleDateString("sk-SK",{weekday:"long"});
-    d=d.charAt(0).toUpperCase()+d.slice(1);
-
-    dateWeek.innerText =
-        d+" "+
-        n.toLocaleDateString("sk-SK",{day:"numeric",month:"long",year:"numeric"})+
-        " • týždeň "+getISOWeek(n);
-}
-
-function day(i){
-    let d=new Date();
-    d.setDate(d.getDate()+i);
-    return d.toLocaleDateString("sk-SK",{weekday:"long"}).replace(/^./,c=>c.toUpperCase());
-}
-
-// ✅ presné ikonky
+// IKONY
 function icon(code){
-    if(code === 0) return "☀️";
-    if([1,2].includes(code)) return "🌤️";
-    if(code === 3) return "☁️";
-    if([45,48].includes(code)) return "🌫️";
-    if(code >= 51 && code <= 57) return "🌦️";
-    if(code >= 61 && code <= 67) return "🌧️";
-    if(code >= 71 && code <= 77) return "❄️";
-    if(code >= 80 && code <= 82) return "🌧️";
-    if([95,96,99].includes(code)) return "⛈️";
-    return "🌤️";
+if(code===0)return"☀️";
+if([1,2].includes(code))return"🌤️";
+if(code===3)return"☁️";
+if(code>=61)return"🌧️";
+if([95,96,99].includes(code))return"⛈️";
+return"🌤️";
 }
 
 function windDir(deg){
-    const dirs=["S","SV","V","JV","J","JZ","Z","SZ"];
-    return dirs[Math.round(deg/45)%8];
+const d=["S","SV","V","JV","J","JZ","Z","SZ"];
+return d[Math.round(deg/45)%8];
 }
 
 function getDirection(deg){
-    if(deg>=315 || deg<45) return "od Nitry";
-    if(deg>=45 && deg<135) return "od Levíc";
-    if(deg>=135 && deg<225) return "od Nových Zámkov";
-    return "od Zlatých Moraviec";
+if(deg>=315||deg<45)return"od Nitry";
+if(deg<135)return"od Levíc";
+if(deg<225)return"od Nových Zámkov";
+return"od Zlatých Moraviec";
 }
 
+// TIME
+function getISOWeek(d){
+const date=new Date(d);
+date.setDate(date.getDate()+3-(date.getDay()+6)%7);
+const week1=new Date(date.getFullYear(),0,4);
+return 1+Math.round(((date-week1)/86400000)/7);
+}
+
+function updateTime(){
+const n=new Date();
+time.innerText=n.toLocaleTimeString("sk-SK",{hour12:false});
+
+let d=n.toLocaleDateString("sk-SK",{weekday:"long"});
+d=d.charAt(0).toUpperCase()+d.slice(1);
+
+dateWeek.innerText=d+" "+n.toLocaleDateString("sk-SK",{day:"numeric",month:"long",year:"numeric"})+" • týždeň "+getISOWeek(n);
+}
+
+// WEATHER + ALERT
 async function loadWeather(){
-
-const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weathercode,precipitation_probability,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,windspeed_10m_max,winddirection_10m_dominant&current_weather=true&timezone=Europe/Bratislava");
+const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weathercode,precipitation_probability,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,windspeed_10m_max,winddirection_10m_dominant&current_weather=true");
 const data=await res.json();
-const d=data.daily;
 
-let alert="";
-let now=new Date();
+let alert="",now=new Date();
 
 for(let i=0;i<data.hourly.time.length;i++){
-    let t=new Date(data.hourly.time[i]);
-    let diff=(t-now)/60000;
+let t=new Date(data.hourly.time[i]);
+let diff=(t-now)/60000;
+if(diff>0&&diff<90){
+let code=data.hourly.weathercode[i];
+let dir=getDirection(data.hourly.winddirection_10m[i]);
+if([95,96,99].includes(code)){alert=` ⚡ Búrka ~${Math.round(diff)} min (${dir})`;break;}
+if(code>=61){alert=` 🌧️ Dážď ~${Math.round(diff)} min (${dir})`;break;}
+}}
 
-    if(diff>0 && diff<90){
-        let code=data.hourly.weathercode[i];
-        let prob=data.hourly.precipitation_probability[i];
-        let dir=getDirection(data.hourly.winddirection_10m[i]);
+if(!alert)alert=" ☀️ Bez zrážok";
 
-        if([95,96,99].includes(code)){
-            alert=` ⚡ Búrka o ~${Math.round(diff)} min (${dir})`;
-            break;
-        }
+tempNow.innerText=`Aktuálna teplota: ${Math.round(data.current_weather.temperature)}°${alert}`;
 
-        if(code>=61){
-            alert=` 🌧️ Dážď o ~${Math.round(diff)} min (${prob}% - ${dir})`;
-            break;
-        }
-    }
+// DNY
+let d=data.daily;
+
+weather.innerHTML=`
+Dnes: ${icon(d.weathercode[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math.round(d.temperature_2m_min[0])}° | 💨 ${Math.round(d.windspeed_10m_max[0])} km/h ${windDir(d.winddirection_10m_dominant[0])}
+<div style="height:1px;background:rgba(255,255,255,0.2);margin:10px 0;"></div>
+Štvrtok: ${icon(d.weathercode[1])} ${Math.round(d.temperature_2m_max[1])}°/${Math.round(d.temperature_2m_min[1])}° | 💨 ${Math.round(d.windspeed_10m_max[1])} km/h ${windDir(d.winddirection_10m_dominant[1])}
+<br>Piatok: ${icon(d.weathercode[2])} ${Math.round(d.temperature_2m_max[2])}°/${Math.round(d.temperature_2m_min[2])}° | 💨 ${Math.round(d.windspeed_10m_max[2])} km/h ${windDir(d.winddirection_10m_dominant[2])}
+<br>Sobota: ${icon(d.weathercode[3])} ${Math.round(d.temperature_2m_max[3])}°/${Math.round(d.temperature_2m_min[3])}° | 💨 ${Math.round(d.windspeed_10m_max[3])} km/h ${windDir(d.winddirection_10m_dominant[3])}
+`;
 }
 
-if(alert==="") alert=" ☀️ Bez zrážok";
-
-tempNow.innerText =
-`Aktuálna teplota: ${Math.round(data.current_weather.temperature)}°${alert}`;
-
-weather.innerHTML = `
-<div class="weather-today">
-Dnes: ${icon(d.weathercode[0])} ${Math.round(d.temperature_2m_max[0])}° / ${Math.round(d.temperature_2m_min[0])}°
- | 💨 ${Math.round(d.windspeed_10m_max[0])} km/h ${windDir(d.winddirection_10m_dominant[0])}
-</div>
-
-<div class="divider"></div>
-
-<div class="weather-next">
-${day(1)}: ${icon(d.weathercode[1])} ${Math.round(d.temperature_2m_max[1])}° / ${Math.round(d.temperature_2m_min[1])}°
- | 💨 ${Math.round(d.windspeed_10m_max[1])} km/h ${windDir(d.winddirection_10m_dominant[1])}
-<br>
-${day(2)}: ${icon(d.weathercode[2])} ${Math.round(d.temperature_2m_max[2])}° / ${Math.round(d.temperature_2m_min[2])}°
- | 💨 ${Math.round(d.windspeed_10m_max[2])} km/h ${windDir(d.winddirection_10m_dominant[2])}
-<br>
-${day(3)}: ${icon(d.weathercode[3])} ${Math.round(d.temperature_2m_max[3])}° / ${Math.round(d.temperature_2m_min[3])}°
- | 💨 ${Math.round(d.windspeed_10m_max[3])} km/h ${windDir(d.winddirection_10m_dominant[3])}
-</div>`;
-}
-
+// WORLD TIME
 function world(){
 ramos.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"America/Monterrey",hour12:false});
 detroit.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"America/Detroit",hour12:false});
@@ -245,82 +193,84 @@ pune.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"Asia/Kolkata",ho
 suzhou.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"Asia/Shanghai",hour12:false});
 }
 
+// WORLD WEATHER (FIX)
 async function worldWeather(){
-const cities={
-    ramos:[25.54,-100.94,"ramosw"],
-    detroit:[42.33,-83.05,"detroitw"],
-    pune:[18.52,73.85,"punew"],
-    suzhou:[31.30,120.62,"suzhouw"]
+const c={
+ramos:[25.54,-100.94,"ramosw"],
+detroit:[42.33,-83.05,"detroitw"],
+pune:[18.52,73.85,"punew"],
+suzhou:[31.30,120.62,"suzhouw"]
 };
 
-for(let key in cities){
-    const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${cities[key][0]}&longitude=${cities[key][1]}&current_weather=true`);
-    const data=await res.json();
+for(let k in c){
+const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c[k][0]}&longitude=${c[k][1]}&current_weather=true`);
+const d=await r.json();
 
-    document.getElementById(cities[key][2]).innerText =
-        icon(data.current_weather.weathercode) + " " +
-        Math.round(data.current_weather.temperature)+"°";
+document.getElementById(c[k][2]).innerText=
+icon(d.current_weather.weathercode)+" "+Math.round(d.current_weather.temperature)+"°";
 }
 }
 
+// SHIFT
 function updateShift(){
-    const now=new Date();
-    const start=new Date(); start.setHours(7,0,0,0);
-    const end=new Date(); end.setHours(15,0,0,0);
+const n=new Date();
+const s=new Date(); s.setHours(7,0,0,0);
+const e=new Date(); e.setHours(15,0,0,0);
 
-    let text="",color="white",diff;
+let text="",color="white";
 
-    if(now<start){
-        diff=Math.floor((start-now)/1000);
-        text="Do smeny: "+format(diff);
-    }
-    else if(now<=end){
-        diff=Math.floor((end-now)/1000);
-
-        if(diff<=1800) color="#ff3b3b";
-        else if(diff<=3600) color="#ff9f0a";
-        else color="#00ff88";
-
-        text="Do konca smeny: "+format(diff);
-    }
-    else{
-        let next=new Date();
-        next.setDate(next.getDate()+1);
-        next.setHours(7,0,0,0);
-
-        diff=Math.floor((next-now)/1000);
-        text="Do ďalšej smeny: "+format(diff);
-    }
-
-    shiftTime.innerText=text;
-    shiftTime.style.color=color;
+if(n<s){text="Do smeny: "+format((s-n)/1000);}
+else if(n<=e){
+let diff=(e-n)/1000;
+color=diff<1800?"#ff3b3b":diff<3600?"#ff9f0a":"#00ff88";
+text="Do konca smeny: "+format(diff);
+}else{
+let nx=new Date();nx.setDate(nx.getDate()+1);nx.setHours(7,0,0,0);
+text="Do ďalšej smeny: "+format((nx-n)/1000);
+}
+shiftTime.innerText=text;
+shiftTime.style.color=color;
 }
 
-function format(sec){
-    let h=Math.floor(sec/3600);
-    let m=Math.floor((sec%3600)/60);
-    let s=sec%60;
-    return `${h}h ${m}m ${s}s`;
+// OBED
+function updateLunch(){
+const n=new Date();
+const s=new Date();s.setHours(6,0,0,0);
+const l=new Date();l.setHours(10,30,0,0);
+const e=new Date();e.setHours(12,0,0,0);
+
+if(n>=s&&n<l){lunchTime.innerText="Obed o: "+format((l-n)/1000);lunchTime.style.display="block";}
+else if(n>=l&&n<e){lunchTime.innerText="🍽️ OBED do 12:00";lunchTime.style.display="block";}
+else lunchTime.style.display="none";
 }
 
+// MENINY
 function updateNameday(){
 nameday.innerHTML="Dnes má meniny: Karolína<br>Zajtra má meniny: Lenka";
 }
 
+// LOOP
 setInterval(()=>{
-    updateTime();
-    world();
-    updateShift();
-},1000);
-
 updateTime();
 world();
-updateNameday();
 updateShift();
+updateLunch();
+},1000);
+
+// refresh weather každú minútu
+setInterval(()=>{
 loadWeather();
 worldWeather();
+},60000);
 
-setInterval(()=>location.reload(),60000);
+// INIT
+updateTime();
+world();
+updateShift();
+updateLunch();
+updateNameday();
+loadWeather();
+worldWeather();
 
 </script>
 </body>
