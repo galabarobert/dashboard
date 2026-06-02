@@ -220,6 +220,7 @@ setInterval(()=>{
     updateMoon();
 },1000);
 
+
 updateTime();
 world();
 updateMoon();
@@ -227,7 +228,8 @@ updateNameday();
 loadWeather();
 worldWeather();
 
-</script>
-
-</body>
-</html>
+// ✅ AUTO REFRESH
+setInterval(() => {
+    location.reload();
+}, 900000);
+``
