@@ -2,7 +2,7 @@
 <html lang="sk">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard FIX</title>
+<title>Dashboard FINAL</title>
 
 <style>
 body {
@@ -13,6 +13,7 @@ body {
     overflow:hidden;
 }
 
+/* GLASS */
 .glass {
     background: rgba(255,255,255,0.06);
     backdrop-filter: blur(10px);
@@ -20,6 +21,7 @@ body {
     padding: 15px;
 }
 
+/* glow */
 .glow {
     text-shadow:0 0 15px rgba(255,255,255,0.4);
 }
@@ -95,10 +97,6 @@ body {
 
 <script>
 
-// bezpečné elementy
-const timeEl = document.getElementById("time");
-const dateEl = document.getElementById("dateWeek");
-
 // ISO týždeň
 function getISOWeek(d){
     const date=new Date(d);
@@ -107,16 +105,17 @@ function getISOWeek(d){
     return 1+Math.round(((date-week1)/86400000-3+(week1.getDay()+6)%7)/7);
 }
 
-// čas FIX
+// čas
 function updateTime(){
     const now=new Date();
 
-    timeEl.innerText = now.toLocaleTimeString("sk-SK");
+    document.getElementById("time").innerText =
+        now.toLocaleTimeString("sk-SK");
 
     let day = now.toLocaleDateString("sk-SK",{weekday:"long"});
     day = day.charAt(0).toUpperCase()+day.slice(1);
 
-    dateEl.innerText =
+    document.getElementById("dateWeek").innerText =
         day+" "+
         now.toLocaleDateString("sk-SK",{day:"numeric",month:"long",year:"numeric"})
         +" • týždeň "+getISOWeek(now);
@@ -133,7 +132,10 @@ function world(){
 
     for(let id in zones){
         document.getElementById(id).innerText =
-        new Date().toLocaleTimeString("sk-SK",{timeZone:zones[id], hour12:false});
+        new Date().toLocaleTimeString("sk-SK",{
+            timeZone:zones[id],
+            hour12:false
+        });
     }
 }
 
@@ -167,7 +169,7 @@ function updateMoon(){
     document.getElementById("moon").innerText=text;
 }
 
-// ikonky
+// ikonky (iOS feel)
 function icon(t){
     if(t>=30) return "☀️";
     if(t>=24) return "🌤️";
@@ -176,7 +178,7 @@ function icon(t){
     return "🌩️";
 }
 
-// počasie
+// hlavné počasie
 async function loadWeather(){
     const res=await fetch(
     "https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&daily=temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe/Bratislava"
@@ -194,7 +196,7 @@ async function loadWeather(){
         "Pozajtra: "+icon(d.temperature_2m_max[2])+" "+Math.round(d.temperature_2m_max[2])+"° / "+Math.round(d.temperature_2m_min[2])+"°";
 }
 
-// svet počasie
+// svet počasie (max)
 async function worldWeather(){
     const cities={
         ramos:[25.54,-100.94,"ramosw"],
@@ -205,22 +207,28 @@ async function worldWeather(){
 
     for(let key in cities){
         const [lat,lon,id]=cities[key];
-        const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=auto`);
+
+        const res=await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=auto`
+        );
+
         const data=await res.json();
 
         const temp=Math.round(data.daily.temperature_2m_max[0]);
-        document.getElementById(id).innerText = icon(temp)+" "+temp+"°";
+
+        document.getElementById(id).innerText =
+            icon(temp)+" "+temp+"°";
     }
 }
 
-// LOOP
+// loop (refresh údajov)
 setInterval(()=>{
     updateTime();
     world();
     updateMoon();
 },1000);
 
-
+// INIT
 updateTime();
 world();
 updateMoon();
@@ -228,8 +236,12 @@ updateNameday();
 loadWeather();
 worldWeather();
 
-// ✅ AUTO REFRESH
-setInterval(() => {
+// ✅ AUTO REFRESH 15 MIN
+setInterval(()=>{
     location.reload();
 }, 900000);
-``
+
+</script>
+
+</body>
+</html>
