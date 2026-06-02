@@ -92,41 +92,41 @@ body {
 
 <div class="city glass">
     <div class="place">
-        <img class="flag" src="https://flagcdn.com/w40/mx.png"> Mexiko – Ramos Arizpe
+        <img class="flag" src="https://flagcdn.com/w40/mx.png">
+        Mexiko – Ramos Arizpe
     </div>
     <div id="ramos" class="city-time"></div>
-    <div id="ramosw" class="city-weather"></div>
 </div>
 
 <div class="city glass">
     <div class="place">
-        <img class="flag" src="https://flagcdn.com/w40/us.png"> USA – Detroit
+        <img class="flag" src="https://flagcdn.com/w40/us.png">
+        USA – Detroit
     </div>
     <div id="detroit" class="city-time"></div>
-    <div id="detroitw" class="city-weather"></div>
 </div>
 
 <div class="city glass">
     <div class="place">
-        <img class="flag" src="https://flagcdn.com/w40/in.png"> India – Pune
+        <img class="flag" src="https://flagcdn.com/w40/in.png">
+        India – Pune
     </div>
     <div id="pune" class="city-time"></div>
-    <div id="punew" class="city-weather"></div>
 </div>
 
 <div class="city glass">
     <div class="place">
-        <img class="flag" src="https://flagcdn.com/w40/cn.png"> Čína – Suzhou
+        <img class="flag" src="https://flagcdn.com/w40/cn.png">
+        Čína – Suzhou
     </div>
     <div id="suzhou" class="city-time"></div>
-    <div id="suzhouw" class="city-weather"></div>
 </div>
 
 </div>
 
 <script>
 
-// týždeň
+// ISO týždeň
 function getISOWeek(d){
     const date=new Date(d);
     date.setDate(date.getDate()+3-(date.getDay()+6)%7);
@@ -134,7 +134,7 @@ function getISOWeek(d){
     return 1+Math.round(((date-week1)/86400000)/7);
 }
 
-// čas
+// čas + dátum
 function updateTime(){
     const n=new Date();
 
@@ -149,7 +149,7 @@ function updateTime(){
         " • týždeň "+getISOWeek(n);
 }
 
-// dni
+// názvy dní
 function day(i){
     let d=new Date();
     d.setDate(d.getDate()+i);
@@ -165,19 +165,27 @@ function icon(t){
     return "🌩️";
 }
 
-// radar-like alert
+// ✅ SMER (upravený podľa teba)
+function getDirection(deg){
+    if(deg >= 315 || deg < 45) return "od Nitry";
+    if(deg >= 45 && deg < 135) return "od Levíc";
+    if(deg >= 135 && deg < 225) return "od Nových Zámkov";
+    if(deg >= 225 && deg < 315) return "od Zlatých Moraviec";
+}
+
+// ✅ POČASIE + ALERT + SMER
 async function loadWeather(){
 
 const res=await fetch(
-"https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weathercode,precipitation_probability&daily=temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe/Bratislava"
+"https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weathercode,precipitation_probability,winddirection_10m&daily=temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe/Bratislava"
 );
+
 const data=await res.json();
 const d=data.daily;
 
 let alert="";
 let now=new Date();
 
-// ✅ RADAR MODE (najbližších ~90 min)
 for(let i=0;i<data.hourly.time.length;i++){
     let t=new Date(data.hourly.time[i]);
     let diff=(t-now)/60000;
@@ -186,28 +194,30 @@ for(let i=0;i<data.hourly.time.length;i++){
 
         let code=data.hourly.weathercode[i];
         let prob=data.hourly.precipitation_probability[i];
+        let dir=getDirection(data.hourly.winddirection_10m[i]);
 
         if([95,96,99].includes(code)){
-            alert=" ⚡ Búrka o ~"+Math.round(diff)+" min";
+            alert=" ⚡ Búrka o ~"+Math.round(diff)+" min ("+dir+")";
             break;
         }
 
         if(code>=61){
-            alert=" 🌧️ Dážď o ~"+Math.round(diff)+" min ("+prob+"%)";
+            alert=" 🌧️ Dážď o ~"+Math.round(diff)+" min ("+prob+"%) ("+dir+")";
             break;
         }
     }
 }
 
-// fallback stav
+// fallback
 if(alert===""){
     alert=" ☀️ Bez zrážok";
 }
 
-tempNow.innerText=
+tempNow.innerText =
 "Aktuálna teplota: "+Math.round(data.current_weather.temperature)+"°"+alert;
 
-weather.innerHTML=
+// forecast blok
+weather.innerHTML =
 `<div class="weather-today">
 Dnes: ${icon(d.temperature_2m_max[0])} ${d.temperature_2m_max[0]}° / ${d.temperature_2m_min[0]}°
 </div>
@@ -223,7 +233,8 @@ ${day(3)}: ${icon(d.temperature_2m_max[3])} ${d.temperature_2m_max[3]}° / ${d.t
 
 // meniny
 function updateNameday(){
-nameday.innerHTML="Dnes má meniny: Karolína<br>Zajtra má meniny: Lenka";
+nameday.innerHTML =
+"Dnes má meniny: Karolína<br>Zajtra má meniny: Lenka";
 }
 
 // world time
@@ -243,7 +254,7 @@ world();
 updateNameday();
 loadWeather();
 
-// ✅ refresh každú 1 min
+// refresh každú min
 setInterval(()=>location.reload(),60000);
 
 </script>
