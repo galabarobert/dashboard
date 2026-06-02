@@ -70,7 +70,7 @@ body {
     justify-content:center;
     gap:60px;
 }
-.city{text-align:center;font-size:20px}
+.city { text-align:center; font-size:20px; }
 </style>
 </head>
 
@@ -106,24 +106,23 @@ function getISOWeek(d){
     return 1+Math.round(((date-week1)/86400000-3+(week1.getDay()+6)%7)/7);
 }
 
-// blikajúci čas
+// ✅ ČAS (BEZ BLIKANIA – FIX)
 function updateTime(){
-    const now=new Date();
+    const now = new Date();
 
-    let t=now.toLocaleTimeString("sk-SK");
-    if(Math.floor(now.getSeconds()%2)==0){
-        t=t.replace(/:/g," ");
-    }
+    document.getElementById("time").innerText =
+        now.toLocaleTimeString("sk-SK");
 
-    document.getElementById("time").innerText=t;
-
-    document.getElementById("dateWeek").innerText=
-        now.toLocaleDateString("sk-SK",
-        {weekday:"long",year:"numeric",month:"long",day:"numeric"})
-        + " • týždeň "+getISOWeek(now);
+    document.getElementById("dateWeek").innerText =
+        now.toLocaleDateString("sk-SK", {
+            weekday:"long",
+            year:"numeric",
+            month:"long",
+            day:"numeric"
+        }) + " • týždeň " + getISOWeek(now);
 }
 
-// svet
+// svetové časy
 function world(){
     const zones={
         ny:"America/New_York",
@@ -139,7 +138,7 @@ function world(){
     }
 }
 
-// MENINY (základ)
+// meniny (základ)
 const namedays={
     "6-2":"Karolína",
     "6-3":"Lenka"
@@ -159,7 +158,7 @@ function updateNameday(){
     " | Zajtra: "+(namedays[tomorrow]||"...");
 }
 
-// MESIAC (FIX LOGIKY SPLNU)
+// mesiac + spln
 function updateMoon(){
     const lp=29.530588853;
     const base=new Date(2000,0,6,18,14);
@@ -174,7 +173,6 @@ function updateMoon(){
     else if(phase<22.14) text="🌕 Spln";
     else text="🌗 Posledná štvrť";
 
-    // správny výpočet najbližšieho splnu
     const fullPhase=14.76;
     let daysToFull=(fullPhase-phase+lp)%lp;
 
@@ -185,7 +183,7 @@ function updateMoon(){
         text+" | Spln: "+fullDate.toLocaleDateString("sk-SK");
 }
 
-// POČASIE 3 DNI POD SEBOU
+// počasie
 async function loadWeather(){
     try{
         const res=await fetch(
