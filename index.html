@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+
+<style>
+body {
+    margin:0;
+    background:#111;
+    color:white;
+    font-family:Arial;
+    overflow:hidden;
+}
+
+/* Vráble */
+#location {
+    position:absolute;
+    top:20px;
+    left:30px;
+    font-size:32px;
+}
+
+/* hodiny */
+#clock-box {
+    position:absolute;
+    top:20px;
+    right:40px;
+    text-align:right;
+}
+#time {
+    font-size:150px;
+    font-weight:bold;
+}
+#dateWeek {
+    font-size:30px;
+}
+
+/* meniny */
+#nameday {
+    position:absolute;
+    top:320px;
+    right:40px;
+    font-size:24px;
+}
+
+/* počasie */
+#weather {
+    position:absolute;
+    top:120px;
+    left:30px;
+    font-size:22px;
+    line-height:1.6;
+}
+
+/* mesiac */
+#moon {
+    position:absolute;
+    top:300px;
+    left:30px;
+    font-size:26px;
+}
+
+/* svet */
+#world {
+    position:absolute;
+    bottom:30px;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    gap:60px;
+}
+.city{text-align:center;font-size:20px}
+</style>
+</head>
+
+<body>
+
+<div id="location">Vráble</div>
+
+<div id="clock-box">
+    <div id="time"></div>
+    <div id="dateWeek"></div>
+</div>
+
+<div id="nameday"></div>
+<div id="weather">Načítavam...</div>
+<div id="moon"></div>
+
+<div id="world">
+    <div class="city">New York<br><span id="ny"></span></div>
+    <div class="city">Londýn<br><span id="lon"></span></div>
+    <div class="city">Tokio<br><span id="tokyo"></span></div>
+    <div class="city">Sydney<br><span id="sydney"></span></div>
+    <div class="city">Dubai<br><span id="dubai"></span></div>
+</div>
+
+<script>
+
+// ISO týždeň
+function getISOWeek(d){
+    const date=new Date(d);
+    date.setHours(0,0,0,0);
+    date.setDate(date.getDate()+3-(date.getDay()+6)%7);
+    const week1=new Date(date.getFullYear(),0,4);
+    return 1+Math.round(((date-week1)/86400000-3+(week1.getDay()+6)%7)/7);
+}
+
+// blikajúci čas
+function updateTime(){
+    const now=new Date();
+
+    let t=now.toLocaleTimeString("sk-SK");
+    if(Math.floor(now.getSeconds()%2)==0){
+        t=t.replace(/:/g," ");
+    }
+
+    document.getElementById("time").innerText=t;
+
+    document.getElementById("dateWeek").innerText=
+        now.toLocaleDateString("sk-SK",
+        {weekday:"long",year:"numeric",month:"long",day:"numeric"})
+        + " • týždeň "+getISOWeek(now);
+}
+
+// svet
+function world(){
+    const zones={
+        ny:"America/New_York",
+        lon:"Europe/London",
+        tokyo:"Asia/Tokyo",
+        sydney:"Australia/Sydney",
+        dubai:"Asia/Dubai"
+    };
+
+    for(let id in zones){
+        document.getElementById(id).innerText=
+        new Date().toLocaleTimeString("en-US",{timeZone:zones[id]});
+    }
+}
+
+// MENINY (základ)
+const namedays={
+    "6-2":"Karolína",
+    "6-3":"Lenka"
+};
+
+function updateNameday(){
+    const d=new Date();
+
+    const today=(d.getMonth()+1)+"-"+d.getDate();
+
+    const t=new Date(d);
+    t.setDate(d.getDate()+1);
+    const tomorrow=(t.getMonth()+1)+"-"+t.getDate();
+
+    document.getElementById("nameday").innerText=
+    "Dnes: "+(namedays[today]||"...")+
+    " | Zajtra: "+(namedays[tomorrow]||"...");
+}
+
+// MESIAC (FIX LOGIKY SPLNU)
+function updateMoon(){
+    const lp=29.530588853;
+    const base=new Date(2000,0,6,18,14);
+    const now=new Date();
+
+    const days=(now-base)/86400000;
+    const phase=(days%lp+lp)%lp;
+
+    let text="";
+    if(phase<7.38) text="🌑 Nov";
+    else if(phase<14.76) text="🌓 Prvá štvrť";
+    else if(phase<22.14) text="🌕 Spln";
+    else text="🌗 Posledná štvrť";
+
+    // správny výpočet najbližšieho splnu
+    const fullPhase=14.76;
+    let daysToFull=(fullPhase-phase+lp)%lp;
+
+    const fullDate=new Date();
+    fullDate.setDate(fullDate.getDate()+daysToFull);
+
+    document.getElementById("moon").innerText=
+        text+" | Spln: "+fullDate.toLocaleDateString("sk-SK");
+}
+
+// POČASIE 3 DNI POD SEBOU
+async function loadWeather(){
+    try{
+        const res=await fetch(
+        "https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&daily=temperature_2m_max,temperature_2m_min&timezone=Europe/Bratislava"
+        );
+
+        const data=await res.json();
+        const d=data.daily;
+
+        function icon(t){
+            if(t>25) return "☀️";
+            if(t>18) return "⛅";
+            return "🌧️";
+        }
+
+        document.getElementById("weather").innerHTML=
+        "Dnes: "+icon(d.temperature_2m_max[0])+" "
+        +d.temperature_2m_min[0]+" / "+d.temperature_2m_max[0]+"°<br>"
+        +"Zajtra: "+icon(d.temperature_2m_max[1])+" "
+        +d.temperature_2m_min[1]+" / "+d.temperature_2m_max[1]+"°<br>"
+        +"Pozajtra: "+icon(d.temperature_2m_max[2])+" "
+        +d.temperature_2m_min[2]+" / "+d.temperature_2m_max[2]+"°";
+
+    }catch{
+        document.getElementById("weather").innerText="Chyba počasia";
+    }
+}
+
+// loop
+setInterval(()=>{
+    updateTime();
+    world();
+    updateMoon();
+},1000);
+
+updateTime();
+world();
+updateMoon();
+updateNameday();
+loadWeather();
+
+</script>
+
+</body>
+</html>
