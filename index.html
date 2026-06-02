@@ -2,22 +2,22 @@
 <html lang="sk">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard FINAL</title>
+<title>Dashboard</title>
 
 <style>
 body {
     margin:0;
     background:#000;
     color:white;
-    font-family: -apple-system, Segoe UI;
+    font-family:-apple-system, Segoe UI;
     overflow:hidden;
 }
 
 .glass {
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 15px;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(10px);
+    border-radius:20px;
+    padding:15px;
 }
 
 .glow {
@@ -25,43 +25,29 @@ body {
 }
 
 /* layout */
-#location { position:absolute; top:20px; left:40px; font-size:54px; }
+#location {position:absolute;top:20px;left:40px;font-size:54px;}
+#tempNow {margin-top:10px;font-size:32px;}
 
-#tempNow {
-    margin-top:10px;
-    font-size:32px;
+#clock-box {position:absolute;top:20px;right:40px;text-align:right;}
+#time {font-size:160px;}
+#dateWeek {font-size:36px;}
+
+#weather {position:absolute;top:150px;left:40px;font-size:32px;}
+
+.weather-today {margin-top:20px;}
+
+.divider {
+    height:1px;
+    background:rgba(255,255,255,0.2);
+    margin:10px 0;
 }
 
-#clock-box { position:absolute; top:20px; right:40px; text-align:right; }
-#time { font-size:160px; }
-#dateWeek { font-size:36px; }
+.weather-next {margin-top:5px;line-height:1.6;}
 
-/* ✅ POČASIE layout */
-#weather {
-    position:absolute;
-    top:150px;
-    left:40px;
-    font-size:32px;
-}
+#nameday {position:absolute;top:300px;right:40px;font-size:32px;}
 
-.weather-today {
-    margin-top:20px;   /* ✅ 1 riadok medzera od teploty */
-}
-
-.weather-next {
-    margin-top:10px;   /* ✅ menšia medzera = "pol riadku efekt" */
-    line-height:1.6;
-}
-
-#nameday {
-    position:absolute;
-    top:360px;
-    right:40px;
-    font-size:32px;
-}
-
-/* world */
-#world {
+/* WORLD */
+#world{
     position:absolute;
     bottom:30px;
     width:100%;
@@ -70,9 +56,9 @@ body {
     gap:60px;
 }
 
-.city { text-align:center; }
+.city{text-align:center;}
 
-.place {
+.place{
     display:flex;
     align-items:center;
     justify-content:center;
@@ -81,19 +67,14 @@ body {
     margin-bottom:10px;
 }
 
-.flag {
-    width:32px;
+.flag{
+    width:28px;
+    height:18px;
+    border-radius:3px;
 }
 
-.city-time {
-    font-size:40px;
-    margin-bottom:6px;
-}
-
-.city-weather {
-    font-size:26px;
-}
-
+.city-time{font-size:40px;margin-bottom:6px;}
+.city-weather{font-size:26px;}
 </style>
 </head>
 
@@ -162,50 +143,28 @@ function getISOWeek(d){
     return 1+Math.round(((date-week1)/86400000-3+(week1.getDay()+6)%7)/7);
 }
 
-// čas
+// čas + dátum
 function updateTime(){
     const now=new Date();
 
     document.getElementById("time").innerText =
         now.toLocaleTimeString("sk-SK");
 
-    let day = now.toLocaleDateString("sk-SK",{weekday:"long"});
-    day = day.charAt(0).toUpperCase()+day.slice(1);
+    let d = now.toLocaleDateString("sk-SK",{weekday:"long"});
+    d = d.charAt(0).toUpperCase()+d.slice(1);
 
     document.getElementById("dateWeek").innerText =
-        day+" "+
-        now.toLocaleDateString("sk-SK",{day:"numeric",month:"long",year:"numeric"})
-        +" • týždeň "+getISOWeek(now);
+        d+" "+
+        now.toLocaleDateString("sk-SK",{day:"numeric",month:"long",year:"numeric"})+
+        " • týždeň "+getISOWeek(now);
 }
 
 // názvy dní
-function getDayName(offset){
-    const d = new Date();
-    d.setDate(d.getDate()+offset);
-    let name = d.toLocaleDateString("sk-SK",{weekday:"long"});
-    return name.charAt(0).toUpperCase()+name.slice(1);
-}
-
-// svet čas
-function world(){
-    const zones={
-        ramos:"America/Monterrey",
-        detroit:"America/Detroit",
-        pune:"Asia/Kolkata",
-        suzhou:"Asia/Shanghai"
-    };
-
-    for(let id in zones){
-        document.getElementById(id).innerText =
-        new Date().toLocaleTimeString("sk-SK",{timeZone:zones[id],hour12:false});
-    }
-}
-
-// meniny
-function updateNameday(){
-    document.getElementById("nameday").innerHTML =
-        "Dnes má meniny: Karolína<br>"+
-        "Zajtra má meniny: Lenka";
+function getDayName(i){
+    let d=new Date();
+    d.setDate(d.getDate()+i);
+    return d.toLocaleDateString("sk-SK",{weekday:"long"})
+        .replace(/^./,c=>c.toUpperCase());
 }
 
 // ikonky
@@ -217,22 +176,59 @@ function icon(t){
     return "🌩️";
 }
 
-// ✅ POČASIE s layoutom
+// stav počasia
+function getCondition(code){
+    if(code==0) return "☀️ Jasno";
+    if(code<=2) return "🌤️ Polooblačno";
+    if(code==3) return "🌥️ Oblačno";
+    return "🌥️ Oblačno";
+}
+
+// WEATHER + ALERT
 async function loadWeather(){
     const res=await fetch(
-    "https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&daily=temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe/Bratislava"
+        "https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&daily=temperature_2m_max,temperature_2m_min&hourly=weathercode,precipitation_probability&current_weather=true&timezone=Europe/Bratislava"
     );
 
     const data=await res.json();
     const d=data.daily;
 
+    let alert="";
+    let now=new Date();
+
+    for(let i=0;i<data.hourly.time.length;i++){
+        let t=new Date(data.hourly.time[i]);
+        let diff=(t-now)/60000;
+        let code=data.hourly.weathercode[i];
+        let prob=data.hourly.precipitation_probability[i];
+
+        if(diff>0 && diff<180){
+
+            if([95,96,99].includes(code)){
+                alert=" ⚡ Búrka o ~"+Math.round(diff)+" min";
+                break;
+            }
+
+            if(code>=61){
+                alert=" 🌧️ Dážď o ~"+Math.round(diff)+" min ("+(prob||0)+"%)";
+                break;
+            }
+        }
+    }
+
+    if(alert===""){
+        alert=" "+getCondition(data.current_weather.weathercode);
+    }
+
     document.getElementById("tempNow").innerText =
-        "Aktuálna teplota: "+Math.round(data.current_weather.temperature)+"°";
+        "Aktuálna teplota: "+Math.round(data.current_weather.temperature)+"°"+alert;
 
     document.getElementById("weather").innerHTML =
         `<div class="weather-today">
             Dnes: ${icon(d.temperature_2m_max[0])} ${Math.round(d.temperature_2m_max[0])}° / ${Math.round(d.temperature_2m_min[0])}°
         </div>
+
+        <div class="divider"></div>
 
         <div class="weather-next">
             ${getDayName(1)}: ${icon(d.temperature_2m_max[1])} ${Math.round(d.temperature_2m_max[1])}° / ${Math.round(d.temperature_2m_min[1])}°<br>
@@ -241,41 +237,37 @@ async function loadWeather(){
         </div>`;
 }
 
-// svet počasie
-async function worldWeather(){
-    const cities={
-        ramos:[25.54,-100.94,"ramosw"],
-        detroit:[42.33,-83.05,"detroitw"],
-        pune:[18.52,73.85,"punew"],
-        suzhou:[31.30,120.62,"suzhouw"]
-    };
-
-    for(let key in cities){
-        const res=await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${cities[key][0]}&longitude=${cities[key][1]}&daily=temperature_2m_max&timezone=auto`
-        );
-        const data=await res.json();
-        const temp=Math.round(data.daily.temperature_2m_max[0]);
-
-        document.getElementById(cities[key][2]).innerText =
-            icon(temp)+" "+temp+"°";
-    }
+// MENINY
+function updateNameday(){
+    document.getElementById("nameday").innerHTML =
+        "Dnes má meniny: Karolína<br>Zajtra má meniny: Lenka";
 }
 
-// loop
+// WORLD TIME
+function world(){
+    document.getElementById("ramos").innerText =
+        new Date().toLocaleTimeString("sk-SK",{timeZone:"America/Monterrey",hour12:false});
+    document.getElementById("detroit").innerText =
+        new Date().toLocaleTimeString("sk-SK",{timeZone:"America/Detroit",hour12:false});
+    document.getElementById("pune").innerText =
+        new Date().toLocaleTimeString("sk-SK",{timeZone:"Asia/Kolkata",hour12:false});
+    document.getElementById("suzhou").innerText =
+        new Date().toLocaleTimeString("sk-SK",{timeZone:"Asia/Shanghai",hour12:false});
+}
+
+// LOOP
 setInterval(()=>{
     updateTime();
     world();
 },1000);
 
-// init
+// INIT
 updateTime();
 world();
 updateNameday();
 loadWeather();
-worldWeather();
 
-// auto refresh
+// AUTO REFRESH
 setInterval(()=>location.reload(),900000);
 
 </script>
