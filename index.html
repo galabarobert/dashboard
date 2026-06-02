@@ -70,6 +70,15 @@ body {
 
 .city-time{font-size:40px;}
 .city-weather{font-size:26px;}
+
+#shiftBox{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:38px;
+    text-align:center;
+}
 </style>
 </head>
 
@@ -88,6 +97,10 @@ body {
 <div id="weather" class="glass"></div>
 <div id="nameday" class="glass"></div>
 
+<div id="shiftBox" class="glass">
+    <div id="shiftTime"></div>
+</div>
+
 <div id="world">
 
 <div class="city glass">
@@ -96,6 +109,7 @@ body {
         Mexiko – Ramos Arizpe
     </div>
     <div id="ramos" class="city-time"></div>
+    <div id="ramosw" class="city-weather"></div>
 </div>
 
 <div class="city glass">
@@ -104,6 +118,7 @@ body {
         USA – Detroit
     </div>
     <div id="detroit" class="city-time"></div>
+    <div id="detroitw" class="city-weather"></div>
 </div>
 
 <div class="city glass">
@@ -112,6 +127,7 @@ body {
         India – Pune
     </div>
     <div id="pune" class="city-time"></div>
+    <div id="punew" class="city-weather"></div>
 </div>
 
 <div class="city glass">
@@ -120,6 +136,7 @@ body {
         Čína – Suzhou
     </div>
     <div id="suzhou" class="city-time"></div>
+    <div id="suzhouw" class="city-weather"></div>
 </div>
 
 </div>
@@ -134,7 +151,7 @@ function getISOWeek(d){
     return 1+Math.round(((date-week1)/86400000)/7);
 }
 
-// čas + dátum
+// čas
 function updateTime(){
     const n=new Date();
 
@@ -149,7 +166,7 @@ function updateTime(){
         " • týždeň "+getISOWeek(n);
 }
 
-// názvy dní
+// dni
 function day(i){
     let d=new Date();
     d.setDate(d.getDate()+i);
@@ -165,20 +182,18 @@ function icon(t){
     return "🌩️";
 }
 
-// ✅ SMER (upravený podľa teba)
+// smer
 function getDirection(deg){
     if(deg >= 315 || deg < 45) return "od Nitry";
     if(deg >= 45 && deg < 135) return "od Levíc";
     if(deg >= 135 && deg < 225) return "od Nových Zámkov";
-    if(deg >= 225 && deg < 315) return "od Zlatých Moraviec";
+    return "od Zlatých Moraviec";
 }
 
-// ✅ POČASIE + ALERT + SMER
+// ✅ HLAVNÉ POČASIE (celé čísla)
 async function loadWeather(){
 
-const res=await fetch(
-"https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weathercode,precipitation_probability,winddirection_10m&daily=temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe/Bratislava"
-);
+const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weathercode,precipitation_probability,winddirection_10m&daily=temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe/Bratislava");
 
 const data=await res.json();
 const d=data.daily;
@@ -191,53 +206,42 @@ for(let i=0;i<data.hourly.time.length;i++){
     let diff=(t-now)/60000;
 
     if(diff>0 && diff<90){
-
         let code=data.hourly.weathercode[i];
         let prob=data.hourly.precipitation_probability[i];
         let dir=getDirection(data.hourly.winddirection_10m[i]);
 
         if([95,96,99].includes(code)){
-            alert=" ⚡ Búrka o ~"+Math.round(diff)+" min ("+dir+")";
+            alert=` ⚡ Búrka o ~${Math.round(diff)} min (${dir})`;
             break;
         }
 
         if(code>=61){
-            alert=" 🌧️ Dážď o ~"+Math.round(diff)+" min ("+prob+"%) ("+dir+")";
+            alert=` 🌧️ Dážď o ~${Math.round(diff)} min (${prob}%) (${dir})`;
             break;
         }
     }
 }
 
-// fallback
 if(alert===""){
     alert=" ☀️ Bez zrážok";
 }
 
 tempNow.innerText =
-"Aktuálna teplota: "+Math.round(data.current_weather.temperature)+"°"+alert;
+`Aktuálna teplota: ${Math.round(data.current_weather.temperature)}°${alert}`;
 
-// forecast blok
 weather.innerHTML =
 `<div class="weather-today">
-Dnes: ${icon(d.temperature_2m_max[0])} ${d.temperature_2m_max[0]}° / ${d.temperature_2m_min[0]}°
+Dnes: ${icon(d.temperature_2m_max[0])} ${Math.round(d.temperature_2m_max[0])}° / ${Math.round(d.temperature_2m_min[0])}°
 </div>
-
 <div class="divider"></div>
-
 <div class="weather-next">
-${day(1)}: ${icon(d.temperature_2m_max[1])} ${d.temperature_2m_max[1]}° / ${d.temperature_2m_min[1]}°<br>
-${day(2)}: ${icon(d.temperature_2m_max[2])} ${d.temperature_2m_max[2]}° / ${d.temperature_2m_min[2]}°<br>
-${day(3)}: ${icon(d.temperature_2m_max[3])} ${d.temperature_2m_max[3]}° / ${d.temperature_2m_min[3]}°
+${day(1)}: ${icon(d.temperature_2m_max[1])} ${Math.round(d.temperature_2m_max[1])}° / ${Math.round(d.temperature_2m_min[1])}°<br>
+${day(2)}: ${icon(d.temperature_2m_max[2])} ${Math.round(d.temperature_2m_max[2])}° / ${Math.round(d.temperature_2m_min[2])}°<br>
+${day(3)}: ${icon(d.temperature_2m_max[3])} ${Math.round(d.temperature_2m_max[3])}° / ${Math.round(d.temperature_2m_min[3])}°
 </div>`;
 }
 
-// meniny
-function updateNameday(){
-nameday.innerHTML =
-"Dnes má meniny: Karolína<br>Zajtra má meniny: Lenka";
-}
-
-// world time
+// ✅ SVET – čas + počasie
 function world(){
 ramos.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"America/Monterrey",hour12:false});
 detroit.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"America/Detroit",hour12:false});
@@ -245,16 +249,88 @@ pune.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"Asia/Kolkata",ho
 suzhou.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"Asia/Shanghai",hour12:false});
 }
 
+// ✅ SVET POČASIE
+async function worldWeather(){
+const cities={
+    ramos:[25.54,-100.94,"ramosw"],
+    detroit:[42.33,-83.05,"detroitw"],
+    pune:[18.52,73.85,"punew"],
+    suzhou:[31.30,120.62,"suzhouw"]
+};
+
+for(let key in cities){
+    const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${cities[key][0]}&longitude=${cities[key][1]}&current_weather=true`);
+    const data=await res.json();
+
+    document.getElementById(cities[key][2]).innerText =
+        icon(data.current_weather.temperature)+" "+Math.round(data.current_weather.temperature)+"°";
+}
+}
+
+// SHIFT
+function updateShift(){
+    const now=new Date();
+    const start=new Date(); start.setHours(7,0,0,0);
+    const end=new Date(); end.setHours(15,0,0,0);
+
+    let text="", color="#00ff88", diff;
+
+    if(now < start){
+        diff=Math.floor((start-now)/1000);
+        color="#00aaff";
+        text="Do smeny: "+format(diff);
+    }
+    else if(now <= end){
+        diff=Math.floor((end-now)/1000);
+
+        if(diff<=1800) color="#ff3b3b";
+        else if(diff<=3600) color="#ff9f0a";
+
+        text="Do konca smeny: "+format(diff);
+    }
+    else{
+        let next=new Date();
+        next.setDate(next.getDate()+1);
+        next.setHours(7,0,0,0);
+
+        diff=Math.floor((next-now)/1000);
+        color="#00aaff";
+        text="Do ďalšej smeny: "+format(diff);
+    }
+
+    shiftTime.innerText=text;
+    shiftTime.style.color=color;
+}
+
+// pomocná
+function format(sec){
+    let h=Math.floor(sec/3600);
+    let m=Math.floor((sec%3600)/60);
+    let s=sec%60;
+    return `${h}h ${m}m ${s}s`;
+}
+
+// meniny
+function updateNameday(){
+nameday.innerHTML="Dnes má meniny: Karolína<br>Zajtra má meniny: Lenka";
+}
+
 // loop
-setInterval(()=>{updateTime(); world();},1000);
+setInterval(()=>{
+    updateTime();
+    world();
+    updateShift();
+},1000);
 
 // init
 updateTime();
 world();
 updateNameday();
+updateShift();
 loadWeather();
+worldWeather();
 
-// refresh každú min
+// refresh
 setInterval(()=>location.reload(),60000);
 
 </script>
