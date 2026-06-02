@@ -2,23 +2,37 @@
 <html lang="sk">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard</title>
+<title>Dashboard ULTRA</title>
 
 <style>
 body {
     margin:0;
-    background:#111;
+    background:#0b0b0b;
     color:white;
-    font-family:Arial;
+    font-family:Segoe UI, Arial;
     overflow:hidden;
 }
 
-/* Vráble */
+/* glow efekt */
+.glow {
+    text-shadow: 0 0 10px rgba(255,255,255,0.4);
+}
+
+/* univerzálny text */
+.big {
+    font-size:32px;
+}
+
+/* Vráble + teplota */
 #location {
     position:absolute;
     top:20px;
     left:30px;
-    font-size:32px;
+}
+
+#tempNow {
+    margin-top:10px;
+    font-size:28px;
 }
 
 /* hodiny */
@@ -28,15 +42,19 @@ body {
     right:40px;
     text-align:right;
 }
-#time { font-size:150px; font-weight:bold; }
-#dateWeek { font-size:30px; }
+#time {
+    font-size:150px;
+    font-weight:bold;
+}
+#dateWeek {
+    font-size:30px;
+}
 
 /* meniny */
 #nameday {
     position:absolute;
     top:320px;
     right:40px;
-    font-size:24px;
     line-height:1.5;
 }
 
@@ -45,7 +63,6 @@ body {
     position:absolute;
     top:120px;
     left:30px;
-    font-size:22px;
     line-height:1.6;
 }
 
@@ -54,7 +71,6 @@ body {
     position:absolute;
     top:300px;
     left:30px;
-    font-size:26px;
 }
 
 /* svet */
@@ -66,23 +82,33 @@ body {
     justify-content:center;
     gap:60px;
 }
-.city { text-align:center; font-size:20px; }
+
+.city {
+    text-align:center;
+    font-size:26px;
+}
 </style>
 </head>
 
 <body>
 
-<div id="location">Vráble</div>
-
-<div id="clock-box">
-    <div id="time"></div>
-    <div id="dateWeek"></div>
+<!-- VRABLE -->
+<div id="location" class="glow big">
+    Vráble
+    <div id="tempNow"></div>
 </div>
 
-<div id="nameday"></div>
-<div id="weather">Načítavam...</div>
-<div id="moon"></div>
+<!-- HODINY -->
+<div id="clock-box">
+    <div id="time" class="glow"></div>
+    <div id="dateWeek" class="glow"></div>
+</div>
 
+<div id="nameday" class="glow big"></div>
+<div id="weather" class="glow big"></div>
+<div id="moon" class="glow big"></div>
+
+<!-- SVET -->
 <div id="world">
     <div class="city">New York<br><span id="ny"></span><br><span id="nyw"></span></div>
     <div class="city">Londýn<br><span id="lon"></span><br><span id="lonw"></span></div>
@@ -93,29 +119,18 @@ body {
 
 <script>
 
-// ISO týždeň
-function getISOWeek(d){
-    const date=new Date(d);
-    date.setHours(0,0,0,0);
-    date.setDate(date.getDate()+3-(date.getDay()+6)%7);
-    const week1=new Date(date.getFullYear(),0,4);
-    return 1+Math.round(((date-week1)/86400000-3+(week1.getDay()+6)%7)/7);
-}
-
 // čas
 function updateTime(){
     const now=new Date();
 
-    document.getElementById("time").innerText =
-        now.toLocaleTimeString("sk-SK");
+    time.innerText = now.toLocaleTimeString("sk-SK");
 
-    document.getElementById("dateWeek").innerText =
+    dateWeek.innerText =
         now.toLocaleDateString("sk-SK",
-        {weekday:"long",year:"numeric",month:"long",day:"numeric"})
-        + " • týždeň "+getISOWeek(now);
+        {weekday:"long",year:"numeric",month:"long",day:"numeric"});
 }
-
-// svetové časy
+    
+// svet čas
 function world(){
     const zones={
         ny:"America/New_York",
@@ -131,7 +146,7 @@ function world(){
     }
 }
 
-// MENINY POD SEBOU
+// meniny
 const namedays={
     "6-2":"Karolína",
     "6-3":"Lenka"
@@ -146,51 +161,54 @@ function updateNameday(){
     t.setDate(d.getDate()+1);
     const tomorrow=(t.getMonth()+1)+"-"+t.getDate();
 
-    document.getElementById("nameday").innerHTML =
-        "Dnes: "+(namedays[today]||"...")+"<br>" +
-        "Zajtra: "+(namedays[tomorrow]||"...");
+    nameday.innerHTML =
+        "Dnes má meniny: "+(namedays[today]||"...")+"<br>"+
+        "Zajtra má meniny: "+(namedays[tomorrow]||"...");
 }
 
-// FÁZA MESIACA — LEN AKTUÁLNA
+// fáza mesiaca (opravená)
 function updateMoon(){
+    const now=new Date();
     const lp=29.530588853;
     const base=new Date(2000,0,6,18,14);
-    const now=new Date();
-
-    const days=(now-base)/86400000;
-    const phase=(days%lp+lp)%lp;
+    const phase=((now-base)/86400000)%lp;
 
     let text="";
-    if(phase<7.38) text="🌑 Nov";
-    else if(phase<14.76) text="🌓 Prvá štvrť";
-    else if(phase<22.14) text="🌕 Spln";
+    if(phase<7.4) text="🌑 Nov";
+    else if(phase<14.8) text="🌓 Prvá štvrť";
+    else if(phase<22.1) text="🌕 Spln";
     else text="🌗 Posledná štvrť";
 
-    document.getElementById("moon").innerText = text;
+    moon.innerText = text;
 }
 
-// IKONKY
+// ikonky
 function icon(t){
     if(t>25) return "☀️";
     if(t>18) return "⛅";
     return "🌧️";
 }
 
-// POČASIE HLAVNÉ (CELÉ ČÍSLA + DEN/NOC)
+// hlavné počasie + aktuálna teplota
 async function loadWeather(){
     const res=await fetch(
-    "https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&daily=temperature_2m_max,temperature_2m_min&timezone=Europe/Bratislava"
+    "https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&daily=temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe/Bratislava"
     );
+
     const data=await res.json();
     const d=data.daily;
 
-    document.getElementById("weather").innerHTML =
+    // aktuálna teplota
+    tempNow.innerText =
+        "Aktuálna teplota: "+Math.round(data.current_weather.temperature)+"°";
+
+    weather.innerHTML =
     "Dnes: "+icon(d.temperature_2m_max[0])+" "+Math.round(d.temperature_2m_max[0])+"° / "+Math.round(d.temperature_2m_min[0])+"°<br>"+
     "Zajtra: "+icon(d.temperature_2m_max[1])+" "+Math.round(d.temperature_2m_max[1])+"° / "+Math.round(d.temperature_2m_min[1])+"°<br>"+
     "Pozajtra: "+icon(d.temperature_2m_max[2])+" "+Math.round(d.temperature_2m_max[2])+"° / "+Math.round(d.temperature_2m_min[2])+"°";
 }
 
-// POČASIE SVETOVÉ MESTÁ
+// svet počasie
 async function worldWeather(){
     const cities = {
         ny:[40.71,-74.0,"nyw"],
@@ -210,12 +228,11 @@ async function worldWeather(){
 
         const temp=Math.round(data.current_weather.temperature);
 
-        document.getElementById(id).innerText =
-            icon(temp)+" "+temp+"°";
+        document.getElementById(id).innerText = icon(temp)+" "+temp+"°";
     }
 }
 
-// LOOP
+// loop
 setInterval(()=>{
     updateTime();
     world();
