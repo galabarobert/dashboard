@@ -2,35 +2,38 @@
 <html lang="sk">
 <head>
 <meta charset="UTF-8">
-<title>Apple Dashboard PRO</title>
+<title>Dashboard FIX</title>
 
 <style>
 body {
     margin:0;
     background: linear-gradient(135deg,#0a0a0a,#1a1a1a);
     color:white;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI";
+    font-family: -apple-system, Segoe UI;
     overflow:hidden;
 }
 
 .glass {
     background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 15px;
 }
 
-.glow { text-shadow:0 0 15px rgba(255,255,255,0.5); }
+.glow {
+    text-shadow:0 0 15px rgba(255,255,255,0.4);
+}
 
-#location { position:absolute; top:25px; left:40px; font-size:54px; }
+/* layout */
+#location { position:absolute; top:20px; left:40px; font-size:54px; }
 #tempNow { margin-top:20px; font-size:32px; }
 
 #clock-box { position:absolute; top:20px; right:40px; text-align:right; }
-#time { font-size:170px; }
-#dateWeek { font-size:38px; }
+#time { font-size:160px; }
+#dateWeek { font-size:36px; }
 
 #weather { position:absolute; top:160px; left:40px; font-size:32px; line-height:1.8; }
-#moon { position:absolute; top:360px; left:40px; font-size:34px; }
+#moon { position:absolute; top:360px; left:40px; font-size:32px; }
 #nameday { position:absolute; top:360px; right:40px; font-size:32px; }
 
 #world {
@@ -41,9 +44,8 @@ body {
     justify-content:center;
     gap:60px;
 }
-.city { text-align:center; font-size:26px; }
-.place { margin-bottom:10px; }
-
+.city { text-align:center; font-size:24px; }
+.place { margin-bottom:8px; }
 </style>
 </head>
 
@@ -93,6 +95,10 @@ body {
 
 <script>
 
+// bezpečné elementy
+const timeEl = document.getElementById("time");
+const dateEl = document.getElementById("dateWeek");
+
 // ISO týždeň
 function getISOWeek(d){
     const date=new Date(d);
@@ -101,21 +107,22 @@ function getISOWeek(d){
     return 1+Math.round(((date-week1)/86400000-3+(week1.getDay()+6)%7)/7);
 }
 
-// čas
+// čas FIX
 function updateTime(){
     const now=new Date();
-    time.innerText = now.toLocaleTimeString("sk-SK");
 
-    let d = now.toLocaleDateString("sk-SK",{weekday:"long"});
-    d = d.charAt(0).toUpperCase()+d.slice(1);
+    timeEl.innerText = now.toLocaleTimeString("sk-SK");
 
-    dateWeek.innerText =
-        d+" "+
+    let day = now.toLocaleDateString("sk-SK",{weekday:"long"});
+    day = day.charAt(0).toUpperCase()+day.slice(1);
+
+    dateEl.innerText =
+        day+" "+
         now.toLocaleDateString("sk-SK",{day:"numeric",month:"long",year:"numeric"})
         +" • týždeň "+getISOWeek(now);
 }
 
-// ✅ SVETOVÉ ČASY 24H (FIX)
+// svet čas 24h
 function world(){
     const zones={
         ramos:"America/Monterrey",
@@ -126,10 +133,7 @@ function world(){
 
     for(let id in zones){
         document.getElementById(id).innerText =
-        new Date().toLocaleTimeString("sk-SK",{
-            timeZone:zones[id],
-            hour12:false
-        });
+        new Date().toLocaleTimeString("sk-SK",{timeZone:zones[id], hour12:false});
     }
 }
 
@@ -139,12 +143,10 @@ const namedays={"6-2":"Karolína","6-3":"Lenka"};
 function updateNameday(){
     const d=new Date();
     const today=(d.getMonth()+1)+"-"+d.getDate();
-
-    const t=new Date(d);
-    t.setDate(d.getDate()+1);
+    const t=new Date(d); t.setDate(d.getDate()+1);
     const tomorrow=(t.getMonth()+1)+"-"+t.getDate();
 
-    nameday.innerHTML =
+    document.getElementById("nameday").innerHTML =
         "Dnes má meniny: "+(namedays[today]||"...")+"<br><br>"+
         "Zajtra má meniny: "+(namedays[tomorrow]||"...");
 }
@@ -152,8 +154,8 @@ function updateNameday(){
 // mesiac
 function updateMoon(){
     const now=new Date();
-    const cycle=29.53058867;
-    const base=new Date(Date.UTC(2000,0,6,18,14));
+    const cycle=29.53;
+    const base=new Date(2000,0,6);
     const phase=((now-base)/86400000)%cycle;
 
     let text="";
@@ -162,10 +164,10 @@ function updateMoon(){
     else if(phase<22.1) text="🌕 Spln";
     else text="🌗 Posledná štvrť";
 
-    moon.innerText=text;
+    document.getElementById("moon").innerText=text;
 }
 
-// ikonky iOS style
+// ikonky
 function icon(t){
     if(t>=30) return "☀️";
     if(t>=24) return "🌤️";
@@ -174,7 +176,7 @@ function icon(t){
     return "🌩️";
 }
 
-// lokálne počasie
+// počasie
 async function loadWeather(){
     const res=await fetch(
     "https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&daily=temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe/Bratislava"
@@ -182,17 +184,17 @@ async function loadWeather(){
     const data=await res.json();
     const d=data.daily;
 
-    tempNow.innerText =
+    document.getElementById("tempNow").innerText =
         "Aktuálna teplota: "+Math.round(data.current_weather.temperature)+"°";
 
-    weather.innerHTML =
-    "<br>"+
-    "Dnes: "+icon(d.temperature_2m_max[0])+" "+Math.round(d.temperature_2m_max[0])+"° / "+Math.round(d.temperature_2m_min[0])+"°<br><br>"+
-    "Zajtra: "+icon(d.temperature_2m_max[1])+" "+Math.round(d.temperature_2m_max[1])+"° / "+Math.round(d.temperature_2m_min[1])+"°<br>"+
-    "Pozajtra: "+icon(d.temperature_2m_max[2])+" "+Math.round(d.temperature_2m_max[2])+"° / "+Math.round(d.temperature_2m_min[2])+"°";
+    document.getElementById("weather").innerHTML =
+        "<br>"+
+        "Dnes: "+icon(d.temperature_2m_max[0])+" "+Math.round(d.temperature_2m_max[0])+"° / "+Math.round(d.temperature_2m_min[0])+"°<br><br>"+
+        "Zajtra: "+icon(d.temperature_2m_max[1])+" "+Math.round(d.temperature_2m_max[1])+"° / "+Math.round(d.temperature_2m_min[1])+"°<br>"+
+        "Pozajtra: "+icon(d.temperature_2m_max[2])+" "+Math.round(d.temperature_2m_max[2])+"° / "+Math.round(d.temperature_2m_min[2])+"°";
 }
 
-// svet počasie (max)
+// svet počasie
 async function worldWeather(){
     const cities={
         ramos:[25.54,-100.94,"ramosw"],
@@ -203,21 +205,15 @@ async function worldWeather(){
 
     for(let key in cities){
         const [lat,lon,id]=cities[key];
-
-        const res=await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=auto`
-        );
-
+        const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=auto`);
         const data=await res.json();
 
         const temp=Math.round(data.daily.temperature_2m_max[0]);
-
-        document.getElementById(id).innerText =
-            icon(temp)+" "+temp+"°";
+        document.getElementById(id).innerText = icon(temp)+" "+temp+"°";
     }
 }
 
-// loop
+// LOOP
 setInterval(()=>{
     updateTime();
     world();
