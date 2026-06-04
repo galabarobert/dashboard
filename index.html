@@ -103,164 +103,559 @@ body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
 
 <script>
 
+// ========== MENINY – kompletný ročný zoznam ==========
+const MENINY = {
+  "1.1":  ["Nový rok","Nový rok"],
+  "2.1":  ["Zoltán","Alexander"],
+  "3.1":  ["Daniela","Daniela"],
+  "4.1":  ["Drahoslav","Drahoslav"],
+  "5.1":  ["Andrea","Andrea"],
+  "6.1":  ["Antónia","Antónia"],
+  "7.1":  ["Bohuslava","Bohuslava"],
+  "8.1":  ["Severín","Severín"],
+  "9.1":  ["Alexej","Alexej"],
+  "10.1": ["Dáša","Dáša"],
+  "11.1": ["Malvína","Malvína"],
+  "12.1": ["Ernest","Ernest"],
+  "13.1": ["Rastislav","Rastislav"],
+  "14.1": ["Radovan","Radovan"],
+  "15.1": ["Dobroslav","Dobroslav"],
+  "16.1": ["Kristína","Kristína"],
+  "17.1": ["Nataša","Nataša"],
+  "18.1": ["Bohdana","Bohdana"],
+  "19.1": ["Drahomíra","Drahomíra"],
+  "20.1": ["Dalibor","Dalibor"],
+  "21.1": ["Vincent","Vincent"],
+  "22.1": ["Zora","Zora"],
+  "23.1": ["Miloš","Miloš"],
+  "24.1": ["Timotej","Timotej"],
+  "25.1": ["Gejza","Gejza"],
+  "26.1": ["Tamara","Tamara"],
+  "27.1": ["Bohuš","Bohuš"],
+  "28.1": ["Alfonz","Alfonz"],
+  "29.1": ["Gašpar","Gašpar"],
+  "30.1": ["Ľubica","Ľubica"],
+  "31.1": ["Erika","Erika"],
+  "1.2":  ["Tatiana","Tatiana"],
+  "2.2":  ["Zlatica","Zlatica"],
+  "3.2":  ["Blažej","Blažej"],
+  "4.2":  ["Veronika","Veronika"],
+  "5.2":  ["Agáta","Agáta"],
+  "6.2":  ["Dorota","Dorota"],
+  "7.2":  ["Vanda","Vanda"],
+  "8.2":  ["Zoja","Zoja"],
+  "9.2":  ["Zdenko","Zdenko"],
+  "10.2": ["Gabriela","Gabriela"],
+  "11.2": ["Dezider","Dezider"],
+  "12.2": ["Perla","Perla"],
+  "13.2": ["Arpád","Arpád"],
+  "14.2": ["Valentín","Valentín"],
+  "15.2": ["Pravoslav","Pravoslav"],
+  "16.2": ["Ida","Ida"],
+  "17.2": ["Miloslava","Miloslava"],
+  "18.2": ["Jaromír","Jaromír"],
+  "19.2": ["Vlasta","Vlasta"],
+  "20.2": ["Lívia","Lívia"],
+  "21.2": ["Eleonóra","Eleonóra"],
+  "22.2": ["Etela","Etela"],
+  "23.2": ["Roman","Roman"],
+  "24.2": ["Matej","Matej"],
+  "25.2": ["Frederik","Frederik"],
+  "26.2": ["Viktor","Viktor"],
+  "27.2": ["Alexander","Alexander"],
+  "28.2": ["Radomír","Radomír"],
+  "29.2": ["Radomír","Radomír"],
+  "1.3":  ["Albín","Albín"],
+  "2.3":  ["Anežka","Anežka"],
+  "3.3":  ["Bohumil","Bohumil"],
+  "4.3":  ["Kazimír","Kazimír"],
+  "5.3":  ["Fridrich","Fridrich"],
+  "6.3":  ["Radoslav","Radoslav"],
+  "7.3":  ["Tomáš","Tomáš"],
+  "8.3":  ["Alan","Alan"],
+  "9.3":  ["Františka","Františka"],
+  "10.3": ["Branislav","Branislav"],
+  "11.3": ["Anežka","Anežka"],
+  "12.3": ["Gregor","Gregor"],
+  "13.3": ["Celestín","Celestín"],
+  "14.3": ["Matilda","Matilda"],
+  "15.3": ["Svetlana","Svetlana"],
+  "16.3": ["Boleslav","Boleslav"],
+  "17.3": ["Ľubomír","Ľubomír"],
+  "18.3": ["Eduard","Eduard"],
+  "19.3": ["Jozef","Jozef"],
+  "20.3": ["Víťazoslav","Víťazoslav"],
+  "21.3": ["Blahoslav","Blahoslav"],
+  "22.3": ["Beňadik","Beňadik"],
+  "23.3": ["Adrián","Adrián"],
+  "24.3": ["Gabriel","Gabriel"],
+  "25.3": ["Marián","Marián"],
+  "26.3": ["Emanuel","Emanuel"],
+  "27.3": ["Alena","Alena"],
+  "28.3": ["Soňa","Soňa"],
+  "29.3": ["Miroslav","Miroslav"],
+  "30.3": ["Vieroslava","Vieroslava"],
+  "31.3": ["Benjamín","Benjamín"],
+  "1.4":  ["Hugo","Hugo"],
+  "2.4":  ["Zita","Zita"],
+  "3.4":  ["Richard","Richard"],
+  "4.4":  ["Izidor","Izidor"],
+  "5.4":  ["Miroslava","Miroslava"],
+  "6.4":  ["Irena","Irena"],
+  "7.4":  ["Zoltán","Zoltán"],
+  "8.4":  ["Albert","Albert"],
+  "9.4":  ["Milena","Milena"],
+  "10.4": ["Igor","Igor"],
+  "11.4": ["Július","Július"],
+  "12.4": ["Estera","Estera"],
+  "13.4": ["Aleš","Aleš"],
+  "14.4": ["Justína","Justína"],
+  "15.4": ["Fedor","Fedor"],
+  "16.4": ["Dana","Dana"],
+  "17.4": ["Rudolf","Rudolf"],
+  "18.4": ["Valér","Valér"],
+  "19.4": ["Jela","Jela"],
+  "20.4": ["Marcel","Marcel"],
+  "21.4": ["Ervín","Ervín"],
+  "22.4": ["Slavomír","Slavomír"],
+  "23.4": ["Vojtech","Vojtech"],
+  "24.4": ["Juraj","Juraj"],
+  "25.4": ["Marek","Marek"],
+  "26.4": ["Jaroslava","Jaroslava"],
+  "27.4": ["Jaroslav","Jaroslav"],
+  "28.4": ["Jarmila","Jarmila"],
+  "29.4": ["Lea","Lea"],
+  "30.4": ["Anastázia","Anastázia"],
+  "1.5":  ["Sviatok práce","Sviatok práce"],
+  "2.5":  ["Žigmund","Žigmund"],
+  "3.5":  ["Galina","Galina"],
+  "4.5":  ["Florián","Florián"],
+  "5.5":  ["Lesana","Lesana"],
+  "6.5":  ["Hermína","Hermína"],
+  "7.5":  ["Monika","Monika"],
+  "8.5":  ["Víťazstvo","Víťazstvo"],
+  "9.5":  ["Roland","Roland"],
+  "10.5": ["Viktória","Viktória"],
+  "11.5": ["Blažena","Blažena"],
+  "12.5": ["Pankrác","Pankrác"],
+  "13.5": ["Servác","Servác"],
+  "14.5": ["Bonifác","Bonifác"],
+  "15.5": ["Žofia","Žofia"],
+  "16.5": ["Svetozár","Svetozár"],
+  "17.5": ["Gizela","Gizela"],
+  "18.5": ["Viola","Viola"],
+  "19.5": ["Gertrúda","Gertrúda"],
+  "20.5": ["Bernard","Bernard"],
+  "21.5": ["Zina","Zina"],
+  "22.5": ["Júlia","Júlia"],
+  "23.5": ["Želmíra","Želmíra"],
+  "24.5": ["Ela","Ela"],
+  "25.5": ["Urban","Urban"],
+  "26.5": ["Dušan","Dušan"],
+  "27.5": ["Iveta","Iveta"],
+  "28.5": ["Viliam","Viliam"],
+  "29.5": ["Tamara","Tamara"],
+  "30.5": ["Ferdinand","Ferdinand"],
+  "31.5": ["Petrana","Petrana"],
+  "1.6":  ["Žaneta","Žaneta"],
+  "2.6":  ["Xénia","Xénia"],
+  "3.6":  ["Karolína","Karolína"],
+  "4.6":  ["Lenka","Lenka"],
+  "5.6":  ["Laura","Laura"],
+  "6.6":  ["Norbert","Norbert"],
+  "7.6":  ["Róbert","Róbert"],
+  "8.6":  ["Medard","Medard"],
+  "9.6":  ["Stanislava","Stanislava"],
+  "10.6": ["Margaréta","Margaréta"],
+  "11.6": ["Dobroslava","Dobroslava"],
+  "12.6": ["Zlatko","Zlatko"],
+  "13.6": ["Anton","Anton"],
+  "14.6": ["Vasil","Vasil"],
+  "15.6": ["Vít","Vít"],
+  "16.6": ["Blanka","Blanka"],
+  "17.6": ["Adolf","Adolf"],
+  "18.6": ["Vratislav","Vratislav"],
+  "19.6": ["Alfréd","Alfréd"],
+  "20.6": ["Valéria","Valéria"],
+  "21.6": ["Alojz","Alojz"],
+  "22.6": ["Paulína","Paulína"],
+  "23.6": ["Sidónia","Sidónia"],
+  "24.6": ["Ján","Ján"],
+  "25.6": ["Tadeáš","Tadeáš"],
+  "26.6": ["Adriána","Adriána"],
+  "27.6": ["Ladislav","Ladislav"],
+  "28.6": ["Beáta","Beáta"],
+  "29.6": ["Peter","Peter"],
+  "30.6": ["Melánia","Melánia"],
+  "1.7":  ["Diana","Diana"],
+  "2.7":  ["Berta","Berta"],
+  "3.7":  ["Miloslav","Miloslav"],
+  "4.7":  ["Prokop","Prokop"],
+  "5.7":  ["Cyril a Metod","Cyril a Metod"],
+  "6.7":  ["Patrícia","Patrícia"],
+  "7.7":  ["Cyril","Cyril"],
+  "8.7":  ["Ivan","Ivan"],
+  "9.7":  ["Lujza","Lujza"],
+  "10.7": ["Amadej","Amadej"],
+  "11.7": ["Milota","Milota"],
+  "12.7": ["Nina","Nina"],
+  "13.7": ["Margita","Margita"],
+  "14.7": ["Kamil","Kamil"],
+  "15.7": ["Henrich","Henrich"],
+  "16.7": ["Drahota","Drahota"],
+  "17.7": ["Bohuslav","Bohuslav"],
+  "18.7": ["Kamila","Kamila"],
+  "19.7": ["Dušana","Dušana"],
+  "20.7": ["Iľja","Iľja"],
+  "21.7": ["Daniel","Daniel"],
+  "22.7": ["Magdaléna","Magdaléna"],
+  "23.7": ["Oľga","Oľga"],
+  "24.7": ["Vladimír","Vladimír"],
+  "25.7": ["Jakub","Jakub"],
+  "26.7": ["Anna","Anna"],
+  "27.7": ["Božena","Božena"],
+  "28.7": ["Krištof","Krištof"],
+  "29.7": ["Marta","Marta"],
+  "30.7": ["Libuša","Libuša"],
+  "31.7": ["Ignác","Ignác"],
+  "1.8":  ["Božidara","Božidara"],
+  "2.8":  ["Gustáv","Gustáv"],
+  "3.8":  ["Jerguš","Jerguš"],
+  "4.8":  ["Dominik","Dominik"],
+  "5.8":  ["Hortenzia","Hortenzia"],
+  "6.8":  ["Jozefína","Jozefína"],
+  "7.8":  ["Štefánia","Štefánia"],
+  "8.8":  ["Oskar","Oskar"],
+  "9.8":  ["Ľubomíra","Ľubomíra"],
+  "10.8": ["Vavrinec","Vavrinec"],
+  "11.8": ["Zuzana","Zuzana"],
+  "12.8": ["Darina","Darina"],
+  "13.8": ["Ľuboslav","Ľuboslav"],
+  "14.8": ["Mojmír","Mojmír"],
+  "15.8": ["Nanebovzatie Panny Márie","Nanebovzatie Panny Márie"],
+  "16.8": ["Jozefína","Jozefína"],
+  "17.8": ["Milica","Milica"],
+  "18.8": ["Helena","Helena"],
+  "19.8": ["Lýdia","Lýdia"],
+  "20.8": ["Anabela","Anabela"],
+  "21.8": ["Jana","Jana"],
+  "22.8": ["Tichomír","Tichomír"],
+  "23.8": ["Filip","Filip"],
+  "24.8": ["Bartolomej","Bartolomej"],
+  "25.8": ["Ľudovít","Ľudovít"],
+  "26.8": ["Samuel","Samuel"],
+  "27.8": ["Silvia","Silvia"],
+  "28.8": ["Augustín","Augustín"],
+  "29.8": ["Nikola","Nikola"],
+  "30.8": ["Ružena","Ružena"],
+  "31.8": ["Nora","Nora"],
+  "1.9":  ["Drahomíra","Drahomíra"],
+  "2.9":  ["Konštantín","Konštantín"],
+  "3.9":  ["Belo","Belo"],
+  "4.9":  ["Rozália","Rozália"],
+  "5.9":  ["Regína","Regína"],
+  "6.9":  ["Alžbeta","Alžbeta"],
+  "7.9":  ["Marianna","Marianna"],
+  "8.9":  ["Mária","Mária"],
+  "9.9":  ["Severín","Severín"],
+  "10.9": ["Oleg","Oleg"],
+  "11.9": ["Bystrík","Bystrík"],
+  "12.9": ["Mária","Mária"],
+  "13.9": ["Ctibor","Ctibor"],
+  "14.9": ["Ľudomil","Ľudomil"],
+  "15.9": ["Jolana","Jolana"],
+  "16.9": ["Ľudomila","Ľudomila"],
+  "17.9": ["Olympia","Olympia"],
+  "18.9": ["Eugénia","Eugénia"],
+  "19.9": ["Konštantína","Konštantína"],
+  "20.9": ["Ľubor","Ľubor"],
+  "21.9": ["Matúš","Matúš"],
+  "22.9": ["Móric","Móric"],
+  "23.9": ["Zdenka","Zdenka"],
+  "24.9": ["Ľuboš","Ľuboš"],
+  "25.9": ["Vladislav","Vladislav"],
+  "26.9": ["Edita","Edita"],
+  "27.9": ["Cyprián","Cyprián"],
+  "28.9": ["Václav","Václav"],
+  "29.9": ["Michal","Michal"],
+  "30.9": ["Jarolím","Jarolím"],
+  "1.10": ["Arnold","Arnold"],
+  "2.10": ["Levoslav","Levoslav"],
+  "3.10": ["Stela","Stela"],
+  "4.10": ["František","František"],
+  "5.10": ["Viera","Viera"],
+  "6.10": ["Natália","Natália"],
+  "7.10": ["Eliška","Eliška"],
+  "8.10": ["Brigita","Brigita"],
+  "9.10": ["Dionýz","Dionýz"],
+  "10.10":["Slavomíra","Slavomíra"],
+  "11.10":["Valentína","Valentína"],
+  "12.10":["Maximilián","Maximilián"],
+  "13.10":["Koloman","Koloman"],
+  "14.10":["Boris","Boris"],
+  "15.10":["Terézia","Terézia"],
+  "16.10":["Vladimíra","Vladimíra"],
+  "17.10":["Hedviga","Hedviga"],
+  "18.10":["Lukáš","Lukáš"],
+  "19.10":["Kristián","Kristián"],
+  "20.10":["Vendelín","Vendelín"],
+  "21.10":["Uršuľa","Uršuľa"],
+  "22.10":["Sergej","Sergej"],
+  "23.10":["Alojzia","Alojzia"],
+  "24.10":["Kvetoslava","Kvetoslava"],
+  "25.10":["Aurel","Aurel"],
+  "26.10":["Demeter","Demeter"],
+  "27.10":["Sabína","Sabína"],
+  "28.10":["Dobromila","Dobromila"],
+  "29.10":["Klára","Klára"],
+  "30.10":["Simona","Simona"],
+  "31.10":["Aurélia","Aurélia"],
+  "1.11": ["Všetkých svätých","Všetkých svätých"],
+  "2.11": ["Pamiatka zosnulých","Pamiatka zosnulých"],
+  "3.11": ["Hubert","Hubert"],
+  "4.11": ["Karol","Karol"],
+  "5.11": ["Imrich","Imrich"],
+  "6.11": ["Renáta","Renáta"],
+  "7.11": ["René","René"],
+  "8.11": ["Bohumír","Bohumír"],
+  "9.11": ["Teodor","Teodor"],
+  "10.11":["Tibor","Tibor"],
+  "11.11":["Martin","Martin"],
+  "12.11":["Svätopluk","Svätopluk"],
+  "13.11":["Stanislav","Stanislav"],
+  "14.11":["Irma","Irma"],
+  "15.11":["Leopold","Leopold"],
+  "16.11":["Agnesa","Agnesa"],
+  "17.11":["Klaudia","Klaudia"],
+  "18.11":["Eugen","Eugen"],
+  "19.11":["Alžbeta","Alžbeta"],
+  "20.11":["Félix","Félix"],
+  "21.11":["Elvíra","Elvíra"],
+  "22.11":["Cecília","Cecília"],
+  "23.11":["Klement","Klement"],
+  "24.11":["Emília","Emília"],
+  "25.11":["Katarína","Katarína"],
+  "26.11":["Kornel","Kornel"],
+  "27.11":["Milan","Milan"],
+  "28.11":["Henrich","Henrich"],
+  "29.11":["Blazej","Blazej"],
+  "30.11":["Andrej","Andrej"],
+  "1.12": ["Edmund","Edmund"],
+  "2.12": ["Bibiána","Bibiána"],
+  "3.12": ["Oldrich","Oldrich"],
+  "4.12": ["Barbora","Barbora"],
+  "5.12": ["Ábel","Ábel"],
+  "6.12": ["Mikuláš","Mikuláš"],
+  "7.12": ["Ambróz","Ambróz"],
+  "8.12": ["Marína","Marína"],
+  "9.12": ["Izabela","Izabela"],
+  "10.12":["Radúz","Radúz"],
+  "11.12":["Hilda","Hilda"],
+  "12.12":["Otília","Otília"],
+  "13.12":["Lucia","Lucia"],
+  "14.12":["Branislava","Branislava"],
+  "15.12":["Ivica","Ivica"],
+  "16.12":["Albína","Albína"],
+  "17.12":["Kornélia","Kornélia"],
+  "18.12":["Sláva","Sláva"],
+  "19.12":["Judita","Judita"],
+  "20.12":["Dagmar","Dagmar"],
+  "21.12":["Bohdan","Bohdan"],
+  "22.12":["Adela","Adela"],
+  "23.12":["Nadežda","Nadežda"],
+  "24.12":["Adam a Eva","Adam a Eva"],
+  "25.12":["Vianoce","Vianoce"],
+  "26.12":["Štefan","Štefan"],
+  "27.12":["Filomena","Filomena"],
+  "28.12":["Ivana","Ivana"],
+  "29.12":["Milada","Milada"],
+  "30.12":["Dávid","Dávid"],
+  "31.12":["Silvester","Silvester"]
+};
+
+function getNameday(d){
+  let key = d.getDate()+"."+(d.getMonth()+1);
+  let entry = MENINY[key];
+  return entry ? entry[0] : "–";
+}
+
 // FORMAT
 function format(sec){
-sec=Math.floor(sec);
-let h=Math.floor(sec/3600);
-let m=Math.floor((sec%3600)/60);
-let s=sec%60;
-return `${h}h ${m}m ${s}s`;
+  sec=Math.floor(sec);
+  let h=Math.floor(sec/3600);
+  let m=Math.floor((sec%3600)/60);
+  let s=sec%60;
+  return `${h}h ${m}m ${s}s`;
 }
 
 // IKONY
 function icon(code){
-if(code===0)return"☀️";
-if([1,2].includes(code))return"🌤️";
-if(code===3)return"☁️";
-if(code>=61)return"🌧️";
-if([95,96,99].includes(code))return"⛈️";
-return"🌤️";
+  if(code===0)return"☀️";
+  if([1,2].includes(code))return"🌤️";
+  if(code===3)return"☁️";
+  if(code>=61)return"🌧️";
+  if([95,96,99].includes(code))return"⛈️";
+  return"🌤️";
 }
 
 function windDir(deg){
-const d=["S","SV","V","JV","J","JZ","Z","SZ"];
-return d[Math.round(deg/45)%8];
+  const d=["S","SV","V","JV","J","JZ","Z","SZ"];
+  return d[Math.round(deg/45)%8];
 }
 
 function getDirection(deg){
-if(deg>=315||deg<45)return"od Nitry";
-if(deg<135)return"od Levíc";
-if(deg<225)return"od Nových Zámkov";
-return"od Zlatých Moraviec";
+  if(deg>=315||deg<45)return"od Nitry";
+  if(deg<135)return"od Levíc";
+  if(deg<225)return"od Nových Zámkov";
+  return"od Zlatých Moraviec";
 }
 
-// TIME
+// ISO TÝŽDEŇ
 function getISOWeek(d){
-const date=new Date(d);
-date.setDate(date.getDate()+3-(date.getDay()+6)%7);
-const week1=new Date(date.getFullYear(),0,4);
-return 1+Math.round(((date-week1)/86400000)/7);
+  const date=new Date(d);
+  date.setDate(date.getDate()+3-(date.getDay()+6)%7);
+  const week1=new Date(date.getFullYear(),0,4);
+  return 1+Math.round(((date-week1)/86400000)/7);
 }
 
+// ČIAS + DÁTUM
 function updateTime(){
-const n=new Date();
-time.innerText=n.toLocaleTimeString("sk-SK",{hour12:false});
-
-let d=n.toLocaleDateString("sk-SK",{weekday:"long"});
-d=d.charAt(0).toUpperCase()+d.slice(1);
-
-dateWeek.innerText=d+" "+n.toLocaleDateString("sk-SK",{day:"numeric",month:"long",year:"numeric"})+" • týždeň "+getISOWeek(n);
+  const n=new Date();
+  time.innerText=n.toLocaleTimeString("sk-SK",{hour12:false});
+  let d=n.toLocaleDateString("sk-SK",{weekday:"long"});
+  d=d.charAt(0).toUpperCase()+d.slice(1);
+  dateWeek.innerText=d+" "+n.toLocaleDateString("sk-SK",{day:"numeric",month:"long",year:"numeric"})+" • týždeň "+getISOWeek(n);
 }
 
-// WEATHER + ALERT
+// MENINY – aktualizuje každý deň automaticky
+let lastNamedayDate = -1;
+
+function updateNameday(){
+  const n = new Date();
+  const today = n.getDate();
+  if(today === lastNamedayDate) return; // iba ak sa zmenil deň
+  lastNamedayDate = today;
+
+  const tomorrow = new Date(n);
+  tomorrow.setDate(tomorrow.getDate()+1);
+
+  const todayName   = getNameday(n);
+  const tomorrowName = getNameday(tomorrow);
+
+  nameday.innerHTML = "Dnes má meniny: " + todayName + "<br>Zajtra má meniny: " + tomorrowName;
+}
+
+// POČASIE VRÁBLE + ALERT
 async function loadWeather(){
-const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weathercode,precipitation_probability,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,windspeed_10m_max,winddirection_10m_dominant&current_weather=true");
-const data=await res.json();
+  const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weathercode,precipitation_probability,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,windspeed_10m_max,winddirection_10m_dominant&current_weather=true&forecast_days=7&timezone=Europe%2FBratislava");
+  const data=await res.json();
 
-let alert="",now=new Date();
+  let alert="",now=new Date();
 
-for(let i=0;i<data.hourly.time.length;i++){
-let t=new Date(data.hourly.time[i]);
-let diff=(t-now)/60000;
-if(diff>0&&diff<90){
-let code=data.hourly.weathercode[i];
-let dir=getDirection(data.hourly.winddirection_10m[i]);
-if([95,96,99].includes(code)){alert=` ⚡ Búrka ~${Math.round(diff)} min (${dir})`;break;}
-if(code>=61){alert=` 🌧️ Dážď ~${Math.round(diff)} min (${dir})`;break;}
-}}
+  for(let i=0;i<data.hourly.time.length;i++){
+    let t=new Date(data.hourly.time[i]);
+    let diff=(t-now)/60000;
+    if(diff>0&&diff<90){
+      let code=data.hourly.weathercode[i];
+      let dir=getDirection(data.hourly.winddirection_10m[i]);
+      if([95,96,99].includes(code)){alert=` ⚡ Búrka ~${Math.round(diff)} min (${dir})`;break;}
+      if(code>=61){alert=` 🌧️ Dážď ~${Math.round(diff)} min (${dir})`;break;}
+    }
+  }
 
-if(!alert)alert=" ☀️ Bez zrážok";
+  if(!alert)alert=" ☀️ Bez zrážok";
 
-tempNow.innerText=`Aktuálna teplota: ${Math.round(data.current_weather.temperature)}°${alert}`;
+  tempNow.innerText=`Aktuálna teplota: ${Math.round(data.current_weather.temperature)}°${alert}`;
 
-// DNY
-let d=data.daily;
+  // Dynamické názvy dní podľa dátumu
+  const d=data.daily;
+  const dayNames=[];
+  for(let i=0;i<4;i++){
+    const dt=new Date(d.time[i]);
+    let dn=dt.toLocaleDateString("sk-SK",{weekday:"long",timeZone:"Europe/Bratislava"});
+    dn=dn.charAt(0).toUpperCase()+dn.slice(1);
+    dayNames.push(dn);
+  }
 
-weather.innerHTML=`
-Dnes: ${icon(d.weathercode[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math.round(d.temperature_2m_min[0])}° | 💨 ${Math.round(d.windspeed_10m_max[0])} km/h ${windDir(d.winddirection_10m_dominant[0])}
+  weather.innerHTML=`
+${dayNames[0]}: ${icon(d.weathercode[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math.round(d.temperature_2m_min[0])}° | 💨 ${Math.round(d.windspeed_10m_max[0])} km/h ${windDir(d.winddirection_10m_dominant[0])}
 <div style="height:1px;background:rgba(255,255,255,0.2);margin:10px 0;"></div>
-Štvrtok: ${icon(d.weathercode[1])} ${Math.round(d.temperature_2m_max[1])}°/${Math.round(d.temperature_2m_min[1])}° | 💨 ${Math.round(d.windspeed_10m_max[1])} km/h ${windDir(d.winddirection_10m_dominant[1])}
-<br>Piatok: ${icon(d.weathercode[2])} ${Math.round(d.temperature_2m_max[2])}°/${Math.round(d.temperature_2m_min[2])}° | 💨 ${Math.round(d.windspeed_10m_max[2])} km/h ${windDir(d.winddirection_10m_dominant[2])}
-<br>Sobota: ${icon(d.weathercode[3])} ${Math.round(d.temperature_2m_max[3])}°/${Math.round(d.temperature_2m_min[3])}° | 💨 ${Math.round(d.windspeed_10m_max[3])} km/h ${windDir(d.winddirection_10m_dominant[3])}
+${dayNames[1]}: ${icon(d.weathercode[1])} ${Math.round(d.temperature_2m_max[1])}°/${Math.round(d.temperature_2m_min[1])}° | 💨 ${Math.round(d.windspeed_10m_max[1])} km/h ${windDir(d.winddirection_10m_dominant[1])}
+<br>${dayNames[2]}: ${icon(d.weathercode[2])} ${Math.round(d.temperature_2m_max[2])}°/${Math.round(d.temperature_2m_min[2])}° | 💨 ${Math.round(d.windspeed_10m_max[2])} km/h ${windDir(d.winddirection_10m_dominant[2])}
+<br>${dayNames[3]}: ${icon(d.weathercode[3])} ${Math.round(d.temperature_2m_max[3])}°/${Math.round(d.temperature_2m_min[3])}° | 💨 ${Math.round(d.windspeed_10m_max[3])} km/h ${windDir(d.winddirection_10m_dominant[3])}
 `;
 }
 
 // WORLD TIME
 function world(){
-ramos.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"America/Monterrey",hour12:false});
-detroit.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"America/Detroit",hour12:false});
-pune.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"Asia/Kolkata",hour12:false});
-suzhou.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"Asia/Shanghai",hour12:false});
+  ramos.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"America/Monterrey",hour12:false});
+  detroit.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"America/Detroit",hour12:false});
+  pune.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"Asia/Kolkata",hour12:false});
+  suzhou.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"Asia/Shanghai",hour12:false});
 }
 
-// WORLD WEATHER (FIX)
+// WORLD WEATHER
 async function worldWeather(){
-const c={
-ramos:[25.54,-100.94,"ramosw"],
-detroit:[42.33,-83.05,"detroitw"],
-pune:[18.52,73.85,"punew"],
-suzhou:[31.30,120.62,"suzhouw"]
-};
+  const c={
+    ramos:[25.54,-100.94,"ramosw"],
+    detroit:[42.33,-83.05,"detroitw"],
+    pune:[18.52,73.85,"punew"],
+    suzhou:[31.30,120.62,"suzhouw"]
+  };
 
-for(let k in c){
-const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c[k][0]}&longitude=${c[k][1]}&current_weather=true`);
-const d=await r.json();
-
-document.getElementById(c[k][2]).innerText=
-icon(d.current_weather.weathercode)+" "+Math.round(d.current_weather.temperature)+"°";
-}
+  for(let k in c){
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c[k][0]}&longitude=${c[k][1]}&current_weather=true`);
+    const d=await r.json();
+    document.getElementById(c[k][2]).innerText=icon(d.current_weather.weathercode)+" "+Math.round(d.current_weather.temperature)+"°";
+  }
 }
 
-// SHIFT
+// SMENA
 function updateShift(){
-const n=new Date();
-const s=new Date(); s.setHours(7,0,0,0);
-const e=new Date(); e.setHours(15,0,0,0);
+  const n=new Date();
+  const s=new Date(); s.setHours(7,0,0,0);
+  const e=new Date(); e.setHours(15,0,0,0);
 
-let text="",color="white";
+  let text="",color="white";
 
-if(n<s){text="Do smeny: "+format((s-n)/1000);}
-else if(n<=e){
-let diff=(e-n)/1000;
-color=diff<1800?"#ff3b3b":diff<3600?"#ff9f0a":"#00ff88";
-text="Do konca smeny: "+format(diff);
-}else{
-let nx=new Date();nx.setDate(nx.getDate()+1);nx.setHours(7,0,0,0);
-text="Do ďalšej smeny: "+format((nx-n)/1000);
-}
-shiftTime.innerText=text;
-shiftTime.style.color=color;
+  if(n<s){text="Do smeny: "+format((s-n)/1000);}
+  else if(n<=e){
+    let diff=(e-n)/1000;
+    color=diff<1800?"#ff3b3b":diff<3600?"#ff9f0a":"#00ff88";
+    text="Do konca smeny: "+format(diff);
+  }else{
+    let nx=new Date();nx.setDate(nx.getDate()+1);nx.setHours(7,0,0,0);
+    text="Do ďalšej smeny: "+format((nx-n)/1000);
+  }
+  shiftTime.innerText=text;
+  shiftTime.style.color=color;
 }
 
 // OBED
 function updateLunch(){
-const n=new Date();
-const s=new Date();s.setHours(6,0,0,0);
-const l=new Date();l.setHours(10,30,0,0);
-const e=new Date();e.setHours(12,0,0,0);
+  const n=new Date();
+  const s=new Date();s.setHours(6,0,0,0);
+  const l=new Date();l.setHours(10,30,0,0);
+  const e=new Date();e.setHours(12,0,0,0);
 
-if(n>=s&&n<l){lunchTime.innerText="Obed o: "+format((l-n)/1000);lunchTime.style.display="block";}
-else if(n>=l&&n<e){lunchTime.innerText="🍽️ OBED do 12:00";lunchTime.style.display="block";}
-else lunchTime.style.display="none";
+  if(n>=s&&n<l){lunchTime.innerText="Obed o: "+format((l-n)/1000);lunchTime.style.display="block";}
+  else if(n>=l&&n<e){lunchTime.innerText="🍽️ OBED do 12:00";lunchTime.style.display="block";}
+  else lunchTime.style.display="none";
 }
 
-// MENINY
-function updateNameday(){
-nameday.innerHTML="Dnes má meniny: Karolína<br>Zajtra má meniny: Lenka";
-}
-
-// LOOP
+// LOOP – každú sekundu
 setInterval(()=>{
-updateTime();
-world();
-updateShift();
-updateLunch();
+  updateTime();
+  world();
+  updateShift();
+  updateLunch();
+  updateNameday(); // kontroluje zmenu dňa
 },1000);
 
-// refresh weather každú minútu
+// POČASIE – každú minútu
 setInterval(()=>{
-loadWeather();
-worldWeather();
+  loadWeather();
+  worldWeather();
 },60000);
 
 // INIT
