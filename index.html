@@ -865,10 +865,14 @@ async function worldWeather(){
 }
 
 // SMENA
+// ZVUK PRE KONIEC SMENY
+let shiftAlertPlayed=false;
+
 function updateShift(){
   const n=new Date();
   const s=new Date(); s.setHours(7,0,0,0);
   const e=new Date(); e.setHours(15,0,0,0);
+  const a=new Date(); a.setHours(14,45,0,0); // Alert o 14:45
 
   let text="",color="white";
 
@@ -878,9 +882,16 @@ function updateShift(){
     color=diff<1800?"#ff3b3b":diff<3600?"#ff9f0a":"#00ff88";
     text="Do konca smeny: "+format(diff);
     shiftTime.style.display="block";
+    
+    // Zvuk keď je čas 14:45-14:50
+    if(n>=a && n<new Date(a.getTime()+5*60000) && !shiftAlertPlayed){
+      playAlert();
+      shiftAlertPlayed=true;
+    }
   } else {
     // Pred 7:00 alebo po 15:00 - nič
     shiftTime.style.display="none";
+    shiftAlertPlayed=false; // Reset keď nie je smena
     return;
   }
   shiftTime.innerText=text;
@@ -889,11 +900,7 @@ function updateShift(){
 
 // OBED
 // ZVUK NOTIFIKÁCIA - LODNÁ TRUBA
-let lunchAlertPlayed=false;
-function playLunchAlert(){
-  if(lunchAlertPlayed) return;
-  lunchAlertPlayed=true;
-  
+function playAlert(){
   try {
     const ctx=new (window.AudioContext||window.webkitAudioContext)();
     const osc=ctx.createOscillator();
@@ -910,18 +917,22 @@ function playLunchAlert(){
   } catch(e){}
 }
 
+// PREMIENNE PRE ZVUKY
+let lunchAlertPlayed=false;
+
 function updateLunch(){
   const n=new Date();
   const s=new Date();s.setHours(7,0,0,0);
   const l=new Date();l.setHours(10,30,0,0);
-  const a=new Date();a.setHours(10,0,0,0); // Alert o 10:00
+  const a=new Date();a.setHours(10,15,0,0); // Alert o 10:15
   const e=new Date();e.setHours(12,0,0,0);
 
   if(n>=s&&n<l){
     lunchTime.innerText="Obed o: "+format((l-n)/1000);lunchTime.style.display="block";
-    // Zvuk keď je čas 10:00-10:05
-    if(n>=a&&n<new Date(a.getTime()+5*60000)){
-      playLunchAlert();
+    // Zvuk keď je čas 10:15-10:20
+    if(n>=a&&n<new Date(a.getTime()+5*60000)&&!lunchAlertPlayed){
+      playAlert();
+      lunchAlertPlayed=true;
     }
   }
   else if(n>=l&&n<e){
