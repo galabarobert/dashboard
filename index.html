@@ -24,9 +24,9 @@ body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
 #dateWeek {font-size:45px;}
 
 #weather {position:absolute;top:190px;left:40px;font-size:36px;line-height:1.8;}
-#daysSat {position:absolute;top:320px;left:40px;font-size:24px;text-align:center;width:220px;}
-#daysSun {position:absolute;top:320px;left:300px;font-size:24px;text-align:center;width:220px;}
-#daysMon {position:absolute;top:320px;left:560px;font-size:24px;text-align:center;width:220px;}
+#daysSat {position:absolute;top:310px;left:40px;font-size:28px;text-align:left;width:auto;}
+#daysSun {position:absolute;top:310px;left:300px;font-size:28px;text-align:left;width:auto;}
+#daysMon {position:absolute;top:310px;left:560px;font-size:28px;text-align:left;width:auto;}
 #sun {position:absolute;top:560px;right:40px;font-size:28px;text-align:right;line-height:1.5;}
 #nameday {position:absolute;top:380px;right:40px;font-size:45px;text-align:left;}
 
@@ -833,11 +833,11 @@ async function loadWeather(){
 Dnes: ${icon(d.weather_code[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math.round(d.temperature_2m_min[0])}° | 💨 ${Math.round(d.wind_speed_10m_max[0])} km/h ${windDir(d.wind_direction_10m_dominant[0])}${d.precipitation_sum[0]>0?' | 💧 '+d.precipitation_sum[0].toFixed(1)+' mm':''}
 `;
 
-  daysSat.innerHTML=`<b>${dayNames[1]}</b><br>${icon(d.weather_code[1])} ${Math.round(d.temperature_2m_max[1])}°/${Math.round(d.temperature_2m_min[1])}°<br>💨 ${Math.round(d.wind_speed_10m_max[1])} km/h ${windDir(d.wind_direction_10m_dominant[1])}${d.precipitation_sum[1]>0?'<br>💧 '+d.precipitation_sum[1].toFixed(1)+' mm':''}`;
+  daysSat.innerHTML=`<b>${dayNames[1]}</b><br>${icon(d.weather_code[1])} ${Math.round(d.temperature_2m_max[1])}°/${Math.round(d.temperature_2m_min[1])}°<br>💨 ${Math.round(d.wind_speed_10m_max[1])} km/h ${windDir(d.wind_direction_10m_dominant[1])}`;
 
-  daysSun.innerHTML=`<b>${dayNames[2]}</b><br>${icon(d.weather_code[2])} ${Math.round(d.temperature_2m_max[2])}°/${Math.round(d.temperature_2m_min[2])}°<br>💨 ${Math.round(d.wind_speed_10m_max[2])} km/h ${windDir(d.wind_direction_10m_dominant[2])}${d.precipitation_sum[2]>0?'<br>💧 '+d.precipitation_sum[2].toFixed(1)+' mm':''}`;
+  daysSun.innerHTML=`<b>${dayNames[2]}</b><br>${icon(d.weather_code[2])} ${Math.round(d.temperature_2m_max[2])}°/${Math.round(d.temperature_2m_min[2])}°<br>💨 ${Math.round(d.wind_speed_10m_max[2])} km/h ${windDir(d.wind_direction_10m_dominant[2])}`;
 
-  daysMon.innerHTML=`<b>${dayNames[3]}</b><br>${icon(d.weather_code[3])} ${Math.round(d.temperature_2m_max[3])}°/${Math.round(d.temperature_2m_min[3])}°<br>💨 ${Math.round(d.wind_speed_10m_max[3])} km/h ${windDir(d.wind_direction_10m_dominant[3])}${d.precipitation_sum[3]>0?'<br>💧 '+d.precipitation_sum[3].toFixed(1)+' mm':''}`;
+  daysMon.innerHTML=`<b>${dayNames[3]}</b><br>${icon(d.weather_code[3])} ${Math.round(d.temperature_2m_max[3])}°/${Math.round(d.temperature_2m_min[3])}°<br>💨 ${Math.round(d.wind_speed_10m_max[3])} km/h ${windDir(d.wind_direction_10m_dominant[3])}`;
 }
 
 // WORLD TIME
