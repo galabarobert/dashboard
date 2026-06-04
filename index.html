@@ -5,7 +5,7 @@
 <title>Dashboard</title>
 
 <style>
-body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
+body {margin:0;background:#1a1a1a;color:white;font-family:-apple-system, Segoe UI;}
 
 .glass {
     background:rgba(255,255,255,0.06);
@@ -888,36 +888,131 @@ function updateShift(){
 }
 
 // OBED
+// ZVUK NOTIFIKÁCIA - LODNÁ TRUBA
+let lunchAlertPlayed=false;
+function playLunchAlert(){
+  if(lunchAlertPlayed) return;
+  lunchAlertPlayed=true;
+  
+  try {
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    
+    // Lodná truba: nižší tón, dlhšie trvanie
+    osc.frequency.value=400;
+    gain.gain.setValueAtTime(0.4,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+2);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime+2);
+  } catch(e){}
+}
+
 function updateLunch(){
   const n=new Date();
   const s=new Date();s.setHours(7,0,0,0);
   const l=new Date();l.setHours(10,30,0,0);
+  const a=new Date();a.setHours(10,0,0,0); // Alert o 10:00
   const e=new Date();e.setHours(12,0,0,0);
 
-  if(n>=s&&n<l){lunchTime.innerText="Obed o: "+format((l-n)/1000);lunchTime.style.display="block";}
-  else if(n>=l&&n<e){lunchTime.innerText="🍽️ OBED do 12:00";lunchTime.style.display="block";}
-  else lunchTime.style.display="none";
+  if(n>=s&&n<l){
+    lunchTime.innerText="Obed o: "+format((l-n)/1000);lunchTime.style.display="block";
+    // Zvuk keď je čas 10:00-10:05
+    if(n>=a&&n<new Date(a.getTime()+5*60000)){
+      playLunchAlert();
+    }
+  }
+  else if(n>=l&&n<e){
+    lunchTime.innerText="🍽️ OBED do 12:00";lunchTime.style.display="block";
+    lunchAlertPlayed=false; // Reset pre ďalší deň
+  }
+  else {
+    lunchTime.style.display="none";
+    lunchAlertPlayed=false; // Reset keď nie je čas obeda
+  }
 }
 
-// DOVOLENKA
+// DOVOLENKA + VIANOCE
 function updateVacation(){
   const n=new Date();
   const vacStart=new Date(2026,7,3); // 3.8.2026
-  const vacEnd=new Date(2026,7,7);   // 7.8.2026
+  const christmas=new Date(2026,11,25); // 25.12.2026
+  
+  const diffVac=Math.ceil((vacStart-n)/(1000*60*60*24));
+  const diffChrist=Math.ceil((christmas-n)/(1000*60*60*24));
   
   // Ak je POČAS dovolenky (3.8-7.8)
-  if(n>=vacStart && n<=vacEnd){
+  if(n>=vacStart && n<=new Date(2026,7,7)){
     vacationTime.innerText="🏖️ DOVOLENKA 🏖️";
     vacationTime.style.display="block";
   }
-  // Ak nie je dovolenka
-  else if(n<vacStart){
-    const diff=Math.ceil((vacStart-n)/(1000*60*60*24));
-    vacationTime.innerText=`Do dovolenky zostáva: ${diff} dní`;
+  // Ak noch dovolenka
+  else if(diffVac>0){
+    vacationTime.innerText=`Do dovolenky: ${diffVac} dní | Do Vianoc: ${diffChrist} dní`;
+    vacationTime.style.display="block";
+  }
+  else if(diffChrist>0){
+    vacationTime.innerText=`Do Vianoc: ${diffChrist} dní`;
     vacationTime.style.display="block";
   }
   else {
     vacationTime.style.display="none";
+  }
+}
+
+// PRACOVNÉ VOĽNO - SVIATKY (len pracovný týždeň)
+function updateHolidays(){
+  const n=new Date();
+  const today=new Date(n.getFullYear(), n.getMonth(), n.getDate());
+  
+  // Sviatky SR 2026
+  const holidays=[
+    {date: new Date(2026,0,1), name:"Nový rok"},
+    {date: new Date(2026,0,6), name:"Traja králi"},
+    {date: new Date(2026,0,27), name:"Ľ. Štúr"},
+    {date: new Date(2026,3,17), name:"Veľký piatok"}, // 2026
+    {date: new Date(2026,3,20), name:"Veľkonočný pondelok"}, // 2026
+    {date: new Date(2026,4,1), name:"Sviatok práce"},
+    {date: new Date(2026,4,8), name:"Deň víťazstva"},
+    {date: new Date(2026,6,5), name:"Sv. Cyril a Metod"},
+    {date: new Date(2026,7,29), name:"Výročie SNP"},
+    {date: new Date(2026,8,1), name:"Deň SR"},
+    {date: new Date(2026,8,15), name:"Sedembolesná"},
+    {date: new Date(2026,10,1), name:"Dušičky"},
+    {date: new Date(2026,10,17), name:"Deň slobody"},
+    {date: new Date(2026,11,24), name:"Štedrý deň"},
+    {date: new Date(2026,11,25), name:"Vianoce"},
+    {date: new Date(2026,11,26), name:"2. deň Vianoc"}
+  ];
+  
+  // Nájdi najbližší sviatok v pracovnom týždni (1=po, 5=pi)
+  let nextHoliday=null;
+  let minDiff=Infinity;
+  
+  holidays.forEach(h=>{
+    const dayOfWeek=h.date.getDay();
+    // Zobrazuj len ak je sviatok v pracovnom týždni (1-5)
+    if(dayOfWeek>=1 && dayOfWeek<=5){
+      const diff=(h.date-today)/(1000*60*60*24);
+      if(diff>=0 && diff<minDiff){
+        minDiff=diff;
+        nextHoliday=h;
+      }
+    }
+  });
+  
+  if(nextHoliday){
+    const daysLeft=Math.ceil(minDiff);
+    if(daysLeft===0){
+      document.getElementById('holidayDisplay').innerHTML=`🎉 ${nextHoliday.name}`;
+    } else {
+      document.getElementById('holidayDisplay').innerHTML=`🎉 ${nextHoliday.name}`;
+    }
+    document.getElementById('holidayDisplay').style.display="block";
+  } else {
+    document.getElementById('holidayDisplay').style.display="none";
   }
 }
 
