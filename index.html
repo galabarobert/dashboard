@@ -24,7 +24,7 @@ body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
 #dateWeek {font-size:36px;}
 
 #weather {position:absolute;top:220px;left:40px;font-size:32px;line-height:1.6;}
-#nameday {position:absolute;top:380px;right:40px;font-size:32px;}
+#nameday {position:absolute;top:380px;right:40px;font-size:40px;}
 
 #world{
     position:absolute;
@@ -36,10 +36,10 @@ body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
 }
 
 .city{text-align:center;}
-.place{display:flex;align-items:center;gap:10px;font-size:22px;margin-bottom:10px;}
-.flag{width:28px;height:18px;}
-.city-time{font-size:40px;}
-.city-weather{font-size:26px;margin-top:5px;}
+.place{display:flex;align-items:center;gap:10px;font-size:27px;margin-bottom:10px;}
+.flag{width:35px;height:22px;}
+.city-time{font-size:50px;}
+.city-weather{font-size:32px;margin-top:5px;}
 
 #shiftBox{
     position:absolute;
@@ -578,7 +578,7 @@ async function loadWeather(){
   }
 
   weather.innerHTML=`
-${dayNames[0]}: ${icon(d.weathercode[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math.round(d.temperature_2m_min[0])}° | 💨 ${Math.round(d.windspeed_10m_max[0])} km/h ${windDir(d.winddirection_10m_dominant[0])}
+Dnes: ${icon(d.weathercode[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math.round(d.temperature_2m_min[0])}° | 💨 ${Math.round(d.windspeed_10m_max[0])} km/h ${windDir(d.winddirection_10m_dominant[0])}
 <div style="height:1px;background:rgba(255,255,255,0.2);margin:10px 0;"></div>
 ${dayNames[1]}: ${icon(d.weathercode[1])} ${Math.round(d.temperature_2m_max[1])}°/${Math.round(d.temperature_2m_min[1])}° | 💨 ${Math.round(d.windspeed_10m_max[1])} km/h ${windDir(d.winddirection_10m_dominant[1])}
 <br>${dayNames[2]}: ${icon(d.weathercode[2])} ${Math.round(d.temperature_2m_max[2])}°/${Math.round(d.temperature_2m_min[2])}° | 💨 ${Math.round(d.windspeed_10m_max[2])} km/h ${windDir(d.winddirection_10m_dominant[2])}
@@ -618,14 +618,17 @@ function updateShift(){
 
   let text="",color="white";
 
-  if(n<s){text="Do smeny: "+format((s-n)/1000);}
-  else if(n<=e){
+  if(n<s){
+    shiftTime.style.display="block";
+    text="Do smeny: "+format((s-n)/1000);
+  } else if(n<=e){
     let diff=(e-n)/1000;
     color=diff<1800?"#ff3b3b":diff<3600?"#ff9f0a":"#00ff88";
     text="Do konca smeny: "+format(diff);
-  }else{
-    let nx=new Date();nx.setDate(nx.getDate()+1);nx.setHours(7,0,0,0);
-    text="Do ďalšej smeny: "+format((nx-n)/1000);
+    shiftTime.style.display="block";
+  } else {
+    shiftTime.style.display="none";
+    return;
   }
   shiftTime.innerText=text;
   shiftTime.style.color=color;
