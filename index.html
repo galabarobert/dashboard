@@ -23,8 +23,8 @@ body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
 #time {font-size:200px;}
 #dateWeek {font-size:45px;}
 
-#weather {position:absolute;top:220px;left:40px;font-size:32px;line-height:1.6;}
-#sun {position:absolute;top:380px;right:40px;font-size:28px;text-align:right;line-height:1.5;}
+#weather {position:absolute;top:190px;left:40px;font-size:32px;line-height:1.6;}
+#sun {position:absolute;top:380px;right:40px;font-size:28px;text-align:left;line-height:1.5;}
 #nameday {position:absolute;top:560px;right:40px;font-size:45px;text-align:right;}
 
 #world{
@@ -598,30 +598,26 @@ async function loadSun(){
     // Dní od new moonu
     const daysSinceNewMoon = (now - newMoonDate) / (1000 * 60 * 60 * 24);
     
-    // Správny piktogram podľa lunárneho veku (dynamicky sa mení každý deň)
+    // Správny piktogram a názov fázy podľa lunárneho veku
     let moonEmoji = '🌑';
-    if (daysSinceNewMoon < 1.84) moonEmoji = '🌑'; // New
-    else if (daysSinceNewMoon < 7.38) moonEmoji = '🌒'; // Waxing Crescent
-    else if (daysSinceNewMoon < 9.23) moonEmoji = '🌓'; // First Quarter
-    else if (daysSinceNewMoon < 14.77) moonEmoji = '🌔'; // Waxing Gibbous
-    else if (daysSinceNewMoon < 16.61) moonEmoji = '🌕'; // Full
-    else if (daysSinceNewMoon < 22.15) moonEmoji = '🌖'; // Waning Gibbous
-    else if (daysSinceNewMoon < 23.99) moonEmoji = '🌗'; // Last Quarter
-    else moonEmoji = '🌘'; // Waning Crescent
+    let moonName = 'Nový mesiac';
+    
+    if (daysSinceNewMoon < 1.84) { moonEmoji = '🌑'; moonName = 'Nový mesiac'; }
+    else if (daysSinceNewMoon < 7.38) { moonEmoji = '🌒'; moonName = 'Rastúci srpok'; }
+    else if (daysSinceNewMoon < 9.23) { moonEmoji = '🌓'; moonName = 'Prvá štvť'; }
+    else if (daysSinceNewMoon < 14.77) { moonEmoji = '🌔'; moonName = 'Rastúci mesiac'; }
+    else if (daysSinceNewMoon < 16.61) { moonEmoji = '🌕'; moonName = 'Spln'; }
+    else if (daysSinceNewMoon < 22.15) { moonEmoji = '🌖'; moonName = 'Ubúdajúci mesiac'; }
+    else if (daysSinceNewMoon < 23.99) { moonEmoji = '🌗'; moonName = 'Posledná štvť'; }
+    else { moonEmoji = '🌘'; moonName = 'Ubúdajúci srpok'; }
     
     // Skontroluj či je dnes new moon alebo full moon
     const today = new Date();
-    const isFullMoonDay = today.getDate() === 30 && today.getMonth() === 5;
     const isNewMoonDay = today.getDate() === newMoonDate.getDate() && today.getMonth() === newMoonDate.getMonth();
+    if (isNewMoonDay) moonName = 'Now';
     
-    let moonDisplay = moonEmoji; // Default - len piktogram
-    if (isFullMoonDay) {
-      moonDisplay = moonEmoji + ' Spln';
-    } else if (isNewMoonDay) {
-      moonDisplay = moonEmoji + ' Now';
-    }
-    
-    document.getElementById('sun').innerHTML = `☀️ Slnko: Východ ${sunrise} | Západ ${sunset}<br>🌙 Mesiac: ${moonDisplay}`;
+    // Nový formát - tri riadky s názvami
+    document.getElementById('sun').innerHTML = `Východ slnka: 🌅 ${sunrise}<br>Západ slnka: 🌇 ${sunset}<br>Fáza mesiaca: ${moonEmoji} ${moonName}`;
   } catch (err) {
     document.getElementById('sun').innerHTML = "☀️ Slnko: Chyba";
   }
@@ -745,25 +741,39 @@ function loadFIFAFallback(){
 
 // POČASIE VRÁBLE + ALERT
 async function loadWeather(){
-  const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weathercode,precipitation_probability,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,windspeed_10m_max,winddirection_10m_dominant&current_weather=true&forecast_days=7&timezone=Europe%2FBratislava");
+  const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weather_code,precipitation,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant&current=temperature_2m,weather_code&forecast_days=7&timezone=Europe%2FBratislava");
   const data=await res.json();
 
+  // Piktogram podľa počasia
+  function weatherIcon(code){
+    if([0].includes(code)) return "☀️";
+    if([1,2].includes(code)) return "⛅";
+    if([3].includes(code)) return "☁️";
+    if([45,48].includes(code)) return "🌫️";
+    if([51,53,55].includes(code)) return "🌦️";
+    if([61,63,65].includes(code)) return "🌧️";
+    if([71,73,75].includes(code)) return "❄️";
+    if([80,82].includes(code)) return "⛈️";
+    if([95,96,99].includes(code)) return "⚡";
+    return "🌤️";
+  }
+
   let alert="",now=new Date();
+  const currentIcon = weatherIcon(data.current.weather_code);
 
   for(let i=0;i<data.hourly.time.length;i++){
     let t=new Date(data.hourly.time[i]);
     let diff=(t-now)/60000;
     if(diff>0&&diff<90){
-      let code=data.hourly.weathercode[i];
-      let dir=getDirection(data.hourly.winddirection_10m[i]);
-      if([95,96,99].includes(code)){alert=` ⚡ Búrka ~${Math.round(diff)} min (${dir})`;break;}
-      if(code>=61){alert=` 🌧️ Dážď ~${Math.round(diff)} min (${dir})`;break;}
+      let code=data.hourly.weather_code[i];
+      let prec=data.hourly.precipitation[i] || 0;
+      let dir=getDirection(data.hourly.wind_direction_10m[i]);
+      if([95,96,99].includes(code)){alert=` ⚡ Búrka ~${Math.round(diff)} min | ${prec.toFixed(1)} mm (${dir})`;break;}
+      if(code>=61){alert=` 🌧️ Dážď ~${Math.round(diff)} min | ${prec.toFixed(1)} mm (${dir})`;break;}
     }
   }
 
-  if(!alert)alert=" ☀️ Bez zrážok";
-
-  tempNow.innerText=`Aktuálna teplota: ${Math.round(data.current_weather.temperature)}°${alert}`;
+  tempNow.innerText=`Aktuálna teplota: ${Math.round(data.current.temperature_2m)}° ${currentIcon}${alert}`;
 
   // Dynamické názvy dní podľa dátumu
   const d=data.daily;
@@ -776,11 +786,11 @@ async function loadWeather(){
   }
 
   weather.innerHTML=`
-Dnes: ${icon(d.weathercode[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math.round(d.temperature_2m_min[0])}° | 💨 ${Math.round(d.windspeed_10m_max[0])} km/h ${windDir(d.winddirection_10m_dominant[0])}
+Dnes: ${icon(d.weather_code[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math.round(d.temperature_2m_min[0])}° | 💨 ${Math.round(d.wind_speed_10m_max[0])} km/h ${windDir(d.wind_direction_10m_dominant[0])}
 <div style="height:1px;background:rgba(255,255,255,0.2);margin:10px 0;"></div>
-${dayNames[1]}: ${icon(d.weathercode[1])} ${Math.round(d.temperature_2m_max[1])}°/${Math.round(d.temperature_2m_min[1])}° | 💨 ${Math.round(d.windspeed_10m_max[1])} km/h ${windDir(d.winddirection_10m_dominant[1])}
-<br>${dayNames[2]}: ${icon(d.weathercode[2])} ${Math.round(d.temperature_2m_max[2])}°/${Math.round(d.temperature_2m_min[2])}° | 💨 ${Math.round(d.windspeed_10m_max[2])} km/h ${windDir(d.winddirection_10m_dominant[2])}
-<br>${dayNames[3]}: ${icon(d.weathercode[3])} ${Math.round(d.temperature_2m_max[3])}°/${Math.round(d.temperature_2m_min[3])}° | 💨 ${Math.round(d.windspeed_10m_max[3])} km/h ${windDir(d.winddirection_10m_dominant[3])}
+${dayNames[1]}: ${icon(d.weather_code[1])} ${Math.round(d.temperature_2m_max[1])}°/${Math.round(d.temperature_2m_min[1])}° | 💨 ${Math.round(d.wind_speed_10m_max[1])} km/h ${windDir(d.wind_direction_10m_dominant[1])}
+<br>${dayNames[2]}: ${icon(d.weather_code[2])} ${Math.round(d.temperature_2m_max[2])}°/${Math.round(d.temperature_2m_min[2])}° | 💨 ${Math.round(d.wind_speed_10m_max[2])} km/h ${windDir(d.wind_direction_10m_dominant[2])}
+<br>${dayNames[3]}: ${icon(d.weather_code[3])} ${Math.round(d.temperature_2m_max[3])}°/${Math.round(d.temperature_2m_min[3])}° | 💨 ${Math.round(d.wind_speed_10m_max[3])} km/h ${windDir(d.wind_direction_10m_dominant[3])}
 `;
 }
 
