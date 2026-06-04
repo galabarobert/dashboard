@@ -518,15 +518,17 @@ function format(sec){
 
 // IKONY
 function icon(code){
-  if([0].includes(code)) return "☀️";
-  if([1,2].includes(code)) return "⛅";
-  if([3].includes(code)) return "☁️";
-  if([45,48].includes(code)) return "🌫️";
-  if([51,53,55].includes(code)) return "🌦️";
-  if([61,63,65].includes(code)) return "🌧️";
-  if([71,73,75].includes(code)) return "❄️";
-  if([80,82].includes(code)) return "⛈️";
-  if([95,96,99].includes(code)) return "⚡";
+  if([0].includes(code)) return "☀️";           // Clear
+  if([1,2].includes(code)) return "⛅";         // Partly cloudy
+  if([3].includes(code)) return "☁️";           // Overcast
+  if([45,48].includes(code)) return "🌫️";      // Fog
+  if([51,53,55].includes(code)) return "🌦️";   // Drizzle
+  if([61,63,65].includes(code)) return "🌧️";   // Rain
+  if([71,73,75].includes(code)) return "❄️";    // Snow
+  if([77].includes(code)) return "🌨️";         // Snow grains
+  if([80,81,82].includes(code)) return "⛈️";   // Rain showers
+  if([85,86].includes(code)) return "🌨️";      // Snow showers
+  if([95,96,99].includes(code)) return "⚡";    // Thunderstorm
   return "🌤️";
 }
 
@@ -750,15 +752,17 @@ async function loadWeather(){
 
   // Piktogram podľa počasia
   function weatherIcon(code){
-    if([0].includes(code)) return "☀️";
-    if([1,2].includes(code)) return "⛅";
-    if([3].includes(code)) return "☁️";
-    if([45,48].includes(code)) return "🌫️";
-    if([51,53,55].includes(code)) return "🌦️";
-    if([61,63,65].includes(code)) return "🌧️";
-    if([71,73,75].includes(code)) return "❄️";
-    if([80,82].includes(code)) return "⛈️";
-    if([95,96,99].includes(code)) return "⚡";
+    if([0].includes(code)) return "☀️";           // Clear
+    if([1,2].includes(code)) return "⛅";         // Partly cloudy
+    if([3].includes(code)) return "☁️";           // Overcast
+    if([45,48].includes(code)) return "🌫️";      // Fog
+    if([51,53,55].includes(code)) return "🌦️";   // Drizzle
+    if([61,63,65].includes(code)) return "🌧️";   // Rain
+    if([71,73,75].includes(code)) return "❄️";    // Snow
+    if([77].includes(code)) return "🌨️";         // Snow grains
+    if([80,81,82].includes(code)) return "⛈️";   // Rain showers
+    if([85,86].includes(code)) return "🌨️";      // Snow showers
+    if([95,96,99].includes(code)) return "⚡";    // Thunderstorm
     return "🌤️";
   }
 
@@ -830,15 +834,14 @@ function updateShift(){
 
   let text="",color="white";
 
-  if(n<s){
-    shiftTime.style.display="block";
-    text="Do smeny: "+format((s-n)/1000);
-  } else if(n<=e){
+  // Zobrazuj iba ak je POČAS SMENY (7:00-15:00)
+  if(n>=s && n<=e){
     let diff=(e-n)/1000;
     color=diff<1800?"#ff3b3b":diff<3600?"#ff9f0a":"#00ff88";
     text="Do konca smeny: "+format(diff);
     shiftTime.style.display="block";
   } else {
+    // Pred 7:00 alebo po 15:00 - nič
     shiftTime.style.display="none";
     return;
   }
@@ -849,7 +852,7 @@ function updateShift(){
 // OBED
 function updateLunch(){
   const n=new Date();
-  const s=new Date();s.setHours(6,0,0,0);
+  const s=new Date();s.setHours(7,0,0,0);
   const l=new Date();l.setHours(10,30,0,0);
   const e=new Date();e.setHours(12,0,0,0);
 
