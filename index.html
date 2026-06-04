@@ -24,8 +24,8 @@ body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
 #dateWeek {font-size:45px;}
 
 #weather {position:absolute;top:190px;left:40px;font-size:32px;line-height:1.6;}
-#sun {position:absolute;top:380px;right:40px;font-size:28px;text-align:left;line-height:1.5;}
-#nameday {position:absolute;top:560px;right:40px;font-size:45px;text-align:left;}
+#sun {position:absolute;top:560px;right:40px;font-size:28px;text-align:right;line-height:1.5;}
+#nameday {position:absolute;top:380px;right:40px;font-size:45px;text-align:left;}
 
 #world{
     position:absolute;
@@ -53,6 +53,16 @@ body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
     text-align:center;
 }
 #lunchTime{font-size:28px;margin-bottom:10px;}
+
+#vacationBox{
+    position:absolute;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:38px;
+    text-align:center;
+}
+#vacationTime{font-size:32px;color:white;}
 
 #nhl {position:absolute;top:220px;left:40px;margin-top:280px;font-size:28px;line-height:1.8;width:500px;}
 
@@ -99,6 +109,10 @@ body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
 <div id="shiftBox" class="glass">
     <div id="lunchTime"></div>
     <div id="shiftTime"></div>
+</div>
+
+<div id="vacationBox" class="glass">
+    <div id="vacationTime"></div>
 </div>
 
 <div id="world">
@@ -747,7 +761,7 @@ function loadFIFAFallback(){
 
 // POČASIE VRÁBLE + ALERT
 async function loadWeather(){
-  const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weather_code,precipitation,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant&current=temperature_2m,weather_code&forecast_days=7&timezone=Europe%2FBratislava");
+  const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weather_code,precipitation,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant,precipitation_sum&current=temperature_2m,weather_code&forecast_days=7&timezone=Europe%2FBratislava");
   const data=await res.json();
 
   // Piktogram podľa počasia
@@ -794,11 +808,11 @@ async function loadWeather(){
   }
 
   weather.innerHTML=`
-Dnes: ${icon(d.weather_code[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math.round(d.temperature_2m_min[0])}° | 💨 ${Math.round(d.wind_speed_10m_max[0])} km/h ${windDir(d.wind_direction_10m_dominant[0])}
+Dnes: ${icon(d.weather_code[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math.round(d.temperature_2m_min[0])}° | 💨 ${Math.round(d.wind_speed_10m_max[0])} km/h ${windDir(d.wind_direction_10m_dominant[0])}${d.precipitation_sum[0]>0?' | 💧 '+d.precipitation_sum[0].toFixed(1)+' mm':''}
 <div style="height:1px;background:rgba(255,255,255,0.2);margin:10px 0;"></div>
-${dayNames[1]}: ${icon(d.weather_code[1])} ${Math.round(d.temperature_2m_max[1])}°/${Math.round(d.temperature_2m_min[1])}° | 💨 ${Math.round(d.wind_speed_10m_max[1])} km/h ${windDir(d.wind_direction_10m_dominant[1])}
-<br>${dayNames[2]}: ${icon(d.weather_code[2])} ${Math.round(d.temperature_2m_max[2])}°/${Math.round(d.temperature_2m_min[2])}° | 💨 ${Math.round(d.wind_speed_10m_max[2])} km/h ${windDir(d.wind_direction_10m_dominant[2])}
-<br>${dayNames[3]}: ${icon(d.weather_code[3])} ${Math.round(d.temperature_2m_max[3])}°/${Math.round(d.temperature_2m_min[3])}° | 💨 ${Math.round(d.wind_speed_10m_max[3])} km/h ${windDir(d.wind_direction_10m_dominant[3])}
+${dayNames[1]}: ${icon(d.weather_code[1])} ${Math.round(d.temperature_2m_max[1])}°/${Math.round(d.temperature_2m_min[1])}° | 💨 ${Math.round(d.wind_speed_10m_max[1])} km/h ${windDir(d.wind_direction_10m_dominant[1])}${d.precipitation_sum[1]>0?' | 💧 '+d.precipitation_sum[1].toFixed(1)+' mm':''}
+<br>${dayNames[2]}: ${icon(d.weather_code[2])} ${Math.round(d.temperature_2m_max[2])}°/${Math.round(d.temperature_2m_min[2])}° | 💨 ${Math.round(d.wind_speed_10m_max[2])} km/h ${windDir(d.wind_direction_10m_dominant[2])}${d.precipitation_sum[2]>0?' | 💧 '+d.precipitation_sum[2].toFixed(1)+' mm':''}
+<br>${dayNames[3]}: ${icon(d.weather_code[3])} ${Math.round(d.temperature_2m_max[3])}°/${Math.round(d.temperature_2m_min[3])}° | 💨 ${Math.round(d.wind_speed_10m_max[3])} km/h ${windDir(d.wind_direction_10m_dominant[3])}${d.precipitation_sum[3]>0?' | 💧 '+d.precipitation_sum[3].toFixed(1)+' mm':''}
 `;
 }
 
@@ -861,12 +875,35 @@ function updateLunch(){
   else lunchTime.style.display="none";
 }
 
+// DOVOLENKA
+function updateVacation(){
+  const n=new Date();
+  const vacStart=new Date(2026,7,3); // 3.8.2026
+  const vacEnd=new Date(2026,7,7);   // 7.8.2026
+  
+  // Ak je POČAS dovolenky (3.8-7.8)
+  if(n>=vacStart && n<=vacEnd){
+    vacationTime.innerText="🏖️ DOVOLENKA 🏖️";
+    vacationTime.style.display="block";
+  }
+  // Ak nie je dovolenka
+  else if(n<vacStart){
+    const diff=Math.ceil((vacStart-n)/(1000*60*60*24));
+    vacationTime.innerText=`Do dovolenky zostáva: ${diff} dní`;
+    vacationTime.style.display="block";
+  }
+  else {
+    vacationTime.style.display="none";
+  }
+}
+
 // LOOP – každú sekundu
 setInterval(()=>{
   updateTime();
   world();
   updateShift();
   updateLunch();
+  updateVacation();
   updateNameday(); // kontroluje zmenu dňa
 },1000);
 
@@ -883,6 +920,7 @@ updateTime();
 world();
 updateShift();
 updateLunch();
+updateVacation();
 updateNameday();
 loadWeather();
 worldWeather();
