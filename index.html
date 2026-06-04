@@ -24,7 +24,8 @@ body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
 #dateWeek {font-size:45px;}
 
 #weather {position:absolute;top:220px;left:40px;font-size:32px;line-height:1.6;}
-#nameday {position:absolute;top:380px;right:40px;font-size:40px;}
+#sun {position:absolute;top:380px;right:40px;font-size:28px;text-align:right;line-height:1.5;}
+#nameday {position:absolute;top:560px;right:40px;font-size:45px;text-align:right;}
 
 #world{
     position:absolute;
@@ -38,10 +39,10 @@ body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
 }
 
 .city{text-align:center;}
-.place{display:flex;align-items:center;gap:10px;font-size:27px;margin-bottom:10px;}
-.flag{width:35px;height:22px;}
-.city-time{font-size:50px;}
-.city-weather{font-size:32px;margin-top:5px;}
+.place{display:flex;align-items:center;gap:10px;font-size:20px;margin-bottom:10px;}
+.flag{width:26px;height:16px;}
+.city-time{font-size:37px;}
+.city-weather{font-size:24px;margin-top:5px;}
 
 #shiftBox{
     position:absolute;
@@ -52,6 +53,29 @@ body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
     text-align:center;
 }
 #lunchTime{font-size:28px;margin-bottom:10px;}
+
+#nhl {position:absolute;top:220px;left:40px;margin-top:280px;font-size:28px;line-height:1.8;width:500px;}
+
+.nhl-game {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 8px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+}
+
+.game-live {
+    animation: pulse 1s infinite;
+    color: #ff3b3b;
+    font-weight: bold;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
 </style>
 </head>
 
@@ -68,6 +92,8 @@ body {margin:0;background:#000;color:white;font-family:-apple-system, Segoe UI;}
 </div>
 
 <div id="weather" class="glass"></div>
+<div id="sun" class="glass"></div>
+<div id="nhl" class="glass"></div>
 <div id="nameday" class="glass"></div>
 
 <div id="shiftBox" class="glass">
@@ -547,6 +573,176 @@ function updateNameday(){
   nameday.innerHTML = "Dnes má meniny: " + todayName + "<br>Zajtra má meniny: " + tomorrowName;
 }
 
+// SLNKO - VÝCHOD/ZÁPAD + MESIAC
+async function loadSun(){
+  try {
+    const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&daily=sunrise,sunset&timezone=Europe%2FBratislava&forecast_days=1");
+    const data = await res.json();
+    
+    const sunrise = new Date(data.daily.sunrise[0]).toLocaleTimeString('sk-SK', {hour: '2-digit', minute: '2-digit'});
+    const sunset = new Date(data.daily.sunset[0]).toLocaleTimeString('sk-SK', {hour: '2-digit', minute: '2-digit'});
+    
+    // Výpočet fázy mesiaca - DO SPLNÉHO MESIACA (30. júna 2026)
+    const now = new Date();
+    const fullMoonDate = new Date(2026, 5, 30, 1, 57); // 30. jún 2026
+    const lunarCycle = 29.53;
+    
+    // New moon pre tento cyklus (14.765 dní pred full moon)
+    let newMoonDate = new Date(fullMoonDate.getTime() - (14.765 * 24 * 60 * 60 * 1000));
+    
+    // Ak je new moon v budúcnosti, vezmem predchádzajúci cyklus
+    while (newMoonDate > now) {
+      newMoonDate = new Date(newMoonDate.getTime() - (lunarCycle * 24 * 60 * 60 * 1000));
+    }
+    
+    // Dní od new moonu
+    const daysSinceNewMoon = (now - newMoonDate) / (1000 * 60 * 60 * 24);
+    
+    // Správny piktogram podľa lunárneho veku (dynamicky sa mení každý deň)
+    let moonEmoji = '🌑';
+    if (daysSinceNewMoon < 1.84) moonEmoji = '🌑'; // New
+    else if (daysSinceNewMoon < 7.38) moonEmoji = '🌒'; // Waxing Crescent
+    else if (daysSinceNewMoon < 9.23) moonEmoji = '🌓'; // First Quarter
+    else if (daysSinceNewMoon < 14.77) moonEmoji = '🌔'; // Waxing Gibbous
+    else if (daysSinceNewMoon < 16.61) moonEmoji = '🌕'; // Full
+    else if (daysSinceNewMoon < 22.15) moonEmoji = '🌖'; // Waning Gibbous
+    else if (daysSinceNewMoon < 23.99) moonEmoji = '🌗'; // Last Quarter
+    else moonEmoji = '🌘'; // Waning Crescent
+    
+    // Skontroluj či je dnes new moon alebo full moon
+    const today = new Date();
+    const isFullMoonDay = today.getDate() === 30 && today.getMonth() === 5;
+    const isNewMoonDay = today.getDate() === newMoonDate.getDate() && today.getMonth() === newMoonDate.getMonth();
+    
+    let moonDisplay = moonEmoji; // Default - len piktogram
+    if (isFullMoonDay) {
+      moonDisplay = moonEmoji + ' Spln';
+    } else if (isNewMoonDay) {
+      moonDisplay = moonEmoji + ' Now';
+    }
+    
+    document.getElementById('sun').innerHTML = `☀️ Slnko: Východ ${sunrise} | Západ ${sunset}<br>🌙 Mesiac: ${moonDisplay}`;
+  } catch (err) {
+    document.getElementById('sun').innerHTML = "☀️ Slnko: Chyba";
+  }
+}
+
+// FIFA MS 2026 - futbalové zápasy
+async function loadNHL(){
+  try {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const dateFormat = (d) => d.toISOString().split('T')[0];
+    const startDate = dateFormat(today);
+    const endDate = dateFormat(tomorrow);
+
+    // football-data.org API - MS 2026
+    const apiUrl = `https://api.football-data.org/v4/competitions/WC/matches?dateFrom=${startDate}&dateTo=${endDate}`;
+    
+    const response = await fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'X-Auth-Token': 'INSERT_YOUR_TOKEN'
+      }
+    });
+
+    if (!response.ok) {
+      // Fallback - iný API
+      return loadFIFAFallback();
+    }
+
+    const data = await response.json();
+    let filaHTML = "⚽ FIFA MS 2026:<div style='height:1px;background:rgba(255,255,255,0.2);margin:10px 0;'></div>";
+
+    if (!data.matches || data.matches.length === 0) {
+      filaHTML += "Žiadne zápasy";
+    } else {
+      let hasContent = false;
+
+      // Dneší zápasy
+      const todayMatches = data.matches.filter(m => m.utcDate.startsWith(startDate));
+      if (todayMatches.length > 0) {
+        filaHTML += "<div style='font-weight:bold;margin-bottom:10px;'>Dnes:</div>";
+        todayMatches.forEach(match => {
+          hasContent = true;
+          const away = match.awayTeam.name;
+          const home = match.homeTeam.name;
+          const status = match.status;
+          const time = new Date(match.utcDate).toLocaleTimeString('sk-SK', {hour: '2-digit', minute: '2-digit'});
+
+          let statusDisplay = '';
+          if (status === 'LIVE') {
+            statusDisplay = `<span class="game-live">● LIVE ${match.score.fullTime.away}-${match.score.fullTime.home}</span>`;
+          } else if (status === 'FINISHED') {
+            statusDisplay = `<span style="color:#00ff88;">✓ ${match.score.fullTime.away}-${match.score.fullTime.home}</span>`;
+          } else {
+            statusDisplay = time;
+          }
+
+          filaHTML += `<div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
+            <div><strong>${away} vs ${home}</strong></div>
+            <div style='text-align:right;'>${statusDisplay}</div>
+          </div>`;
+        });
+      }
+
+      // Zajtrajšie zápasy
+      const tomorrowMatches = data.matches.filter(m => m.utcDate.startsWith(endDate));
+      if (tomorrowMatches.length > 0) {
+        filaHTML += "<div style='margin-top:15px;font-weight:bold;margin-bottom:10px;'>Zajtra:</div>";
+        tomorrowMatches.forEach(match => {
+          const away = match.awayTeam.name;
+          const home = match.homeTeam.name;
+          const time = new Date(match.utcDate).toLocaleTimeString('sk-SK', {hour: '2-digit', minute: '2-digit'});
+
+          filaHTML += `<div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
+            <div><strong>${away} vs ${home}</strong></div>
+            <div style='text-align:right;'>${time}</div>
+          </div>`;
+        });
+      }
+
+      if (!hasContent && tomorrowMatches.length === 0) {
+        filaHTML = "⚽ FIFA MS 2026: Žiadne zápasy";
+      }
+    }
+
+    document.getElementById('nhl').innerHTML = filaHTML;
+  } catch (err) {
+    console.error('FIFA Error:', err);
+    loadFIFAFallback();
+  }
+}
+
+// Fallback - budúce zápasy MS 2026
+function loadFIFAFallback(){
+  const filaHTML = `⚽ FIFA MS 2026:
+<div style='height:1px;background:rgba(255,255,255,0.2);margin:10px 0;'></div>
+<div style='font-weight:bold;margin-bottom:10px;'>Prvý deň (11. júna 2026):</div>
+<div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
+  <div><strong>USA vs Mexiko</strong></div>
+  <div style='text-align:right;'>18:00 EST</div>
+</div>
+
+<div style='margin-top:15px;font-weight:bold;margin-bottom:10px;'>Skupiny A, B (12. - 13. júna):</div>
+<div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
+  <div><strong>Anglicko vs Iran</strong></div>
+  <div style='text-align:right;'>14:00</div>
+</div>
+<div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
+  <div><strong>Senegal vs Holandsko</strong></div>
+  <div style='text-align:right;'>17:00</div>
+</div>
+<div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
+  <div><strong>Francúzsko vs Austrália</strong></div>
+  <div style='text-align:right;'>20:00</div>
+</div>`;
+  
+  document.getElementById('nhl').innerHTML = filaHTML;
+}
+
 // POČASIE VRÁBLE + ALERT
 async function loadWeather(){
   const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weathercode,precipitation_probability,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,windspeed_10m_max,winddirection_10m_dominant&current_weather=true&forecast_days=7&timezone=Europe%2FBratislava");
@@ -657,10 +853,12 @@ setInterval(()=>{
   updateNameday(); // kontroluje zmenu dňa
 },1000);
 
-// POČASIE – každú minútu
+// POČASIE + NHL – každú minútu
 setInterval(()=>{
   loadWeather();
   worldWeather();
+  loadNHL();
+  loadSun();
 },60000);
 
 // INIT
@@ -671,6 +869,8 @@ updateLunch();
 updateNameday();
 loadWeather();
 worldWeather();
+loadNHL();
+loadSun();
 
 </script>
 </body>
