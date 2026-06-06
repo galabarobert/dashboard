@@ -73,8 +73,8 @@ body::before {
 
 #weather {position:absolute;top:230px;left:40px;font-size:36px;line-height:1.8;}
 #daysSat {position:absolute;top:370px;left:40px;font-size:28px;text-align:left;width:auto;}
-#daysSun {position:absolute;top:370px;left:300px;font-size:28px;text-align:left;width:auto;}
-#daysMon {position:absolute;top:370px;left:560px;font-size:28px;text-align:left;width:auto;}
+#daysSun {position:absolute;top:370px;left:270px;font-size:28px;text-align:left;width:auto;}
+#daysMon {position:absolute;top:370px;left:484px;font-size:28px;text-align:left;width:auto;}
 #sun {position:absolute;top:560px;right:40px;font-size:36px;text-align:right;line-height:1.5;}
 #nameday {position:absolute;top:380px;right:40px;font-size:45px;text-align:left;}
 
@@ -107,7 +107,7 @@ body::before {
 
 #currentWeatherBox{
     position:absolute;
-    top:118px;
+    top:127px;
     left:40px;
     font-size:36px;
     text-align:left;
@@ -917,7 +917,7 @@ async function loadNHL(){
     } else {
       let hasContent = false;
 
-      // Dneší zápasy
+      // Dneší zápasy - všetky
       const todayMatches = data.matches.filter(m => m.utcDate.startsWith(startDate));
       if (todayMatches.length > 0) {
         filaHTML += "<div style='font-weight:bold;margin-bottom:10px;'>Dnes:</div>";
@@ -944,7 +944,7 @@ async function loadNHL(){
         });
       }
 
-      // Zajtrajšie zápasy
+      // Zajtrajšie zápasy - všetky
       const tomorrowMatches = data.matches.filter(m => m.utcDate.startsWith(endDate));
       if (tomorrowMatches.length > 0) {
         filaHTML += "<div style='margin-top:15px;font-weight:bold;margin-bottom:10px;'>Zajtra:</div>";
@@ -990,10 +990,6 @@ function loadFIFAFallback(){
 <div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
   <div><strong>Senegal vs Holandsko</strong></div>
   <div style='text-align:right;'>17:00</div>
-</div>
-<div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
-  <div><strong>Francúzsko vs Austrália</strong></div>
-  <div style='text-align:right;'>20:00</div>
 </div>`;
   
   document.getElementById('nhl').innerHTML = filaHTML;
@@ -1101,7 +1097,7 @@ function updateShift(){
   if(n>=s && n<=e){
     let diff=(e-n)/1000;
     color=diff<1800?"#ff3b3b":diff<3600?"#ff9f0a":"#00ff88";
-    text="Do konca smeny: "+format(diff);
+    text="Do konca zmeny: "+format(diff);
     shiftTime.style.display="block";
     
     // Zvuk keď je čas 14:45-14:50
@@ -1157,7 +1153,7 @@ function updateLunch(){
     }
   }
   else if(n>=l&&n<e){
-    lunchTime.innerText="🍽️ OBED do 12:00";lunchTime.style.display="block";
+    lunchTime.innerText="Obed do 12:00";lunchTime.style.display="block";
     lunchAlertPlayed=false; // Reset pre ďalší deň
   }
   else {
