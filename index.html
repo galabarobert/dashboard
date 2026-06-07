@@ -643,16 +643,32 @@ let lastNamedayDate = -1;
 function updateNameday(){
   const n = new Date();
   const today = n.getDate();
-  if(today === lastNamedayDate) return; // iba ak sa zmenil deň
+  if(today === lastNamedayDate) return;
   lastNamedayDate = today;
 
-  const tomorrow = new Date(n);
-  tomorrow.setDate(tomorrow.getDate()+1);
-
-  const todayName   = getNameday(n);
-  const tomorrowName = getNameday(tomorrow);
-
-  nameday.innerHTML = "Dnes má meniny: " + todayName + "<br>Zajtra má meniny: " + tomorrowName;
+  // DOVOLENKA: 1. julho - 31. август (letná)
+  const vacationStart = new Date(n.getFullYear(), 7, 3);  // 1. julho
+  const vacationEnd = new Date(n.getFullYear(), 7, 9);   // 31. август
+  const christmas = new Date(n.getFullYear(), 11, 25);    // 25. december
+  
+  let text = "";
+  
+  // Ak je dovolenka
+  if(n >= vacationStart && n <= vacationEnd){
+    text = "🏖️ Dovolenka";
+  }
+  // Ak je pred dovolenkoa
+  else if(n < vacationStart){
+    const daysToVacation = Math.ceil((vacationStart - n) / (1000 * 60 * 60 * 24));
+    text = `Dovolenka za ${daysToVacation} ${daysToVacation === 1 ? 'deň' : 'dní'}`;
+  }
+  // Po dovolenke - dni do Vianoc
+  else {
+    const daysToChristmas = Math.ceil((christmas - n) / (1000 * 60 * 60 * 24));
+    text = `Vianoce za ${daysToChristmas} ${daysToChristmas === 1 ? 'deň' : 'dní'}`;
+  }
+  
+  nameday.innerHTML = text;
 }
 
 // SLNKO - VÝCHOD/ZÁPAD + MESIAC
@@ -993,14 +1009,14 @@ function updateVacation(){
   const diffVac=Math.ceil((vacStart-n)/(1000*60*60*24));
   const diffChrist=Math.ceil((christmas-n)/(1000*60*60*24));
   
-  // Ak je POČAS dovolenky (3.8-7.8)
-  if(n>=vacStart && n<=new Date(2026,7,7)){
+  // Ak je POČAS dovolenky (3.8-9.8)
+  if(n>=vacStart && n<=new Date(2026,7,9)){
     vacationTime.innerText="🏖️ DOVOLENKA 🏖️";
     vacationTime.style.display="block";
   }
   // Ak noch dovolenka
   else if(diffVac>0){
-    vacationTime.innerText=`Do dovolenky: ${diffVac} dní | Do Vianoc: ${diffChrist} dní`;
+    vacationTime.innerText=`Do dovolenky: ${diffVac} dní`;
     vacationTime.style.display="block";
   }
   else if(diffChrist>0){
@@ -1062,40 +1078,4 @@ function updateHolidays(){
     }
     document.getElementById('holidayDisplay').style.display="block";
   } else {
-    document.getElementById('holidayDisplay').style.display="none";
-  }
-}
-
-// LOOP – každú sekundu
-setInterval(()=>{
-  updateTime();
-  world();
-  updateShift();
-  updateLunch();
-  updateVacation();
-  updateNameday(); // kontroluje zmenu dňa
-},1000);
-
-// POČASIE + NHL – každú minútu
-setInterval(()=>{
-  loadWeather();
-  worldWeather();
-  loadNHL();
-  loadSun();
-},60000);
-
-// INIT
-updateTime();
-world();
-updateShift();
-updateLunch();
-updateVacation();
-updateNameday();
-loadWeather();
-worldWeather();
-loadNHL();
-loadSun();
-
-</script>
-</body>
-</html>
+   
