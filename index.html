@@ -71,7 +71,7 @@ body::before {
 
 #world{
     position:absolute;
-    bottom:30px;
+    bottom:220px;
     width:100%;
     display:flex;
     justify-content:flex-end;
@@ -646,29 +646,13 @@ function updateNameday(){
   if(today === lastNamedayDate) return;
   lastNamedayDate = today;
 
-  // DOVOLENKA: 1. julho - 31. август (letná)
-  const vacationStart = new Date(n.getFullYear(), 7, 3);  // 1. julho
-  const vacationEnd = new Date(n.getFullYear(), 7, 9);   // 31. август
-  const christmas = new Date(n.getFullYear(), 11, 25);    // 25. december
-  
-  let text = "";
-  
-  // Ak je dovolenka
-  if(n >= vacationStart && n <= vacationEnd){
-    text = "🏖️ Dovolenka";
-  }
-  // Ak je pred dovolenkoa
-  else if(n < vacationStart){
-    const daysToVacation = Math.ceil((vacationStart - n) / (1000 * 60 * 60 * 24));
-    text = `Dovolenka za ${daysToVacation} ${daysToVacation === 1 ? 'deň' : 'dní'}`;
-  }
-  // Po dovolenke - dni do Vianoc
-  else {
-    const daysToChristmas = Math.ceil((christmas - n) / (1000 * 60 * 60 * 24));
-    text = `Vianoce za ${daysToChristmas} ${daysToChristmas === 1 ? 'deň' : 'dní'}`;
-  }
-  
-  nameday.innerHTML = text;
+  const tomorrow = new Date(n);
+  tomorrow.setDate(tomorrow.getDate()+1);
+
+  const todayName   = getNameday(n);
+  const tomorrowName = getNameday(tomorrow);
+
+  nameday.innerHTML = "Dnes má meniny: " + todayName + "<br>Zajtra má meniny: " + tomorrowName;
 }
 
 // SLNKO - VÝCHOD/ZÁPAD + MESIAC
@@ -1016,7 +1000,7 @@ function updateVacation(){
   }
   // Ak noch dovolenka
   else if(diffVac>0){
-    vacationTime.innerText=`Do dovolenky: ${diffVac} dní`;
+    vacationTime.innerText=`Dovolenka za ${diffVac} dní`;
     vacationTime.style.display="block";
   }
   else if(diffChrist>0){
@@ -1078,4 +1062,108 @@ function updateHolidays(){
     }
     document.getElementById('holidayDisplay').style.display="block";
   } else {
-   
+    document.getElementById('holidayDisplay').style.display="none";
+  }
+}
+
+// LOOP – každú sekundu
+setInterval(()=>{
+  updateTime();
+  world();
+  updateShift();
+  updateLunch();
+  updateVacation();
+  updateNameday(); // kontroluje zmenu dňa
+},1000);
+
+// POČASIE + NHL – každú minútu
+setInterval(()=>{
+  loadWeather();
+  worldWeather();
+  loadNHL();
+  loadSun();
+},60000);
+
+// INIT
+updateTime();
+world();
+updateShift();
+updateLunch();
+updateVacation();
+updateNameday();
+loadWeather();
+worldWeather();
+loadNHL();
+loadSun();
+
+// RSS FEEDS - TERAZ.SK (zo spodného bannera TASR.sk)
+async function loadRSSFeeds(){
+  try {
+    const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("https://www.teraz.sk/rss.xml")}`);
+    const text = await response.text();
+    
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(text, "text/xml");
+    const items = xmlDoc.getElementsByTagName("item");
+    
+    const newsArray = [];
+    for(let i = 0; i < Math.min(8, items.length); i++){
+      const title = items[i].getElementsByTagName("title")[0]?.textContent || "";
+      const description = items[i].getElementsByTagName("description")[0]?.textContent || "";
+      
+      const cleanDesc = description.replace(/<[^>]*>/g, '').substring(0, 200);
+      
+      if(title) {
+        const fullNews = `📰 ${title} | ${cleanDesc}`;
+        newsArray.push(fullNews);
+      }
+    }
+    
+    if(newsArray.length > 0){
+      const separator = " ❖ ";
+      const scrollText = newsArray.join(separator) + separator + newsArray.join(separator);
+      document.getElementById('eventScroll').innerText = scrollText;
+    } else {
+      loadFallbackNews();
+    }
+  } catch(e){
+    console.log("Chyba pri TERAZ.SK:", e);
+    loadFallbackNews();
+  }
+}
+
+function loadFallbackNews(){
+  const newsItems = [
+    "📰 Volejbalistky zdolali Islanďanky 3:0 - Slovenky sú bez straty setu na vrchole tabuľky ligy",
+    "💼 NATO zvažuje 70 miliardový balík vojenskej pomoci pre Ukrajinu na ďalšie roky",
+    "🏒 NHL: Vo veku 79 rokov zomrel Garry Meehan, bývalý hráč a general manager Buffalo",
+    "⚽ Argentínsky stopér Balerdi sa zranil a nebude štartovať na turnaji",
+    "⌛ Černý získal titul v chôdzi na 10 km s osobným rekordom",
+    "🇱🇧 Libanon začal s rekonštrukciou svojho druhého medzinárodného letiska",
+    "🛡️ Hegseth vyzval Európu postaviť sa proti migrácii a prispieť k vlastnej obrane"
+  ];
+  
+  const separator = " ❖ ";
+  const scrollText = newsItems.join(separator) + separator + newsItems.join(separator);
+  document.getElementById('eventScroll').innerText = scrollText;
+}
+
+loadRSSFeeds();
+
+// Refresh správ každých 5 minút
+setInterval(loadRSSFeeds, 5 * 60 * 1000);
+
+</script>
+<div id="historicalEvents" class="glass" style="position:absolute;bottom:30px;left:40px;right:40px;width:calc(100% - 80px);overflow:hidden;height:60px;display:flex;align-items:center;padding:10px 15px;white-space:nowrap;">
+    <div id="eventScroll" style="display:inline-block;animation:scrollTextRTL 210s linear infinite;font-size:45px;white-space:nowrap;"></div>
+</div>
+
+<style>
+@keyframes scrollTextRTL {
+    0% { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
+}
+</style>
+
+</body>
+</html>
