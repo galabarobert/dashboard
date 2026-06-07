@@ -55,7 +55,7 @@ body::before {
 
 .glow {text-shadow:0 0 15px rgba(255,255,255,0.4);}
 
-#location {position:absolute;top:20px;left:40px;font-size:68px;}
+#location {position:absolute;top:20px;left:40px;font-size:75px;}
 #tempNow {margin-top:12px;font-size:32px;}
 
 #clock-box {position:absolute;top:20px;right:40px;text-align:right;}
@@ -66,7 +66,7 @@ body::before {
 #daysSat {position:absolute;top:310px;left:40px;font-size:54px;text-align:center;width:140px;}
 #daysSun {position:absolute;top:310px;left:230px;font-size:54px;text-align:center;width:140px;}
 #daysMon {position:absolute;top:310px;left:420px;font-size:54px;text-align:center;width:140px;}
-#sun {position:absolute;top:570px;right:40px;font-size:36px;text-align:right;line-height:1.5;}
+#sun {position:absolute;top:561px;right:40px;font-size:36px;text-align:right;line-height:1.5;}
 #nameday {position:absolute;top:380px;right:40px;font-size:45px;text-align:left;}
 
 #world{
@@ -75,7 +75,7 @@ body::before {
     width:100%;
     display:flex;
     justify-content:flex-end;
-    gap:60px;
+    gap:20px;
     padding-right: 40px;
     box-sizing: border-box;
 }
@@ -699,7 +699,7 @@ async function loadSun(){
     if (isNewMoonDay) moonName = 'Now';
     
     // Nový formát - tri riadky s názvami
-    document.getElementById('sun').innerHTML = `Východ slnka: 🌅 ${sunrise}<br>Západ slnka: 🌇 ${sunset}<br>Fáza mesiaca: ${moonEmoji} ${moonName}`;
+    document.getElementById('sun').innerHTML = `Východ slnka: ☀️ ${sunrise}<br>Západ slnka: 🌙 ${sunset}<br>Fáza mesiaca: ${moonEmoji} ${moonName}`;
   } catch (err) {
     document.getElementById('sun').innerHTML = "☀️ Slnko: Chyba";
   }
@@ -918,7 +918,7 @@ function updateShift(){
   // Zobrazuj iba ak je POČAS SMENY (7:00-15:00)
   if(n>=s && n<=e){
     let diff=(e-n)/1000;
-    color=diff<1800?"#ff3b3b":diff<3600?"#ff9f0a":"#00ff88";
+    color="white";
     text="Do konca zmeny: "+format(diff);
     shiftTime.style.display="block";
     
