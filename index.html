@@ -6,12 +6,6 @@
 <title>Dashboard</title>
 
 <style>
-* {
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
-    user-select: none;
-}
-
 body {
     margin:0;
     background: linear-gradient(135deg, #0a0015 0%, #1a0033 25%, #003366 50%, #001a33 75%, #0a0015 100%);
@@ -23,9 +17,6 @@ body {
     overflow: hidden;
     min-height: 100vh;
     padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
 }
 
 body::before {
@@ -71,11 +62,11 @@ body::before {
 #time {font-size:200px;}
 #dateWeek {font-size:45px;}
 
-#weather {position:absolute;top:230px;left:40px;font-size:36px;line-height:1.8;}
-#daysSat {position:absolute;top:370px;left:40px;font-size:28px;text-align:left;width:auto;}
-#daysSun {position:absolute;top:370px;left:270px;font-size:28px;text-align:left;width:auto;}
-#daysMon {position:absolute;top:370px;left:484px;font-size:28px;text-align:left;width:auto;}
-#sun {position:absolute;top:560px;right:40px;font-size:36px;text-align:right;line-height:1.5;}
+#weather {position:absolute;top:220px;left:40px;font-size:36px;line-height:1.8;width:auto;white-space:nowrap;height:50px;display:flex;align-items:center;}
+#daysSat {position:absolute;top:310px;left:40px;font-size:54px;text-align:center;width:140px;}
+#daysSun {position:absolute;top:310px;left:230px;font-size:54px;text-align:center;width:140px;}
+#daysMon {position:absolute;top:310px;left:420px;font-size:54px;text-align:center;width:140px;}
+#sun {position:absolute;top:570px;right:40px;font-size:36px;text-align:right;line-height:1.5;}
 #nameday {position:absolute;top:380px;right:40px;font-size:45px;text-align:left;}
 
 #world{
@@ -84,7 +75,7 @@ body::before {
     width:100%;
     display:flex;
     justify-content:flex-end;
-    gap:15px;
+    gap:60px;
     padding-right: 40px;
     box-sizing: border-box;
 }
@@ -113,6 +104,9 @@ body::before {
     text-align:left;
     width:auto;
     white-space:nowrap;
+    height:50px;
+    display:flex;
+    align-items:center;
 }
 
 #vacationBox{
@@ -125,7 +119,7 @@ body::before {
 }
 #vacationTime{font-size:32px;color:white;}
 
-#nhl {position:absolute;top:280px;left:40px;margin-top:280px;font-size:28px;line-height:1.8;width:500px;}
+#nhl {position:absolute;top:295px;left:40px;margin-top:280px;font-size:28px;line-height:1.8;width:500px;}
 
 .nhl-game {
     display: flex;
@@ -146,178 +140,6 @@ body::before {
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.6; }
-}
-
-/* ==================== RESPONSIVE DESIGN ==================== */
-
-/* TABLET (768px - 1024px) */
-@media (max-width: 1024px) {
-    #location {font-size:48px;top:15px;left:20px;}
-    #tempNow {font-size:24px;}
-    
-    #clock-box {top:15px;right:20px;}
-    #time {font-size:120px;}
-    #dateWeek {font-size:28px;}
-    
-    #weather {top:140px;left:20px;font-size:24px;}
-    #daysSat {top:240px;left:20px;font-size:20px;}
-    #daysSun {top:240px;left:200px;font-size:20px;}
-    #daysMon {top:240px;left:380px;font-size:20px;}
-    #sun {top:420px;right:20px;font-size:24px;}
-    #nameday {top:300px;right:20px;font-size:32px;}
-    
-    #currentWeatherBox {top:80px;left:20px;font-size:24px;}
-    #nhl {left:20px;font-size:20px;width:calc(100% - 40px);}
-    
-    #world {gap:30px;padding-right:20px;bottom:0;}
-    .city-time {font-size:28px;}
-    .city-weather {font-size:18px;}
-    .place {font-size:16px;}
-}
-
-/* MOBIL (do 768px) */
-@media (max-width: 768px) {
-    #location {
-        position:relative;
-        font-size:36px;
-        top:auto;
-        left:auto;
-        margin-bottom:10px;
-        margin-left:10px;
-    }
-    #tempNow {font-size:20px;margin-top:8px;}
-    
-    #clock-box {
-        position:relative;
-        top:auto;
-        right:auto;
-        text-align:center;
-        margin-bottom:15px;
-    }
-    #time {font-size:56px;}
-    #dateWeek {font-size:18px;margin-top:5px;}
-    
-    #currentWeatherBox {
-        position:relative;
-        top:auto;
-        left:auto;
-        font-size:18px;
-        margin:10px;
-        width:calc(100% - 20px);
-        white-space:normal;
-        overflow-wrap:break-word;
-    }
-    
-    #weather {
-        position:relative;
-        top:auto;
-        left:auto;
-        font-size:16px;
-        margin:10px;
-        line-height:1.6;
-    }
-    
-    #daysSat, #daysSun, #daysMon {
-        position:relative;
-        top:auto;
-        left:auto;
-        font-size:14px;
-        margin:10px;
-        width:calc(100% - 20px);
-    }
-    
-    #sun {
-        position:relative;
-        top:auto;
-        right:auto;
-        font-size:16px;
-        margin:10px;
-        text-align:left;
-    }
-    
-    #nameday {
-        position:relative;
-        top:auto;
-        right:auto;
-        font-size:24px;
-        text-align:left;
-        margin:10px;
-    }
-    
-    #nhl {
-        position:relative;
-        top:auto;
-        left:auto;
-        margin:10px;
-        font-size:14px;
-        width:calc(100% - 20px);
-    }
-    
-    #world {
-        position:relative;
-        bottom:auto;
-        flex-direction:column;
-        gap:15px;
-        padding:15px;
-        margin-bottom:15px;
-        background:linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-    }
-    
-    .city {
-        width:100%;
-    }
-    .place {font-size:14px;gap:8px;}
-    .flag {width:24px;height:15px;}
-    .city-time {font-size:24px;}
-    .city-weather {font-size:14px;margin-top:4px;}
-    
-    #shiftBox {
-        position:relative;
-        top:auto;
-        left:auto;
-        transform:none;
-        font-size:24px;
-        margin:10px;
-    }
-    #lunchTime {font-size:18px;margin-bottom:8px;}
-    
-    #vacationBox {
-        position:relative;
-        top:auto;
-        left:auto;
-        transform:none;
-        font-size:24px;
-        margin:10px;
-    }
-    #vacationTime {font-size:18px;}
-}
-
-/* SMALL PHONES (do 480px) */
-@media (max-width: 480px) {
-    #location {font-size:28px;margin-left:5px;}
-    #tempNow {font-size:16px;}
-    
-    #time {font-size:42px;}
-    #dateWeek {font-size:14px;}
-    
-    #currentWeatherBox {font-size:14px;margin:8px;width:calc(100% - 16px);}
-    #weather {font-size:13px;margin:8px;width:calc(100% - 16px);}
-    
-    #daysSat, #daysSun, #daysMon {font-size:12px;margin:8px;width:calc(100% - 16px);}
-    #sun {font-size:13px;margin:8px;}
-    #nameday {font-size:20px;margin:8px;}
-    
-    #nhl {font-size:12px;margin:8px;width:calc(100% - 16px);}
-    
-    .place {font-size:12px;}
-    .flag {width:20px;height:13px;}
-    .city-time {font-size:18px;}
-    .city-weather {font-size:12px;}
-    
-    #shiftBox {font-size:18px;margin:8px;}
-    #lunchTime {font-size:14px;}
-    
-    #world {gap:10px;padding:10px;}
 }
 </style>
 </head>
@@ -772,17 +594,17 @@ function format(sec){
 
 // IKONY
 function icon(code){
-  if([0].includes(code)) return "☀️";           // Clear
-  if([1,2].includes(code)) return "⛅";         // Partly cloudy
-  if([3].includes(code)) return "☁️";           // Overcast
-  if([45,48].includes(code)) return "🌫️";      // Fog
-  if([51,53,55].includes(code)) return "🌦️";   // Drizzle
-  if([61,63,65].includes(code)) return "🌧️";   // Rain
-  if([71,73,75].includes(code)) return "❄️";    // Snow
-  if([77].includes(code)) return "🌨️";         // Snow grains
-  if([80,81,82].includes(code)) return "⛈️";   // Rain showers
-  if([85,86].includes(code)) return "🌨️";      // Snow showers
-  if([95,96,99].includes(code)) return "⚡";    // Thunderstorm
+  if([0].includes(code)) return "🌞";           // Clear - slnečno
+  if([1,2].includes(code)) return "⛅";         // Partly cloudy - čiastočne oblačno
+  if([3].includes(code)) return "☁️";           // Overcast - oblačno
+  if([45,48].includes(code)) return "🌫️";      // Fog - hmla
+  if([51,53,55].includes(code)) return "🌦️";   // Drizzle - mrholenie
+  if([61,63,65].includes(code)) return "🌧️";   // Rain - dážď
+  if([71,73,75].includes(code)) return "❄️";    // Snow - sneh
+  if([77].includes(code)) return "🌨️";         // Snow grains - snehy zrnka
+  if([80,81,82].includes(code)) return "⛈️";   // Rain showers - lejaky
+  if([85,86].includes(code)) return "🌨️";      // Snow showers - snehové zrážky
+  if([95,96,99].includes(code)) return "⚡";    // Thunderstorm - búrka
   return "🌤️";
 }
 
@@ -917,7 +739,7 @@ async function loadNHL(){
     } else {
       let hasContent = false;
 
-      // Dneší zápasy - všetky
+      // Dneší zápasy
       const todayMatches = data.matches.filter(m => m.utcDate.startsWith(startDate));
       if (todayMatches.length > 0) {
         filaHTML += "<div style='font-weight:bold;margin-bottom:10px;'>Dnes:</div>";
@@ -944,7 +766,7 @@ async function loadNHL(){
         });
       }
 
-      // Zajtrajšie zápasy - všetky
+      // Zajtrajšie zápasy
       const tomorrowMatches = data.matches.filter(m => m.utcDate.startsWith(endDate));
       if (tomorrowMatches.length > 0) {
         filaHTML += "<div style='margin-top:15px;font-weight:bold;margin-bottom:10px;'>Zajtra:</div>";
@@ -976,13 +798,13 @@ async function loadNHL(){
 function loadFIFAFallback(){
   const filaHTML = `⚽ FIFA MS 2026:
 <div style='height:1px;background:rgba(255,255,255,0.2);margin:10px 0;'></div>
-<div style='font-weight:bold;margin-bottom:10px;'>Prvý deň (11. júna 2026):</div>
+<div style='font-weight:bold;margin-bottom:10px;'>Dnes (11. júna 2026):</div>
 <div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
   <div><strong>USA vs Mexiko</strong></div>
   <div style='text-align:right;'>18:00 EST</div>
 </div>
 
-<div style='margin-top:15px;font-weight:bold;margin-bottom:10px;'>Druhý deň (12. júna 2026):</div>
+<div style='margin-top:15px;font-weight:bold;margin-bottom:10px;'>Zajtra (12. júna 2026):</div>
 <div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
   <div><strong>Anglicko vs Iran</strong></div>
   <div style='text-align:right;'>14:00</div>
@@ -1002,17 +824,17 @@ async function loadWeather(){
 
   // Piktogram podľa počasia
   function weatherIcon(code){
-    if([0].includes(code)) return "☀️";           // Clear
-    if([1,2].includes(code)) return "⛅";         // Partly cloudy
-    if([3].includes(code)) return "☁️";           // Overcast
-    if([45,48].includes(code)) return "🌫️";      // Fog
-    if([51,53,55].includes(code)) return "🌦️";   // Drizzle
-    if([61,63,65].includes(code)) return "🌧️";   // Rain
-    if([71,73,75].includes(code)) return "❄️";    // Snow
-    if([77].includes(code)) return "🌨️";         // Snow grains
-    if([80,81,82].includes(code)) return "⛈️";   // Rain showers
-    if([85,86].includes(code)) return "🌨️";      // Snow showers
-    if([95,96,99].includes(code)) return "⚡";    // Thunderstorm
+    if([0].includes(code)) return "🌞";           // Clear - slnečno
+    if([1,2].includes(code)) return "⛅";         // Partly cloudy - čiastočne oblačno
+    if([3].includes(code)) return "☁️";           // Overcast - oblačno
+    if([45,48].includes(code)) return "🌫️";      // Fog - hmla
+    if([51,53,55].includes(code)) return "🌦️";   // Drizzle - mrholenie
+    if([61,63,65].includes(code)) return "🌧️";   // Rain - dážď
+    if([71,73,75].includes(code)) return "❄️";    // Snow - sneh
+    if([77].includes(code)) return "🌨️";         // Snow grains - snehy zrnka
+    if([80,81,82].includes(code)) return "⛈️";   // Rain showers - lejaky
+    if([85,86].includes(code)) return "🌨️";      // Snow showers - snehové zrážky
+    if([95,96,99].includes(code)) return "⚡";    // Thunderstorm - búrka
     return "🌤️";
   }
 
@@ -1050,11 +872,11 @@ async function loadWeather(){
 Dnes: ${icon(d.weather_code[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math.round(d.temperature_2m_min[0])}° | 💨 ${Math.round(d.wind_speed_10m_max[0])} km/h ${windDir(d.wind_direction_10m_dominant[0])}${d.precipitation_sum[0]>0?' | 💧 '+d.precipitation_sum[0].toFixed(1)+' mm':''}
 `;
 
-  daysSat.innerHTML=`<b>${dayNames[1]}</b><br>${icon(d.weather_code[1])} ${Math.round(d.temperature_2m_max[1])}°/${Math.round(d.temperature_2m_min[1])}°<br>💨 ${Math.round(d.wind_speed_10m_max[1])} km/h ${windDir(d.wind_direction_10m_dominant[1])}`;
+  daysSat.innerHTML=`<div style='text-align:center;'><div style='font-size:37px;margin-bottom:10px;color:#aaa;'>po</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[1])}</div><div style='font-size:37px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[1])}° ${Math.round(d.temperature_2m_min[1])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[1])} ${windDir(d.wind_direction_10m_dominant[1])}</div></div>`;
 
-  daysSun.innerHTML=`<b>${dayNames[2]}</b><br>${icon(d.weather_code[2])} ${Math.round(d.temperature_2m_max[2])}°/${Math.round(d.temperature_2m_min[2])}°<br>💨 ${Math.round(d.wind_speed_10m_max[2])} km/h ${windDir(d.wind_direction_10m_dominant[2])}`;
+  daysSun.innerHTML=`<div style='text-align:center;'><div style='font-size:37px;margin-bottom:10px;color:#aaa;'>ut</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[2])}</div><div style='font-size:37px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[2])}° ${Math.round(d.temperature_2m_min[2])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[2])} ${windDir(d.wind_direction_10m_dominant[2])}</div></div>`;
 
-  daysMon.innerHTML=`<b>${dayNames[3]}</b><br>${icon(d.weather_code[3])} ${Math.round(d.temperature_2m_max[3])}°/${Math.round(d.temperature_2m_min[3])}°<br>💨 ${Math.round(d.wind_speed_10m_max[3])} km/h ${windDir(d.wind_direction_10m_dominant[3])}`;
+  daysMon.innerHTML=`<div style='text-align:center;'><div style='font-size:37px;margin-bottom:10px;color:#aaa;'>st</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[3])}</div><div style='font-size:37px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[3])}° ${Math.round(d.temperature_2m_min[3])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[3])} ${windDir(d.wind_direction_10m_dominant[3])}</div></div>`;
 }
 
 // WORLD TIME
