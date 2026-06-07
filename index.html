@@ -71,7 +71,7 @@ body::before {
 
 #world{
     position:absolute;
-    bottom:220px;
+    bottom:200px;
     width:100%;
     display:flex;
     justify-content:flex-end;
@@ -1096,25 +1096,40 @@ worldWeather();
 loadNHL();
 loadSun();
 
-// RSS FEEDS - TERAZ.SK (zo spodného bannera TASR.sk)
+// PARSOVANIE HTML Z TERAZ.SK - AKTUÁLNE ČLÁNKY S POPISMI
 async function loadRSSFeeds(){
   try {
-    const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("https://www.teraz.sk/rss.xml")}`);
-    const text = await response.text();
+    const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent("https://www.teraz.sk")}`);
+    const html = await response.text();
     
+    // Parsovať HTML
     const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(text, "text/xml");
-    const items = xmlDoc.getElementsByTagName("item");
+    const doc = parser.parseFromString(html, "text/html");
     
     const newsArray = [];
-    for(let i = 0; i < Math.min(8, items.length); i++){
-      const title = items[i].getElementsByTagName("title")[0]?.textContent || "";
-      const description = items[i].getElementsByTagName("description")[0]?.textContent || "";
+    
+    // Nájsť články s nadpisom a popisom
+    const articleElements = doc.querySelectorAll('h4');
+    
+    for(let i = 0; i < Math.min(15, articleElements.length); i++){
+      const titleElem = articleElements[i];
+      const title = titleElem.textContent.trim();
       
-      const cleanDesc = description.replace(/<[^>]*>/g, '').substring(0, 200);
+      // Nájsť sibling <p> tag s popisom
+      let description = "";
+      let sibling = titleElem.parentElement.nextElementSibling;
       
-      if(title) {
-        const fullNews = `📰 ${title} | ${cleanDesc}`;
+      // Skúsiť nájsť popis v blízkych prvkoch
+      while(sibling && sibling.tagName.toLowerCase() !== 'h4' && description.length < 100){
+        if(sibling.tagName.toLowerCase() === 'p'){
+          description = sibling.textContent.trim().substring(0, 150);
+          break;
+        }
+        sibling = sibling.nextElementSibling;
+      }
+      
+      if(title && title.length > 5){
+        const fullNews = description ? `${title} — ${description}` : title;
         newsArray.push(fullNews);
       }
     }
@@ -1127,20 +1142,18 @@ async function loadRSSFeeds(){
       loadFallbackNews();
     }
   } catch(e){
-    console.log("Chyba pri TERAZ.SK:", e);
+    console.log("Chyba:", e);
     loadFallbackNews();
   }
 }
 
 function loadFallbackNews(){
   const newsItems = [
-    "📰 Volejbalistky zdolali Islanďanky 3:0 - Slovenky sú bez straty setu na vrchole tabuľky ligy",
-    "💼 NATO zvažuje 70 miliardový balík vojenskej pomoci pre Ukrajinu na ďalšie roky",
-    "🏒 NHL: Vo veku 79 rokov zomrel Garry Meehan, bývalý hráč a general manager Buffalo",
-    "⚽ Argentínsky stopér Balerdi sa zranil a nebude štartovať na turnaji",
-    "⌛ Černý získal titul v chôdzi na 10 km s osobným rekordom",
-    "🇱🇧 Libanon začal s rekonštrukciou svojho druhého medzinárodného letiska",
-    "🛡️ Hegseth vyzval Európu postaviť sa proti migrácii a prispieť k vlastnej obrane"
+    "Slovensko - Nové opatrenia v oblasti zdravotníctva a sociálnych služieb",
+    "Ekonomika - Rast HDP pokračuje pozitívnym trendom v poslednom kvartáli",
+    "Šport - Slovenský futbal sa pripravuje na majstrovstvá sveta",
+    "Zahraničie - NATO aktivovalo nové obranné sily vo Fínsku",
+    "Zdravie - Nové očkovanie dostupné pre všetkých občanov"
   ];
   
   const separator = " ❖ ";
@@ -1155,7 +1168,7 @@ setInterval(loadRSSFeeds, 5 * 60 * 1000);
 
 </script>
 <div id="historicalEvents" class="glass" style="position:absolute;bottom:30px;left:40px;right:40px;width:calc(100% - 80px);overflow:hidden;height:60px;display:flex;align-items:center;padding:10px 15px;white-space:nowrap;">
-    <div id="eventScroll" style="display:inline-block;animation:scrollTextRTL 210s linear infinite;font-size:45px;white-space:nowrap;"></div>
+    <div id="eventScroll" style="display:inline-block;animation:scrollTextRTL 300s linear infinite;font-size:45px;white-space:nowrap;"></div>
 </div>
 
 <style>
