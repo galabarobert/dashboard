@@ -58,33 +58,71 @@ body::before {
 #location {position:absolute;top:20px;left:40px;font-size:75px;}
 #tempNow {margin-top:12px;font-size:32px;}
 
-#clock-box {position:absolute;top:20px;right:40px;text-align:right;}
+#clock-box {position:absolute;top:-37px;right:40px;text-align:right;}
 #time {font-size:200px;}
-#dateWeek {font-size:45px;}
+#dateWeek {font-size:45px;margin-top:-38px;}
 
 #weather {position:absolute;top:220px;left:40px;font-size:36px;line-height:1.8;width:auto;white-space:nowrap;height:50px;display:flex;align-items:center;}
 #daysSat {position:absolute;top:310px;left:40px;font-size:54px;text-align:center;width:140px;}
 #daysSun {position:absolute;top:310px;left:230px;font-size:54px;text-align:center;width:140px;}
 #daysMon {position:absolute;top:310px;left:420px;font-size:54px;text-align:center;width:140px;}
-#sun {position:absolute;top:561px;right:40px;font-size:36px;text-align:right;line-height:1.5;}
-#nameday {position:absolute;top:380px;right:40px;font-size:45px;text-align:left;}
+#sun {position:absolute;top:383px;right:40px;font-size:28px;text-align:right;line-height:1.5;}
+#nameday {position:absolute;top:266px;right:40px;font-size:28px;text-align:left;}
 
 #world{
     position:absolute;
-    bottom:157px;
+    bottom:138px;
     width:100%;
     display:flex;
-    justify-content:flex-end;
-    gap:20px;
-    padding-right: 40px;
+    justify-content:center;
+    gap:15px;
+    padding:0 40px;
     box-sizing: border-box;
+    flex-wrap: nowrap;
+    overflow-x: auto;
 }
 
-.city{text-align:center;}
-.place{display:flex;align-items:center;gap:10px;font-size:20px;margin-bottom:10px;}
-.flag{width:26px;height:16px;}
-.city-time{font-size:37px;}
-.city-weather{font-size:24px;margin-top:5px;}
+.city{
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    white-space:nowrap;
+    flex-shrink:0;
+}
+
+.place{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:18px;
+    margin:0;
+    justify-content:center;
+}
+
+.city-time{
+    font-size:26px;
+    margin:0;
+    display:inline;
+}
+
+.city-weather{
+    font-size:22px;
+    margin:0;
+    display:inline;
+    margin-left:10px;
+}
+    margin-left:6px;
+}
+
+.time-weather{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+}
+
+.flag{width:20px;height:12px;}
 
 #shiftBox{
     position:absolute;
@@ -181,26 +219,34 @@ body::before {
 
 <div class="city glass">
     <div class="place"><img class="flag" src="https://flagcdn.com/w40/mx.png"> Mexiko – Ramos Arizpe</div>
-    <div id="ramos" class="city-time"></div>
-    <div id="ramosw" class="city-weather"></div>
+    <div class="time-weather">
+        <div id="ramos" class="city-time"></div>
+        <div id="ramosw" class="city-weather"></div>
+    </div>
 </div>
 
 <div class="city glass">
     <div class="place"><img class="flag" src="https://flagcdn.com/w40/us.png"> USA – Detroit</div>
-    <div id="detroit" class="city-time"></div>
-    <div id="detroitw" class="city-weather"></div>
+    <div class="time-weather">
+        <div id="detroit" class="city-time"></div>
+        <div id="detroitw" class="city-weather"></div>
+    </div>
 </div>
 
 <div class="city glass">
     <div class="place"><img class="flag" src="https://flagcdn.com/w40/in.png"> India – Pune</div>
-    <div id="pune" class="city-time"></div>
-    <div id="punew" class="city-weather"></div>
+    <div class="time-weather">
+        <div id="pune" class="city-time"></div>
+        <div id="punew" class="city-weather"></div>
+    </div>
 </div>
 
 <div class="city glass">
     <div class="place"><img class="flag" src="https://flagcdn.com/w40/cn.png"> Čína – Suzhou</div>
-    <div id="suzhou" class="city-time"></div>
-    <div id="suzhouw" class="city-weather"></div>
+    <div class="time-weather">
+        <div id="suzhou" class="city-time"></div>
+        <div id="suzhouw" class="city-weather"></div>
+    </div>
 </div>
 
 </div>
