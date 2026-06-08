@@ -217,39 +217,39 @@ body::before {
 <div id="auditsTable" class="glass">
     <table style="width:100%;font-size:20px;border-collapse:collapse;">
         <tr style="border-bottom:1px solid rgba(255,255,255,0.2);">
-            <th style="text-align:left;padding:8px;">Deň</th>
-            <th style="text-align:left;padding:8px;">Typ</th>
-            <th style="text-align:left;padding:8px;">Miesto</th>
+            <th style="text-align:center;padding:8px;">Deň</th>
+            <th style="text-align:center;padding:8px;">Typ</th>
+            <th style="text-align:center;padding:8px;">Zákazník/Proces</th>
         </tr>
         <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px;">17.6</td>
-            <td style="padding:8px;">Procesný audit</td>
-            <td style="padding:8px;">MOK/Balenie</td>
+            <td style="padding:8px;text-align:center;">17.6</td>
+            <td style="padding:8px;text-align:center;">Procesný audit</td>
+            <td style="padding:8px;text-align:center;">MOK/Balenie</td>
         </tr>
         <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px;">25.6</td>
-            <td style="padding:8px;">Návšteva</td>
-            <td style="padding:8px;">Hoerbiger</td>
+            <td style="padding:8px;text-align:center;">25.6</td>
+            <td style="padding:8px;text-align:center;">Návšteva</td>
+            <td style="padding:8px;text-align:center;">Hoerbiger</td>
         </tr>
         <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px;">8-9.7</td>
-            <td style="padding:8px;">Audit</td>
-            <td style="padding:8px;">Class</td>
+            <td style="padding:8px;text-align:center;">8-9.7</td>
+            <td style="padding:8px;text-align:center;">Audit</td>
+            <td style="padding:8px;text-align:center;">Class</td>
         </tr>
         <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px;">1.9</td>
-            <td style="padding:8px;">Procesný audit</td>
-            <td style="padding:8px;"></td>
+            <td style="padding:8px;text-align:center;">1.9</td>
+            <td style="padding:8px;text-align:center;">Procesný audit</td>
+            <td style="padding:8px;text-align:center;"></td>
         </tr>
         <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px;">1.10</td>
-            <td style="padding:8px;">Procesný audit</td>
-            <td style="padding:8px;"></td>
+            <td style="padding:8px;text-align:center;">1.10</td>
+            <td style="padding:8px;text-align:center;">Procesný audit</td>
+            <td style="padding:8px;text-align:center;"></td>
         </tr>
         <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px;"></td>
-            <td style="padding:8px;"></td>
-            <td style="padding:8px;"></td>
+            <td style="padding:8px;text-align:center;"></td>
+            <td style="padding:8px;text-align:center;"></td>
+            <td style="padding:8px;text-align:center;"></td>
         </tr>
     </table>
 </div>
@@ -803,16 +803,18 @@ async function loadSun(){
   }
 }
 
-// FIFA MS 2026 - futbalové zápasy
+// FIFA MS 2026 - futbalové zápasy s LIVE refresh a auto-switch
+let currentMatchDayIndex = 0;
+
 async function loadNHL(){
   try {
     const today = new Date();
     
-    // Hľadaj najbližší deň s zápasmi (nasledujúcich 30 dní)
+    // Hľadaj najbližší deň s zápasmi (nasledujúcich 30 dní) + offset pre next days
     let matchDay = null;
     let matchDate = null;
     
-    for (let i = 0; i < 30; i++) {
+    for (let i = currentMatchDayIndex; i < 30; i++) {
       const checkDate = new Date(today);
       checkDate.setDate(checkDate.getDate() + i);
       const dateFormat = checkDate.toISOString().split('T')[0];
@@ -846,6 +848,9 @@ async function loadNHL(){
     } else {
       // Zobraz len zápasy z aktualneho hraceho dňa
       filaHTML += "<div style='font-weight:bold;margin-bottom:10px;'>Hrací deň:</div>";
+      
+      let allFinished = true;
+      
       matchDay.forEach(match => {
         const away = match.awayTeam.name;
         const home = match.homeTeam.name;
@@ -855,10 +860,12 @@ async function loadNHL(){
         let statusDisplay = '';
         if (status === 'LIVE') {
           statusDisplay = `<span class="game-live">● LIVE ${match.score.fullTime.away}-${match.score.fullTime.home}</span>`;
+          allFinished = false;
         } else if (status === 'FINISHED') {
           statusDisplay = `<span style="color:#00ff88;">✓ ${match.score.fullTime.away}-${match.score.fullTime.home}</span>`;
         } else {
           statusDisplay = time;
+          allFinished = false;
         }
 
         filaHTML += `<div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
@@ -866,6 +873,16 @@ async function loadNHL(){
           <div style='text-align:right;'>${statusDisplay}</div>
         </div>`;
       });
+      
+      // Ak sú všetky zápasy skončené - switch na ďalší deň
+      if (allFinished && matchDay.length > 0) {
+        const lastMatchTime = new Date(matchDay[matchDay.length - 1].utcDate);
+        const now = new Date();
+        // Ak je posledný zápas skončený pred > 1 hodinou, prepni na ďalší deň
+        if (now - lastMatchTime > 3600000) {
+          currentMatchDayIndex++;
+        }
+      }
     }
 
     document.getElementById('nhl').innerHTML = filaHTML;
@@ -874,6 +891,9 @@ async function loadNHL(){
     loadFIFAFallback();
   }
 }
+
+// Refresh skóre každých 30 sekúnd (LIVE)
+setInterval(loadNHL, 30000);
 
 // Fallback - budúce zápasy MS 2026
 function loadFIFAFallback(){
@@ -1031,22 +1051,33 @@ function updateShift(){
   shiftTime.style.color=color;
 }
 
-// OBED
-// ZVUK NOTIFIKÁCIA - LODNÁ TRUBA
+// GONG - VYRAZNÝ ALERT
+// ZVUK NOTIFIKÁCIA - GONG
 function playAlert(){
   try {
     const ctx=new (window.AudioContext||window.webkitAudioContext)();
-    const osc=ctx.createOscillator();
-    const gain=ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
     
-    // Lodná truba: nižší tón, dlhšie trvanie
-    osc.frequency.value=400;
-    gain.gain.setValueAtTime(0.4,ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+2);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime+2);
+    // Prvý tón - hlboký gong
+    const osc1=ctx.createOscillator();
+    const gain1=ctx.createGain();
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.frequency.value=180;
+    gain1.gain.setValueAtTime(0.6,ctx.currentTime);
+    gain1.gain.exponentialRampToValueAtTime(0.05,ctx.currentTime+3.5);
+    osc1.start(ctx.currentTime);
+    osc1.stop(ctx.currentTime+3.5);
+    
+    // Druhý tón - vyšší "zvonenie" (harmonický)
+    const osc2=ctx.createOscillator();
+    const gain2=ctx.createGain();
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.frequency.value=360;
+    gain2.gain.setValueAtTime(0.4,ctx.currentTime);
+    gain2.gain.exponentialRampToValueAtTime(0.02,ctx.currentTime+3.5);
+    osc2.start(ctx.currentTime);
+    osc2.stop(ctx.currentTime+3.5);
   } catch(e){}
 }
 
