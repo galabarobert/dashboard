@@ -55,28 +55,29 @@ body::before {
 
 .glow {text-shadow:0 0 15px rgba(255,255,255,0.4);}
 
-#location {position:absolute;top:20px;left:40px;font-size:75px;}
+#location {position:absolute;top:1px;left:40px;font-size:86px;}
 #tempNow {margin-top:12px;font-size:32px;}
 
 #clock-box {position:absolute;top:-37px;right:40px;text-align:right;}
 #time {font-size:200px;}
 #dateWeek {font-size:45px;margin-top:-38px;}
 
-#weather {position:absolute;top:220px;left:40px;font-size:36px;line-height:1.8;width:auto;white-space:nowrap;height:50px;display:flex;align-items:center;}
-#daysSat {position:absolute;top:310px;left:40px;font-size:54px;text-align:center;width:140px;}
-#daysSun {position:absolute;top:310px;left:230px;font-size:54px;text-align:center;width:140px;}
-#daysMon {position:absolute;top:310px;left:420px;font-size:54px;text-align:center;width:140px;}
-#sun {position:absolute;top:383px;right:40px;font-size:28px;text-align:right;line-height:1.5;}
-#nameday {position:absolute;top:266px;right:40px;font-size:28px;text-align:left;}
+#weather {position:absolute;top:174px;left:40px;font-size:28px;line-height:1.8;width:auto;white-space:nowrap;height:50px;display:flex;align-items:center;}
+#daysSat {position:absolute;top:272px;left:40px;font-size:28px;text-align:center;width:140px;}
+#daysSun {position:absolute;top:272px;left:230px;font-size:28px;text-align:center;width:140px;}
+#daysMon {position:absolute;top:272px;left:420px;font-size:28px;text-align:center;width:140px;}
+#sun {position:absolute;top:387px;right:40px;font-size:28px;text-align:right;line-height:1.5;}
+#nameday {position:absolute;top:262px;right:40px;font-size:31px;text-align:left;}
 
 #world{
     position:absolute;
-    bottom:138px;
+    bottom:103px;
     width:100%;
     display:flex;
-    justify-content:center;
+    justify-content:flex-end;
     gap:15px;
-    padding:0 40px;
+    padding-left:40px;
+    padding-right:520px;
     box-sizing: border-box;
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -136,9 +137,9 @@ body::before {
 
 #currentWeatherBox{
     position:absolute;
-    top:127px;
+    top:108px;
     left:40px;
-    font-size:36px;
+    font-size:45px;
     text-align:left;
     width:auto;
     white-space:nowrap;
@@ -149,15 +150,26 @@ body::before {
 
 #vacationBox{
     position:absolute;
-    top:20px;
-    left:35%;
+    top:12px;
+    left:45%;
     transform:translateX(-50%);
     font-size:38px;
     text-align:center;
 }
-#vacationTime{font-size:32px;color:white;}
+#vacationTime{font-size:28px;color:white;}
 
-#nhl {position:absolute;top:295px;left:40px;margin-top:280px;font-size:28px;line-height:1.8;width:500px;}
+#nhl {position:absolute;top:238px;left:40px;margin-top:280px;font-size:20px;line-height:1.8;width:462px;}
+
+#auditsTable {
+    position:absolute;
+    top:557px;
+    right:40px;
+    width:auto;
+    min-width:400px;
+    max-width:500px;
+    font-size:14px;
+    text-align:center;
+}
 
 .nhl-game {
     display: flex;
@@ -202,12 +214,52 @@ body::before {
 <div id="nhl" class="glass"></div>
 <div id="nameday" class="glass"></div>
 
+<div id="auditsTable" class="glass">
+    <table style="width:100%;font-size:20px;border-collapse:collapse;">
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.2);">
+            <th style="text-align:left;padding:8px;">Deň</th>
+            <th style="text-align:left;padding:8px;">Typ</th>
+            <th style="text-align:left;padding:8px;">Miesto</th>
+        </tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+            <td style="padding:8px;">17.6</td>
+            <td style="padding:8px;">Procesný audit</td>
+            <td style="padding:8px;">MOK/Balenie</td>
+        </tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+            <td style="padding:8px;">25.6</td>
+            <td style="padding:8px;">Návšteva</td>
+            <td style="padding:8px;">Hoerbiger</td>
+        </tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+            <td style="padding:8px;">8-9.7</td>
+            <td style="padding:8px;">Audit</td>
+            <td style="padding:8px;">Class</td>
+        </tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+            <td style="padding:8px;">1.9</td>
+            <td style="padding:8px;">Procesný audit</td>
+            <td style="padding:8px;"></td>
+        </tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+            <td style="padding:8px;">1.10</td>
+            <td style="padding:8px;">Procesný audit</td>
+            <td style="padding:8px;"></td>
+        </tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+            <td style="padding:8px;"></td>
+            <td style="padding:8px;"></td>
+            <td style="padding:8px;"></td>
+        </tr>
+    </table>
+</div>
+
 <div id="shiftBox" class="glass">
     <div id="lunchTime"></div>
     <div id="shiftTime"></div>
 </div>
 
-<div id="currentWeatherBox" class="glass">
+<div id="currentWeatherBox">
     <div id="currentWeatherDisplay"></div>
 </div>
 
@@ -914,11 +966,11 @@ Dnes: ${icon(d.weather_code[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math
   const day2Name = daysOfWeek[day2.getDay()];
   const day3Name = daysOfWeek[day3.getDay()];
   
-  daysSat.innerHTML=`<div style='text-align:center;'><div style='font-size:37px;margin-bottom:10px;color:#aaa;'>${day1Name}</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[1])}</div><div style='font-size:37px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[1])}° ${Math.round(d.temperature_2m_min[1])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[1])} ${windDir(d.wind_direction_10m_dominant[1])}</div></div>`;
+  daysSat.innerHTML=`<div style='text-align:center;'><div style='font-size:30px;margin-bottom:10px;color:#aaa;'>${day1Name}</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[1])}</div><div style='font-size:30px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[1])}° ${Math.round(d.temperature_2m_min[1])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[1])} ${windDir(d.wind_direction_10m_dominant[1])}</div></div>`;
 
-  daysSun.innerHTML=`<div style='text-align:center;'><div style='font-size:37px;margin-bottom:10px;color:#aaa;'>${day2Name}</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[2])}</div><div style='font-size:37px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[2])}° ${Math.round(d.temperature_2m_min[2])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[2])} ${windDir(d.wind_direction_10m_dominant[2])}</div></div>`;
+  daysSun.innerHTML=`<div style='text-align:center;'><div style='font-size:30px;margin-bottom:10px;color:#aaa;'>${day2Name}</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[2])}</div><div style='font-size:30px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[2])}° ${Math.round(d.temperature_2m_min[2])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[2])} ${windDir(d.wind_direction_10m_dominant[2])}</div></div>`;
 
-  daysMon.innerHTML=`<div style='text-align:center;'><div style='font-size:37px;margin-bottom:10px;color:#aaa;'>${day3Name}</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[3])}</div><div style='font-size:37px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[3])}° ${Math.round(d.temperature_2m_min[3])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[3])} ${windDir(d.wind_direction_10m_dominant[3])}</div></div>`;
+  daysMon.innerHTML=`<div style='text-align:center;'><div style='font-size:30px;margin-bottom:10px;color:#aaa;'>${day3Name}</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[3])}</div><div style='font-size:30px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[3])}° ${Math.round(d.temperature_2m_min[3])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[3])} ${windDir(d.wind_direction_10m_dominant[3])}</div></div>`;
 }
 
 // WORLD TIME
@@ -1231,7 +1283,7 @@ loadRSSFeeds();
 setInterval(loadRSSFeeds, 30 * 1000);
 
 </script>
-<div id="historicalEvents" class="glass" style="position:absolute;bottom:30px;left:40px;right:40px;width:calc(100% - 80px);overflow:hidden;height:60px;display:flex;align-items:center;padding:10px 15px;white-space:nowrap;">
+<div id="historicalEvents" class="glass" style="position:absolute;bottom:11px;left:40px;right:40px;width:auto;overflow:hidden;height:60px;display:flex;align-items:center;padding:10px 15px;white-space:nowrap;text-align:center;justify-content:center;">
     <div id="eventScroll" style="display:inline-block;animation:scrollTextRTL 300s linear infinite;font-size:45px;white-space:nowrap;"></div>
 </div>
 
