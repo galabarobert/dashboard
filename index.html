@@ -71,7 +71,7 @@ body::before {
 
 #world{
     position:absolute;
-    bottom:200px;
+    bottom:157px;
     width:100%;
     display:flex;
     justify-content:flex-end;
@@ -112,7 +112,7 @@ body::before {
 #vacationBox{
     position:absolute;
     top:20px;
-    left:50%;
+    left:35%;
     transform:translateX(-50%);
     font-size:38px;
     text-align:center;
@@ -709,82 +709,65 @@ async function loadSun(){
 async function loadNHL(){
   try {
     const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
-    const dateFormat = (d) => d.toISOString().split('T')[0];
-    const startDate = dateFormat(today);
-    const endDate = dateFormat(tomorrow);
-
-    // football-data.org API - MS 2026
-    const apiUrl = `https://api.football-data.org/v4/competitions/WC/matches?dateFrom=${startDate}&dateTo=${endDate}`;
     
-    const response = await fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'X-Auth-Token': 'INSERT_YOUR_TOKEN'
+    // Hľadaj najbližší deň s zápasmi (nasledujúcich 30 dní)
+    let matchDay = null;
+    let matchDate = null;
+    
+    for (let i = 0; i < 30; i++) {
+      const checkDate = new Date(today);
+      checkDate.setDate(checkDate.getDate() + i);
+      const dateFormat = checkDate.toISOString().split('T')[0];
+      
+      try {
+        const apiUrl = `https://api.football-data.org/v4/competitions/WC/matches?dateFrom=${dateFormat}&dateTo=${dateFormat}`;
+        const response = await fetch(apiUrl, {
+          method: 'GET',
+          headers: {
+            'X-Auth-Token': 'INSERT_YOUR_TOKEN'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.matches && data.matches.length > 0) {
+            matchDay = data.matches;
+            matchDate = dateFormat;
+            break;
+          }
+        }
+      } catch (e) {
+        continue;
       }
-    });
-
-    if (!response.ok) {
-      // Fallback - iný API
-      return loadFIFAFallback();
     }
-
-    const data = await response.json();
+    
     let filaHTML = "⚽ FIFA MS 2026:<div style='height:1px;background:rgba(255,255,255,0.2);margin:10px 0;'></div>";
-
-    if (!data.matches || data.matches.length === 0) {
+    
+    if (!matchDay || matchDay.length === 0) {
       filaHTML += "Žiadne zápasy";
     } else {
-      let hasContent = false;
+      // Zobraz len zápasy z aktualneho hraceho dňa
+      filaHTML += "<div style='font-weight:bold;margin-bottom:10px;'>Hrací deň:</div>";
+      matchDay.forEach(match => {
+        const away = match.awayTeam.name;
+        const home = match.homeTeam.name;
+        const status = match.status;
+        const time = new Date(match.utcDate).toLocaleTimeString('sk-SK', {hour: '2-digit', minute: '2-digit'});
 
-      // Dneší zápasy
-      const todayMatches = data.matches.filter(m => m.utcDate.startsWith(startDate));
-      if (todayMatches.length > 0) {
-        filaHTML += "<div style='font-weight:bold;margin-bottom:10px;'>Dnes:</div>";
-        todayMatches.forEach(match => {
-          hasContent = true;
-          const away = match.awayTeam.name;
-          const home = match.homeTeam.name;
-          const status = match.status;
-          const time = new Date(match.utcDate).toLocaleTimeString('sk-SK', {hour: '2-digit', minute: '2-digit'});
+        let statusDisplay = '';
+        if (status === 'LIVE') {
+          statusDisplay = `<span class="game-live">● LIVE ${match.score.fullTime.away}-${match.score.fullTime.home}</span>`;
+        } else if (status === 'FINISHED') {
+          statusDisplay = `<span style="color:#00ff88;">✓ ${match.score.fullTime.away}-${match.score.fullTime.home}</span>`;
+        } else {
+          statusDisplay = time;
+        }
 
-          let statusDisplay = '';
-          if (status === 'LIVE') {
-            statusDisplay = `<span class="game-live">● LIVE ${match.score.fullTime.away}-${match.score.fullTime.home}</span>`;
-          } else if (status === 'FINISHED') {
-            statusDisplay = `<span style="color:#00ff88;">✓ ${match.score.fullTime.away}-${match.score.fullTime.home}</span>`;
-          } else {
-            statusDisplay = time;
-          }
-
-          filaHTML += `<div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
-            <div><strong>${away} vs ${home}</strong></div>
-            <div style='text-align:right;'>${statusDisplay}</div>
-          </div>`;
-        });
-      }
-
-      // Zajtrajšie zápasy
-      const tomorrowMatches = data.matches.filter(m => m.utcDate.startsWith(endDate));
-      if (tomorrowMatches.length > 0) {
-        filaHTML += "<div style='margin-top:15px;font-weight:bold;margin-bottom:10px;'>Zajtra:</div>";
-        tomorrowMatches.forEach(match => {
-          const away = match.awayTeam.name;
-          const home = match.homeTeam.name;
-          const time = new Date(match.utcDate).toLocaleTimeString('sk-SK', {hour: '2-digit', minute: '2-digit'});
-
-          filaHTML += `<div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
-            <div><strong>${away} vs ${home}</strong></div>
-            <div style='text-align:right;'>${time}</div>
-          </div>`;
-        });
-      }
-
-      if (!hasContent && tomorrowMatches.length === 0) {
-        filaHTML = "⚽ FIFA MS 2026: Žiadne zápasy";
-      }
+        filaHTML += `<div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);'>
+          <div><strong>${away} vs ${home}</strong></div>
+          <div style='text-align:right;'>${statusDisplay}</div>
+        </div>`;
+      });
     }
 
     document.getElementById('nhl').innerHTML = filaHTML;
@@ -872,11 +855,24 @@ async function loadWeather(){
 Dnes: ${icon(d.weather_code[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math.round(d.temperature_2m_min[0])}° | 💨 ${Math.round(d.wind_speed_10m_max[0])} km/h ${windDir(d.wind_direction_10m_dominant[0])}${d.precipitation_sum[0]>0?' | 💧 '+d.precipitation_sum[0].toFixed(1)+' mm':''}
 `;
 
-  daysSat.innerHTML=`<div style='text-align:center;'><div style='font-size:37px;margin-bottom:10px;color:#aaa;'>po</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[1])}</div><div style='font-size:37px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[1])}° ${Math.round(d.temperature_2m_min[1])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[1])} ${windDir(d.wind_direction_10m_dominant[1])}</div></div>`;
+  const daysOfWeek = ['ne','po','ut','st','št','pi','so'];
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const day2 = new Date(today);
+  day2.setDate(day2.getDate() + 2);
+  const day3 = new Date(today);
+  day3.setDate(day3.getDate() + 3);
+  
+  const day1Name = daysOfWeek[tomorrow.getDay()];
+  const day2Name = daysOfWeek[day2.getDay()];
+  const day3Name = daysOfWeek[day3.getDay()];
+  
+  daysSat.innerHTML=`<div style='text-align:center;'><div style='font-size:37px;margin-bottom:10px;color:#aaa;'>${day1Name}</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[1])}</div><div style='font-size:37px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[1])}° ${Math.round(d.temperature_2m_min[1])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[1])} ${windDir(d.wind_direction_10m_dominant[1])}</div></div>`;
 
-  daysSun.innerHTML=`<div style='text-align:center;'><div style='font-size:37px;margin-bottom:10px;color:#aaa;'>ut</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[2])}</div><div style='font-size:37px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[2])}° ${Math.round(d.temperature_2m_min[2])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[2])} ${windDir(d.wind_direction_10m_dominant[2])}</div></div>`;
+  daysSun.innerHTML=`<div style='text-align:center;'><div style='font-size:37px;margin-bottom:10px;color:#aaa;'>${day2Name}</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[2])}</div><div style='font-size:37px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[2])}° ${Math.round(d.temperature_2m_min[2])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[2])} ${windDir(d.wind_direction_10m_dominant[2])}</div></div>`;
 
-  daysMon.innerHTML=`<div style='text-align:center;'><div style='font-size:37px;margin-bottom:10px;color:#aaa;'>st</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[3])}</div><div style='font-size:37px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[3])}° ${Math.round(d.temperature_2m_min[3])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[3])} ${windDir(d.wind_direction_10m_dominant[3])}</div></div>`;
+  daysMon.innerHTML=`<div style='text-align:center;'><div style='font-size:37px;margin-bottom:10px;color:#aaa;'>${day3Name}</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[3])}</div><div style='font-size:37px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[3])}° ${Math.round(d.temperature_2m_min[3])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[3])} ${windDir(d.wind_direction_10m_dominant[3])}</div></div>`;
 }
 
 // WORLD TIME
