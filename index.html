@@ -859,7 +859,7 @@ async function loadNHL(){
           const tomorrowMatches = data.matches.filter(m => m.utcDate.includes(tomorrowStr));
           
           if (todayMatches.length > 0) {
-            filaHTML += `<div style='font-weight:bold;margin-bottom:12px;font-size:14px;color:#fff;margin-top:12px;'>Dnešné zápasy:</div>`;
+            filaHTML += `<div style='font-weight:bold;margin-bottom:12px;font-size:16px;color:#fff;margin-top:12px;'>Dnešné zápasy:</div>`;
             todayMatches.forEach(match => {
               const home = match.homeTeam.name;
               const away = match.awayTeam.name;
@@ -880,28 +880,28 @@ async function loadNHL(){
               }
               
               filaHTML += `<div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-                <div style='font-size:13px;color:#aaa;min-width:45px;'>⭐ ${time}</div>
-                <div style='font-size:15px;flex:1.5;text-align:right;'>${away}</div>
-                <div style='font-size:15px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>${resultDisplay}</div>
-                <div style='font-size:15px;flex:1.5;text-align:left;'>${home}</div>
+                <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ ${time}</div>
+                <div style='font-size:17px;flex:1.5;text-align:right;'>${away}</div>
+                <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>${resultDisplay}</div>
+                <div style='font-size:17px;flex:1.5;text-align:left;'>${home}</div>
               </div>`;
             });
           } else {
-            filaHTML += `<div style='font-weight:bold;margin-bottom:12px;font-size:14px;color:#fff;margin-top:12px;'>Dnešné zápasy:</div><div style='padding:12px;color:#aaa;text-align:center;font-size:14px;'>Žiadne zápasy</div>`;
+            filaHTML += `<div style='font-weight:bold;margin-bottom:12px;font-size:16px;color:#fff;margin-top:12px;'>Dnešné zápasy:</div><div style='padding:12px;color:#aaa;text-align:center;font-size:16px;'>Žiadne zápasy</div>`;
           }
           
           if (tomorrowMatches.length > 0) {
-            filaHTML += `<div style='font-weight:bold;margin-bottom:12px;font-size:14px;color:#fff;margin-top:16px;'>Zajtra:</div>`;
+            filaHTML += `<div style='font-weight:bold;margin-bottom:12px;font-size:16px;color:#fff;margin-top:16px;'>Zajtra:</div>`;
             tomorrowMatches.forEach(match => {
               const home = match.homeTeam.name;
               const away = match.awayTeam.name;
               const time = new Date(match.utcDate).toLocaleTimeString('sk-SK', {hour: '2-digit', minute: '2-digit'});
               
               filaHTML += `<div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-                <div style='font-size:13px;color:#aaa;min-width:45px;'>⭐ ${time}</div>
-                <div style='font-size:15px;flex:1.5;text-align:right;'>${away}</div>
-                <div style='font-size:15px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>-</div>
-                <div style='font-size:15px;flex:1.5;text-align:left;'>${home}</div>
+                <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ ${time}</div>
+                <div style='font-size:17px;flex:1.5;text-align:right;'>${away}</div>
+                <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>-</div>
+                <div style='font-size:17px;flex:1.5;text-align:left;'>${home}</div>
               </div>`;
             });
           }
@@ -937,30 +937,30 @@ function loadFIFAFallback(){
   // Dnešné zápasy (11.6.2026)
   filaHTML += `
 <div style='margin-top:0px;'>
-  <div style='font-weight:bold;margin-bottom:10px;font-size:13px;color:#fff;'>Dnešné zápasy:</div>
+  <div style='font-weight:bold;margin-bottom:10px;font-size:16px;color:#fff;'>Dnešné zápasy:</div>
   <div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-    <div style='font-size:13px;color:#aaa;min-width:45px;'>⭐ 21:00</div>
-    <div style='font-size:15px;flex:1.5;text-align:right;'>Mexiko</div>
-    <div style='font-size:15px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>-</div>
-    <div style='font-size:15px;flex:1.5;text-align:left;'>Južná Afrika</div>
+    <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ 21:00</div>
+    <div style='font-size:17px;flex:1.5;text-align:right;'>Mexiko</div>
+    <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>-</div>
+    <div style='font-size:17px;flex:1.5;text-align:left;'>Južná Afrika</div>
   </div>
 </div>`;
 
   // Budúce zápasy zajtra (12.6)
   filaHTML += `
 <div style='margin-top:16px;'>
-  <div style='font-weight:bold;margin-bottom:10px;font-size:13px;color:#fff;'>Zajtra:</div>
+  <div style='font-weight:bold;margin-bottom:10px;font-size:16px;color:#fff;'>Zajtra:</div>
   <div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-    <div style='font-size:13px;color:#aaa;min-width:45px;'>⭐ 04:00</div>
-    <div style='font-size:15px;flex:1.5;text-align:right;'>Južná Kórea</div>
-    <div style='font-size:15px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>-</div>
-    <div style='font-size:15px;flex:1.5;text-align:left;'>Česko</div>
+    <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ 04:00</div>
+    <div style='font-size:17px;flex:1.5;text-align:right;'>Južná Kórea</div>
+    <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>-</div>
+    <div style='font-size:17px;flex:1.5;text-align:left;'>Česko</div>
   </div>
   <div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-    <div style='font-size:13px;color:#aaa;min-width:45px;'>⭐ 21:00</div>
-    <div style='font-size:15px;flex:1.5;text-align:right;'>Kanada</div>
-    <div style='font-size:15px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>-</div>
-    <div style='font-size:15px;flex:1.5;text-align:left;'>Bosna a Hercegovina</div>
+    <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ 21:00</div>
+    <div style='font-size:17px;flex:1.5;text-align:right;'>Kanada</div>
+    <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>-</div>
+    <div style='font-size:17px;flex:1.5;text-align:left;'>Bosna a Hercegovina</div>
   </div>
 </div>`;
   
@@ -1494,7 +1494,7 @@ newsBuffer = [];
 
 </script>
 <div id="historicalEvents" class="glass" style="position:absolute;bottom:11px;left:40px;right:40px;width:auto;overflow:hidden;height:60px;display:flex;align-items:center;padding:10px 15px;white-space:nowrap;text-align:center;justify-content:center;">
-    <div id="eventScroll" style="display:inline-block;animation:scrollTextRTL 300s linear infinite;font-size:45px;white-space:nowrap;">Slovensko - Nové opatrenia v oblasti zdravotníctva ❖ Ekonomika - Rast HDP pokračuje ❖ Šport - Slovenský futbal sa pripravuje ❖ Zahraničie - NATO aktivovalo nové sily ❖ Zdravie - Nové očkovanie dostupné ❖ Slovensko - Nové opatrenia v oblasti zdravotníctva ❖ Ekonomika - Rast HDP pokračuje ❖ Šport - Slovenský futbal sa pripravuje ❖ Zahraničie - NATO aktivovalo nové sily ❖ Zdravie - Nové očkovanie dostupné</div>
+    <div id="eventScroll" style="display:inline-block;animation:scrollTextRTL 600s linear infinite;font-size:45px;white-space:nowrap;">Slovensko - Nové opatrenia v oblasti zdravotníctva ❖ Ekonomika - Rast HDP pokračuje ❖ Šport - Slovenský futbal sa pripravuje ❖ Zahraničie - NATO aktivovalo nové sily ❖ Zdravie - Nové očkovanie dostupné ❖ Slovensko - Nové opatrenia v oblasti zdravotníctva ❖ Ekonomika - Rast HDP pokračuje ❖ Šport - Slovenský futbal sa pripravuje ❖ Zahraničie - NATO aktivovalo nové sily ❖ Zdravie - Nové očkovanie dostupné</div>
 </div>
 
 <style>
