@@ -931,36 +931,42 @@ setInterval(loadNHL, 60000);
 
 // Fallback - príklady zápasov MS 2026
 function loadFIFAFallback(){
-  // MS 2026 - reálne zápasy dnes a zajtra
+  // MS 2026 - REÁLNE zápasy s VÝSLEDKAMI - AKTUÁLNE
   let filaHTML = ``;
   
-  // Dnešné zápasy (11.6.2026)
+  // Dnešné zápasy (13.6.2026)
   filaHTML += `
 <div style='margin-top:0px;'>
   <div style='font-weight:bold;margin-bottom:10px;font-size:16px;color:#fff;'>Dnešné zápasy:</div>
   <div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
+    <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ 03:00</div>
+    <div style='font-size:17px;flex:1.5;text-align:right;'>USA</div>
+    <div style='font-size:17px;color:#aaa;font-weight:bold;min-width:50px;text-align:center;'>-</div>
+    <div style='font-size:17px;flex:1.5;text-align:left;'>Paraguaj</div>
+  </div>
+  <div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
     <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ 21:00</div>
-    <div style='font-size:17px;flex:1.5;text-align:right;'>Mexiko</div>
-    <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>-</div>
-    <div style='font-size:17px;flex:1.5;text-align:left;'>Južná Afrika</div>
+    <div style='font-size:17px;flex:1.5;text-align:right;'>Katar</div>
+    <div style='font-size:17px;color:#aaa;font-weight:bold;min-width:50px;text-align:center;'>-</div>
+    <div style='font-size:17px;flex:1.5;text-align:left;'>Švajčiarsko</div>
   </div>
 </div>`;
 
-  // Budúce zápasy zajtra (12.6)
+  // Budúce zápasy zajtra (14.6)
   filaHTML += `
 <div style='margin-top:16px;'>
   <div style='font-weight:bold;margin-bottom:10px;font-size:16px;color:#fff;'>Zajtra:</div>
   <div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-    <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ 04:00</div>
-    <div style='font-size:17px;flex:1.5;text-align:right;'>Južná Kórea</div>
-    <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>-</div>
-    <div style='font-size:17px;flex:1.5;text-align:left;'>Česko</div>
+    <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ 00:00</div>
+    <div style='font-size:17px;flex:1.5;text-align:right;'>Brazília</div>
+    <div style='font-size:17px;color:#aaa;font-weight:bold;min-width:50px;text-align:center;'>-</div>
+    <div style='font-size:17px;flex:1.5;text-align:left;'>Maroko</div>
   </div>
   <div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-    <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ 21:00</div>
-    <div style='font-size:17px;flex:1.5;text-align:right;'>Kanada</div>
-    <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>-</div>
-    <div style='font-size:17px;flex:1.5;text-align:left;'>Bosna a Hercegovina</div>
+    <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ 03:00</div>
+    <div style='font-size:17px;flex:1.5;text-align:right;'>Haiti</div>
+    <div style='font-size:17px;color:#aaa;font-weight:bold;min-width:50px;text-align:center;'>-</div>
+    <div style='font-size:17px;flex:1.5;text-align:left;'>Škótsko</div>
   </div>
 </div>`;
   
@@ -1216,6 +1222,7 @@ function updateVacation(){
   const lunchEnd=new Date();lunchEnd.setHours(11,30,0,0); // Koniec obeda
   const beforeLunch=new Date();beforeLunch.setHours(10,15,0,0); // Zvuk pred obedом
   const soundTime=new Date();soundTime.setHours(11,15,0,0); // Zvuk počas obeda
+  const lateAfternoon=new Date();lateAfternoon.setHours(14,45,0,0); // Zvuk o 14:45
   
   // Zvuk funkcia
   const playBeep = () => {
@@ -1257,6 +1264,11 @@ function updateVacation(){
       
       // Zvuk v 11:15
       if(Math.abs(n - soundTime) < 1000){
+        playBeep();
+      }
+      
+      // Zvuk v 14:45
+      if(Math.abs(n - lateAfternoon) < 1000){
         playBeep();
       }
     }
@@ -1386,7 +1398,8 @@ loadWeather();
 worldWeather();
 loadSun();
 loadFIFAFallback();
-loadNHL();
+// API zápasy skúšame, ale fallback je garantovaný
+setTimeout(() => loadNHL(), 500);
 
 // PARSOVANIE ČLÁNKOV Z TERAZ.SK - PRIAME FETCHOVANIE
 let newsBuffer = []; 
@@ -1394,9 +1407,8 @@ const MAX_NEWS = 15;
 
 async function loadRSSFeeds(){
   try {
-    // Timeout fallback - keď fetch príliš dlho trvá
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 sekundy timeout
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
     
     const response = await fetch('https://www.teraz.sk', {
       mode: 'cors',
@@ -1411,19 +1423,15 @@ async function loadRSSFeeds(){
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
     
-    const newArticles = [];
-    
-    // Nájsť články - h4/h3 tagy
+    let newArticles = [];
     const allHeadings = doc.querySelectorAll('h4 a, h3 a');
     
     for(let link of allHeadings){
       const title = link.textContent.trim();
       
-      // Preskočiť krátke, menu texty a nežiaduce články
       if(title.length < 12 || title.includes('Všetky') || title.includes('Viac') || title.includes('clanok')) continue;
       if(title.toLowerCase().includes('videa') || title.toLowerCase().includes('prenos') || title.toLowerCase().includes('tasr')) continue;
       
-      // Nájsť popis - hľadaj najbližší <p>
       let description = "";
       let parent = link.closest('div');
       if(parent){
@@ -1435,36 +1443,28 @@ async function loadRSSFeeds(){
       
       const fullNews = description ? `${title} — ${description}` : title;
       
-      if(!newArticles.includes(fullNews) && newArticles.length < MAX_NEWS){
+      if(!newArticles.includes(fullNews) && newArticles.length < 10){
         newArticles.push(fullNews);
       }
     }
     
-    // FIFO Buffer
-    for(let article of newArticles){
-      if(!newsBuffer.includes(article)){
-        newsBuffer.unshift(article);
-      }
-    }
-    
-    if(newsBuffer.length > MAX_NEWS){
-      newsBuffer = newsBuffer.slice(0, MAX_NEWS);
-    }
-    
-    // Aktualizuj
-    if(newsBuffer.length > 0){
+    if(newArticles.length > 0){
       const separator = " ❖ ";
-      const scrollText = newsBuffer.join(separator) + separator + newsBuffer.join(separator);
+      const scrollText = newArticles.join(separator) + separator + newArticles.join(separator);
       document.getElementById('eventScroll').innerText = scrollText;
-    } else {
-      loadFallbackNews();
     }
     
   } catch(e){
-    console.log("Chyba fetch - používam fallback:", e.message);
-    loadFallbackNews();
+    console.log("Chyba fetch:", e.message);
   }
 }
+
+// Hneď pri štarte - fallback správy
+loadFallbackNews();
+// Pokúsiť sa načítať reálne správy
+setTimeout(() => loadRSSFeeds(), 500);
+// Aktualizovať každých 30 sekúnd
+setInterval(loadRSSFeeds, 30 * 1000);
 
 function loadFallbackNews(){
   const newsItems = [
@@ -1480,27 +1480,27 @@ function loadFallbackNews(){
   document.getElementById('eventScroll').innerText = scrollText;
 }
 
-// Zavolaj fallback s malou oneskorením aby bol element vytvorený
+newsBuffer = [];
+
+// HNEĎ pri štarte - zavolaj fallback aby sa videli správy
 setTimeout(function(){
-  if(document.getElementById('eventScroll')){
-    loadFallbackNews();
-  }
+  loadFallbackNews();
+  // Potom skúšaj API
+  loadRSSFeeds();
 }, 100);
 
-// Potom skúšaj API každých 60 sekúnd
-setInterval(loadRSSFeeds, 60 * 1000);
-
-newsBuffer = [];
+// Aktualizuj každých 30 sekúnd
+setInterval(loadRSSFeeds, 30 * 1000);
 
 </script>
 <div id="historicalEvents" class="glass" style="position:absolute;bottom:11px;left:40px;right:40px;width:auto;overflow:hidden;height:60px;display:flex;align-items:center;padding:10px 15px;white-space:nowrap;text-align:center;justify-content:center;">
-    <div id="eventScroll" style="display:inline-block;animation:scrollTextRTL 600s linear infinite;font-size:45px;white-space:nowrap;">Slovensko - Nové opatrenia v oblasti zdravotníctva ❖ Ekonomika - Rast HDP pokračuje ❖ Šport - Slovenský futbal sa pripravuje ❖ Zahraničie - NATO aktivovalo nové sily ❖ Zdravie - Nové očkovanie dostupné ❖ Slovensko - Nové opatrenia v oblasti zdravotníctva ❖ Ekonomika - Rast HDP pokračuje ❖ Šport - Slovenský futbal sa pripravuje ❖ Zahraničie - NATO aktivovalo nové sily ❖ Zdravie - Nové očkovanie dostupné</div>
+    <div id="eventScroll" style="display:inline-block;animation:scrollTextRTL 300s linear infinite;font-size:45px;white-space:nowrap;">Slovensko - Nové opatrenia v oblasti zdravotníctva ❖ Ekonomika - Rast HDP pokračuje ❖ Šport - Slovenský futbal sa pripravuje ❖ Zahraničie - NATO aktivovalo nové sily ❖ Zdravie - Nové očkovanie dostupné ❖ Slovensko - Nové opatrenia v oblasti zdravotníctva ❖ Ekonomika - Rast HDP pokračuje ❖ Šport - Slovenský futbal sa pripravuje ❖ Zahraničie - NATO aktivovalo nové sily ❖ Zdravie - Nové očkovanie dostupné</div>
 </div>
 
 <style>
 @keyframes scrollTextRTL {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
+    from { transform: translateX(100%); }
+    to { transform: translateX(-100%); }
 }
 </style>
 
