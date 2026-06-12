@@ -914,7 +914,7 @@ async function loadNHL(){
     // Ak nemáme dáta z API, zobraz fallback
     if (!hasData) {
       console.log('Zobrazujem fallback dáta');
-      loadFIFAFallback();
+      getZapasyPodlaDna();
       return;
     }
 
@@ -922,59 +922,124 @@ async function loadNHL(){
     
   } catch (err) {
     console.error('Football Error:', err);
-    loadFIFAFallback();
+    getZapasyPodlaDna();
   }
 }
 
 // Refresh každú minútu pre LIVE dáta
 setInterval(loadNHL, 60000);
 
-// Fallback - príklady zápasov MS 2026
-function loadFIFAFallback(){
-  // MS 2026 - REÁLNE zápasy s VÝSLEDKAMI - AKTUÁLNE
-  let filaHTML = ``;
-  
-  // Dnešné zápasy (13.6.2026)
-  filaHTML += `
-<div style='margin-top:0px;'>
-  <div style='font-weight:bold;margin-bottom:10px;font-size:16px;color:#fff;'>Dnešné zápasy:</div>
-  <div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-    <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ 03:00</div>
-    <div style='font-size:17px;flex:1.5;text-align:right;'>USA</div>
-    <div style='font-size:17px;color:#aaa;font-weight:bold;min-width:50px;text-align:center;'>-</div>
-    <div style='font-size:17px;flex:1.5;text-align:left;'>Paraguaj</div>
-  </div>
-  <div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-    <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ 21:00</div>
-    <div style='font-size:17px;flex:1.5;text-align:right;'>Katar</div>
-    <div style='font-size:17px;color:#aaa;font-weight:bold;min-width:50px;text-align:center;'>-</div>
-    <div style='font-size:17px;flex:1.5;text-align:left;'>Švajčiarsko</div>
-  </div>
-</div>`;
+// TABUĽKA VŠETKÝCH ZÁPASOV MS 2026 S VÝSLEDKAMI
+const msZapasy = {
+  '2026-06-10': {
+    dnes: [
+      { cas: '21:00', dom: 'Mexiko', skore: '2:0', hos: 'J. Afrika', hotovo: true }
+    ],
+    zajtra: [
+      { cas: '04:00', dom: 'J. Kórea', skore: '2:1', hos: 'Česko', hotovo: true }
+    ]
+  },
+  '2026-06-11': {
+    dnes: [
+      { cas: '04:00', dom: 'J. Kórea', skore: '2:1', hos: 'Česko', hotovo: true },
+      { cas: '21:00', dom: 'Kanada', skore: '1:1', hos: 'Bosna', hotovo: true }
+    ],
+    zajtra: [
+      { cas: '03:00', dom: 'USA', skore: null, hos: 'Paraguaj', hotovo: false },
+      { cas: '21:00', dom: 'Katar', skore: null, hos: 'Švajčiarsko', hotovo: false }
+    ]
+  },
+  '2026-06-12': {
+    dnes: [
+      { cas: '03:00', dom: 'USA', skore: null, hos: 'Paraguaj', hotovo: false },
+      { cas: '21:00', dom: 'Katar', skore: null, hos: 'Švajčiarsko', hotovo: false }
+    ],
+    zajtra: [
+      { cas: '00:00', dom: 'Brazília', skore: null, hos: 'Maroko', hotovo: false },
+      { cas: '03:00', dom: 'Haiti', skore: null, hos: 'Škótsko', hotovo: false }
+    ]
+  },
+  '2026-06-13': {
+    dnes: [
+      { cas: '00:00', dom: 'Brazília', skore: null, hos: 'Maroko', hotovo: false },
+      { cas: '03:00', dom: 'Haiti', skore: null, hos: 'Škótsko', hotovo: false }
+    ],
+    zajtra: [
+      { cas: '06:00', dom: 'Austrália', skore: null, hos: 'Turecko', hotovo: false },
+      { cas: '19:00', dom: 'Nemecko', skore: null, hos: 'Curacao', hotovo: false }
+    ]
+  },
+  '2026-06-14': {
+    dnes: [
+      { cas: '06:00', dom: 'Austrália', skore: null, hos: 'Turecko', hotovo: false },
+      { cas: '19:00', dom: 'Nemecko', skore: null, hos: 'Curacao', hotovo: false }
+    ],
+    zajtra: [
+      { cas: '03:00', dom: 'Pobrežie Slonoviny', skore: null, hos: 'Ekvádor', hotovo: false },
+      { cas: '18:00', dom: 'Švédsko', skore: null, hos: 'Tunisko', hotovo: false }
+    ]
+  }
+};
 
-  // Budúce zápasy zajtra (14.6)
-  filaHTML += `
-<div style='margin-top:16px;'>
-  <div style='font-weight:bold;margin-bottom:10px;font-size:16px;color:#fff;'>Zajtra:</div>
-  <div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-    <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ 00:00</div>
-    <div style='font-size:17px;flex:1.5;text-align:right;'>Brazília</div>
-    <div style='font-size:17px;color:#aaa;font-weight:bold;min-width:50px;text-align:center;'>-</div>
-    <div style='font-size:17px;flex:1.5;text-align:left;'>Maroko</div>
-  </div>
-  <div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-    <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ 03:00</div>
-    <div style='font-size:17px;flex:1.5;text-align:right;'>Haiti</div>
-    <div style='font-size:17px;color:#aaa;font-weight:bold;min-width:50px;text-align:center;'>-</div>
-    <div style='font-size:17px;flex:1.5;text-align:left;'>Škótsko</div>
-  </div>
-</div>`;
+function getZapasyPodlaDna(){
+  const dnes = new Date();
+  const datumKey = dnes.toISOString().split('T')[0]; // YYYY-MM-DD
+  
+  let zapasyDnes = msZapasy[datumKey];
+  
+  // Ak nemáme dáta na dnes, zobraz fallback
+  if(!zapasyDnes){
+    loadFIFAFallback();
+    return;
+  }
+  
+  let filaHTML = `⚽ MS 2026:<div style='height:1px;background:rgba(255,255,255,0.2);margin:10px 0;'></div>`;
+  
+  // Dnešné zápasy
+  if(zapasyDnes.dnes && zapasyDnes.dnes.length > 0){
+    filaHTML += `<div style='font-weight:bold;margin-bottom:10px;font-size:16px;color:#fff;margin-top:12px;'>Dnešné zápasy:</div>`;
+    
+    zapasyDnes.dnes.forEach(zapas => {
+      const skor = zapas.skore ? `<span style='color:#00ff88;font-weight:bold;'>✓ ${zapas.skore}</span>` : '<span style="color:#aaa;">-</span>';
+      
+      filaHTML += `<div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
+        <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ ${zapas.cas}</div>
+        <div style='font-size:17px;flex:1.5;text-align:right;'>${zapas.hos}</div>
+        <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:50px;text-align:center;'>${skor}</div>
+        <div style='font-size:17px;flex:1.5;text-align:left;'>${zapas.dom}</div>
+      </div>`;
+    });
+  }
+  
+  // Zajtrajšie zápasy
+  if(zapasyDnes.zajtra && zapasyDnes.zajtra.length > 0){
+    filaHTML += `<div style='font-weight:bold;margin-bottom:10px;font-size:16px;color:#fff;margin-top:16px;'>Zajtra:</div>`;
+    
+    zapasyDnes.zajtra.forEach(zapas => {
+      const skor = zapas.skore ? `<span style='color:#00ff88;'>${zapas.skore}</span>` : '<span style="color:#aaa;">-</span>';
+      
+      filaHTML += `<div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
+        <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ ${zapas.cas}</div>
+        <div style='font-size:17px;flex:1.5;text-align:right;'>${zapas.hos}</div>
+        <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:50px;text-align:center;'>${skor}</div>
+        <div style='font-size:17px;flex:1.5;text-align:left;'>${zapas.dom}</div>
+      </div>`;
+    });
+  }
   
   document.getElementById('nhl').innerHTML = filaHTML;
 }
 
+// Fallback - príklady zápasov MS 2026
+function loadFIFAFallback(){
+  // Fallback keď nemáme dáta
+  let filaHTML = `⚽ MS 2026:<div style='height:1px;background:rgba(255,255,255,0.2);margin:10px 0;'></div>`;
+  filaHTML += `<div style='padding:12px;color:#aaa;text-align:center;font-size:16px;'>Zápasy budú zobrazené podľa dňa</div>`;
+  document.getElementById('nhl').innerHTML = filaHTML;
+}
+
 // Refresh každú minútu
-setInterval(loadFIFAFallback, 60000);
+setInterval(getZapasyPodlaDna, 60000);
 
 // POČASIE VRÁBLE + ALERT
 async function loadWeather(){
@@ -1397,7 +1462,7 @@ updateNameday();
 loadWeather();
 worldWeather();
 loadSun();
-loadFIFAFallback();
+getZapasyPodlaDna();
 // API zápasy skúšame, ale fallback je garantovaný
 setTimeout(() => loadNHL(), 500);
 
