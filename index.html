@@ -63,9 +63,9 @@ body::before {
 #dateWeek {font-size:34px;margin-top:-38px;}
 
 #weather {position:absolute;top:174px;left:40px;font-size:28px;line-height:1.8;width:auto;white-space:nowrap;height:50px;display:flex;align-items:center;}
-#daysSat {position:absolute;top:272px;left:40px;font-size:28px;text-align:center;width:140px;}
-#daysSun {position:absolute;top:272px;left:230px;font-size:28px;text-align:center;width:140px;}
-#daysMon {position:absolute;top:272px;left:420px;font-size:28px;text-align:center;width:140px;}
+#daysSat {position:absolute;top:272px;left:40px;font-size:32px;text-align:center;width:140px;}
+#daysSun {position:absolute;top:272px;left:230px;font-size:32px;text-align:center;width:140px;}
+#daysMon {position:absolute;top:272px;left:420px;font-size:32px;text-align:center;width:140px;}
 #sun {position:absolute;top:523px;left:40px;font-size:28px;text-align:left;line-height:1.5;}
 #nameday {position:absolute;top:216px;right:40px;font-size:31px;text-align:left;}
 
@@ -109,8 +109,6 @@ body::before {
     margin:0;
     display:inline;
     margin-left:10px;
-}
-    margin-left:6px;
 }
 
 .time-weather{
@@ -176,9 +174,9 @@ body::before {
 
 #auditsTable {
     position:absolute;
-    top:50%;
+    top:350px;
     left:50%;
-    transform:translate(calc(-50% + 38px), calc(-50% + 38px)) scale(1.5);
+    transform:translateX(calc(-50% + 38px + 10mm)) scale(1.5525);
     width:auto;
     min-width:400px;
     max-width:500px;
@@ -256,13 +254,19 @@ body::before {
             <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-07-08">-</td>
         </tr>
         <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px;text-align:center;">1.9.</td>
+            <td style="padding:8px;text-align:center;">Jul</td>
+            <td style="padding:8px;text-align:center;">Návšteva</td>
+            <td style="padding:8px;text-align:center;">CAT</td>
+            <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-07-15">-</td>
+        </tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+            <td style="padding:8px;text-align:center;">September</td>
             <td style="padding:8px;text-align:center;">Procesný audit</td>
             <td style="padding:8px;text-align:center;"></td>
             <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-09-01">-</td>
         </tr>
         <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px;text-align:center;">1.10.</td>
+            <td style="padding:8px;text-align:center;">Október</td>
             <td style="padding:8px;text-align:center;">Procesný audit</td>
             <td style="padding:8px;text-align:center;"></td>
             <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-10-01">-</td>
@@ -837,7 +841,7 @@ async function loadNHL(){
     tomorrowDate.setDate(tomorrowDate.getDate() + 1);
     const tomorrowStr = tomorrowDate.toISOString().split('T')[0];
     
-    let filaHTML = "⚽ MS 2026:<div style='height:1px;background:rgba(255,255,255,0.2);margin:10px 0;'></div>";
+    let filaHTML = "";
     
     let hasData = false;
     
@@ -880,7 +884,7 @@ async function loadNHL(){
               }
               
               filaHTML += `<div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-                <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ ${time}</div>
+                <div style='font-size:15px;color:#aaa;min-width:45px;'>${time}</div>
                 <div style='font-size:17px;flex:1.5;text-align:right;'>${away}</div>
                 <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>${resultDisplay}</div>
                 <div style='font-size:17px;flex:1.5;text-align:left;'>${home}</div>
@@ -898,7 +902,7 @@ async function loadNHL(){
               const time = new Date(match.utcDate).toLocaleTimeString('sk-SK', {hour: '2-digit', minute: '2-digit'});
               
               filaHTML += `<div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-                <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ ${time}</div>
+                <div style='font-size:15px;color:#aaa;min-width:45px;'>${time}</div>
                 <div style='font-size:17px;flex:1.5;text-align:right;'>${away}</div>
                 <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:35px;text-align:center;'>-</div>
                 <div style='font-size:17px;flex:1.5;text-align:left;'>${home}</div>
@@ -926,64 +930,123 @@ async function loadNHL(){
   }
 }
 
-// Refresh každú minútu pre LIVE dáta
-setInterval(loadNHL, 60000);
+// Refresh každú minútu - zápasy natvrdo bez API
+setInterval(getZapasyPodlaDna, 60000);
 
 // TABUĽKA VŠETKÝCH ZÁPASOV MS 2026 S VÝSLEDKAMI
 const msZapasy = {
-  '2026-06-10': {
+  '2026-06-15': {
     dnes: [
-      { cas: '21:00', dom: 'Mexiko', skore: '2:0', hos: 'J. Afrika', hotovo: true }
+      { cas: '01:00', dom: 'Pobrežie Slonoviny', skore: null, hos: 'Ekvádor', hotovo: false },
+      { cas: '04:00', dom: 'Švédsko', skore: null, hos: 'Tunisko', hotovo: false },
+      { cas: '18:00', dom: 'Španielsko', skore: null, hos: 'Kapverdy', hotovo: false },
+      { cas: '21:00', dom: 'Belgicko', skore: null, hos: 'Egypt', hotovo: false }
     ],
     zajtra: [
-      { cas: '04:00', dom: 'J. Kórea', skore: '2:1', hos: 'Česko', hotovo: true }
+      { cas: '00:00', dom: 'Saudská Arábia', skore: null, hos: 'Uruguaj', hotovo: false },
+      { cas: '03:00', dom: 'Irán', skore: null, hos: 'Nový Zéland', hotovo: false },
+      { cas: '21:00', dom: 'Francúzsko', skore: null, hos: 'Senegal', hotovo: false }
     ]
   },
-  '2026-06-11': {
+  '2026-06-16': {
     dnes: [
-      { cas: '04:00', dom: 'J. Kórea', skore: '2:1', hos: 'Česko', hotovo: true },
-      { cas: '21:00', dom: 'Kanada', skore: '1:1', hos: 'Bosna', hotovo: true }
+      { cas: '21:00', dom: 'Francúzsko', skore: null, hos: 'Senegal', hotovo: false },
+      { cas: '00:00', dom: 'Irak', skore: null, hos: 'Nórsko', hotovo: false },
+      { cas: '03:00', dom: 'Argentína', skore: null, hos: 'Alžírsko', hotovo: false }
     ],
     zajtra: [
-      { cas: '03:00', dom: 'USA', skore: null, hos: 'Paraguaj', hotovo: false },
-      { cas: '21:00', dom: 'Katar', skore: null, hos: 'Švajčiarsko', hotovo: false }
+      { cas: '18:00', dom: 'Rakúsko', skore: null, hos: 'Jordánsko', hotovo: false },
+      { cas: '21:00', dom: 'Portugalsko', skore: null, hos: 'DR Kongo', hotovo: false }
     ]
   },
-  '2026-06-12': {
+  '2026-06-17': {
     dnes: [
-      { cas: '03:00', dom: 'USA', skore: null, hos: 'Paraguaj', hotovo: false },
-      { cas: '21:00', dom: 'Katar', skore: null, hos: 'Švajčiarsko', hotovo: false }
+      { cas: '18:00', dom: 'Rakúsko', skore: null, hos: 'Jordánsko', hotovo: false },
+      { cas: '21:00', dom: 'Portugalsko', skore: null, hos: 'DR Kongo', hotovo: false }
     ],
     zajtra: [
-      { cas: '00:00', dom: 'Brazília', skore: null, hos: 'Maroko', hotovo: false },
-      { cas: '03:00', dom: 'Haiti', skore: null, hos: 'Škótsko', hotovo: false }
+      { cas: '18:00', dom: 'Nemecko', skore: null, hos: 'Honduras', hotovo: false },
+      { cas: '21:00', dom: 'Holandsko', skore: null, hos: 'Curacao', hotovo: false }
     ]
   },
-  '2026-06-13': {
+  '2026-06-18': {
     dnes: [
-      { cas: '00:00', dom: 'Brazília', skore: null, hos: 'Maroko', hotovo: false },
-      { cas: '03:00', dom: 'Haiti', skore: null, hos: 'Škótsko', hotovo: false }
+      { cas: '01:00', dom: 'Ghana', skore: null, hos: 'Panama', hotovo: false },
+      { cas: '04:00', dom: 'Uzbekistan', skore: null, hos: 'Kolumbia', hotovo: false }
     ],
     zajtra: [
-      { cas: '06:00', dom: 'Austrália', skore: null, hos: 'Turecko', hotovo: false },
-      { cas: '19:00', dom: 'Nemecko', skore: null, hos: 'Curacao', hotovo: false }
+      { cas: '00:00', dom: 'Kanada', skore: null, hos: 'Katar', hotovo: false },
+      { cas: '03:00', dom: 'Mexiko', skore: null, hos: 'Južná Kórea', hotovo: false }
     ]
   },
-  '2026-06-14': {
+  '2026-06-19': {
     dnes: [
-      { cas: '06:00', dom: 'Austrália', skore: null, hos: 'Turecko', hotovo: false },
-      { cas: '19:00', dom: 'Nemecko', skore: null, hos: 'Curacao', hotovo: false }
+      { cas: '00:00', dom: 'Kanada', skore: null, hos: 'Katar', hotovo: false },
+      { cas: '03:00', dom: 'Mexiko', skore: null, hos: 'Južná Kórea', hotovo: false }
     ],
     zajtra: [
-      { cas: '03:00', dom: 'Pobrežie Slonoviny', skore: null, hos: 'Ekvádor', hotovo: false },
-      { cas: '18:00', dom: 'Švédsko', skore: null, hos: 'Tunisko', hotovo: false }
+      { cas: '00:00', dom: 'Škótsko', skore: null, hos: 'Maroko', hotovo: false },
+      { cas: '03:00', dom: 'Brazília', skore: null, hos: 'Haiti', hotovo: false }
+    ]
+  },
+  '2026-06-20': {
+    dnes: [
+      { cas: '00:00', dom: 'Škótsko', skore: null, hos: 'Maroko', hotovo: false },
+      { cas: '03:00', dom: 'Brazília', skore: null, hos: 'Haiti', hotovo: false }
+    ],
+    zajtra: [
+      { cas: '00:00', dom: 'Uruguay', skore: null, hos: 'Kapverdy', hotovo: false },
+      { cas: '03:00', dom: 'Saudská Arábia', skore: null, hos: 'Mexiko', hotovo: false },
+      { cas: '21:00', dom: 'Belgicko', skore: null, hos: 'Brazília', hotovo: false }
+    ]
+  },
+  '2026-06-21': {
+    dnes: [
+      { cas: '00:00', dom: 'Uruguay', skore: null, hos: 'Kapverdy', hotovo: false },
+      { cas: '03:00', dom: 'Saudská Arábia', skore: null, hos: 'Mexiko', hotovo: false },
+      { cas: '21:00', dom: 'Belgicko', skore: null, hos: 'Brazília', hotovo: false }
+    ],
+    zajtra: [
+      { cas: '00:00', dom: 'Anglicko', skore: null, hos: 'Slovensko', hotovo: false },
+      { cas: '03:00', dom: 'Irán', skore: null, hos: 'Senegal', hotovo: false }
+    ]
+  },
+  '2026-06-22': {
+    dnes: [
+      { cas: '00:00', dom: 'Anglicko', skore: null, hos: 'Slovensko', hotovo: false },
+      { cas: '03:00', dom: 'Irán', skore: null, hos: 'Senegal', hotovo: false }
+    ],
+    zajtra: [
+      { cas: '21:00', dom: 'Nový Zéland', skore: null, hos: 'Argentína', hotovo: false }
+    ]
+  },
+  '2026-06-23': {
+    dnes: [
+      { cas: '21:00', dom: 'Nový Zéland', skore: null, hos: 'Argentína', hotovo: false }
+    ],
+    zajtra: [
+      { cas: '00:00', dom: 'Holandsko', skore: null, hos: 'Katar', hotovo: false },
+      { cas: '03:00', dom: 'Ekvádor', skore: null, hos: 'Francúzsko', hotovo: false }
+    ]
+  },
+  '2026-06-24': {
+    dnes: [
+      { cas: '00:00', dom: 'Holandsko', skore: null, hos: 'Katar', hotovo: false },
+      { cas: '03:00', dom: 'Ekvádor', skore: null, hos: 'Francúzsko', hotovo: false }
+    ],
+    zajtra: [
+      { cas: '21:00', dom: 'Tunisko', skore: null, hos: 'Austrália', hotovo: false }
     ]
   }
 };
 
 function getZapasyPodlaDna(){
   const dnes = new Date();
-  const datumKey = dnes.toISOString().split('T')[0]; // YYYY-MM-DD
+  // Lokálny dátum (nie UTC!) - aby po polnoci ukázalo správny deň
+  const rok = dnes.getFullYear();
+  const mesiac = String(dnes.getMonth() + 1).padStart(2, '0');
+  const den = String(dnes.getDate()).padStart(2, '0');
+  const datumKey = `${rok}-${mesiac}-${den}`; // YYYY-MM-DD lokálne
   
   let zapasyDnes = msZapasy[datumKey];
   
@@ -993,7 +1056,7 @@ function getZapasyPodlaDna(){
     return;
   }
   
-  let filaHTML = `⚽ MS 2026:<div style='height:1px;background:rgba(255,255,255,0.2);margin:10px 0;'></div>`;
+  let filaHTML = ``;
   
   // Dnešné zápasy
   if(zapasyDnes.dnes && zapasyDnes.dnes.length > 0){
@@ -1003,7 +1066,7 @@ function getZapasyPodlaDna(){
       const skor = zapas.skore ? `<span style='color:#00ff88;font-weight:bold;'>✓ ${zapas.skore}</span>` : '<span style="color:#aaa;">-</span>';
       
       filaHTML += `<div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-        <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ ${zapas.cas}</div>
+        <div style='font-size:15px;color:#aaa;min-width:45px;'>${zapas.cas}</div>
         <div style='font-size:17px;flex:1.5;text-align:right;'>${zapas.hos}</div>
         <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:50px;text-align:center;'>${skor}</div>
         <div style='font-size:17px;flex:1.5;text-align:left;'>${zapas.dom}</div>
@@ -1019,7 +1082,7 @@ function getZapasyPodlaDna(){
       const skor = zapas.skore ? `<span style='color:#00ff88;'>${zapas.skore}</span>` : '<span style="color:#aaa;">-</span>';
       
       filaHTML += `<div style='background:rgba(30,100,140,0.3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #00d4ff;display:flex;justify-content:space-between;align-items:center;gap:10px;'>
-        <div style='font-size:15px;color:#aaa;min-width:45px;'>⭐ ${zapas.cas}</div>
+        <div style='font-size:15px;color:#aaa;min-width:45px;'>${zapas.cas}</div>
         <div style='font-size:17px;flex:1.5;text-align:right;'>${zapas.hos}</div>
         <div style='font-size:17px;color:#00d4ff;font-weight:bold;min-width:50px;text-align:center;'>${skor}</div>
         <div style='font-size:17px;flex:1.5;text-align:left;'>${zapas.dom}</div>
@@ -1033,13 +1096,39 @@ function getZapasyPodlaDna(){
 // Fallback - príklady zápasov MS 2026
 function loadFIFAFallback(){
   // Fallback keď nemáme dáta
-  let filaHTML = `⚽ MS 2026:<div style='height:1px;background:rgba(255,255,255,0.2);margin:10px 0;'></div>`;
+  let filaHTML = ``;
   filaHTML += `<div style='padding:12px;color:#aaa;text-align:center;font-size:16px;'>Zápasy budú zobrazené podľa dňa</div>`;
   document.getElementById('nhl').innerHTML = filaHTML;
 }
 
-// Refresh každú minútu
-setInterval(getZapasyPodlaDna, 60000);
+// Pomocná funkcia - lokálny dátum YYYY-MM-DD
+function getLokalnyDatum() {
+  const d = new Date();
+  const rok = d.getFullYear();
+  const mesiac = String(d.getMonth() + 1).padStart(2, '0');
+  const den = String(d.getDate()).padStart(2, '0');
+  return `${rok}-${mesiac}-${den}`;
+}
+
+// Tracking posledného dňa
+let lastDate = getLokalnyDatum();
+
+// Refresh každú minútu + skontroluj či sa zmení deň
+setInterval(function() {
+  const today = getLokalnyDatum();
+  
+  // Ak sa deň zmenil - prejdi na nový deň
+  if(today !== lastDate) {
+    console.log('Deň sa zmenil z ' + lastDate + ' na ' + today);
+    lastDate = today;
+    getZapasyPodlaDna();
+  }
+}, 60000);
+
+// Spusti aj na štarte
+setTimeout(function() {
+  getZapasyPodlaDna();
+}, 500);
 
 // POČASIE VRÁBLE + ALERT
 async function loadWeather(){
@@ -1444,11 +1533,11 @@ setInterval(()=>{
   updateNameday(); // kontroluje zmenu dňa
 },1000);
 
-// POČASIE + NHL – každú minútu
+// POČASIE – každú minútu
 setInterval(()=>{
   loadWeather();
   worldWeather();
-  loadNHL();
+  getZapasyPodlaDna();
   loadSun();
 },60000);
 
@@ -1463,109 +1552,115 @@ loadWeather();
 worldWeather();
 loadSun();
 getZapasyPodlaDna();
-// API zápasy skúšame, ale fallback je garantovaný
-setTimeout(() => loadNHL(), 500);
+// Zápasy natvrdo - bez API
 
 // PARSOVANIE ČLÁNKOV Z TERAZ.SK - PRIAME FETCHOVANIE
 let newsBuffer = []; 
 const MAX_NEWS = 15;
 
 async function loadRSSFeeds(){
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000);
-    
-    const response = await fetch('https://www.teraz.sk', {
-      mode: 'cors',
-      signal: controller.signal,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+  // RSS feedy teraz.sk (TASR) - viac kanálov pre 20 správ
+  const rssUrls = [
+    'https://www.teraz.sk/rss/vsetky-spravy.rss',
+    'https://www.teraz.sk/rss/slovensko.rss',
+    'https://www.teraz.sk/rss/zahranicie.rss'
+  ];
+  
+  // CORS proxy servery (skúšame postupne kým jeden nezafunguje)
+  const proxies = [
+    'https://api.allorigins.win/raw?url=',
+    'https://corsproxy.io/?url=',
+    'https://api.codetabs.com/v1/proxy/?quest='
+  ];
+  
+  // Funkcia na načítanie jedného feedu cez prvý fungujúci proxy
+  async function nacitajFeed(rssUrl) {
+    for(let proxy of proxies) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        const response = await fetch(proxy + encodeURIComponent(rssUrl), { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if(response.ok) {
+          const xmlText = await response.text();
+          const xml = new DOMParser().parseFromString(xmlText, "text/xml");
+          const items = xml.querySelectorAll('item');
+          let titulky = [];
+          items.forEach(item => {
+            const titleEl = item.querySelector('title');
+            if(titleEl) titulky.push(titleEl.textContent.trim());
+          });
+          if(titulky.length > 0) return titulky;
+        }
+      } catch(e) {
+        console.log('Proxy zlyhalo: ' + proxy);
+      }
+    }
+    return [];
+  }
+  
+  // Načítaj všetky feedy a spoj ich (bez duplikátov)
+  let newArticles = [];
+  for(let url of rssUrls) {
+    const titulky = await nacitajFeed(url);
+    titulky.forEach(t => {
+      if(t.length > 8 && !newArticles.includes(t)) {
+        newArticles.push(t);
       }
     });
-    clearTimeout(timeoutId);
-    const html = await response.text();
-    
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-    
-    let newArticles = [];
-    const allHeadings = doc.querySelectorAll('h4 a, h3 a');
-    
-    for(let link of allHeadings){
-      const title = link.textContent.trim();
-      
-      if(title.length < 12 || title.includes('Všetky') || title.includes('Viac') || title.includes('clanok')) continue;
-      if(title.toLowerCase().includes('videa') || title.toLowerCase().includes('prenos') || title.toLowerCase().includes('tasr')) continue;
-      
-      let description = "";
-      let parent = link.closest('div');
-      if(parent){
-        const pElements = parent.querySelectorAll('p');
-        if(pElements.length > 0){
-          description = pElements[0].textContent.trim().substring(0, 70);
-        }
-      }
-      
-      const fullNews = description ? `${title} — ${description}` : title;
-      
-      if(!newArticles.includes(fullNews) && newArticles.length < 10){
-        newArticles.push(fullNews);
-      }
-    }
-    
-    if(newArticles.length > 0){
-      const separator = " ❖ ";
-      const scrollText = newArticles.join(separator) + separator + newArticles.join(separator);
-      document.getElementById('eventScroll').innerText = scrollText;
-    }
-    
-  } catch(e){
-    console.log("Chyba fetch:", e.message);
+    if(newArticles.length >= 20) break; // máme dosť
   }
+  
+  // Ak máme aspoň nejaké články, zobraz ich
+  if(newArticles.length >= 3) {
+    const articles = newArticles.slice(0, 20);
+    const separator = "   ❖   ";
+    const jeden = articles.join(separator) + separator;
+    const scrollText = jeden + jeden;
+    document.getElementById('eventScroll').innerText = scrollText;
+    console.log('✓ Načítaných ' + articles.length + ' správ z teraz.sk');
+    return;
+  }
+  
+  // Ak všetko zlyhalo - fallback
+  console.log('Všetky feedy zlyhali, používam fallback');
+  loadFallbackNews();
 }
-
-// Hneď pri štarte - fallback správy
-loadFallbackNews();
-// Pokúsiť sa načítať reálne správy
-setTimeout(() => loadRSSFeeds(), 500);
-// Aktualizovať každých 30 sekúnd
-setInterval(loadRSSFeeds, 30 * 1000);
 
 function loadFallbackNews(){
   const newsItems = [
-    "Slovensko - Nové opatrenia v oblasti zdravotníctva a sociálnych služieb",
-    "Ekonomika - Rast HDP pokračuje pozitívnym trendom v poslednom štvrťroku",
-    "Šport - Slovenský futbal sa pripravuje na majstrovstvá sveta",
-    "Zahraničie - NATO aktivovalo nové obranné sily vo Fínsku",
-    "Zdravie - Nové očkovanie dostupné pre všetkých občanov"
+    "Trump: Putin aj Zelenskyj sú otvorení riešeniu vojny na Ukrajine",
+    "Európska únia začala oficiálne prístupové rokovania s Ukrajinou",
+    "Španielski futbalisti prekvapivo remizovali s Kapverdami",
+    "Europoslanci odobrili dohodu o právach cestujúcich v leteckej doprave",
+    "Von der Leyenová: Ak Irán neurobí trvalé zmeny, sankcie EÚ sa nezrušia",
+    "Orbán označil za smiešne obmedzenie funkčného obdobia premiéra",
+    "PCA zamietol veľkú časť žaloby Kyjeva na Moskvu pre Kerčský prieliv"
   ];
   
-  const separator = " ❖ ";
-  const scrollText = newsItems.join(separator) + separator + newsItems.join(separator);
+  const separator = "   ❖   ";
+  const jeden = newsItems.join(separator) + separator;
+  const scrollText = jeden + jeden;
   document.getElementById('eventScroll').innerText = scrollText;
 }
 
 newsBuffer = [];
 
-// HNEĎ pri štarte - zavolaj fallback aby sa videli správy
-setTimeout(function(){
-  loadFallbackNews();
-  // Potom skúšaj API
-  loadRSSFeeds();
-}, 100);
-
-// Aktualizuj každých 30 sekúnd
-setInterval(loadRSSFeeds, 30 * 1000);
+// ŠTART SPRÁV: hneď zobraz fallback, potom skús reálne RSS z teraz.sk
+loadFallbackNews();
+setTimeout(loadRSSFeeds, 300);
+// Aktualizuj každé 2 minúty
+setInterval(loadRSSFeeds, 120 * 1000);
 
 </script>
 <div id="historicalEvents" class="glass" style="position:absolute;bottom:11px;left:40px;right:40px;width:auto;overflow:hidden;height:60px;display:flex;align-items:center;padding:10px 15px;white-space:nowrap;text-align:center;justify-content:center;">
-    <div id="eventScroll" style="display:inline-block;animation:scrollTextRTL 300s linear infinite;font-size:45px;white-space:nowrap;">Slovensko - Nové opatrenia v oblasti zdravotníctva ❖ Ekonomika - Rast HDP pokračuje ❖ Šport - Slovenský futbal sa pripravuje ❖ Zahraničie - NATO aktivovalo nové sily ❖ Zdravie - Nové očkovanie dostupné ❖ Slovensko - Nové opatrenia v oblasti zdravotníctva ❖ Ekonomika - Rast HDP pokračuje ❖ Šport - Slovenský futbal sa pripravuje ❖ Zahraničie - NATO aktivovalo nové sily ❖ Zdravie - Nové očkovanie dostupné</div>
+    <div id="eventScroll" style="display:inline-block;animation:scrollTextRTL 133s linear infinite;font-size:45px;white-space:nowrap;">Trump: Putin aj Zelenskyj sú otvorení riešeniu vojny na Ukrajine   ❖   Európska únia začala oficiálne prístupové rokovania s Ukrajinou   ❖   Španielski futbalisti prekvapivo remizovali s Kapverdami   ❖   Europoslanci odobrili dohodu o právach cestujúcich v leteckej doprave   ❖   Trump: Putin aj Zelenskyj sú otvorení riešeniu vojny na Ukrajine   ❖   Európska únia začala oficiálne prístupové rokovania s Ukrajinou   ❖   Španielski futbalisti prekvapivo remizovali s Kapverdami   ❖   Europoslanci odobrili dohodu o právach cestujúcich v leteckej doprave   ❖   </div>
 </div>
 
 <style>
 @keyframes scrollTextRTL {
-    from { transform: translateX(100%); }
-    to { transform: translateX(-100%); }
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
 }
 </style>
 
