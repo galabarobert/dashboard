@@ -922,7 +922,8 @@ async function loadNHL(){
       return;
     }
 
-    document.getElementById('nhl').innerHTML = filaHTML;
+    // Vypnuté - neprepisujeme getZapasyPodlaDna, používame lokálne dáta
+    // document.getElementById('nhl').innerHTML = filaHTML;
     
   } catch (err) {
     console.error('Football Error:', err);
@@ -935,108 +936,25 @@ setInterval(getZapasyPodlaDna, 60000);
 
 // TABUĽKA VŠETKÝCH ZÁPASOV MS 2026 S VÝSLEDKAMI
 const msZapasy = {
-  '2026-06-15': {
-    dnes: [
-      { cas: '01:00', dom: 'Pobrežie Slonoviny', skore: null, hos: 'Ekvádor', hotovo: false },
-      { cas: '04:00', dom: 'Švédsko', skore: null, hos: 'Tunisko', hotovo: false },
-      { cas: '18:00', dom: 'Španielsko', skore: null, hos: 'Kapverdy', hotovo: false },
-      { cas: '21:00', dom: 'Belgicko', skore: null, hos: 'Egypt', hotovo: false }
-    ],
-    zajtra: [
-      { cas: '00:00', dom: 'Saudská Arábia', skore: null, hos: 'Uruguaj', hotovo: false },
-      { cas: '03:00', dom: 'Irán', skore: null, hos: 'Nový Zéland', hotovo: false },
-      { cas: '21:00', dom: 'Francúzsko', skore: null, hos: 'Senegal', hotovo: false }
-    ]
-  },
   '2026-06-16': {
-    dnes: [
-      { cas: '21:00', dom: 'Francúzsko', skore: null, hos: 'Senegal', hotovo: false },
-      { cas: '00:00', dom: 'Irak', skore: null, hos: 'Nórsko', hotovo: false },
-      { cas: '03:00', dom: 'Argentína', skore: null, hos: 'Alžírsko', hotovo: false }
-    ],
+    dnes: [],
     zajtra: [
-      { cas: '18:00', dom: 'Rakúsko', skore: null, hos: 'Jordánsko', hotovo: false },
-      { cas: '21:00', dom: 'Portugalsko', skore: null, hos: 'DR Kongo', hotovo: false }
+      { cas: '00:00', dom: 'Irak', skore: null, hos: 'Nórsko', hotovo: false },
+      { cas: '03:00', dom: 'Argentína', skore: null, hos: 'Alžírsko', hotovo: false },
+      { cas: '06:00', dom: 'Rakúsko', skore: null, hos: 'Jordánsko', hotovo: false },
+      { cas: '19:00', dom: 'Portugalsko', skore: null, hos: 'DR Kongo', hotovo: false },
+      { cas: '22:00', dom: 'Anglicko', skore: null, hos: 'Chorvátsko', hotovo: false }
     ]
   },
   '2026-06-17': {
     dnes: [
-      { cas: '18:00', dom: 'Rakúsko', skore: null, hos: 'Jordánsko', hotovo: false },
-      { cas: '21:00', dom: 'Portugalsko', skore: null, hos: 'DR Kongo', hotovo: false }
+      { cas: '00:00', dom: 'Irak', skore: null, hos: 'Nórsko', hotovo: false },
+      { cas: '03:00', dom: 'Argentína', skore: null, hos: 'Alžírsko', hotovo: false },
+      { cas: '06:00', dom: 'Rakúsko', skore: null, hos: 'Jordánsko', hotovo: false },
+      { cas: '19:00', dom: 'Portugalsko', skore: null, hos: 'DR Kongo', hotovo: false },
+      { cas: '22:00', dom: 'Anglicko', skore: null, hos: 'Chorvátsko', hotovo: false }
     ],
-    zajtra: [
-      { cas: '18:00', dom: 'Nemecko', skore: null, hos: 'Honduras', hotovo: false },
-      { cas: '21:00', dom: 'Holandsko', skore: null, hos: 'Curacao', hotovo: false }
-    ]
-  },
-  '2026-06-18': {
-    dnes: [
-      { cas: '01:00', dom: 'Ghana', skore: null, hos: 'Panama', hotovo: false },
-      { cas: '04:00', dom: 'Uzbekistan', skore: null, hos: 'Kolumbia', hotovo: false }
-    ],
-    zajtra: [
-      { cas: '00:00', dom: 'Kanada', skore: null, hos: 'Katar', hotovo: false },
-      { cas: '03:00', dom: 'Mexiko', skore: null, hos: 'Južná Kórea', hotovo: false }
-    ]
-  },
-  '2026-06-19': {
-    dnes: [
-      { cas: '00:00', dom: 'Kanada', skore: null, hos: 'Katar', hotovo: false },
-      { cas: '03:00', dom: 'Mexiko', skore: null, hos: 'Južná Kórea', hotovo: false }
-    ],
-    zajtra: [
-      { cas: '00:00', dom: 'Škótsko', skore: null, hos: 'Maroko', hotovo: false },
-      { cas: '03:00', dom: 'Brazília', skore: null, hos: 'Haiti', hotovo: false }
-    ]
-  },
-  '2026-06-20': {
-    dnes: [
-      { cas: '00:00', dom: 'Škótsko', skore: null, hos: 'Maroko', hotovo: false },
-      { cas: '03:00', dom: 'Brazília', skore: null, hos: 'Haiti', hotovo: false }
-    ],
-    zajtra: [
-      { cas: '00:00', dom: 'Uruguay', skore: null, hos: 'Kapverdy', hotovo: false },
-      { cas: '03:00', dom: 'Saudská Arábia', skore: null, hos: 'Mexiko', hotovo: false },
-      { cas: '21:00', dom: 'Belgicko', skore: null, hos: 'Brazília', hotovo: false }
-    ]
-  },
-  '2026-06-21': {
-    dnes: [
-      { cas: '00:00', dom: 'Uruguay', skore: null, hos: 'Kapverdy', hotovo: false },
-      { cas: '03:00', dom: 'Saudská Arábia', skore: null, hos: 'Mexiko', hotovo: false },
-      { cas: '21:00', dom: 'Belgicko', skore: null, hos: 'Brazília', hotovo: false }
-    ],
-    zajtra: [
-      { cas: '00:00', dom: 'Anglicko', skore: null, hos: 'Slovensko', hotovo: false },
-      { cas: '03:00', dom: 'Irán', skore: null, hos: 'Senegal', hotovo: false }
-    ]
-  },
-  '2026-06-22': {
-    dnes: [
-      { cas: '00:00', dom: 'Anglicko', skore: null, hos: 'Slovensko', hotovo: false },
-      { cas: '03:00', dom: 'Irán', skore: null, hos: 'Senegal', hotovo: false }
-    ],
-    zajtra: [
-      { cas: '21:00', dom: 'Nový Zéland', skore: null, hos: 'Argentína', hotovo: false }
-    ]
-  },
-  '2026-06-23': {
-    dnes: [
-      { cas: '21:00', dom: 'Nový Zéland', skore: null, hos: 'Argentína', hotovo: false }
-    ],
-    zajtra: [
-      { cas: '00:00', dom: 'Holandsko', skore: null, hos: 'Katar', hotovo: false },
-      { cas: '03:00', dom: 'Ekvádor', skore: null, hos: 'Francúzsko', hotovo: false }
-    ]
-  },
-  '2026-06-24': {
-    dnes: [
-      { cas: '00:00', dom: 'Holandsko', skore: null, hos: 'Katar', hotovo: false },
-      { cas: '03:00', dom: 'Ekvádor', skore: null, hos: 'Francúzsko', hotovo: false }
-    ],
-    zajtra: [
-      { cas: '21:00', dom: 'Tunisko', skore: null, hos: 'Austrália', hotovo: false }
-    ]
+    zajtra: []
   }
 };
 
@@ -1555,8 +1473,15 @@ getZapasyPodlaDna();
 // Zápasy natvrdo - bez API
 
 // PARSOVANIE ČLÁNKOV Z TERAZ.SK - PRIAME FETCHOVANIE
-let newsBuffer = []; 
-const MAX_NEWS = 15;
+let newsArticles = [];
+let newsCurrentIndex = 0;
+
+function rotateNews() {
+  if(newsArticles.length > 0) {
+    document.getElementById('eventScroll').innerText = newsArticles[newsCurrentIndex];
+    newsCurrentIndex = (newsCurrentIndex + 1) % newsArticles.length;
+  }
+}
 
 async function loadRSSFeeds(){
   // RSS feedy teraz.sk (TASR) - viac kanálov pre 20 správ
@@ -1611,14 +1536,12 @@ async function loadRSSFeeds(){
     if(newArticles.length >= 20) break; // máme dosť
   }
   
-  // Ak máme aspoň nejaké články, zobraz ich
+  // Ak máme aspoň nejaké články, ulož ich do globálneho poľa
   if(newArticles.length >= 3) {
-    const articles = newArticles.slice(0, 20);
-    const separator = "   ❖   ";
-    const jeden = articles.join(separator) + separator;
-    const scrollText = jeden + jeden;
-    document.getElementById('eventScroll').innerText = scrollText;
-    console.log('✓ Načítaných ' + articles.length + ' správ z teraz.sk');
+    newsArticles = newArticles.slice(0, 30);
+    newsCurrentIndex = 0;
+    console.log('✓ Načítaných ' + newsArticles.length + ' správ z teraz.sk');
+    rotateNews();
     return;
   }
   
@@ -1638,31 +1561,65 @@ function loadFallbackNews(){
     "PCA zamietol veľkú časť žaloby Kyjeva na Moskvu pre Kerčský prieliv"
   ];
   
-  const separator = "   ❖   ";
-  const jeden = newsItems.join(separator) + separator;
-  const scrollText = jeden + jeden;
-  document.getElementById('eventScroll').innerText = scrollText;
+  newsArticles = newsItems;
+  newsCurrentIndex = 0;
+  rotateNews();
 }
 
-newsBuffer = [];
+// LIVE FEED 20 SPRÁV Z TERAZ.SK - QUEUE SYSTÉM
+let newsQueue = [];
 
-// ŠTART SPRÁV: hneď zobraz fallback, potom skús reálne RSS z teraz.sk
-loadFallbackNews();
-setTimeout(loadRSSFeeds, 300);
-// Aktualizuj každé 2 minúty
-setInterval(loadRSSFeeds, 120 * 1000);
+async function updateNewsQueue() {
+  const rssUrl = 'https://www.teraz.sk/rss/vsetky-spravy.rss';
+  const proxies = [
+    'https://api.allorigins.win/raw?url=',
+    'https://corsproxy.io/?url=',
+    'https://api.codetabs.com/v1/proxy/?quest='
+  ];
+  
+  for(let proxy of proxies) {
+    try {
+      const response = await fetch(proxy + encodeURIComponent(rssUrl), { signal: AbortSignal.timeout(5000) });
+      if(response.ok) {
+        const xmlText = await response.text();
+        const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
+        const items = xml.querySelectorAll('item');
+        
+        let freshNews = [];
+        items.forEach(item => {
+          const title = item.querySelector('title')?.textContent?.trim();
+          if(title && title.length > 10) freshNews.push(title);
+        });
+        
+        // Spracovanie queue: pridaj nové, odstráň staré
+        freshNews.forEach(title => {
+          if(!newsQueue.includes(title)) {
+            newsQueue.unshift(title); // Nový na začiatok
+            if(newsQueue.length > 20) newsQueue.pop(); // Najstarší sa vyhodí
+          }
+        });
+        
+        // Zobraz všetkých 20
+        if(newsQueue.length > 0) {
+          document.getElementById('eventScroll').innerText = newsQueue.join(' • ');
+          console.log('✓ Queue: ' + newsQueue.length + ' správ');
+        }
+        return;
+      }
+    } catch(e) {}
+  }
+}
+
+// Hneď načítaj, potom každých 3 minúty
+updateNewsQueue();
+setInterval(updateNewsQueue, 3 * 60 * 1000);
+
+
 
 </script>
-<div id="historicalEvents" class="glass" style="position:absolute;bottom:11px;left:40px;right:40px;width:auto;overflow:hidden;height:60px;display:flex;align-items:center;padding:10px 15px;white-space:nowrap;text-align:center;justify-content:center;">
-    <div id="eventScroll" style="display:inline-block;animation:scrollTextRTL 133s linear infinite;font-size:45px;white-space:nowrap;">Trump: Putin aj Zelenskyj sú otvorení riešeniu vojny na Ukrajine   ❖   Európska únia začala oficiálne prístupové rokovania s Ukrajinou   ❖   Španielski futbalisti prekvapivo remizovali s Kapverdami   ❖   Europoslanci odobrili dohodu o právach cestujúcich v leteckej doprave   ❖   Trump: Putin aj Zelenskyj sú otvorení riešeniu vojny na Ukrajine   ❖   Európska únia začala oficiálne prístupové rokovania s Ukrajinou   ❖   Španielski futbalisti prekvapivo remizovali s Kapverdami   ❖   Europoslanci odobrili dohodu o právach cestujúcich v leteckej doprave   ❖   </div>
+<div id="historicalEvents" class="glass" style="position:absolute;bottom:11px;left:40px;right:40px;width:auto;overflow:hidden;height:auto;display:flex;align-items:center;padding:15px;text-align:center;justify-content:center;">
+    <div id="eventScroll" style="display:inline-block;font-size:20px;color:#fff;line-height:1.4;white-space:normal;">Načítavam správy...</div>
 </div>
-
-<style>
-@keyframes scrollTextRTL {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-}
-</style>
 
 </body>
 </html>
