@@ -1617,9 +1617,16 @@ setInterval(updateNewsQueue, 3 * 60 * 1000);
 
 
 </script>
-<div id="historicalEvents" class="glass" style="position:absolute;bottom:11px;left:40px;right:40px;width:auto;overflow:hidden;height:auto;display:flex;align-items:center;padding:15px;text-align:center;justify-content:center;">
-    <div id="eventScroll" style="display:inline-block;font-size:20px;color:#fff;line-height:1.4;white-space:normal;">Načítavam správy...</div>
+<div id="historicalEvents" class="glass" style="position:absolute;bottom:11px;left:40px;right:40px;width:auto;overflow:hidden;height:auto;display:flex;align-items:center;padding:10px 15px;text-align:center;justify-content:flex-start;">
+    <div id="eventScroll" style="display:inline-block;font-size:18px;color:#fff;white-space:nowrap;animation:scrollLeft 60s linear infinite;padding-left:100%;">Načítavam správy...</div>
 </div>
+
+<style>
+@keyframes scrollLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+</style>
 
 </body>
 </html>
