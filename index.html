@@ -6,6 +6,7 @@
 <title>Dashboard</title>
 
 <style>
+html, body { height:100%; }
 body {
     margin:0;
     background: linear-gradient(135deg, #0a0015 0%, #1a0033 25%, #003366 50%, #001a33 75%, #0a0015 100%);
@@ -17,6 +18,17 @@ body {
     overflow: hidden;
     min-height: 100vh;
     padding-top: env(safe-area-inset-top);
+}
+
+/* Pevné plátno 1920x1080 - škáluje sa na veľkosť displeja (mobil na šírku ho ukáže celé) */
+#stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    transform-origin: top left;
+    z-index: 2;
 }
 
 body::before {
@@ -231,6 +243,8 @@ body::before {
 </head>
 
 <body>
+
+<div id="stage">
 
 <div id="location" class="glow">
     Vráble
@@ -1663,6 +1677,20 @@ buildMiniCalendar();
 renderFuel();
 loadFuelPrices();
 setInterval(loadFuelPrices, 6 * 60 * 60 * 1000);
+
+// ŠKÁLOVANIE PLÁTNA – aby sa dashboard zmestil na akúkoľvek obrazovku (aj mobil na šírku)
+function fitStage(){
+  const stage=document.getElementById('stage');
+  if(!stage) return;
+  const sw=1920, sh=1080;
+  const scale=Math.min(window.innerWidth/sw, window.innerHeight/sh);
+  const x=Math.round((window.innerWidth  - sw*scale)/2);
+  const y=Math.round((window.innerHeight - sh*scale)/2);
+  stage.style.transform=`translate(${x}px, ${y}px) scale(${scale})`;
+}
+window.addEventListener('resize', fitStage);
+window.addEventListener('orientationchange', fitStage);
+fitStage();
 // Zápasy natvrdo - bez API
 
 // PARSOVANIE ČLÁNKOV Z TERAZ.SK - PRIAME FETCHOVANIE
@@ -1813,6 +1841,9 @@ setInterval(updateNewsQueue, 3 * 60 * 1000);
 <div id="historicalEvents" class="glass" style="position:absolute;bottom:11px;left:40px;right:40px;width:auto;overflow:hidden;height:auto;display:flex;align-items:center;padding:15px;text-align:center;justify-content:flex-start;">
     <div id="eventScroll" style="display:inline-block;font-size:35px;color:#fff;white-space:nowrap;animation:scrollLeft 180s linear infinite;padding-left:100%;">Načítavam správy...</div>
 </div>
+
+</div>
+<!-- /stage -->
 
 <style>
 @keyframes scrollLeft {
