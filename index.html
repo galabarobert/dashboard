@@ -162,21 +162,44 @@ body::before {
 
 #vacationBox{
     position:absolute;
-    top:12px;
-    left:339px;
+    top:340px;
+    right:40px;
+    left:auto;
     transform:none;
     font-size:38px;
     text-align:center;
 }
 #vacationTime{font-size:28px;color:white;}
 
+#holidayBox{
+    position:absolute;
+    top:calc(430px - 1mm);
+    right:40px;
+    font-size:28px;
+    text-align:center;
+}
+#holidayDisplay{font-size:28px;color:white;}
+
+#miniCalendar{
+    position:absolute;
+    top:560px;
+    right:40px;
+    padding:15px;
+}
+#fuelBox{
+    position:absolute;
+    top:780px;
+    right:40px;
+    padding:15px;
+}
+
 #nhl {position:absolute;top:350px;right:40px;margin-top:0px;font-size:35px;line-height:1.8;width:383px;}
 
 #auditsTable {
     position:absolute;
-    top:350px;
+    top:calc(350px + 0.5cm);
     left:50%;
-    transform:translateX(calc(-50% + 38px + 10mm)) scale(1.5525);
+    transform:translateX(calc(-50% + 38px + 10mm)) scale(1.69610625);
     width:auto;
     min-width:400px;
     max-width:500px;
@@ -224,7 +247,6 @@ body::before {
 <div id="daysSun" class="glass"></div>
 <div id="daysMon" class="glass"></div>
 <div id="sun" class="glass"></div>
-<div id="nhl" class="glass"></div>
 <div id="nameday" class="glass"></div>
 
 <div id="auditsTable" class="glass">
@@ -290,6 +312,14 @@ body::before {
     <div id="vacationTime"></div>
     <div id="shiftLunchInfo" style="font-size:18px;margin-top:8px;color:#aaa;"></div>
 </div>
+
+<div id="holidayBox" class="glass">
+    <div id="holidayDisplay"></div>
+</div>
+
+<div id="miniCalendar" class="glass"></div>
+
+<div id="fuelBox" class="glass"></div>
 
 <div id="world">
 
@@ -1008,7 +1038,8 @@ function getZapasyPodlaDna(){
     });
   }
   
-  document.getElementById('nhl').innerHTML = filaHTML;
+  const nhlEl = document.getElementById('nhl');
+  if(nhlEl) nhlEl.innerHTML = filaHTML;
 }
 
 // Fallback - príklady zápasov MS 2026
@@ -1016,7 +1047,8 @@ function loadFIFAFallback(){
   // Fallback keď nemáme dáta
   let filaHTML = ``;
   filaHTML += `<div style='padding:12px;color:#aaa;text-align:center;font-size:16px;'>Zápasy budú zobrazené podľa dňa</div>`;
-  document.getElementById('nhl').innerHTML = filaHTML;
+  const nhlEl = document.getElementById('nhl');
+  if(nhlEl) nhlEl.innerHTML = filaHTML;
 }
 
 // Pomocná funkcia - lokálny dátum YYYY-MM-DD
@@ -1280,7 +1312,7 @@ function updateVacation(){
     vacationTime.innerText="🏖️ DOVOLENKA 🏖️";
     vacationTime.style.display="block";
   } else if(diffVac>0){
-    vacationTime.innerText=`Dovolenka za ${diffVac} dní`;
+    vacationTime.innerHTML=`Dovolenka <span style="color:#aaa;">o ${diffVac} dní</span>`;
     vacationTime.style.display="block";
   } else if(diffChrist>0){
     vacationTime.innerText=`Do Vianoc: ${diffChrist} dní`;
@@ -1395,21 +1427,21 @@ function updateHolidays(){
   // Sviatky SR 2026
   const holidays=[
     {date: new Date(2026,0,1), name:"Nový rok"},
-    {date: new Date(2026,0,6), name:"Traja králi"},
-    {date: new Date(2026,0,27), name:"Ľ. Štúr"},
+    {date: new Date(2026,0,6), name:"Zjavenie Pána"},
+    {date: new Date(2026,0,27), name:"Deň pamiatky obetí holokaustu a rasového násilia"},
     {date: new Date(2026,3,17), name:"Veľký piatok"}, // 2026
     {date: new Date(2026,3,20), name:"Veľkonočný pondelok"}, // 2026
     {date: new Date(2026,4,1), name:"Sviatok práce"},
-    {date: new Date(2026,4,8), name:"Deň víťazstva"},
-    {date: new Date(2026,6,5), name:"Sv. Cyril a Metod"},
-    {date: new Date(2026,7,29), name:"Výročie SNP"},
-    {date: new Date(2026,8,1), name:"Deň SR"},
-    {date: new Date(2026,8,15), name:"Sedembolesná"},
-    {date: new Date(2026,10,1), name:"Dušičky"},
-    {date: new Date(2026,10,17), name:"Deň slobody"},
+    {date: new Date(2026,4,8), name:"Deň víťazstva nad fašizmom"},
+    {date: new Date(2026,6,5), name:"Sviatok svätého Cyrila a svätého Metoda"},
+    {date: new Date(2026,7,29), name:"Výročie Slovenského národného povstania"},
+    {date: new Date(2026,8,1), name:"Deň Ústavy Slovenskej republiky"},
+    {date: new Date(2026,8,15), name:"Sedembolestná Panna Mária"},
+    {date: new Date(2026,10,1), name:"Sviatok všetkých svätých"},
+    {date: new Date(2026,10,17), name:"Deň boja za slobodu a demokraciu"},
     {date: new Date(2026,11,24), name:"Štedrý deň"},
-    {date: new Date(2026,11,25), name:"Vianoce"},
-    {date: new Date(2026,11,26), name:"2. deň Vianoc"}
+    {date: new Date(2026,11,25), name:"Prvý sviatok vianočný"},
+    {date: new Date(2026,11,26), name:"Druhý sviatok vianočný"}
   ];
   
   // Nájdi najbližší sviatok v pracovnom týždni (1=po, 5=pi)
@@ -1431,13 +1463,166 @@ function updateHolidays(){
   if(nextHoliday){
     const daysLeft=Math.ceil(minDiff);
     if(daysLeft===0){
-      document.getElementById('holidayDisplay').innerHTML=`🎉 ${nextHoliday.name}`;
+      document.getElementById('holidayDisplay').innerHTML=`🎉 ${nextHoliday.name} <span style="color:#aaa;">DNES</span>`;
+    } else if(daysLeft===1){
+      document.getElementById('holidayDisplay').innerHTML=`🎉 ${nextHoliday.name} <span style="color:#aaa;">zajtra</span>`;
     } else {
-      document.getElementById('holidayDisplay').innerHTML=`🎉 ${nextHoliday.name}`;
+      document.getElementById('holidayDisplay').innerHTML=`🎉 ${nextHoliday.name} <span style="color:#aaa;">o ${daysLeft} dní</span>`;
     }
     document.getElementById('holidayDisplay').style.display="block";
+    // Šírka boxu = presne šírka boxu s meninami (dlhé názvy sa zalomia)
+    const ndBox=document.getElementById('nameday');
+    const hBox=document.getElementById('holidayBox');
+    if(ndBox && hBox && ndBox.offsetWidth>0){
+      hBox.style.boxSizing="border-box";
+      hBox.style.width=ndBox.offsetWidth+"px";
+    }
   } else {
     document.getElementById('holidayDisplay').style.display="none";
+  }
+}
+
+// MINI KALENDÁR CELÉHO MESIACA
+function buildMiniCalendar(){
+  const cal=document.getElementById('miniCalendar');
+  if(!cal) return;
+  const now=new Date();
+  const year=now.getFullYear();
+  const month=now.getMonth();
+  const todayDate=now.getDate();
+  const monthNames=["Január","Február","Marec","Apríl","Máj","Jún","Júl","August","September","Október","November","December"];
+  const firstDay=new Date(year,month,1);
+  // Po=0 ... Ne=6 (JS má Ne=0)
+  const startOffset=(firstDay.getDay()+6)%7;
+  const daysInMonth=new Date(year,month+1,0).getDate();
+
+  let html=`<div style="font-weight:bold;font-size:20px;margin-bottom:8px;text-align:center;">${monthNames[month]} ${year}</div>`;
+  html+=`<table style="width:100%;border-collapse:collapse;font-size:16px;text-align:center;">`;
+  html+=`<tr>`;
+  ["Po","Ut","St","Št","Pi","So","Ne"].forEach((d,i)=>{
+    const wc=(i>=5)?'#ff8a8a':'#aaa';
+    html+=`<th style="padding:3px;color:${wc};font-weight:normal;">${d}</th>`;
+  });
+  html+=`</tr>`;
+
+  let day=1;
+  for(let row=0; row<6; row++){
+    html+=`<tr>`;
+    for(let col=0; col<7; col++){
+      const cellIndex=row*7+col;
+      if(cellIndex<startOffset || day>daysInMonth){
+        html+=`<td style="padding:4px;"></td>`;
+      } else {
+        const isToday=(day===todayDate);
+        const isWeekend=(col>=5);
+        let content=String(day);
+        let style="padding:4px;";
+        if(isToday){
+          content=`<span style="background:#00d4ff;color:#001a33;border-radius:50%;padding:3px 7px;font-weight:bold;">${day}</span>`;
+        } else if(isWeekend){
+          style+="color:#ff8a8a;";
+        }
+        html+=`<td style="${style}">${content}</td>`;
+        day++;
+      }
+    }
+    html+=`</tr>`;
+    if(day>daysInMonth) break;
+  }
+  html+=`</table>`;
+  cal.innerHTML=html;
+
+  // Šírka = ako meniny; pozícia tesne pod sviatkom
+  const ndBox=document.getElementById('nameday');
+  if(ndBox && ndBox.offsetWidth>0){
+    cal.style.boxSizing="border-box";
+    cal.style.width=ndBox.offsetWidth+"px";
+  }
+  const hBox=document.getElementById('holidayBox');
+  if(hBox && hBox.offsetHeight>0){
+    cal.style.top=(hBox.offsetTop + hBox.offsetHeight + 12)+"px";
+  }
+}
+
+// PHM – ceny vrábeľských staníc (OMV + Slovnaft), automaticky z hackmath.net
+const PHM_STANICE = [
+  { nazov:"OMV Vráble",      pumpa:654, benzin:"1,630", nafta:"1,560" },
+  { nazov:"Slovnaft Vráble", pumpa:168, benzin:"1,650", nafta:"1,580" }
+];
+let phmInfo = "zdroj: hackmath.net";
+
+function renderFuel(){
+  const box=document.getElementById('fuelBox');
+  if(!box) return;
+  let html=`<div style="font-weight:bold;font-size:20px;margin-bottom:10px;text-align:center;">⛽ PHM Vráble</div>`;
+  html+=`<table style="width:100%;border-collapse:collapse;font-size:19px;">`;
+  html+=`<tr style="color:#aaa;font-size:14px;"><th style="text-align:left;padding:3px 6px;font-weight:normal;">Stanica</th><th style="text-align:right;padding:3px 6px;font-weight:normal;">Benzín</th><th style="text-align:right;padding:3px 6px;font-weight:normal;">Nafta</th></tr>`;
+  PHM_STANICE.forEach(s=>{
+    html+=`<tr>`+
+      `<td style="padding:5px 6px;text-align:left;">${s.nazov}</td>`+
+      `<td style="padding:5px 6px;text-align:right;color:#00d4ff;font-weight:bold;">${s.benzin}</td>`+
+      `<td style="padding:5px 6px;text-align:right;color:#00d4ff;font-weight:bold;">${s.nafta}</td>`+
+    `</tr>`;
+  });
+  html+=`</table>`;
+  html+=`<div style="font-size:13px;color:#aaa;text-align:center;margin-top:8px;">${phmInfo}</div>`;
+  box.innerHTML=html;
+
+  // Šírka = ako meniny/kalendár; pozícia tesne pod kalendárom
+  const ndBox=document.getElementById('nameday');
+  if(ndBox && ndBox.offsetWidth>0){
+    box.style.boxSizing="border-box";
+    box.style.width=ndBox.offsetWidth+"px";
+  }
+  const cal=document.getElementById('miniCalendar');
+  if(cal && cal.offsetHeight>0){
+    box.style.top="calc("+(cal.offsetTop + cal.offsetHeight + 12)+"px - 1mm)";
+  }
+}
+
+// Stiahne ceny jednej stanice z hackmath.net (cez CORS proxy)
+async function fetchStanica(pumpa){
+  const url='https://www.hackmath.net/sk/cerpacia-stanica?pumpa='+pumpa;
+  const proxies=[
+    'https://api.allorigins.win/raw?url=',
+    'https://corsproxy.io/?url=',
+    'https://api.codetabs.com/v1/proxy/?quest='
+  ];
+  for(let proxy of proxies){
+    try{
+      const r=await fetch(proxy+encodeURIComponent(url),{signal:AbortSignal.timeout(7000)});
+      if(!r.ok) continue;
+      const t=await r.text();
+      const b=t.match(/natural\s*95\s*\(benzín\)[^0-9]{0,40}?([0-9][.,][0-9]{2,3})/i);
+      const n=t.match(/diesel\s*\(nafta\)[^0-9]{0,40}?([0-9][.,][0-9]{2,3})/i);
+      if(b || n){
+        return {
+          benzin: b ? b[1].replace('.',',') : null,
+          nafta:  n ? n[1].replace('.',',') : null
+        };
+      }
+    }catch(e){ /* skús ďalšie proxy */ }
+  }
+  return null;
+}
+
+// Aktualizuje ceny oboch staníc
+async function loadFuelPrices(){
+  let ok=false;
+  for(let s of PHM_STANICE){
+    const d=await fetchStanica(s.pumpa);
+    if(d){
+      if(d.benzin) s.benzin=d.benzin;
+      if(d.nafta)  s.nafta=d.nafta;
+      ok=true;
+    }
+  }
+  if(ok){
+    phmInfo='zdroj: hackmath.net · '+new Date().toLocaleDateString('sk-SK');
+    renderFuel();
+    console.log('✓ Ceny PHM Vráble aktualizované');
+  } else {
+    console.log('PHM: používam posledné známe ceny');
   }
 }
 
@@ -1457,6 +1642,9 @@ setInterval(()=>{
   worldWeather();
   getZapasyPodlaDna();
   loadSun();
+  updateHolidays();
+  buildMiniCalendar();
+  renderFuel();
 },60000);
 
 // INIT
@@ -1470,6 +1658,11 @@ loadWeather();
 worldWeather();
 loadSun();
 getZapasyPodlaDna();
+updateHolidays();
+buildMiniCalendar();
+renderFuel();
+loadFuelPrices();
+setInterval(loadFuelPrices, 6 * 60 * 60 * 1000);
 // Zápasy natvrdo - bez API
 
 // PARSOVANIE ČLÁNKOV Z TERAZ.SK - PRIAME FETCHOVANIE
