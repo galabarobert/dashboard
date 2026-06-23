@@ -135,9 +135,8 @@ body::before {
 #shiftBox{
     position:absolute;
     top:12px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:34px;
+    left:605px;
+    font-size:28px;
     text-align:center;
     background:rgba(255,255,255,0.12);
     backdrop-filter:blur(50px) saturate(200%);
@@ -177,9 +176,12 @@ body::before {
     top:340px;
     right:40px;
     left:auto;
+    width:394px;
     transform:none;
     font-size:38px;
-    text-align:center;
+    text-align:left;
+    padding-left:25px;
+    box-sizing:border-box;
 }
 #vacationTime{font-size:28px;color:white;}
 
@@ -187,8 +189,11 @@ body::before {
     position:absolute;
     top:calc(430px - 1mm);
     right:40px;
+    width:394px;
     font-size:28px;
-    text-align:center;
+    text-align:left;
+    padding-left:25px;
+    box-sizing:border-box;
 }
 #holidayDisplay{font-size:28px;color:white;}
 
@@ -297,10 +302,16 @@ body::before {
             <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-07-21" data-end="2026-07-22">-</td>
         </tr>
         <tr id="auditFormRow">
-            <td style="padding:6px 4px;text-align:center;"><input id="auditDate" type="date" title="dátum auditu" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:100%;box-sizing:border-box;"></td>
+            <td style="padding:6px 4px;text-align:center;">
+                <div style="display:flex;gap:3px;align-items:center;justify-content:center;">
+                    <input id="auditDate" type="text" placeholder="dd.mm." title="dátum začiatku auditu (deň.mesiac)" maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:48px;box-sizing:border-box;text-align:center;">
+                    <span style="font-size:10px;color:#aaa;">-</span>
+                    <input id="auditDateEnd" type="text" placeholder="dd.mm." title="dátum konca auditu (nepovinné, pre viacdňový audit)" maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:48px;box-sizing:border-box;text-align:center;">
+                </div>
+            </td>
             <td style="padding:6px 4px;text-align:center;"><input id="auditTyp" type="text" placeholder="Typ" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:100%;box-sizing:border-box;"></td>
             <td style="padding:6px 4px;text-align:center;"><input id="auditZak" type="text" placeholder="Zákazník" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:100%;box-sizing:border-box;"></td>
-            <td style="padding:6px 4px;text-align:center;"><button onclick="addAudit()" style="background:#00d4ff;color:#001a33;border:none;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:bold;cursor:pointer;">Pridať</button></td>
+            <td style="padding:6px 4px;text-align:center;"><button onclick="addAudit()" style="background:#00d4ff;color:#001a33;border:none;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:bold;cursor:pointer;white-space:nowrap;">Pridať</button></td>
         </tr>
     </table>
 </div>
@@ -309,8 +320,8 @@ body::before {
     <div id="leaveList" style="font-size:28px;"></div>
     <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center;justify-content:center;">
         <input id="leaveName" type="text" placeholder="Meno" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;width:120px;">
-        <input id="leaveStart" type="date" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;">
-        <input id="leaveEnd" type="date" title="koniec voľna (nepovinné)" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;">
+        <input id="leaveStart" type="text" placeholder="dd.mm." maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;width:80px;text-align:center;">
+        <input id="leaveEnd" type="text" placeholder="dd.mm." title="koniec voľna (nepovinné)" maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;width:80px;text-align:center;">
         <button onclick="addLeave()" style="background:#00d4ff;color:#001a33;border:none;border-radius:8px;padding:7px 14px;font-size:15px;font-weight:bold;cursor:pointer;">Pridať</button>
     </div>
 </div>
@@ -1278,6 +1289,7 @@ function playAlert(){
 
 // PREMIENNE PRE ZVUKY
 let lunchAlertPlayed=false;
+let lunchEndAlertPlayed=false;
 
 function updateLunch(){
   const n=new Date();
@@ -1323,13 +1335,13 @@ function updateVacation(){
   
   // Dovolenka / Vianoce - vždy zobraz v boxe hore
   if(n>=vacStart && n<=new Date(2026,7,9)){
-    vacationTime.innerHTML=`Dovolenka <span style="color:#00d4ff;font-weight:bold;">DNES</span>`;
+    vacationTime.innerHTML=`🏖️ Dovolenka <span style="color:#00d4ff;font-weight:bold;">DNES</span>`;
     vacationTime.style.display="block";
   } else if(diffVac>0){
-    vacationTime.innerHTML=`Dovolenka <span style="color:#aaa;">o ${diffVac} dní</span>`;
+    vacationTime.innerHTML=`🏖️ Dovolenka <span style="color:#aaa;">o ${diffVac} dní</span>`;
     vacationTime.style.display="block";
   } else if(diffChrist>0){
-    vacationTime.innerText=`Do Vianoc: ${diffChrist} dní`;
+    vacationTime.innerHTML=`🏖️ Do Vianoc: ${diffChrist} dní`;
     vacationTime.style.display="block";
   } else {
     vacationTime.style.display="none";
@@ -1342,68 +1354,61 @@ function updateVacation(){
   const soundTime=new Date();soundTime.setHours(11,15,0,0); // Zvuk počas obeda
   const lateAfternoon=new Date();lateAfternoon.setHours(14,45,0,0); // Zvuk o 14:45
   
-  // Zvuk funkcia
-  const playBeep = () => {
-    try {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      oscillator.frequency.value = 1000; // 1000 Hz
-      oscillator.type = 'sine';
-      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.5);
-    } catch(e) {}
-  };
+  // Najbližší obed (10:30-11:30) - funguje 24/7, aj cez víkend/sviatky mimo zmeny
+  function getLunchBannerText(){
+    if(n<lunchStart && today>=1 && today<=5){
+      // Pred obedom dnes (pracovný deň)
+      const diffToLunch=(lunchStart-n)/1000;
+      return `🍽️ Obed o: ${format(diffToLunch)}`;
+    } else if(n>=lunchStart && n<lunchEnd && today>=1 && today<=5){
+      // Počas obeda dnes
+      const diffToLunchEnd=(lunchEnd-n)/1000;
+      return `🍽️ Obed o: ${format(diffToLunchEnd)}`;
+    } else {
+      // Po obede, alebo víkend - odpočet do ďalšieho pracovného obeda
+      const nextLunch=new Date();nextLunch.setHours(10,30,0,0);
+      if(n>=lunchStart || today===0 || today===6){
+        nextLunch.setDate(nextLunch.getDate()+1);
+      }
+      while(nextLunch.getDay()===0 || nextLunch.getDay()===6){
+        nextLunch.setDate(nextLunch.getDate()+1);
+      }
+      const diffNextLunch=(nextLunch-n)/1000;
+      return `🍽️ Obed o: ${format(diffNextLunch)}`;
+    }
+  }
   
   if(n>=s&&n<shiftEnd && today>=1 && today<=5){
     // Počas zmeny (7:00-15:00, pondelok-piatok)
     let bannerText = `⏱️ Do konca zmeny: ${format(diffShift)}`;
+    bannerText += `<br>${getLunchBannerText()}`;
     
-    if(n<lunchEnd){
-      // Odpočet obeda - dve fázy
-      if(n<lunchStart){
-        // Pred obedом (7:00-10:30)
-        const diffToLunch=(lunchStart-n)/1000;
-        bannerText += `<br>🍽️ Obed o: ${format(diffToLunch)}`;
-      } else {
-        // Počas obeda (10:30-11:30)
-        const diffToLunchEnd=(lunchEnd-n)/1000;
-        bannerText += `<br>🍽️ Obed o: ${format(diffToLunchEnd)}`;
-      }
-      
-      // Zvuk v 10:15
-      if(Math.abs(n - beforeLunch) < 1000){
-        playBeep();
-      }
-      
-      // Zvuk v 11:15
-      if(Math.abs(n - soundTime) < 1000){
-        playBeep();
-      }
-      
-      // Zvuk v 14:45
-      if(Math.abs(n - lateAfternoon) < 1000){
-        playBeep();
-      }
+    // Gong v 11:15 (10:15 a 14:45 riešia updateLunch/updateShift)
+    if(n>=soundTime && n<new Date(soundTime.getTime()+5*60000) && !lunchEndAlertPlayed){
+      playAlert();
+      lunchEndAlertPlayed=true;
+    } else if(n<soundTime || n>=new Date(soundTime.getTime()+5*60000)){
+      lunchEndAlertPlayed=false;
     }
-    // Zobrazovať banner vždy počas zmeny (s obedом alebo bez)
+    
+    // Zobrazovať banner vždy počas zmeny (s obedom alebo bez)
     document.getElementById('shiftBox').innerHTML = bannerText;
     document.getElementById('shiftBox').style.display="block";
   }
   else {
-    // Mimo zmeny - zobrazuj odpočet do ďalšieho začiatku zmeny
+    // Mimo zmeny - zobrazuj odpočet do ďalšieho začiatku zmeny + odpočet do obeda (24/7)
     if(today>=1 && today<=5){
       // V pracovný deň mimo zmeny
       let bannerText = `⏱️ Do začiatku zmeny: ${format(diffToShift)}`;
+      bannerText += `<br>${getLunchBannerText()}`;
       document.getElementById('shiftBox').innerHTML = bannerText;
       document.getElementById('shiftBox').style.display="block";
     } else {
-      // Cez víkend - skryť banner
-      document.getElementById('shiftBox').style.display="none";
+      // Cez víkend - zobraz aspoň odpočet do obeda (ďalší pracovný deň)
+      let bannerText = `⏱️ Do začiatku zmeny: ${format(diffToShift)}`;
+      bannerText += `<br>${getLunchBannerText()}`;
+      document.getElementById('shiftBox').innerHTML = bannerText;
+      document.getElementById('shiftBox').style.display="block";
     }
   }
   
@@ -1669,9 +1674,9 @@ function parseLeaveDate(str){
 
 window.addLeave=function(){
   const name=document.getElementById('leaveName').value.trim();
-  const start=document.getElementById('leaveStart').value;
-  let end=document.getElementById('leaveEnd').value || start;
-  if(!name || !start){ alert('Zadaj meno aj dátum.'); return; }
+  const start=parseDDMM(document.getElementById('leaveStart').value);
+  let end=parseDDMM(document.getElementById('leaveEnd').value) || start;
+  if(!name || !start){ alert('Zadaj meno aj dátum (dd.mm.).'); return; }
   if(end < start){ alert('Koniec nemôže byť pred začiatkom.'); return; }
   leaveData.push({ id: Date.now().toString(), name, start, end });
   saveLeave();
@@ -1780,14 +1785,35 @@ function saveAudits(){
   try{ localStorage.setItem('customAudits', JSON.stringify(auditData)); }catch(e){}
 }
 
+// Parsuje "dd.mm." alebo "dd.mm" / "dd/mm" na "YYYY-MM-DD". Rok sa doplní automaticky:
+// ak by dátum v aktuálnom roku už bol viac ako 30 dní v minulosti, použije sa budúci rok.
+function parseDDMM(str){
+  if(!str) return '';
+  const m=String(str).trim().match(/^(\d{1,2})[.\/](\d{1,2})\.?$/);
+  if(!m) return '';
+  const day=parseInt(m[1],10), month=parseInt(m[2],10);
+  if(day<1||day>31||month<1||month>12) return '';
+  const now=new Date(); now.setHours(0,0,0,0);
+  let year=now.getFullYear();
+  let candidate=new Date(year, month-1, day);
+  const diffDays=(now-candidate)/(1000*60*60*24);
+  if(diffDays>30){ year+=1; candidate=new Date(year, month-1, day); }
+  const mm=String(month).padStart(2,'0');
+  const dd=String(day).padStart(2,'0');
+  return `${year}-${mm}-${dd}`;
+}
+
 window.addAudit=function(){
-  const date=document.getElementById('auditDate').value;
+  const date=parseDDMM(document.getElementById('auditDate').value);
+  const dateEnd=parseDDMM(document.getElementById('auditDateEnd').value);
   const typ=document.getElementById('auditTyp').value.trim();
   const zak=document.getElementById('auditZak').value.trim();
-  if(!date || !typ){ alert('Zadaj aspoň dátum a typ.'); return; }
-  auditData.push({ id:Date.now().toString(), date, typ, zak });
+  if(!date || !typ){ alert('Zadaj aspoň dátum (dd.mm.) a typ.'); return; }
+  if(dateEnd && dateEnd<date){ alert('Koniec nemôže byť pred začiatkom.'); return; }
+  auditData.push({ id:Date.now().toString(), date, dateEnd, typ, zak });
   saveAudits();
   document.getElementById('auditDate').value='';
+  document.getElementById('auditDateEnd').value='';
   document.getElementById('auditTyp').value='';
   document.getElementById('auditZak').value='';
   renderCustomAudits();
@@ -1804,19 +1830,28 @@ function renderCustomAudits(){
   if(!formRow) return;
   const today=new Date(); today.setHours(0,0,0,0);
 
-  // Odstráň skončené (dátum už prešiel)
+  // Odstráň skončené (koniec auditu už prešiel)
   const before=auditData.length;
   auditData=auditData.filter(a=>{
-    const d=parseLeaveDate(a.date); d.setHours(0,0,0,0);
-    return d>=today;
+    const e=parseLeaveDate(a.dateEnd||a.date); e.setHours(0,0,0,0);
+    return e>=today;
   });
   if(auditData.length!==before) saveAudits();
 
-  // Odstráň staré DOM riadky a vlož nanovo (zoradené podľa dátumu) pred formulár
+  // Odstráň staré DOM riadky a vlož nanovo (zoradené čisto podľa dátumu začiatku) pred formulár
   document.querySelectorAll('tr.customAuditRow').forEach(r=>r.remove());
   auditData.slice().sort((a,b)=> parseLeaveDate(a.date)-parseLeaveDate(b.date)).forEach(a=>{
     const d=parseLeaveDate(a.date);
-    const datum=`${d.getDate()}.${d.getMonth()+1}.`;
+    let datum=`${d.getDate()}.${d.getMonth()+1}.`;
+    if(a.dateEnd && a.dateEnd!==a.date){
+      const dEnd=parseLeaveDate(a.dateEnd);
+      // rovnaký mesiac -> "21-22.7.", inak "30.6.-2.7."
+      if(d.getMonth()===dEnd.getMonth()){
+        datum=`${d.getDate()}-${dEnd.getDate()}.${d.getMonth()+1}.`;
+      } else {
+        datum=`${d.getDate()}.${d.getMonth()+1}.-${dEnd.getDate()}.${dEnd.getMonth()+1}.`;
+      }
+    }
     const tr=document.createElement('tr');
     tr.className='customAuditRow';
     tr.style.borderBottom='1px solid rgba(255,255,255,0.1)';
@@ -1824,7 +1859,7 @@ function renderCustomAudits(){
       `<td style="padding:8px;text-align:center;">${datum} <span onclick="deleteAudit('${a.id}')" title="zmazať" style="cursor:pointer;color:#ff6b6b;font-size:13px;">✕</span></td>`+
       `<td style="padding:8px;text-align:center;">${a.typ}</td>`+
       `<td style="padding:8px;text-align:center;">${a.zak||''}</td>`+
-      `<td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="${a.date}">-</td>`;
+      `<td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="${a.date}"${a.dateEnd?` data-end="${a.dateEnd}"`:''}>-</td>`;
     formRow.parentNode.insertBefore(tr, formRow);
   });
   // poloha tabuľky voľna sa môže zmeniť (zmena výšky auditov)
