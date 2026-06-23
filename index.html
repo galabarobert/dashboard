@@ -204,14 +204,21 @@ body::before {
     right:40px;
     padding:15px;
 }
+#leaveBox{
+    position:absolute;
+    top:0;
+    left:0;
+    box-sizing:border-box;
+}
 
 #nhl {position:absolute;top:350px;right:40px;margin-top:0px;font-size:35px;line-height:1.8;width:383px;}
 
 #auditsTable {
     position:absolute;
-    top:calc(350px + 0.5cm);
+    top:216px;
     left:50%;
-    transform:translateX(calc(-50% + 38px + 10mm)) scale(1.69610625);
+    transform:translateX(calc(-50% + 38px + 10mm)) scale(1.6452230625);
+    transform-origin:center top;
     width:auto;
     min-width:400px;
     max-width:500px;
@@ -264,7 +271,7 @@ body::before {
 <div id="nameday" class="glass"></div>
 
 <div id="auditsTable" class="glass">
-    <table style="width:100%;font-size:20px;border-collapse:collapse;">
+    <table style="width:100%;font-size:17px;border-collapse:collapse;">
         <tr style="border-bottom:1px solid rgba(255,255,255,0.2);">
             <th style="text-align:center;padding:8px;">Deň</th>
             <th style="text-align:center;padding:8px;">Typ</th>
@@ -278,45 +285,38 @@ body::before {
             <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-06-23">-</td>
         </tr>
         <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px;text-align:center;">25.6.</td>
-            <td style="padding:8px;text-align:center;">Procesný audit</td>
-            <td style="padding:8px;text-align:center;">MOK/Balenie</td>
-            <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-06-25">-</td>
-        </tr>
-        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
             <td style="padding:8px;text-align:center;">8-9.7.</td>
             <td style="padding:8px;text-align:center;">Audit</td>
             <td style="padding:8px;text-align:center;">Class</td>
-            <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-07-08">-</td>
+            <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-07-08" data-end="2026-07-09">-</td>
         </tr>
         <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
             <td style="padding:8px;text-align:center;">21-22.7</td>
             <td style="padding:8px;text-align:center;">Návšteva</td>
             <td style="padding:8px;text-align:center;">CAT</td>
-            <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-07-21">-</td>
+            <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-07-21" data-end="2026-07-22">-</td>
         </tr>
-        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px;text-align:center;">September</td>
-            <td style="padding:8px;text-align:center;">Procesný audit</td>
-            <td style="padding:8px;text-align:center;"></td>
-            <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-09-01">-</td>
-        </tr>
-        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px;text-align:center;">Október</td>
-            <td style="padding:8px;text-align:center;">Procesný audit</td>
-            <td style="padding:8px;text-align:center;"></td>
-            <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-10-01">-</td>
-        </tr>
-        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px;text-align:center;"></td>
-            <td style="padding:8px;text-align:center;"></td>
-            <td style="padding:8px;text-align:center;"></td>
-            <td style="padding:8px;text-align:center;"></td>
+        <tr id="auditFormRow">
+            <td style="padding:6px 4px;text-align:center;"><input id="auditDate" type="date" title="dátum auditu" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:100%;box-sizing:border-box;"></td>
+            <td style="padding:6px 4px;text-align:center;"><input id="auditTyp" type="text" placeholder="Typ" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:100%;box-sizing:border-box;"></td>
+            <td style="padding:6px 4px;text-align:center;"><input id="auditZak" type="text" placeholder="Zákazník" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:100%;box-sizing:border-box;"></td>
+            <td style="padding:6px 4px;text-align:center;"><button onclick="addAudit()" style="background:#00d4ff;color:#001a33;border:none;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:bold;cursor:pointer;">Pridať</button></td>
         </tr>
     </table>
 </div>
 
+<div id="leaveBox" class="glass">
+    <div id="leaveList" style="font-size:28px;"></div>
+    <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center;justify-content:center;">
+        <input id="leaveName" type="text" placeholder="Meno" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;width:120px;">
+        <input id="leaveStart" type="date" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;">
+        <input id="leaveEnd" type="date" title="koniec voľna (nepovinné)" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;">
+        <button onclick="addLeave()" style="background:#00d4ff;color:#001a33;border:none;border-radius:8px;padding:7px 14px;font-size:15px;font-weight:bold;cursor:pointer;">Pridať</button>
+    </div>
+</div>
+
 <div id="shiftBox" class="glass" style="display:none;"></div>
+
 
 <div id="currentWeatherBox">
     <div id="currentWeatherDisplay"></div>
@@ -823,7 +823,7 @@ function updateNameday(){
   const todayName   = getNameday(n);
   const tomorrowName = getNameday(tomorrow);
 
-  nameday.innerHTML = "Dnes má meniny: " + todayName + "<br>Zajtra má meniny: " + tomorrowName;
+  nameday.innerHTML = "Dnes má meniny: <span style=\"color:#00d4ff;font-weight:bold;\">" + todayName + "</span><br>Zajtra má meniny: " + tomorrowName;
 }
 
 // SLNKO - VÝCHOD/ZÁPAD + MESIAC
@@ -1323,7 +1323,7 @@ function updateVacation(){
   
   // Dovolenka / Vianoce - vždy zobraz v boxe hore
   if(n>=vacStart && n<=new Date(2026,7,9)){
-    vacationTime.innerText="🏖️ DOVOLENKA 🏖️";
+    vacationTime.innerHTML=`Dovolenka <span style="color:#00d4ff;font-weight:bold;">DNES</span>`;
     vacationTime.style.display="block";
   } else if(diffVac>0){
     vacationTime.innerHTML=`Dovolenka <span style="color:#aaa;">o ${diffVac} dní</span>`;
@@ -1407,22 +1407,31 @@ function updateVacation(){
     }
   }
   
-  // Výpočet dní do auditov
+  // Výpočet dní do auditov + automatické skrytie udalostí po ich skončení
   const auditCells = document.querySelectorAll('.daysToAudit');
   auditCells.forEach(cell => {
-    const auditDate = new Date(cell.getAttribute('data-date'));
+    const startDate = new Date(cell.getAttribute('data-date'));
+    const endDate = new Date(cell.getAttribute('data-end') || cell.getAttribute('data-date'));
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    auditDate.setHours(0, 0, 0, 0);
-    
-    const daysLeft = Math.ceil((auditDate - today) / (1000 * 60 * 60 * 24));
-    
-    if (daysLeft < 0) {
-      cell.textContent = '✓';
-      cell.style.color = '#00ff88';
-    } else if (daysLeft === 0) {
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
+
+    const row = cell.closest('tr');
+    const daysAfterEnd = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+
+    // Udalosť už skončila -> riadok automaticky skry
+    if (daysAfterEnd < 0) {
+      if (row) row.style.display = 'none';
+      return;
+    }
+    if (row) row.style.display = '';
+
+    const daysLeft = Math.ceil((startDate - today) / (1000 * 60 * 60 * 24));
+
+    if (daysLeft <= 0) {
       cell.textContent = 'DNES';
-      cell.style.color = '#ffaa00';
+      cell.style.color = '#00d4ff';
     } else if (daysLeft <= 3) {
       cell.textContent = daysLeft;
       cell.style.color = '#ff6b6b';
@@ -1477,7 +1486,7 @@ function updateHolidays(){
   if(nextHoliday){
     const daysLeft=Math.ceil(minDiff);
     if(daysLeft===0){
-      document.getElementById('holidayDisplay').innerHTML=`🎉 ${nextHoliday.name} <span style="color:#aaa;">DNES</span>`;
+      document.getElementById('holidayDisplay').innerHTML=`🎉 ${nextHoliday.name} <span style="color:#00d4ff;font-weight:bold;">DNES</span>`;
     } else if(daysLeft===1){
       document.getElementById('holidayDisplay').innerHTML=`🎉 ${nextHoliday.name} <span style="color:#aaa;">zajtra</span>`;
     } else {
@@ -1510,7 +1519,7 @@ function buildMiniCalendar(){
   const startOffset=(firstDay.getDay()+6)%7;
   const daysInMonth=new Date(year,month+1,0).getDate();
 
-  let html=`<div style="font-weight:bold;font-size:20px;margin-bottom:8px;text-align:center;">${monthNames[month]} ${year}</div>`;
+  let html=`<div style="font-weight:bold;font-size:20px;margin-bottom:8px;text-align:center;">📅 ${monthNames[month]} ${year}</div>`;
   html+=`<table style="width:100%;border-collapse:collapse;font-size:16px;text-align:center;">`;
   html+=`<tr>`;
   ["Po","Ut","St","Št","Pi","So","Ne"].forEach((d,i)=>{
@@ -1560,24 +1569,28 @@ function buildMiniCalendar(){
 
 // PHM – ceny vrábeľských staníc (OMV + Slovnaft), automaticky z hackmath.net
 const PHM_STANICE = [
-  { nazov:"OMV Vráble",      pumpa:654, benzin:"1,630", nafta:"1,560" },
+  { nazov:"OMV Vráble",      pumpa:654, benzin:"1,590", nafta:"1,480" },
   { nazov:"Slovnaft Vráble", pumpa:168, benzin:"1,650", nafta:"1,580" }
 ];
-let phmInfo = "zdroj: hackmath.net";
+let phmInfo = "najnižšia z OMV/Slovnaft · hackmath.net";
+
+function toNum(s){ return parseFloat(String(s).replace(',','.')); }
 
 function renderFuel(){
   const box=document.getElementById('fuelBox');
   if(!box) return;
-  let html=`<div style="font-weight:bold;font-size:20px;margin-bottom:10px;text-align:center;">⛽ PHM Vráble</div>`;
-  html+=`<table style="width:100%;border-collapse:collapse;font-size:19px;">`;
-  html+=`<tr style="color:#aaa;font-size:14px;"><th style="text-align:left;padding:3px 6px;font-weight:normal;">Stanica</th><th style="text-align:right;padding:3px 6px;font-weight:normal;">Benzín</th><th style="text-align:right;padding:3px 6px;font-weight:normal;">Nafta</th></tr>`;
+
+  // Najnižšia cena z dostupných staníc (pre každé palivo zvlášť)
+  let bMin=null, nMin=null;
   PHM_STANICE.forEach(s=>{
-    html+=`<tr>`+
-      `<td style="padding:5px 6px;text-align:left;">${s.nazov}</td>`+
-      `<td style="padding:5px 6px;text-align:right;color:#00d4ff;font-weight:bold;">${s.benzin}</td>`+
-      `<td style="padding:5px 6px;text-align:right;color:#00d4ff;font-weight:bold;">${s.nafta}</td>`+
-    `</tr>`;
+    if(s.benzin && (bMin===null || toNum(s.benzin) < toNum(bMin))) bMin=s.benzin;
+    if(s.nafta  && (nMin===null || toNum(s.nafta)  < toNum(nMin)))  nMin=s.nafta;
   });
+
+  let html=`<div style="font-weight:bold;font-size:20px;margin-bottom:10px;text-align:center;">⛽ PHM Vráble</div>`;
+  html+=`<table style="width:100%;border-collapse:collapse;font-size:21px;">`;
+  html+=`<tr><td style="padding:5px 6px;text-align:left;">Benzín 95</td><td style="padding:5px 6px;text-align:right;color:#00d4ff;font-weight:bold;">${bMin||'-'} €/l</td></tr>`;
+  html+=`<tr><td style="padding:5px 6px;text-align:left;">Nafta</td><td style="padding:5px 6px;text-align:right;color:#00d4ff;font-weight:bold;">${nMin||'-'} €/l</td></tr>`;
   html+=`</table>`;
   html+=`<div style="font-size:13px;color:#aaa;text-align:center;margin-top:8px;">${phmInfo}</div>`;
   box.innerHTML=html;
@@ -1632,12 +1645,190 @@ async function loadFuelPrices(){
     }
   }
   if(ok){
-    phmInfo='zdroj: hackmath.net · '+new Date().toLocaleDateString('sk-SK');
+    phmInfo='najnižšia z OMV/Slovnaft · '+new Date().toLocaleDateString('sk-SK');
     renderFuel();
     console.log('✓ Ceny PHM Vráble aktualizované');
   } else {
     console.log('PHM: používam posledné známe ceny');
   }
+}
+
+// ===== VOĽNO V KANCELÁRII (ukladá sa v prehliadači) =====
+let leaveData = loadLeave();
+function loadLeave(){
+  try{ const s=localStorage.getItem('officeLeave'); if(s) return JSON.parse(s); }catch(e){}
+  return [];
+}
+function saveLeave(){
+  try{ localStorage.setItem('officeLeave', JSON.stringify(leaveData)); }catch(e){}
+}
+function parseLeaveDate(str){
+  const p=String(str).split('-').map(Number);
+  return new Date(p[0], (p[1]||1)-1, p[2]||1);
+}
+
+window.addLeave=function(){
+  const name=document.getElementById('leaveName').value.trim();
+  const start=document.getElementById('leaveStart').value;
+  let end=document.getElementById('leaveEnd').value || start;
+  if(!name || !start){ alert('Zadaj meno aj dátum.'); return; }
+  if(end < start){ alert('Koniec nemôže byť pred začiatkom.'); return; }
+  leaveData.push({ id: Date.now().toString(), name, start, end });
+  saveLeave();
+  document.getElementById('leaveName').value='';
+  document.getElementById('leaveStart').value='';
+  document.getElementById('leaveEnd').value='';
+  renderLeave();
+};
+
+window.deleteLeave=function(id){
+  leaveData = leaveData.filter(x=>x.id!==id);
+  saveLeave();
+  renderLeave();
+};
+
+function renderLeave(){
+  const list=document.getElementById('leaveList');
+  if(!list) return;
+  const today=new Date(); today.setHours(0,0,0,0);
+
+  // Odstráň skutočne skončené (koniec voľna už prešiel)
+  const before=leaveData.length;
+  leaveData = leaveData.filter(x=>{
+    const e=parseLeaveDate(x.end||x.start); e.setHours(0,0,0,0);
+    return Math.ceil((e-today)/86400000) >= 0;
+  });
+  if(leaveData.length!==before) saveLeave();
+
+  const items = leaveData.map(x=>{
+    const s=parseLeaveDate(x.start); s.setHours(0,0,0,0);
+    const e=parseLeaveDate(x.end||x.start); e.setHours(0,0,0,0);
+    const daysToStart=Math.ceil((s-today)/86400000);
+    return {...x, s, e, daysToStart};
+  });
+
+  // Zlúč ľudí s rovnakým termínom voľna do jedného riadku
+  const groups={};
+  items.forEach(it=>{
+    const key=it.start+'|'+(it.end||it.start);
+    if(!groups[key]) groups[key]={ s:it.s, e:it.e, daysToStart:it.daysToStart, people:[] };
+    groups[key].people.push({ name:it.name, id:it.id });
+  });
+  const groupList=Object.values(groups).sort((a,b)=> a.s - b.s);
+
+  if(groupList.length===0){
+    list.innerHTML=`<div style="text-align:center;color:#aaa;padding:8px;">Žiadne plánované voľno</div>`;
+  } else {
+    let html=`<table style="width:100%;border-collapse:collapse;">`;
+    html+=`<tr style="border-bottom:1px solid rgba(255,255,255,0.2);color:#fff;">`+
+      `<th style="text-align:left;padding:5px 6px;">Meno</th>`+
+      `<th style="text-align:center;padding:5px 6px;">Voľno</th>`+
+      `<th style="text-align:center;padding:5px 6px;">Dni</th>`+
+    `</tr>`;
+    groupList.forEach(g=>{
+      // Dátum: D.M. alebo rozsah D-D.M. / D.M.-D.M.
+      let datum;
+      if(g.s.getTime()===g.e.getTime()){
+        datum=`${g.s.getDate()}.${g.s.getMonth()+1}.`;
+      } else if(g.s.getMonth()===g.e.getMonth()){
+        datum=`${g.s.getDate()}-${g.e.getDate()}.${g.s.getMonth()+1}.`;
+      } else {
+        datum=`${g.s.getDate()}.${g.s.getMonth()+1}.-${g.e.getDate()}.${g.e.getMonth()+1}.`;
+      }
+      // Odpočet presne ako v auditoch
+      let dni, color;
+      if(g.daysToStart<=0){ dni='DNES'; color='#00d4ff'; }
+      else { dni=g.daysToStart; color='#aaa'; }
+      // Mená v jednom riadku, každé s vlastným ✕ na zmazanie
+      const mena=g.people.map(p=>`${p.name} <span onclick="deleteLeave('${p.id}')" title="zmazať" style="cursor:pointer;color:#ff6b6b;font-size:14px;">✕</span>`).join(',&nbsp; ');
+      html+=`<tr style="border-bottom:1px solid rgba(255,255,255,0.1);">`+
+        `<td style="padding:5px 6px;text-align:left;font-weight:bold;">${mena}</td>`+
+        `<td style="padding:5px 6px;text-align:center;">${datum}</td>`+
+        `<td style="padding:5px 6px;text-align:center;color:${color};font-weight:bold;">${dni}</td>`+
+      `</tr>`;
+    });
+    html+=`</table>`;
+    list.innerHTML=html;
+  }
+  positionLeaveBox();
+}
+
+// Umiestni box pod audity, v rovnakej šírke a zarovnaní ako audity
+function positionLeaveBox(){
+  const a=document.getElementById('auditsTable');
+  const l=document.getElementById('leaveBox');
+  if(!a || !l) return;
+  let S=1.6452230625;
+  const tr=getComputedStyle(a).transform;
+  const m=tr && tr.match(/matrix\(([^,]+),/);
+  if(m){ const v=parseFloat(m[1]); if(v) S=v; }
+  const offsetX=38 + 10*96/25.4;           // translateX(38px + 10mm)
+  const centerX=a.offsetLeft + offsetX;     // vodorovný stred auditov
+  const width=a.offsetWidth * S;            // vizuálna šírka auditov
+  l.style.width=width+'px';
+  l.style.left=(centerX - width/2)+'px';
+  l.style.top=(a.offsetTop + a.offsetHeight * S + 14)+'px';
+}
+
+// ===== PRIDÁVANIE AUDITOV (ukladá sa v prehliadači) =====
+let auditData = loadAudits();
+function loadAudits(){
+  try{ const s=localStorage.getItem('customAudits'); if(s) return JSON.parse(s); }catch(e){}
+  return [];
+}
+function saveAudits(){
+  try{ localStorage.setItem('customAudits', JSON.stringify(auditData)); }catch(e){}
+}
+
+window.addAudit=function(){
+  const date=document.getElementById('auditDate').value;
+  const typ=document.getElementById('auditTyp').value.trim();
+  const zak=document.getElementById('auditZak').value.trim();
+  if(!date || !typ){ alert('Zadaj aspoň dátum a typ.'); return; }
+  auditData.push({ id:Date.now().toString(), date, typ, zak });
+  saveAudits();
+  document.getElementById('auditDate').value='';
+  document.getElementById('auditTyp').value='';
+  document.getElementById('auditZak').value='';
+  renderCustomAudits();
+};
+
+window.deleteAudit=function(id){
+  auditData=auditData.filter(x=>x.id!==id);
+  saveAudits();
+  renderCustomAudits();
+};
+
+function renderCustomAudits(){
+  const formRow=document.getElementById('auditFormRow');
+  if(!formRow) return;
+  const today=new Date(); today.setHours(0,0,0,0);
+
+  // Odstráň skončené (dátum už prešiel)
+  const before=auditData.length;
+  auditData=auditData.filter(a=>{
+    const d=parseLeaveDate(a.date); d.setHours(0,0,0,0);
+    return d>=today;
+  });
+  if(auditData.length!==before) saveAudits();
+
+  // Odstráň staré DOM riadky a vlož nanovo (zoradené podľa dátumu) pred formulár
+  document.querySelectorAll('tr.customAuditRow').forEach(r=>r.remove());
+  auditData.slice().sort((a,b)=> parseLeaveDate(a.date)-parseLeaveDate(b.date)).forEach(a=>{
+    const d=parseLeaveDate(a.date);
+    const datum=`${d.getDate()}.${d.getMonth()+1}.`;
+    const tr=document.createElement('tr');
+    tr.className='customAuditRow';
+    tr.style.borderBottom='1px solid rgba(255,255,255,0.1)';
+    tr.innerHTML=
+      `<td style="padding:8px;text-align:center;">${datum} <span onclick="deleteAudit('${a.id}')" title="zmazať" style="cursor:pointer;color:#ff6b6b;font-size:13px;">✕</span></td>`+
+      `<td style="padding:8px;text-align:center;">${a.typ}</td>`+
+      `<td style="padding:8px;text-align:center;">${a.zak||''}</td>`+
+      `<td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="${a.date}">-</td>`;
+    formRow.parentNode.insertBefore(tr, formRow);
+  });
+  // poloha tabuľky voľna sa môže zmeniť (zmena výšky auditov)
+  if(typeof positionLeaveBox==='function') positionLeaveBox();
 }
 
 // LOOP – každú sekundu
@@ -1659,6 +1850,7 @@ setInterval(()=>{
   updateHolidays();
   buildMiniCalendar();
   renderFuel();
+  renderLeave();
 },60000);
 
 // INIT
@@ -1676,7 +1868,9 @@ updateHolidays();
 buildMiniCalendar();
 renderFuel();
 loadFuelPrices();
-setInterval(loadFuelPrices, 6 * 60 * 60 * 1000);
+setInterval(loadFuelPrices, 60 * 1000);
+renderCustomAudits();
+renderLeave();
 
 // ŠKÁLOVANIE PLÁTNA – aby sa dashboard zmestil na akúkoľvek obrazovku (aj mobil na šírku)
 function fitStage(){
@@ -1687,6 +1881,7 @@ function fitStage(){
   const x=Math.round((window.innerWidth  - sw*scale)/2);
   const y=Math.round((window.innerHeight - sh*scale)/2);
   stage.style.transform=`translate(${x}px, ${y}px) scale(${scale})`;
+  if(typeof positionLeaveBox==='function') positionLeaveBox();
 }
 window.addEventListener('resize', fitStage);
 window.addEventListener('orientationchange', fitStage);
