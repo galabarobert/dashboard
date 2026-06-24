@@ -214,6 +214,12 @@ body::before {
     top:0;
     left:0;
     box-sizing:border-box;
+    background:rgba(255,140,0,0.30) !important;
+    border:2px solid rgba(255,180,60,0.7) !important;
+    box-shadow:
+        0 0 50px rgba(255,140,0,0.45),
+        0 8px 32px rgba(0,0,0,0.4),
+        inset 0 0 25px rgba(255,200,100,0.18) !important;
 }
 
 #nhl {position:absolute;top:350px;right:40px;margin-top:0px;font-size:35px;line-height:1.8;width:383px;}
@@ -251,6 +257,31 @@ body::before {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.6; }
 }
+
+#miniDatePicker{
+    position:absolute;
+    z-index:9999;
+    background:rgba(30,20,60,0.97);
+    backdrop-filter:blur(20px) saturate(180%);
+    border:1.5px solid rgba(255,255,255,0.3);
+    border-radius:12px;
+    padding:10px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.5);
+    display:none;
+    width:220px;
+    font-size:13px;
+    color:#fff;
+}
+#miniDatePicker .mdpHeader{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;font-weight:bold;}
+#miniDatePicker .mdpHeader span{cursor:pointer;padding:2px 8px;border-radius:4px;}
+#miniDatePicker .mdpHeader span:hover{background:rgba(255,255,255,0.15);}
+#miniDatePicker .mdpGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;}
+#miniDatePicker .mdpDow{color:#aaa;font-size:11px;padding:2px 0;}
+#miniDatePicker .mdpDay{padding:4px 0;border-radius:6px;cursor:pointer;}
+#miniDatePicker .mdpDay:hover{background:#00d4ff;color:#001a33;}
+#miniDatePicker .mdpDay.empty{cursor:default;}
+#miniDatePicker .mdpDay.empty:hover{background:none;}
+#miniDatePicker .mdpDay.today{outline:1px solid #00d4ff;}
 </style>
 </head>
 
@@ -299,7 +330,7 @@ body::before {
             </td>
             <td style="padding:6px 4px;text-align:center;"><input id="auditTyp" type="text" placeholder="Typ" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:100%;box-sizing:border-box;"></td>
             <td style="padding:6px 4px;text-align:center;"><input id="auditZak" type="text" placeholder="Zákazník" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:100%;box-sizing:border-box;"></td>
-            <td style="padding:6px 4px;text-align:center;"><button onclick="addAudit()" style="background:#00d4ff;color:#001a33;border:none;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:bold;cursor:pointer;white-space:nowrap;">Pridať</button></td>
+            <td style="padding:6px 4px;text-align:center;white-space:nowrap;"><button onclick="addAudit()" style="background:#6b7280;color:#fff;border:none;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:bold;cursor:pointer;white-space:nowrap;">Pridať</button> <button id="auditDeleteBtn" onclick="deleteEditingAudit()" style="display:none;background:#ff6b6b;color:#330000;border:none;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:bold;cursor:pointer;white-space:nowrap;">Vymazať</button></td>
         </tr>
     </table>
 </div>
@@ -310,7 +341,8 @@ body::before {
         <input id="leaveName" type="text" placeholder="Meno" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;width:120px;">
         <input id="leaveStart" type="text" placeholder="dd.mm." maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;width:80px;text-align:center;">
         <input id="leaveEnd" type="text" placeholder="dd.mm." title="koniec voľna (nepovinné)" maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;width:80px;text-align:center;">
-        <button onclick="addLeave()" style="background:#00d4ff;color:#001a33;border:none;border-radius:8px;padding:7px 14px;font-size:15px;font-weight:bold;cursor:pointer;">Pridať</button>
+        <button onclick="addLeave()" style="background:#6b7280;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:15px;font-weight:bold;cursor:pointer;">Pridať</button>
+        <button id="leaveDeleteBtn" onclick="deleteEditingLeave()" style="display:none;background:#ff6b6b;color:#330000;border:none;border-radius:8px;padding:7px 14px;font-size:15px;font-weight:bold;cursor:pointer;">Vymazať</button>
     </div>
 </div>
 
@@ -1460,19 +1492,15 @@ function updateHolidays(){
     {date: new Date(2026,11,26), name:"Druhý sviatok vianočný"}
   ];
   
-  // Nájdi najbližší sviatok v pracovnom týždni (1=po, 5=pi)
+  // Nájdi najbližší sviatok (bez ohľadu na deň v týždni)
   let nextHoliday=null;
   let minDiff=Infinity;
   
   holidays.forEach(h=>{
-    const dayOfWeek=h.date.getDay();
-    // Zobrazuj len ak je sviatok v pracovnom týždni (1-5)
-    if(dayOfWeek>=1 && dayOfWeek<=5){
-      const diff=(h.date-today)/(1000*60*60*24);
-      if(diff>=0 && diff<minDiff){
-        minDiff=diff;
-        nextHoliday=h;
-      }
+    const diff=(h.date-today)/(1000*60*60*24);
+    if(diff>=0 && diff<minDiff){
+      minDiff=diff;
+      nextHoliday=h;
     }
   });
   
@@ -1660,23 +1688,66 @@ function parseLeaveDate(str){
   return new Date(p[0], (p[1]||1)-1, p[2]||1);
 }
 
+let editingLeaveId = null;
+
 window.addLeave=function(){
   const name=document.getElementById('leaveName').value.trim();
-  const start=parseDDMM(document.getElementById('leaveStart').value);
-  let end=parseDDMM(document.getElementById('leaveEnd').value) || start;
+  const startEl=document.getElementById('leaveStart');
+  const endEl=document.getElementById('leaveEnd');
+  const start=parseDDMM(startEl.value, startEl.dataset.year);
+  let end=parseDDMM(endEl.value, endEl.dataset.year) || start;
   if(!name || !start){ alert('Zadaj meno aj dátum (dd.mm.).'); return; }
   if(end < start){ alert('Koniec nemôže byť pred začiatkom.'); return; }
-  leaveData.push({ id: Date.now().toString(), name, start, end });
+  if(editingLeaveId){
+    const idx=leaveData.findIndex(x=>x.id===editingLeaveId);
+    if(idx!==-1){ leaveData[idx]={...leaveData[idx], name, start, end}; }
+    editingLeaveId=null;
+    const btn=document.querySelector('#leaveBox button[onclick="addLeave()"]');
+    if(btn) btn.textContent='Pridať';
+    const delBtn=document.getElementById('leaveDeleteBtn');
+    if(delBtn) delBtn.style.display='none';
+  } else {
+    leaveData.push({ id: Date.now().toString(), name, start, end });
+  }
   saveLeave();
   document.getElementById('leaveName').value='';
-  document.getElementById('leaveStart').value='';
-  document.getElementById('leaveEnd').value='';
+  startEl.value=''; delete startEl.dataset.year;
+  endEl.value=''; delete endEl.dataset.year;
   renderLeave();
 };
 
-window.deleteLeave=function(id){
-  leaveData = leaveData.filter(x=>x.id!==id);
+window.editLeave=function(id){
+  const x=leaveData.find(it=>it.id===id);
+  if(!x) return;
+  editingLeaveId=id;
+  const toDDMM=(iso)=>{ if(!iso) return ''; const p=iso.split('-'); return `${parseInt(p[2],10)}.${parseInt(p[1],10)}.`; };
+  const toYear=(iso)=>{ if(!iso) return ''; return iso.split('-')[0]; };
+  const startEl=document.getElementById('leaveStart');
+  const endEl=document.getElementById('leaveEnd');
+  document.getElementById('leaveName').value=x.name;
+  startEl.value=toDDMM(x.start); startEl.dataset.year=toYear(x.start);
+  endEl.value=toDDMM(x.end); endEl.dataset.year=toYear(x.end);
+  const btn=document.querySelector('#leaveBox button[onclick="addLeave()"]');
+  if(btn) btn.textContent='Uložiť';
+  const delBtn=document.getElementById('leaveDeleteBtn');
+  if(delBtn) delBtn.style.display='inline-block';
+  document.getElementById('leaveName').focus();
+};
+
+window.deleteEditingLeave=function(){
+  if(!editingLeaveId) return;
+  leaveData=leaveData.filter(x=>x.id!==editingLeaveId);
+  editingLeaveId=null;
   saveLeave();
+  const startEl=document.getElementById('leaveStart');
+  const endEl=document.getElementById('leaveEnd');
+  document.getElementById('leaveName').value='';
+  startEl.value=''; delete startEl.dataset.year;
+  endEl.value=''; delete endEl.dataset.year;
+  const btn=document.querySelector('#leaveBox button[onclick="addLeave()"]');
+  if(btn) btn.textContent='Pridať';
+  const delBtn=document.getElementById('leaveDeleteBtn');
+  if(delBtn) delBtn.style.display='none';
   renderLeave();
 };
 
@@ -1732,8 +1803,8 @@ function renderLeave(){
       let dni, color;
       if(g.daysToStart<=0){ dni='DNES'; color='#00d4ff'; }
       else { dni=g.daysToStart; color='#aaa'; }
-      // Mená v jednom riadku, každé s vlastným ✕ na zmazanie
-      const mena=g.people.map(p=>`${p.name} <span onclick="deleteLeave('${p.id}')" title="zmazať" style="cursor:pointer;color:#ff6b6b;font-size:14px;">✕</span>`).join(',&nbsp; ');
+      // Mená v jednom riadku, každé s vlastným ✎ na úpravu a ✕ na zmazanie
+      const mena=g.people.map(p=>`<span onclick="editLeave('${p.id}')" title="upraviť" style="cursor:pointer;color:#8ab4ff;font-size:14px;">✎</span> ${p.name}`).join(',&nbsp; ');
       html+=`<tr style="border-bottom:1px solid rgba(255,255,255,0.1);">`+
         `<td style="padding:5px 6px;text-align:left;font-weight:bold;">${mena}</td>`+
         `<td style="padding:5px 6px;text-align:center;">${datum}</td>`+
@@ -1775,41 +1846,91 @@ function saveAudits(){
 
 // Parsuje "dd.mm." alebo "dd.mm" / "dd/mm" na "YYYY-MM-DD". Rok sa doplní automaticky:
 // ak by dátum v aktuálnom roku už bol viac ako 30 dní v minulosti, použije sa budúci rok.
-function parseDDMM(str){
+function parseDDMM(str, explicitYear){
   if(!str) return '';
   const m=String(str).trim().match(/^(\d{1,2})[.\/](\d{1,2})\.?$/);
   if(!m) return '';
   const day=parseInt(m[1],10), month=parseInt(m[2],10);
   if(day<1||day>31||month<1||month>12) return '';
-  const now=new Date(); now.setHours(0,0,0,0);
-  let year=now.getFullYear();
-  let candidate=new Date(year, month-1, day);
-  const diffDays=(now-candidate)/(1000*60*60*24);
-  if(diffDays>30){ year+=1; candidate=new Date(year, month-1, day); }
+  let year;
+  if(explicitYear){
+    year=parseInt(explicitYear,10);
+  } else {
+    const now=new Date(); now.setHours(0,0,0,0);
+    year=now.getFullYear();
+    let candidate=new Date(year, month-1, day);
+    const diffDays=(now-candidate)/(1000*60*60*24);
+    if(diffDays>30){ year+=1; }
+  }
   const mm=String(month).padStart(2,'0');
   const dd=String(day).padStart(2,'0');
   return `${year}-${mm}-${dd}`;
 }
 
+let editingAuditId = null;
+
 window.addAudit=function(){
-  const date=parseDDMM(document.getElementById('auditDate').value);
-  const dateEnd=parseDDMM(document.getElementById('auditDateEnd').value);
+  const dateEl=document.getElementById('auditDate');
+  const dateEndEl=document.getElementById('auditDateEnd');
+  const date=parseDDMM(dateEl.value, dateEl.dataset.year);
+  const dateEnd=parseDDMM(dateEndEl.value, dateEndEl.dataset.year);
   const typ=document.getElementById('auditTyp').value.trim();
   const zak=document.getElementById('auditZak').value.trim();
   if(!date || !typ){ alert('Zadaj aspoň dátum (dd.mm.) a typ.'); return; }
   if(dateEnd && dateEnd<date){ alert('Koniec nemôže byť pred začiatkom.'); return; }
-  auditData.push({ id:Date.now().toString(), date, dateEnd, typ, zak });
+  if(editingAuditId){
+    const idx=auditData.findIndex(x=>x.id===editingAuditId);
+    if(idx!==-1){ auditData[idx]={...auditData[idx], date, dateEnd, typ, zak}; }
+    editingAuditId=null;
+    const btn=document.querySelector('#auditFormRow button[onclick="addAudit()"]');
+    if(btn) btn.textContent='Pridať';
+    const delBtn=document.getElementById('auditDeleteBtn');
+    if(delBtn) delBtn.style.display='none';
+  } else {
+    auditData.push({ id:Date.now().toString(), date, dateEnd, typ, zak });
+  }
   saveAudits();
-  document.getElementById('auditDate').value='';
-  document.getElementById('auditDateEnd').value='';
+  dateEl.value=''; delete dateEl.dataset.year;
+  dateEndEl.value=''; delete dateEndEl.dataset.year;
   document.getElementById('auditTyp').value='';
   document.getElementById('auditZak').value='';
   renderCustomAudits();
 };
 
-window.deleteAudit=function(id){
-  auditData=auditData.filter(x=>x.id!==id);
+window.editAudit=function(id){
+  const a=auditData.find(x=>x.id===id);
+  if(!a) return;
+  editingAuditId=id;
+  const toDDMM=(iso)=>{ if(!iso) return ''; const p=iso.split('-'); return `${parseInt(p[2],10)}.${parseInt(p[1],10)}.`; };
+  const toYear=(iso)=>{ if(!iso) return ''; return iso.split('-')[0]; };
+  const dateEl=document.getElementById('auditDate');
+  const dateEndEl=document.getElementById('auditDateEnd');
+  dateEl.value=toDDMM(a.date); dateEl.dataset.year=toYear(a.date);
+  dateEndEl.value=toDDMM(a.dateEnd); dateEndEl.dataset.year=toYear(a.dateEnd);
+  document.getElementById('auditTyp').value=a.typ;
+  document.getElementById('auditZak').value=a.zak||'';
+  const btn=document.querySelector('#auditFormRow button[onclick="addAudit()"]');
+  if(btn) btn.textContent='Uložiť';
+  const delBtn=document.getElementById('auditDeleteBtn');
+  if(delBtn) delBtn.style.display='inline-block';
+  document.getElementById('auditTyp').focus();
+};
+
+window.deleteEditingAudit=function(){
+  if(!editingAuditId) return;
+  auditData=auditData.filter(x=>x.id!==editingAuditId);
+  editingAuditId=null;
   saveAudits();
+  const dateEl=document.getElementById('auditDate');
+  const dateEndEl=document.getElementById('auditDateEnd');
+  dateEl.value=''; delete dateEl.dataset.year;
+  dateEndEl.value=''; delete dateEndEl.dataset.year;
+  document.getElementById('auditTyp').value='';
+  document.getElementById('auditZak').value='';
+  const btn=document.querySelector('#auditFormRow button[onclick="addAudit()"]');
+  if(btn) btn.textContent='Pridať';
+  const delBtn=document.getElementById('auditDeleteBtn');
+  if(delBtn) delBtn.style.display='none';
   renderCustomAudits();
 };
 
@@ -1844,7 +1965,7 @@ function renderCustomAudits(){
     tr.className='customAuditRow';
     tr.style.borderBottom='1px solid rgba(255,255,255,0.1)';
     tr.innerHTML=
-      `<td style="padding:8px;text-align:center;">${datum} <span onclick="deleteAudit('${a.id}')" title="zmazať" style="cursor:pointer;color:#ff6b6b;font-size:13px;">✕</span></td>`+
+      `<td style="padding:8px;text-align:center;"><span onclick="editAudit('${a.id}')" title="upraviť" style="cursor:pointer;color:#8ab4ff;font-size:13px;">✎</span> ${datum}</td>`+
       `<td style="padding:8px;text-align:center;">${a.typ}</td>`+
       `<td style="padding:8px;text-align:center;">${a.zak||''}</td>`+
       `<td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="${a.date}"${a.dateEnd?` data-end="${a.dateEnd}"`:''}>-</td>`;
@@ -2053,7 +2174,116 @@ async function updateNewsQueue() {
 updateNewsQueue();
 setInterval(updateNewsQueue, 3 * 60 * 1000);
 
+// ===== MINI DATE PICKER (deň.mesiac, bez roka) =====
+let mdpTargetInput = null;
+let mdpViewMonth = new Date().getMonth();
+let mdpViewYear = new Date().getFullYear();
 
+function mdpOpen(inputEl){
+  mdpTargetInput = inputEl;
+  const now = new Date();
+  // Ak pole už má hodnotu dd.mm., otvor kalendár na tom mesiaci (a roku, ak je známy)
+  const m = (inputEl.value||'').trim().match(/^(\d{1,2})[.\/](\d{1,2})\.?$/);
+  if(m){
+    mdpViewMonth = parseInt(m[2],10)-1;
+    mdpViewYear = inputEl.dataset.year ? parseInt(inputEl.dataset.year,10) : now.getFullYear();
+  } else {
+    mdpViewMonth = now.getMonth();
+    mdpViewYear = now.getFullYear();
+  }
+  mdpRender();
+  const picker = document.getElementById('miniDatePicker');
+  const rect = inputEl.getBoundingClientRect();
+  picker.style.display = 'block';
+  let top = rect.bottom + window.scrollY + 6;
+  let left = rect.left + window.scrollX;
+  // Zabráň pretečeniu mimo obrazovky vpravo
+  if(left + 220 > window.innerWidth) left = window.innerWidth - 230;
+  picker.style.top = top + 'px';
+  picker.style.left = left + 'px';
+}
+
+function mdpClose(){
+  document.getElementById('miniDatePicker').style.display = 'none';
+  mdpTargetInput = null;
+}
+
+const MDP_MONTHS = ['Január','Február','Marec','Apríl','Máj','Jún','Júl','August','September','Október','November','December'];
+const MDP_DOWS = ['Po','Ut','St','Št','Pi','So','Ne'];
+
+function mdpRender(){
+  const picker = document.getElementById('miniDatePicker');
+  const firstDay = new Date(mdpViewYear, mdpViewMonth, 1);
+  let startDow = firstDay.getDay(); // 0=Ne
+  startDow = (startDow+6)%7; // posun na Po=0
+  const daysInMonth = new Date(mdpViewYear, mdpViewMonth+1, 0).getDate();
+  const now = new Date();
+
+  // Rozsah výberu: od aktuálneho mesiaca, max 12 mesiacov dopredu
+  const monthsFromNow = (mdpViewYear - now.getFullYear())*12 + (mdpViewMonth - now.getMonth());
+  const canPrev = monthsFromNow > 0;
+  const canNext = monthsFromNow < 12;
+
+  let html = `<div class="mdpHeader">
+    <span onclick="event.stopPropagation();mdpPrevMonth()" style="${canPrev?'':'visibility:hidden;'}">‹</span>
+    <span style="cursor:default;">${MDP_MONTHS[mdpViewMonth]} ${mdpViewYear}</span>
+    <span onclick="event.stopPropagation();mdpNextMonth()" style="${canNext?'':'visibility:hidden;'}">›</span>
+  </div>`;
+  html += `<div class="mdpGrid">`;
+  MDP_DOWS.forEach(d=> html += `<div class="mdpDow">${d}</div>`);
+  for(let i=0;i<startDow;i++) html += `<div class="mdpDay empty"></div>`;
+  for(let d=1; d<=daysInMonth; d++){
+    const isToday = (d===now.getDate() && mdpViewMonth===now.getMonth() && mdpViewYear===now.getFullYear());
+    html += `<div class="mdpDay${isToday?' today':''}" onclick="event.stopPropagation();mdpSelect(${d})">${d}</div>`;
+  }
+  html += `</div>`;
+  picker.innerHTML = html;
+}
+
+function mdpPrevMonth(){
+  const now = new Date();
+  const monthsFromNow = (mdpViewYear - now.getFullYear())*12 + (mdpViewMonth - now.getMonth());
+  if(monthsFromNow <= 0) return;
+  mdpViewMonth--;
+  if(mdpViewMonth<0){ mdpViewMonth=11; mdpViewYear--; }
+  mdpRender();
+}
+function mdpNextMonth(){
+  const now = new Date();
+  const monthsFromNow = (mdpViewYear - now.getFullYear())*12 + (mdpViewMonth - now.getMonth());
+  if(monthsFromNow >= 12) return;
+  mdpViewMonth++;
+  if(mdpViewMonth>11){ mdpViewMonth=0; mdpViewYear++; }
+  mdpRender();
+}
+window.mdpPrevMonth = mdpPrevMonth;
+window.mdpNextMonth = mdpNextMonth;
+window.mdpSelect = function(day){
+  if(mdpTargetInput){
+    mdpTargetInput.value = `${day}.${mdpViewMonth+1}.`;
+    mdpTargetInput.dataset.year = mdpViewYear;
+    mdpTargetInput.dispatchEvent(new Event('input'));
+  }
+  mdpClose();
+};
+
+// Zatvor picker pri kliknutí mimo neho
+document.addEventListener('click', (e)=>{
+  const picker = document.getElementById('miniDatePicker');
+  if(picker.style.display==='block' && !picker.contains(e.target) && e.target!==mdpTargetInput){
+    mdpClose();
+  }
+});
+
+// Naviaž picker na všetky 4 dátumové polia
+['auditDate','auditDateEnd','leaveStart','leaveEnd'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el){
+    el.readOnly = true;
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', (e)=>{ e.stopPropagation(); mdpOpen(el); });
+  }
+});
 
 </script>
 <div id="historicalEvents" class="glass" style="position:absolute;bottom:11px;left:40px;right:40px;width:auto;overflow:hidden;height:auto;display:flex;align-items:center;padding:15px;text-align:center;justify-content:flex-start;">
@@ -2069,6 +2299,8 @@ setInterval(updateNewsQueue, 3 * 60 * 1000);
   to { transform: translateX(-100%); }
 }
 </style>
+
+<div id="miniDatePicker"></div>
 
 </body>
 </html>
