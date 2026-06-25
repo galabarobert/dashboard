@@ -1350,8 +1350,8 @@ function renderFuel(){
   html+=`</table>`;
   html+=`<div style="width:1px;background:rgba(255,255,255,0.25);margin:0 14px;align-self:stretch;"></div>`;
   html+=`<table style="flex:1;width:33%;border-collapse:collapse;font-size:17px;">`;
-  html+=`<tr><td colspan="2" style="font-weight:bold;font-size:18px;padding-bottom:10px;text-align:center;">🛢️ Komodity</td></tr>`;
-  html+=`<tr><td style="padding:5px 4px;text-align:left;">Brent</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${commodityData.brent||'-'} $</td></tr>`;
+  html+=`<tr><td colspan="2" style="font-weight:bold;font-size:18px;padding-bottom:10px;text-align:center;">🪙 Komodity</td></tr>`;
+  html+=`<tr><td style="padding:5px 4px;text-align:left;">Bitcoin</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${commodityData.btc||'-'} $</td></tr>`;
   html+=`<tr><td style="padding:5px 4px;text-align:left;">Zlato</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${commodityData.gold||'-'} $</td></tr>`;
   html+=`</table>`;
   html+=`</div>`;
@@ -1457,9 +1457,9 @@ async function loadCurrency(){
   renderCurrency();
 }
 
-// ===== KOMODITY (Brent ropa, zlato), bez API kľúča =====
-let commodityData = { brent:null, gold:null };
-let commodityInfo = "gold-api.com · Stooq";
+// ===== KOMODITY (zlato, Bitcoin), bez API kľúča, z gold-api.com (CORS povolené priamo) =====
+let commodityData = { btc:null, gold:null };
+let commodityInfo = "gold-api.com";
 
 const CORS_PROXIES=[
   'https://api.allorigins.win/raw?url=',
@@ -1467,10 +1467,11 @@ const CORS_PROXIES=[
   'https://api.codetabs.com/v1/proxy/?quest='
 ];
 
-// Zlato – gold-api.com má CORS povolené priamo, skús aj cez proxy ako záložný plán
-async function fetchGoldPrice(){
+// gold-api.com má CORS povolené priamo, skús aj cez proxy ako záložný plán
+async function fetchGoldApiPrice(symbol){
+  const url='https://api.gold-api.com/price/'+symbol;
   try{
-    const r=await fetch('https://api.gold-api.com/price/XAU',{signal:AbortSignal.timeout(7000)});
+    const r=await fetch(url,{signal:AbortSignal.timeout(7000)});
     if(r.ok){
       const data=await r.json();
       if(data && data.price) return data.price;
@@ -1478,7 +1479,7 @@ async function fetchGoldPrice(){
   }catch(e){ /* skús cez proxy */ }
   for(let proxy of CORS_PROXIES){
     try{
-      const r=await fetch(proxy+encodeURIComponent('https://api.gold-api.com/price/XAU'),{signal:AbortSignal.timeout(7000)});
+      const r=await fetch(proxy+encodeURIComponent(url),{signal:AbortSignal.timeout(7000)});
       if(!r.ok) continue;
       const data=await r.json();
       if(data && data.price) return data.price;
@@ -1487,62 +1488,19 @@ async function fetchGoldPrice(){
   return null;
 }
 
-// Brent ropa – skús Yahoo Finance, potom Stooq (oba cez CORS proxy)
-async function fetchYahooQuote(symbol){
-  const url='https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(symbol)+'?range=1d&interval=1d';
-  for(let proxy of CORS_PROXIES){
-    try{
-      const r=await fetch(proxy+encodeURIComponent(url),{signal:AbortSignal.timeout(7000)});
-      if(!r.ok) continue;
-      const data=await r.json();
-      const result=data && data.chart && data.chart.result && data.chart.result[0];
-      const price=result && result.meta && result.meta.regularMarketPrice;
-      if(price) return price;
-    }catch(e){ /* skús ďalšie proxy */ }
-  }
-  return null;
-}
-
-async function fetchStooqQuote(symbol){
-  const url='https://stooq.com/q/l/?s='+encodeURIComponent(symbol)+'&f=sd2t2c&h&e=csv';
-  for(let proxy of CORS_PROXIES){
-    try{
-      const r=await fetch(proxy+encodeURIComponent(url),{signal:AbortSignal.timeout(7000)});
-      if(!r.ok) continue;
-      const text=await r.text();
-      // formát CSV: Symbol,Date,Time,Close
-      const lines=text.trim().split('\n');
-      if(lines.length>=2){
-        const cols=lines[1].split(',');
-        const price=parseFloat(cols[3]);
-        if(price && !isNaN(price)) return price;
-      }
-    }catch(e){ /* skús ďalšie proxy */ }
-  }
-  return null;
-}
-
-async function fetchBrentPrice(){
-  const viaYahoo=await fetchYahooQuote('BZ=F');
-  if(viaYahoo) return viaYahoo;
-  const viaStooq=await fetchStooqQuote('cb.f');
-  if(viaStooq) return viaStooq;
-  return null;
-}
-
 async function loadCommodities(){
   let ok=false;
   try{
-    const gold=await fetchGoldPrice();
+    const gold=await fetchGoldApiPrice('XAU');
     if(gold){ commodityData.gold=gold.toFixed(0); ok=true; }
   }catch(e){}
   try{
-    const brent=await fetchBrentPrice();
-    if(brent){ commodityData.brent=brent.toFixed(2); ok=true; }
+    const btc=await fetchGoldApiPrice('BTC');
+    if(btc){ commodityData.btc=Math.round(btc).toLocaleString('sk-SK'); ok=true; }
   }catch(e){}
   if(ok){
-    commodityInfo='gold-api.com · Stooq · '+new Date().toLocaleDateString('sk-SK');
-    console.log('✓ Komodity aktualizované (zlato: '+(commodityData.gold||'-')+', Brent: '+(commodityData.brent||'-')+')');
+    commodityInfo='gold-api.com · '+new Date().toLocaleDateString('sk-SK');
+    console.log('✓ Komodity aktualizované (zlato: '+(commodityData.gold||'-')+', Bitcoin: '+(commodityData.btc||'-')+')');
   } else {
     console.log('Komodity: chyba načítania, používam posledné known');
   }
