@@ -77,60 +77,15 @@ body::before {
 #time {font-size:170px;}
 #dateWeek {font-size:34px;margin-top:-38px;}
 
-#weather {position:absolute;top:219px;left:40px;font-size:28px;line-height:1.8;width:auto;white-space:nowrap;height:50px;display:flex;align-items:center;}
-#daysSat {position:absolute;top:317px;left:40px;font-size:32px;text-align:center;width:140px;}
-#daysSun {position:absolute;top:317px;left:230px;font-size:32px;text-align:center;width:140px;}
-#daysMon {position:absolute;top:317px;left:420px;font-size:32px;text-align:center;width:140px;}
-#sun {position:absolute;top:556px;left:40px;font-size:28px;text-align:left;line-height:1.5;}
-#nameday {position:absolute;top:216px;right:40px;min-width:394px;font-size:31px;text-align:left;padding-left:25px;white-space:nowrap;box-sizing:border-box;}
+#weather {position:absolute;top:219px;left:40px;font-size:28px;line-height:1.8;width:auto;white-space:nowrap;height:50px;display:flex;align-items:center;display:none;}
+#forecast3days {position:absolute;top:219px;left:40px;width:501px;box-sizing:border-box;}
+#sun {position:absolute;top:516px;left:40px;font-size:28px;text-align:left;line-height:1.5;}
+#nameday {position:absolute;min-width:380px;font-size:31px;text-align:left;padding-left:25px;white-space:nowrap;box-sizing:border-box;}
 
 #world{
     position:absolute;
-    top:761px;
-    left:40px;
     width:auto;
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:15px;
     box-sizing: border-box;
-}
-
-.city{
-    text-align:center;
-    display:flex;
-    flex-direction:column;
-    gap:5px;
-    white-space:nowrap;
-    flex-shrink:0;
-}
-
-.place{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    font-size:18px;
-    margin:0;
-    justify-content:center;
-}
-
-.city-time{
-    font-size:28px;
-    margin:0;
-    display:inline;
-}
-
-.city-weather{
-    font-size:22px;
-    margin:0;
-    display:inline;
-    margin-left:10px;
-}
-
-.time-weather{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
 }
 
 .flag{width:20px;height:12px;}
@@ -176,47 +131,37 @@ body::before {
 
 #vacationBox{
     position:absolute;
-    top:360px;
-    right:40px;
-    left:auto;
-    width:394px;
-    transform:none;
-    font-size:38px;
-    text-align:left;
-    padding-left:25px;
+    top:12px;
+    left:1080px;
+    width:144px;
+    font-size:28px;
+    text-align:center;
+    padding:11px 6px;
     box-sizing:border-box;
 }
-#vacationTime{font-size:28px;color:white;}
+#vacationTime{font-size:28px;color:white;line-height:1.3;}
 
 #holidayBox{
     position:absolute;
-    top:calc(450px - 1mm);
-    right:40px;
-    width:394px;
-    font-size:28px;
+    font-size:42px;
     text-align:left;
     padding-left:25px;
     box-sizing:border-box;
 }
-#holidayDisplay{font-size:28px;color:white;line-height:1.3;}
+#holidayDisplay{font-size:31px;color:white;line-height:1.3;}
 
 #miniCalendar{
     position:absolute;
-    top:560px;
-    right:40px;
     padding:15px;
+    box-sizing:border-box;
 }
 #fuelBox{
     position:absolute;
-    top:780px;
-    right:40px;
     padding:15px;
     box-sizing:border-box;
 }
 #currencyBox{
     position:absolute;
-    top:780px;
-    right:40px;
     padding:15px;
     box-sizing:border-box;
 }
@@ -237,7 +182,7 @@ body::before {
     position:absolute;
     top:216px;
     left:50%;
-    transform:translateX(calc(-50% + 38px + 10mm)) scale(1.6452230625);
+    transform:translateX(calc(-50% + 38px - 5mm)) scale(1.6452230625);
     transform-origin:center top;
     width:auto;
     min-width:400px;
@@ -288,9 +233,7 @@ body::before {
 </div>
 
 <div id="weather" class="glass"></div>
-<div id="daysSat" class="glass"></div>
-<div id="daysSun" class="glass"></div>
-<div id="daysMon" class="glass"></div>
+<div id="forecast3days" class="glass"></div>
 <div id="sun" class="glass"></div>
 <div id="nameday" class="glass"></div>
 
@@ -355,41 +298,7 @@ body::before {
 <div id="fuelBox" class="glass"></div>
 <div id="currencyBox" class="glass"></div>
 
-<div id="world">
-
-<div class="city glass">
-    <div class="place"><img class="flag" src="https://flagcdn.com/w40/mx.png"> Mexiko – Ramos Arizpe</div>
-    <div class="time-weather">
-        <div id="ramos" class="city-time"></div>
-        <div id="ramosw" class="city-weather"></div>
-    </div>
-</div>
-
-<div class="city glass">
-    <div class="place"><img class="flag" src="https://flagcdn.com/w40/us.png"> USA – Detroit</div>
-    <div class="time-weather">
-        <div id="detroit" class="city-time"></div>
-        <div id="detroitw" class="city-weather"></div>
-    </div>
-</div>
-
-<div class="city glass">
-    <div class="place"><img class="flag" src="https://flagcdn.com/w40/in.png"> India – Pune</div>
-    <div class="time-weather">
-        <div id="pune" class="city-time"></div>
-        <div id="punew" class="city-weather"></div>
-    </div>
-</div>
-
-<div class="city glass">
-    <div class="place"><img class="flag" src="https://flagcdn.com/w40/cn.png"> Čína – Suzhou</div>
-    <div class="time-weather">
-        <div id="suzhou" class="city-time"></div>
-        <div id="suzhouw" class="city-weather"></div>
-    </div>
-</div>
-
-</div>
+<div id="world" class="glass"></div>
 
 <script>
 
@@ -855,6 +764,7 @@ function updateNameday(){
     nameday.style.fontSize = (curSize - 1) + 'px';
     safety++;
   }
+  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 
 // SLNKO - VÝCHOD/ZÁPAD + MESIAC
@@ -986,10 +896,6 @@ async function loadWeather(){
     dayNames.push(dn);
   }
 
-  weather.innerHTML=`
-Dnes: ${icon(d.weather_code[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math.round(d.temperature_2m_min[0])}° | 💨 ${Math.round(d.wind_speed_10m_max[0])} ${windDir(d.wind_direction_10m_dominant[0])}${d.precipitation_sum[0]>0?' | 💧 '+d.precipitation_sum[0].toFixed(1)+' mm':''}
-`;
-
   const daysOfWeek = ['ne','po','ut','st','št','pi','so'];
   const today = new Date();
   const tomorrow = new Date(today);
@@ -999,43 +905,79 @@ Dnes: ${icon(d.weather_code[0])} ${Math.round(d.temperature_2m_max[0])}°/${Math
   const day3 = new Date(today);
   day3.setDate(day3.getDate() + 3);
   
-  // Zobraz: Zajtra [1], +2dni [2], +3dni [3]
+  // Zobraz: Dnes [0], Zajtra [1], +2dni [2], +3dni [3]
   const day1Name = daysOfWeek[tomorrow.getDay()];
   const day2Name = daysOfWeek[day2.getDay()];
   const day3Name = daysOfWeek[day3.getDay()];
   
-  // Zobraz: Zajtra [1], +2dni [2], +3dni [3]
-  daysSat.innerHTML=`<div style='text-align:center;'><div style='font-size:30px;margin-bottom:10px;color:#aaa;'>${day1Name}</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[1])}</div><div style='font-size:30px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[1])}° ${Math.round(d.temperature_2m_min[1])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[1])} ${windDir(d.wind_direction_10m_dominant[1])}</div></div>`;
-
-  daysSun.innerHTML=`<div style='text-align:center;'><div style='font-size:30px;margin-bottom:10px;color:#aaa;'>${day2Name}</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[2])}</div><div style='font-size:30px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[2])}° ${Math.round(d.temperature_2m_min[2])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[2])} ${windDir(d.wind_direction_10m_dominant[2])}</div></div>`;
-
-  daysMon.innerHTML=`<div style='text-align:center;'><div style='font-size:30px;margin-bottom:10px;color:#aaa;'>${day3Name}</div><div style='font-size:42px;margin-bottom:10px;'>${icon(d.weather_code[3])}</div><div style='font-size:30px;margin-bottom:8px;'>${Math.round(d.temperature_2m_max[3])}° ${Math.round(d.temperature_2m_min[3])}°</div><div style='font-size:24px;color:#aaa;'>💨 ${Math.round(d.wind_speed_10m_max[3])} ${windDir(d.wind_direction_10m_dominant[3])}</div></div>`;
+  const rows=[
+    {name:'Dnes', idx:0},
+    {name:day1Name, idx:1},
+    {name:day2Name, idx:2},
+    {name:day3Name, idx:3}
+  ];
+  let fHtml=`<table style="width:100%;border-collapse:collapse;font-size:24px;">`;
+  rows.forEach((r,i)=>{
+    const borderStyle = i<rows.length-1 ? "border-bottom:1px solid rgba(255,255,255,0.15);" : "";
+    const nameStyle = r.name==='Dnes' ? "font-weight:bold;color:#fff;" : "color:#aaa;";
+    const precip = d.precipitation_sum[r.idx];
+    const precipHtml = precip>0 ? ` 💧 ${precip.toFixed(1)} mm` : '';
+    fHtml+=`<tr style="${borderStyle}">`+
+      `<td style="padding:10px 6px;text-align:left;width:60px;${nameStyle}">${r.name}</td>`+
+      `<td style="padding:10px 12px;text-align:left;font-size:32px;width:50px;">${icon(d.weather_code[r.idx])}</td>`+
+      `<td style="padding:10px 12px;text-align:left;white-space:nowrap;">${Math.round(d.temperature_2m_max[r.idx])}°/${Math.round(d.temperature_2m_min[r.idx])}°</td>`+
+      `<td style="padding:10px 12px;text-align:left;color:#aaa;white-space:nowrap;width:100%;">💨 ${Math.round(d.wind_speed_10m_max[r.idx])} ${windDir(d.wind_direction_10m_dominant[r.idx])}${precipHtml}</td>`+
+    `</tr>`;
+  });
+  fHtml+=`</table>`;
+  document.getElementById('forecast3days').innerHTML=fHtml;
+  document.getElementById('weather').style.display='none';
   
   console.log('Weather codes:', 'Dnes:', d.weather_code[0], 'Zajtra:', d.weather_code[1], 'Za 2 dni:', d.weather_code[2], 'Za 3 dni:', d.weather_code[3]);
 }
 
 // WORLD TIME
+const WORLD_CITIES = [
+  { name:"Mexiko – Arizpe", flag:"mx", tz:"America/Monterrey", lat:25.54, lon:-100.94 },
+  { name:"USA – Detroit",         flag:"us", tz:"America/Detroit",   lat:42.33, lon:-83.05 },
+  { name:"India – Pune",          flag:"in", tz:"Asia/Kolkata",      lat:18.52, lon:73.85 },
+  { name:"Čína – Suzhou",         flag:"cn", tz:"Asia/Shanghai",     lat:31.30, lon:120.62 }
+];
+let worldWeatherCache = {};
+
+function renderWorldTable(){
+  const box=document.getElementById('world');
+  if(!box) return;
+  let html=`<table style="width:100%;border-collapse:collapse;font-size:22px;">`;
+  WORLD_CITIES.forEach((c,i)=>{
+    const time=new Date().toLocaleTimeString("sk-SK",{timeZone:c.tz,hour12:false});
+    const weather=worldWeatherCache[c.tz] || '';
+    const borderStyle = i<WORLD_CITIES.length-1 ? "border-bottom:1px solid rgba(255,255,255,0.15);" : "";
+    html+=`<tr style="${borderStyle}">`+
+      `<td style="padding:10px 6px;text-align:left;white-space:nowrap;"><img class="flag" src="https://flagcdn.com/w40/${c.flag}.png" style="vertical-align:middle;margin-right:6px;"> ${c.name}</td>`+
+      `<td style="padding:10px 6px;text-align:center;white-space:nowrap;">${time}</td>`+
+      `<td style="padding:10px 6px;text-align:right;color:#aaa;white-space:nowrap;">${weather}</td>`+
+    `</tr>`;
+  });
+  html+=`</table>`;
+  box.innerHTML=html;
+}
+
 function world(){
-  ramos.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"America/Monterrey",hour12:false});
-  detroit.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"America/Detroit",hour12:false});
-  pune.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"Asia/Kolkata",hour12:false});
-  suzhou.innerText=new Date().toLocaleTimeString("sk-SK",{timeZone:"Asia/Shanghai",hour12:false});
+  renderWorldTable();
+  if(typeof positionLeaveBox==='function') positionLeaveBox();
 }
 
 // WORLD WEATHER
 async function worldWeather(){
-  const c={
-    ramos:[25.54,-100.94,"ramosw"],
-    detroit:[42.33,-83.05,"detroitw"],
-    pune:[18.52,73.85,"punew"],
-    suzhou:[31.30,120.62,"suzhouw"]
-  };
-
-  for(let k in c){
-    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c[k][0]}&longitude=${c[k][1]}&current_weather=true`);
-    const d=await r.json();
-    document.getElementById(c[k][2]).innerText=icon(d.current_weather.weathercode)+" "+Math.round(d.current_weather.temperature)+"°";
+  for(const c of WORLD_CITIES){
+    try{
+      const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current_weather=true`);
+      const d=await r.json();
+      worldWeatherCache[c.tz]=icon(d.current_weather.weathercode)+" "+Math.round(d.current_weather.temperature)+"°";
+    }catch(e){ /* ponechá poslednú známu hodnotu */ }
   }
+  renderWorldTable();
 }
 
 // SMENA
@@ -1137,13 +1079,13 @@ function updateVacation(){
   
   // Dovolenka / Vianoce - vždy zobraz v boxe hore
   if(n>=vacStart && n<=new Date(2026,7,9)){
-    vacationTime.innerHTML=`🏖️ Dovolenka <span style="color:#00d4ff;font-weight:bold;">DNES</span>`;
+    vacationTime.innerHTML=`Dovolenka<br><span style="color:#00d4ff;font-weight:bold;">DNES</span>`;
     vacationTime.style.display="block";
   } else if(diffVac>0){
-    vacationTime.innerHTML=`🏖️ Dovolenka <span style="color:#aaa;">o ${diffVac} dní</span>`;
+    vacationTime.innerHTML=`Dovolenka<br><span style="color:#aaa;">o ${diffVac} dní</span>`;
     vacationTime.style.display="block";
   } else if(diffChrist>0){
-    vacationTime.innerHTML=`🏖️ Do Vianoc: ${diffChrist} dní`;
+    vacationTime.innerHTML=`Do Vianoc:<br>${diffChrist} dní`;
     vacationTime.style.display="block";
   } else {
     vacationTime.style.display="none";
@@ -1289,6 +1231,14 @@ function updateHolidays(){
   if(nextHoliday){
     const daysLeft=Math.ceil(minDiff);
     const hDisplay=document.getElementById('holidayDisplay');
+    const hb=document.getElementById('holidayBox');
+    // Zaisti správnu šírku boxu PRED meraním textu (rovnaká min. šírka ako box menín, 380px)
+    const sunBox=document.getElementById('sun');
+    if(hb && sunBox){
+      hb.style.left=sunBox.offsetLeft+'px';
+      hb.style.right='auto';
+      hb.style.width=Math.max(sunBox.offsetWidth,380)+'px';
+    }
     if(daysLeft===0){
       hDisplay.innerHTML=`🎉 ${nextHoliday.name} <span style="color:#00d4ff;font-weight:bold;">DNES</span>`;
     } else if(daysLeft===1){
@@ -1297,18 +1247,11 @@ function updateHolidays(){
       hDisplay.innerHTML=`🎉 ${nextHoliday.name} <span style="color:#aaa;">o ${daysLeft} dní</span>`;
     }
     hDisplay.style.display="block";
-    // Šírka boxu = presne šírka boxu s meninami
-    const ndBox=document.getElementById('nameday');
-    const hBox=document.getElementById('holidayBox');
-    if(ndBox && hBox && ndBox.offsetWidth>0){
-      hBox.style.boxSizing="border-box";
-      hBox.style.width=ndBox.offsetWidth+"px";
-    }
-    // Ak je text na viac ako 2 riadkoch, postupne zmenši font, kým sa nezmestí na 2 riadky
-    hDisplay.style.fontSize='28px';
+    // Rovnaké písmo ako meniny (31px), text vždy max na 2 riadkoch
+    hDisplay.style.fontSize='31px';
     const lineHeight=parseFloat(getComputedStyle(hDisplay).fontSize)*1.3;
     let safety=0;
-    while(hDisplay.scrollHeight > lineHeight*2 + 4 && safety<15){
+    while(hDisplay.scrollHeight > lineHeight*2 + 4 && safety<20){
       const curSize=parseFloat(getComputedStyle(hDisplay).fontSize);
       hDisplay.style.fontSize=(curSize-1)+'px';
       safety++;
@@ -1316,6 +1259,8 @@ function updateHolidays(){
   } else {
     document.getElementById('holidayDisplay').style.display="none";
   }
+  if(typeof positionLeftColumn==='function') positionLeftColumn();
+  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 
 // MINI KALENDÁR CELÉHO MESIACA
@@ -1332,12 +1277,12 @@ function buildMiniCalendar(){
   const startOffset=(firstDay.getDay()+6)%7;
   const daysInMonth=new Date(year,month+1,0).getDate();
 
-  let html=`<div style="font-weight:bold;font-size:20px;margin-bottom:8px;text-align:center;">📅 ${monthNames[month]} ${year}</div>`;
-  html+=`<table style="width:100%;border-collapse:collapse;font-size:16px;text-align:center;">`;
+  let html=`<div style="font-weight:bold;font-size:16px;margin-bottom:6px;text-align:center;">📅 ${monthNames[month]} ${year}</div>`;
+  html+=`<table style="width:100%;border-collapse:collapse;font-size:13px;text-align:center;">`;
   html+=`<tr>`;
   ["Po","Ut","St","Št","Pi","So","Ne"].forEach((d,i)=>{
     const wc=(i>=5)?'#ff8a8a':'#aaa';
-    html+=`<th style="padding:3px;color:${wc};font-weight:normal;">${d}</th>`;
+    html+=`<th style="padding:2px;color:${wc};font-weight:normal;">${d}</th>`;
   });
   html+=`</tr>`;
 
@@ -1347,14 +1292,14 @@ function buildMiniCalendar(){
     for(let col=0; col<7; col++){
       const cellIndex=row*7+col;
       if(cellIndex<startOffset || day>daysInMonth){
-        html+=`<td style="padding:4px;"></td>`;
+        html+=`<td style="padding:2px;"></td>`;
       } else {
         const isToday=(day===todayDate);
         const isWeekend=(col>=5);
         let content=String(day);
-        let style="padding:4px;";
+        let style="padding:2px;";
         if(isToday){
-          content=`<span style="background:#00d4ff;color:#001a33;border-radius:50%;padding:3px 7px;font-weight:bold;">${day}</span>`;
+          content=`<span style="background:#00d4ff;color:#001a33;border-radius:50%;padding:2px 5px;font-weight:bold;">${day}</span>`;
         } else if(isWeekend){
           style+="color:#ff8a8a;";
         }
@@ -1367,17 +1312,7 @@ function buildMiniCalendar(){
   }
   html+=`</table>`;
   cal.innerHTML=html;
-
-  // Šírka = ako meniny; pozícia tesne pod sviatkom
-  const ndBox=document.getElementById('nameday');
-  if(ndBox && ndBox.offsetWidth>0){
-    cal.style.boxSizing="border-box";
-    cal.style.width=ndBox.offsetWidth+"px";
-  }
-  const hBox=document.getElementById('holidayBox');
-  if(hBox && hBox.offsetHeight>0){
-    cal.style.top=(hBox.offsetTop + hBox.offsetHeight + 12)+"px";
-  }
+  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 
 // PHM – ceny vrábeľských staníc (OMV + Slovnaft), automaticky z hackmath.net
@@ -1401,48 +1336,45 @@ function renderFuel(){
     if(s.nafta  && (nMin===null || toNum(s.nafta)  < toNum(nMin)))  nMin=s.nafta;
   });
 
-  let html=`<div style="font-weight:bold;font-size:18px;margin-bottom:10px;text-align:center;">⛽ PHM Vráble</div>`;
-  html+=`<table style="width:100%;border-collapse:collapse;font-size:17px;">`;
+  let html=`<div style="display:flex;align-items:stretch;">`;
+  html+=`<table style="flex:1;width:33%;border-collapse:collapse;font-size:17px;">`;
+  html+=`<tr><td colspan="2" style="font-weight:bold;font-size:18px;padding-bottom:10px;text-align:center;">⛽ PHM Vráble</td></tr>`;
   html+=`<tr><td style="padding:5px 4px;text-align:left;">Benzín</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${fmtPrice(bMin)||'-'} €/l</td></tr>`;
   html+=`<tr><td style="padding:5px 4px;text-align:left;">Nafta</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${fmtPrice(nMin)||'-'} €/l</td></tr>`;
   html+=`</table>`;
-  html+=`<div style="font-size:11px;color:#aaa;text-align:center;margin-top:8px;">${phmInfo}</div>`;
+  html+=`<div style="width:1px;background:rgba(255,255,255,0.25);margin:0 14px;align-self:stretch;"></div>`;
+  html+=`<table style="flex:1;width:33%;border-collapse:collapse;font-size:17px;">`;
+  html+=`<tr><td colspan="2" style="font-weight:bold;font-size:18px;padding-bottom:10px;text-align:center;">💶 Kurzy</td></tr>`;
+  html+=`<tr><td style="padding:5px 4px;text-align:left;">USD</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${currencyData.USD||'-'}</td></tr>`;
+  html+=`<tr><td style="padding:5px 4px;text-align:left;">CZK</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${currencyData.CZK||'-'}</td></tr>`;
+  html+=`</table>`;
+  html+=`<div style="width:1px;background:rgba(255,255,255,0.25);margin:0 14px;align-self:stretch;"></div>`;
+  html+=`<table style="flex:1;width:33%;border-collapse:collapse;font-size:17px;">`;
+  html+=`<tr><td colspan="2" style="font-weight:bold;font-size:18px;padding-bottom:10px;text-align:center;">🛢️ Komodity</td></tr>`;
+  html+=`<tr><td style="padding:5px 4px;text-align:left;">Brent</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${commodityData.brent||'-'} $</td></tr>`;
+  html+=`<tr><td style="padding:5px 4px;text-align:left;">Zlato</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${commodityData.gold||'-'} $</td></tr>`;
+  html+=`</table>`;
+  html+=`</div>`;
+  html+=`<div style="font-size:11px;color:#aaa;text-align:center;margin-top:8px;">${phmInfo} • ${currencyInfo} • ${commodityInfo}</div>`;
   box.innerHTML=html;
-
-  // Šírka = polovica boxu meniny/kalendár (vedľa neho je currencyBox); pozícia tesne pod kalendárom
-  const ndBox=document.getElementById('nameday');
-  const cur=document.getElementById('currencyBox');
-  if(ndBox && ndBox.offsetWidth>0){
-    const halfWidth=(ndBox.offsetWidth-15)/2; // 15px medzera medzi oboma boxmi
-    box.style.boxSizing="border-box";
-    box.style.width=halfWidth+"px";
-    box.style.right=(40+halfWidth+15)+"px";
-    if(cur){
-      cur.style.boxSizing="border-box";
-      cur.style.width=halfWidth+"px";
-      cur.style.right="40px";
-    }
-  }
-  const cal=document.getElementById('miniCalendar');
-  if(cal && cal.offsetHeight>0){
-    const topPos="calc("+(cal.offsetTop + cal.offsetHeight + 12)+"px - 1mm)";
-    box.style.top=topPos;
-    if(cur) cur.style.top=topPos;
-  }
-  syncFuelCurrencyHeight();
+  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 
 // Zrovnaj výšku PHM a Kurzy boxov na tú vyššiu z nich
 function syncFuelCurrencyHeight(){
   const box=document.getElementById('fuelBox');
   const cur=document.getElementById('currencyBox');
+  const cal=document.getElementById('miniCalendar');
   if(!box || !cur) return;
   box.style.height="auto";
   cur.style.height="auto";
+  if(cal) cal.style.height="auto";
   requestAnimationFrame(()=>{
-    const h=Math.max(box.offsetHeight, cur.offsetHeight);
+    let h=Math.max(box.offsetHeight, cur.offsetHeight);
+    if(cal) h=Math.max(h, cal.offsetHeight);
     box.style.height=h+"px";
     cur.style.height=h+"px";
+    if(cal) cal.style.height=h+"px";
   });
 }
 
@@ -1497,16 +1429,8 @@ let currencyData = { USD:null, CZK:null };
 let currencyInfo = "ECB · frankfurter.app";
 
 function renderCurrency(){
-  const box=document.getElementById('currencyBox');
-  if(!box) return;
-  let html=`<div style="font-weight:bold;font-size:18px;margin-bottom:10px;text-align:center;">💶 Kurzy EUR</div>`;
-  html+=`<table style="width:100%;border-collapse:collapse;font-size:17px;">`;
-  html+=`<tr><td style="padding:5px 4px;text-align:left;">USD</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${currencyData.USD||'-'}</td></tr>`;
-  html+=`<tr><td style="padding:5px 4px;text-align:left;">CZK</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${currencyData.CZK||'-'}</td></tr>`;
-  html+=`</table>`;
-  html+=`<div style="font-size:11px;color:#aaa;text-align:center;margin-top:8px;">${currencyInfo}</div>`;
-  box.innerHTML=html;
-  syncFuelCurrencyHeight();
+  // Kurzy sa zobrazujú spolu s PHM v jednej tabuľke (fuelBox)
+  renderFuel();
 }
 
 async function loadCurrency(){
@@ -1531,6 +1455,111 @@ async function loadCurrency(){
   }
   console.log('Kurzy mien: chyba načítania, používam posledné známe');
   renderCurrency();
+}
+
+// ===== KOMODITY (Brent ropa, zlato), bez API kľúča =====
+let commodityData = { brent:null, gold:null };
+let commodityInfo = "gold-api.com · Stooq";
+
+const CORS_PROXIES=[
+  'https://api.allorigins.win/raw?url=',
+  'https://corsproxy.io/?url=',
+  'https://api.codetabs.com/v1/proxy/?quest='
+];
+
+// Zlato – gold-api.com má CORS povolené priamo, skús aj cez proxy ako záložný plán
+async function fetchGoldPrice(){
+  try{
+    const r=await fetch('https://api.gold-api.com/price/XAU',{signal:AbortSignal.timeout(7000)});
+    if(r.ok){
+      const data=await r.json();
+      if(data && data.price) return data.price;
+    }
+  }catch(e){ /* skús cez proxy */ }
+  for(let proxy of CORS_PROXIES){
+    try{
+      const r=await fetch(proxy+encodeURIComponent('https://api.gold-api.com/price/XAU'),{signal:AbortSignal.timeout(7000)});
+      if(!r.ok) continue;
+      const data=await r.json();
+      if(data && data.price) return data.price;
+    }catch(e){ /* skús ďalšie proxy */ }
+  }
+  return null;
+}
+
+// Brent ropa – skús Yahoo Finance, potom Stooq (oba cez CORS proxy)
+async function fetchYahooQuote(symbol){
+  const url='https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(symbol)+'?range=1d&interval=1d';
+  for(let proxy of CORS_PROXIES){
+    try{
+      const r=await fetch(proxy+encodeURIComponent(url),{signal:AbortSignal.timeout(7000)});
+      if(!r.ok) continue;
+      const data=await r.json();
+      const result=data && data.chart && data.chart.result && data.chart.result[0];
+      const price=result && result.meta && result.meta.regularMarketPrice;
+      if(price) return price;
+    }catch(e){ /* skús ďalšie proxy */ }
+  }
+  return null;
+}
+
+async function fetchStooqQuote(symbol){
+  const url='https://stooq.com/q/l/?s='+encodeURIComponent(symbol)+'&f=sd2t2c&h&e=csv';
+  for(let proxy of CORS_PROXIES){
+    try{
+      const r=await fetch(proxy+encodeURIComponent(url),{signal:AbortSignal.timeout(7000)});
+      if(!r.ok) continue;
+      const text=await r.text();
+      // formát CSV: Symbol,Date,Time,Close
+      const lines=text.trim().split('\n');
+      if(lines.length>=2){
+        const cols=lines[1].split(',');
+        const price=parseFloat(cols[3]);
+        if(price && !isNaN(price)) return price;
+      }
+    }catch(e){ /* skús ďalšie proxy */ }
+  }
+  return null;
+}
+
+async function fetchBrentPrice(){
+  const viaYahoo=await fetchYahooQuote('BZ=F');
+  if(viaYahoo) return viaYahoo;
+  const viaStooq=await fetchStooqQuote('cb.f');
+  if(viaStooq) return viaStooq;
+  return null;
+}
+
+async function loadCommodities(){
+  let ok=false;
+  try{
+    const gold=await fetchGoldPrice();
+    if(gold){ commodityData.gold=gold.toFixed(0); ok=true; }
+  }catch(e){}
+  try{
+    const brent=await fetchBrentPrice();
+    if(brent){ commodityData.brent=brent.toFixed(2); ok=true; }
+  }catch(e){}
+  if(ok){
+    commodityInfo='gold-api.com · Stooq · '+new Date().toLocaleDateString('sk-SK');
+    console.log('✓ Komodity aktualizované (zlato: '+(commodityData.gold||'-')+', Brent: '+(commodityData.brent||'-')+')');
+  } else {
+    console.log('Komodity: chyba načítania, používam posledné known');
+  }
+  renderFuel();
+}
+
+// ===== DENNÁ AKTUALIZÁCIA PHM, KURZOV A KOMODÍT KAŽDÉ RÁNO O 6:00 =====
+let lastDailyUpdateDate=-1;
+function checkDailyMarketUpdate(){
+  const n=new Date();
+  if(n.getHours()===6 && n.getDate()!==lastDailyUpdateDate){
+    lastDailyUpdateDate=n.getDate();
+    loadFuelPrices();
+    loadCurrency();
+    loadCommodities();
+    console.log('✓ Ranná aktualizácia (6:00): PHM, kurzy, komodity');
+  }
 }
 
 // ===== VOĽNO V KANCELÁRII (ukladá sa v prehliadači) =====
@@ -1640,11 +1669,11 @@ function renderLeave(){
   const groupList=Object.values(groups).sort((a,b)=> a.s - b.s);
 
   if(groupList.length===0){
-    list.innerHTML=`<div style="text-align:center;color:#aaa;padding:8px;">Žiadne plánované voľno</div>`;
+    list.innerHTML=`<div style="text-align:center;color:#aaa;padding:8px;font-size:28px;">Žiadne plánované voľno</div>`;
   } else {
-    let html=`<table style="width:100%;border-collapse:collapse;">`;
+    let html=`<table style="width:100%;border-collapse:collapse;font-size:28px;">`;
     html+=`<tr style="border-bottom:1px solid rgba(255,255,255,0.2);color:#fff;">`+
-      `<th style="text-align:left;padding:5px 6px;">Meno</th>`+
+      `<th style="text-align:center;padding:5px 6px;">Meno</th>`+
       `<th style="text-align:center;padding:5px 6px;">Voľno</th>`+
       `<th style="text-align:center;padding:5px 6px;">Dni</th>`+
     `</tr>`;
@@ -1662,13 +1691,19 @@ function renderLeave(){
       let dni, color;
       if(g.daysToStart<=0){ dni='DNES'; color='#00d4ff'; }
       else { dni=g.daysToStart; color='#aaa'; }
-      // Mená v jednom riadku, každé s vlastným ✎ na úpravu a ✕ na zmazanie
-      const mena=g.people.map(p=>`<span onclick="editLeave('${p.id}')" title="upraviť" style="cursor:pointer;color:#8ab4ff;font-size:14px;">✎</span> ${p.name}`).join(',&nbsp; ');
-      html+=`<tr style="border-bottom:1px solid rgba(255,255,255,0.1);">`+
-        `<td style="padding:5px 6px;text-align:left;font-weight:bold;">${mena}</td>`+
-        `<td style="padding:5px 6px;text-align:center;">${datum}</td>`+
-        `<td style="padding:5px 6px;text-align:center;color:${color};font-weight:bold;">${dni}</td>`+
-      `</tr>`;
+      // Každá osoba na vlastnom riadku, ceruzka pred menom; dátum a dni zlúčené cez rowspan
+      const n=g.people.length;
+      g.people.forEach((p,idx)=>{
+        const lastInGroup = idx===n-1;
+        const trBorder = lastInGroup ? "border-bottom:1px solid rgba(255,255,255,0.1);" : "";
+        html+=`<tr style="${trBorder}">`+
+          `<td style="padding:5px 6px;text-align:left;font-weight:bold;"><span onclick="editLeave('${p.id}')" title="upraviť" style="cursor:pointer;color:#8ab4ff;font-size:22px;">✎</span> ${p.name}</td>`;
+        if(idx===0){
+          html+=`<td rowspan="${n}" style="padding:5px 6px;text-align:center;">${datum}</td>`+
+                `<td rowspan="${n}" style="padding:5px 6px;text-align:center;color:${color};font-weight:bold;">${dni}</td>`;
+        }
+        html+=`</tr>`;
+      });
     });
     html+=`</table>`;
     list.innerHTML=html;
@@ -1678,19 +1713,108 @@ function renderLeave(){
 
 // Umiestni box pod audity, v rovnakej šírke a zarovnaní ako audity
 function positionLeaveBox(){
-  const a=document.getElementById('auditsTable');
   const l=document.getElementById('leaveBox');
-  if(!a || !l) return;
+  if(!l) return;
+  l.style.top='216px';
+  l.style.left='auto';
+  l.style.right='40px';
+  l.style.width='460px';
+
+  // Svetové mestá pod tabuľkou voľna, rovnakej šírky, všetky 4 vedľa seba
+  const w=document.getElementById('world');
+  if(w){
+    w.style.top=(l.offsetTop + l.offsetHeight + 15)+'px';
+    w.style.left='auto';
+    w.style.right='40px';
+    w.style.width='460px';
+  }
+}
+
+// Umiestni meniny/sviatok pod box slnka/mesiaca (ľavý panel); Dovolenka je samostatne hore
+function positionLeftColumn(){
+  const sunBox=document.getElementById('sun');
+  if(!sunBox) return;
+  const areaLeft=sunBox.offsetLeft;
+  const areaWidth=sunBox.offsetWidth;
+  const areaTop=sunBox.offsetTop + sunBox.offsetHeight + 15;
+  const gap=15;
+
+  const nd=document.getElementById('nameday');
+  const hb=document.getElementById('holidayBox');
+
+  if(nd){
+    nd.style.left=areaLeft+'px';
+    nd.style.right='auto';
+    nd.style.top=areaTop+'px';
+    nd.style.width=areaWidth+'px';
+    nd.style.minWidth='0';
+  }
+  const ndH = nd ? nd.offsetHeight : 0;
+  if(hb){
+    hb.style.left=areaLeft+'px';
+    hb.style.right='auto';
+    hb.style.top=(areaTop+ndH+gap)+'px';
+    hb.style.width=Math.max(areaWidth,380)+'px';
+  }
+
+  // Svetové mestá posuň pod sviatok, aby nedošlo k prekrytiu
+  const hbH = hb ? hb.offsetHeight : 0;
+  const w=document.getElementById('world');
+  if(w){
+    const worldTop=areaTop+ndH+gap+hbH+gap;
+    const leaveBoxBottom = (function(){
+      const l=document.getElementById('leaveBox');
+      return l ? (l.offsetTop + l.offsetHeight + 15) : 0;
+    })();
+    w.style.top=Math.max(worldTop, leaveBoxBottom)+'px';
+  }
+}
+
+// Umiestni kalendár + PHM/kurzy na celú šírku pod tabuľkou auditov
+function positionBottomBoxes(){
+  const a=document.getElementById('auditsTable');
+  if(!a) return;
   let S=1.6452230625;
   const tr=getComputedStyle(a).transform;
   const m=tr && tr.match(/matrix\(([^,]+),/);
   if(m){ const v=parseFloat(m[1]); if(v) S=v; }
-  const offsetX=38 + 10*96/25.4;           // translateX(38px + 10mm)
-  const centerX=a.offsetLeft + offsetX;     // vodorovný stred auditov
-  const width=a.offsetWidth * S;            // vizuálna šírka auditov
-  l.style.width=width+'px';
-  l.style.left=(centerX - width/2)+'px';
-  l.style.top=(a.offsetTop + a.offsetHeight * S + 14)+'px';
+  const offsetX=38 - 5*96/25.4;
+  const centerX=a.offsetLeft + offsetX;
+  const totalWidth=a.offsetWidth * S;
+  const areaLeft=centerX - totalWidth/2;
+  const minTop=a.offsetTop + a.offsetHeight * S + 14;
+
+  const gap=15;
+  const boxHeight=218; // približná výška boxov (kalendár/PHM/kurzy)
+  const newsTicker=document.getElementById('historicalEvents');
+  const newsTop = newsTicker ? newsTicker.offsetTop : 1900;
+  const desiredGapFromNews=70;
+  // Umiestni sekciu kúsok od správ (nie hneď pod auditmi, ale ani príliš blízko správ)
+  let areaTop = newsTop - desiredGapFromNews - boxHeight;
+  if(areaTop < minTop) areaTop = minTop;
+
+  const mc=document.getElementById('miniCalendar');
+  const fb=document.getElementById('fuelBox');
+  const cb=document.getElementById('currencyBox');
+  if(cb) cb.style.display='none';
+
+  // Kalendár (menší) a PHM/Kurzy/Komodity (väčší) vedľa seba v jednom riadku
+  const calWidth=totalWidth*0.34;
+  const fuelWidth=totalWidth - gap - calWidth;
+  if(mc){
+    mc.style.left=areaLeft+'px';
+    mc.style.right='auto';
+    mc.style.top=areaTop+'px';
+    mc.style.width=calWidth+'px';
+  }
+  if(fb){
+    fb.style.left=(areaLeft+calWidth+gap)+'px';
+    fb.style.right='auto';
+    fb.style.top=areaTop+'px';
+    fb.style.width=fuelWidth+'px';
+  }
+  syncFuelCurrencyHeight();
+  if(typeof positionLeftColumn==='function') positionLeftColumn();
 }
 
 // ===== PRIDÁVANIE AUDITOV (ukladá sa v prehliadači) =====
@@ -1830,8 +1954,9 @@ function renderCustomAudits(){
       `<td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="${a.date}"${a.dateEnd?` data-end="${a.dateEnd}"`:''}>-</td>`;
     formRow.parentNode.insertBefore(tr, formRow);
   });
-  // poloha tabuľky voľna sa môže zmeniť (zmena výšky auditov)
+  // poloha tabuľky voľna a spodných boxov sa môže zmeniť (zmena výšky auditov)
   if(typeof positionLeaveBox==='function') positionLeaveBox();
+  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 
 // LOOP – každú sekundu
@@ -1842,6 +1967,7 @@ setInterval(()=>{
   updateLunch();
   updateVacation();
   updateNameday(); // kontroluje zmenu dňa
+  checkDailyMarketUpdate(); // PHM, kurzy, komodity - raz denne o 6:00
 },1000);
 
 // POČASIE – každú minútu
@@ -1851,9 +1977,8 @@ setInterval(()=>{
   loadSun();
   updateHolidays();
   buildMiniCalendar();
-  renderFuel();
-  renderCurrency();
   renderLeave();
+  positionBottomBoxes();
 },60000);
 
 // INIT
@@ -1870,12 +1995,12 @@ updateHolidays();
 buildMiniCalendar();
 renderFuel();
 loadFuelPrices();
-setInterval(loadFuelPrices, 60 * 1000);
 renderCurrency();
 loadCurrency();
-setInterval(loadCurrency, 60 * 60 * 1000);
+loadCommodities();
 renderCustomAudits();
 renderLeave();
+positionBottomBoxes();
 
 // ŠKÁLOVANIE PLÁTNA – aby sa dashboard zmestil na akúkoľvek obrazovku (aj mobil na šírku)
 function fitStage(){
@@ -1887,6 +2012,7 @@ function fitStage(){
   const y=Math.round((window.innerHeight - sh*scale)/2);
   stage.style.transform=`translate(${x}px, ${y}px) scale(${scale})`;
   if(typeof positionLeaveBox==='function') positionLeaveBox();
+  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 window.addEventListener('resize', fitStage);
 window.addEventListener('orientationchange', fitStage);
