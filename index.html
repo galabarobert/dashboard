@@ -95,12 +95,6 @@ body::before {
     left:605px;
     font-size:28px;
     text-align:center;
-    background:rgba(255,255,255,0.12);
-    backdrop-filter:blur(50px) saturate(200%);
-    border:1.5px solid rgba(255,255,255,0.25);
-    border-radius:30px;
-    padding:15px;
-    box-shadow: 0 0 40px rgba(138, 43, 226, 0.3), 0 8px 32px rgba(0,0,0,0.4);
 }
 #lunchTime{font-size:34px;margin-bottom:10px;}
 
@@ -155,11 +149,6 @@ body::before {
     box-sizing:border-box;
 }
 #fuelBox{
-    position:absolute;
-    padding:15px;
-    box-sizing:border-box;
-}
-#currencyBox{
     position:absolute;
     padding:15px;
     box-sizing:border-box;
@@ -298,11 +287,34 @@ body::before {
 <div id="miniCalendar" class="glass"></div>
 
 <div id="fuelBox" class="glass"></div>
-<div id="currencyBox" class="glass"></div>
 
 <div id="world" class="glass"></div>
 
 <script>
+
+// ========== SPOLOČNÉ CORS PROXY (verejné, bezplatné, bez API kľúča) ==========
+// Viaceré externé zdroje na stránke (PHM ceny, kurzy, komodity, RSS správy) potrebujú
+// CORS proxy, pretože cieľové servery nemajú CORS hlavičky pre priamy fetch z prehliadača.
+// Tento zoznam je centrálny, aby sa pri pridaní/zmene proxy nemuselo upravovať na viacerých miestach.
+const CORS_PROXIES = [
+  'https://api.allorigins.win/raw?url=',
+  'https://corsproxy.io/?url=',
+  'https://api.codetabs.com/v1/proxy/?quest=',
+  'https://thingproxy.freeboard.io/fetch/'
+];
+
+// Skúsi stiahnuť text z danej URL postupne cez všetky proxy v CORS_PROXIES, kým jeden nezafunguje.
+// Vracia text odpovede, alebo null ak zlyhali všetky.
+async function fetchTextViaCorsProxy(targetUrl, timeoutMs){
+  for(const proxy of CORS_PROXIES){
+    try{
+      const proxyUrl = proxy.includes('thingproxy') ? (proxy+targetUrl) : (proxy+encodeURIComponent(targetUrl));
+      const r=await fetch(proxyUrl,{signal:AbortSignal.timeout(timeoutMs||7000)});
+      if(r.ok) return await r.text();
+    }catch(e){ /* skús ďalšie proxy */ }
+  }
+  return null;
+}
 
 // ========== MENINY – kompletný ročný zoznam ==========
 const MENINY = {
@@ -712,13 +724,6 @@ function icon(code){
 function windDir(deg){
   const d=["S","SV","V","JV","J","JZ","Z","SZ"];
   return d[Math.round(deg/45)%8];
-}
-
-function getDirection(deg){
-  if(deg>=315||deg<45)return"od Nitry";
-  if(deg<135)return"od Levíc";
-  if(deg<225)return"od Nových Zámkov";
-  return"od Zlatých Moraviec";
 }
 
 // ISO TÝŽDEŇ
@@ -1473,20 +1478,17 @@ function renderFuel(){
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 
-// Zrovnaj výšku PHM a Kurzy boxov na tú vyššiu z nich
+// Zrovnaj výšku PHM/Kurzy/Komodity boxu a kalendára na rovnakú hodnotu
 function syncFuelCurrencyHeight(){
   const box=document.getElementById('fuelBox');
-  const cur=document.getElementById('currencyBox');
   const cal=document.getElementById('miniCalendar');
-  if(!box || !cur) return;
+  if(!box) return;
   box.style.height="auto";
-  cur.style.height="auto";
   if(cal) cal.style.height="auto";
   requestAnimationFrame(()=>{
-    let h=Math.max(box.offsetHeight, cur.offsetHeight);
+    let h=box.offsetHeight;
     if(cal) h=Math.max(h, cal.offsetHeight);
     box.style.height=h+"px";
-    cur.style.height=h+"px";
     if(cal) cal.style.height=h+"px";
   });
 }
@@ -1494,45 +1496,28 @@ function syncFuelCurrencyHeight(){
 // Stiahne ceny jednej stanice z hackmath.net (cez CORS proxy)
 // Skúša viacero proxy serverov postupne - verejné CORS proxy bývajú nestabilné (výpadky, limity),
 // takže viac fallbackov výrazne zvyšuje šancu na úspešné načítanie.
+function parseStanicaText(t){
+  const b=t.match(/natural\s*95\s*\(benzín\)[^0-9]{0,40}?([0-9][.,][0-9]{2,3})/i);
+  const n=t.match(/diesel\s*\(nafta\)[^0-9]{0,40}?([0-9][.,][0-9]{2,3})/i);
+  if(!b && !n) return null;
+  return { benzin: b ? b[1].replace('.',',') : null, nafta: n ? n[1].replace('.',',') : null };
+}
+
 async function fetchStanica(pumpa){
   const url='https://www.hackmath.net/sk/cerpacia-stanica?pumpa='+pumpa;
-  // Proxy s priamym pripojením URL (bez encode) - Corsfix
+
+  // Corsfix má unikátny formát (URL sa pripája priamo, bez encode) - skús ako prvé
   try{
     const r=await fetch('https://proxy.corsfix.com/?'+url,{signal:AbortSignal.timeout(7000)});
     if(r.ok){
-      const t=await r.text();
-      const b=t.match(/natural\s*95\s*\(benzín\)[^0-9]{0,40}?([0-9][.,][0-9]{2,3})/i);
-      const n=t.match(/diesel\s*\(nafta\)[^0-9]{0,40}?([0-9][.,][0-9]{2,3})/i);
-      if(b || n){
-        return { benzin: b ? b[1].replace('.',',') : null, nafta: n ? n[1].replace('.',',') : null };
-      }
+      const parsed=parseStanicaText(await r.text());
+      if(parsed) return parsed;
     }
   }catch(e){ /* skús ďalšie proxy */ }
 
-  // Proxy s URL-encoded parametrom
-  const proxies=[
-    'https://api.allorigins.win/raw?url=',
-    'https://corsproxy.io/?url=',
-    'https://api.codetabs.com/v1/proxy/?quest=',
-    'https://thingproxy.freeboard.io/fetch/'
-  ];
-  for(let proxy of proxies){
-    try{
-      const proxyUrl = proxy.includes('thingproxy') ? (proxy+url) : (proxy+encodeURIComponent(url));
-      const r=await fetch(proxyUrl,{signal:AbortSignal.timeout(7000)});
-      if(!r.ok) continue;
-      const t=await r.text();
-      const b=t.match(/natural\s*95\s*\(benzín\)[^0-9]{0,40}?([0-9][.,][0-9]{2,3})/i);
-      const n=t.match(/diesel\s*\(nafta\)[^0-9]{0,40}?([0-9][.,][0-9]{2,3})/i);
-      if(b || n){
-        return {
-          benzin: b ? b[1].replace('.',',') : null,
-          nafta:  n ? n[1].replace('.',',') : null
-        };
-      }
-    }catch(e){ /* skús ďalšie proxy */ }
-  }
-  return null;
+  // Zvyšné proxy (spoločná funkcia, URL-encoded parameter)
+  const text = await fetchTextViaCorsProxy(url);
+  return text ? parseStanicaText(text) : null;
 }
 
 // Aktualizuje ceny oboch staníc
@@ -1595,12 +1580,6 @@ async function loadCurrency(){
 let commodityData = { btc:null, gold:null };
 let commodityInfo = "gold-api.com";
 
-const CORS_PROXIES=[
-  'https://api.allorigins.win/raw?url=',
-  'https://corsproxy.io/?url=',
-  'https://api.codetabs.com/v1/proxy/?quest='
-];
-
 // gold-api.com má CORS povolené priamo, skús aj cez proxy ako záložný plán
 async function fetchGoldApiPrice(symbol){
   const url='https://api.gold-api.com/price/'+symbol;
@@ -1611,13 +1590,9 @@ async function fetchGoldApiPrice(symbol){
       if(data && data.price) return data.price;
     }
   }catch(e){ /* skús cez proxy */ }
-  for(let proxy of CORS_PROXIES){
-    try{
-      const r=await fetch(proxy+encodeURIComponent(url),{signal:AbortSignal.timeout(7000)});
-      if(!r.ok) continue;
-      const data=await r.json();
-      if(data && data.price) return data.price;
-    }catch(e){ /* skús ďalšie proxy */ }
+  const text = await fetchTextViaCorsProxy(url);
+  if(text){
+    try{ const data=JSON.parse(text); if(data && data.price) return data.price; }catch(e){}
   }
   return null;
 }
@@ -1887,8 +1862,6 @@ function positionBottomBoxes(){
 
   const mc=document.getElementById('miniCalendar');
   const fb=document.getElementById('fuelBox');
-  const cb=document.getElementById('currencyBox');
-  if(cb) cb.style.display='none';
 
   // Kalendár (menší) a PHM/Kurzy/Komodity (väčší) vedľa seba v jednom riadku
   const calWidth=totalWidth*0.34;
@@ -2134,7 +2107,6 @@ function scheduleFitStage(){
 window.addEventListener('resize', scheduleFitStage);
 window.addEventListener('orientationchange', scheduleFitStage);
 fitStage();
-// Zápasy natvrdo - bez API
 
 // LIVE FEED SPRÁV Z TERAZ.SK - QUEUE SYSTÉM (posledných 50 správ, najnovšia vpredu)
 let newsQueue = [];
@@ -2142,42 +2114,30 @@ const NEWS_QUEUE_MAX = 50;
 
 async function updateNewsQueue() {
   const rssUrl = 'https://www.teraz.sk/rss/vsetky-spravy.rss';
-  const proxies = [
-    'https://api.allorigins.win/raw?url=',
-    'https://corsproxy.io/?url=',
-    'https://api.codetabs.com/v1/proxy/?quest='
-  ];
-  
-  for(let proxy of proxies) {
-    try {
-      const response = await fetch(proxy + encodeURIComponent(rssUrl), { signal: AbortSignal.timeout(5000) });
-      if(response.ok) {
-        const xmlText = await response.text();
-        const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
-        const items = xml.querySelectorAll('item');
-        
-        let freshNews = [];
-        items.forEach(item => {
-          const title = item.querySelector('title')?.textContent?.trim();
-          if(title && title.length > 10) freshNews.push(title);
-        });
-        
-        // Spracovanie queue: každá nová správa pridaná na začiatok vytlačí najstaršiu (max 50)
-        freshNews.forEach(title => {
-          if(!newsQueue.includes(title)) {
-            newsQueue.unshift(title); // Nový na začiatok
-            if(newsQueue.length > NEWS_QUEUE_MAX) newsQueue.pop(); // Najstarší sa vyhodí
-          }
-        });
-        
-        // Zobraz všetky správy v queue
-        if(newsQueue.length > 0) {
-          document.getElementById('eventScroll').innerText = newsQueue.join(' • ');
-          console.log('✓ Queue: ' + newsQueue.length + ' správ');
-        }
-        return;
-      }
-    } catch(e) {}
+  const xmlText = await fetchTextViaCorsProxy(rssUrl, 5000);
+  if(!xmlText) return;
+
+  const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
+  const items = xml.querySelectorAll('item');
+
+  let freshNews = [];
+  items.forEach(item => {
+    const title = item.querySelector('title')?.textContent?.trim();
+    if(title && title.length > 10) freshNews.push(title);
+  });
+
+  // Spracovanie queue: každá nová správa pridaná na začiatok vytlačí najstaršiu (max 50)
+  freshNews.forEach(title => {
+    if(!newsQueue.includes(title)) {
+      newsQueue.unshift(title); // Nový na začiatok
+      if(newsQueue.length > NEWS_QUEUE_MAX) newsQueue.pop(); // Najstarší sa vyhodí
+    }
+  });
+
+  // Zobraz všetky správy v queue
+  if(newsQueue.length > 0) {
+    document.getElementById('eventScroll').innerText = newsQueue.join(' • ');
+    console.log('✓ Queue: ' + newsQueue.length + ' správ');
   }
 }
 
