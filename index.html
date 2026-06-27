@@ -88,7 +88,6 @@ body::before {
     box-sizing: border-box;
 }
 
-.flag{width:20px;height:12px;}
 
 #shiftBox{
     position:absolute;
@@ -222,6 +221,9 @@ body::before {
 
 <div id="stage">
 
+<div id="apiStatusIndicator" title="Stav API" onclick="toggleApiStatusPanel()" style="position:absolute;top:8px;left:8px;width:14px;height:14px;border-radius:50%;background:#888;box-shadow:0 0 6px rgba(0,0,0,0.5);z-index:9999;cursor:pointer;transition:background 0.4s;"></div>
+<div id="apiStatusPanel" style="display:none;position:absolute;top:26px;left:8px;z-index:9999;background:rgba(20,20,30,0.95);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:10px 14px;font-size:13px;color:#fff;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,0.4);"></div>
+
 <div id="location" class="glow">
     Vráble
     <div id="tempNow"></div>
@@ -233,7 +235,7 @@ body::before {
 </div>
 
 <div id="weather" class="glass"></div>
-<div id="forecast3days" class="glass"></div>
+<div id="forecast3days" class="glass" onclick="window.open('https://www.windy.com/48.240/18.320?48.240,18.320,10','_blank')" title="Zdroj: windy.com" style="cursor:pointer;"></div>
 <div id="sun" class="glass"></div>
 <div id="nameday" class="glass"></div>
 
@@ -683,8 +685,7 @@ function format(sec){
   sec=Math.floor(sec);
   let h=Math.floor(sec/3600);
   let m=Math.floor((sec%3600)/60);
-  let s=sec%60;
-  return `${h}h ${m}m ${s}s`;
+  return `${h}h ${m}m`;
 }
 
 // IKONY
@@ -753,6 +754,9 @@ function updateNameday(){
   const tomorrowName = getNameday(tomorrow);
 
   nameday.innerHTML = "Dnes má meniny: <span style=\"color:#00d4ff;font-weight:bold;\">" + todayName + "</span><hr style=\"border:none;border-top:1px solid rgba(255,255,255,0.2);margin:6px 0;\">Zajtra má meniny: " + tomorrowName;
+  nameday.style.cursor='pointer';
+  nameday.onclick=function(){ window.open('https://kto-ma-meniny.sk/','_blank'); };
+  nameday.title='Zdroj: kto-ma-meniny.sk';
 
   // Ak by sa box pri dlhých menách rozšíril nad bezpečný limit, zmenši font tak,
   // aby ostal vždy presne na 2 riadkoch (Dnes/Zajtra) bez zalomenia a bez nadmerného presahu.
@@ -765,6 +769,67 @@ function updateNameday(){
     safety++;
   }
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
+}
+
+// ===== INDIKÁTOR STAVU API (ľavý horný rohok) =====
+// Sleduje úspech/neúspech každého externého API zdroja na stránke.
+// Zelená = všetko OK, červená = aspoň jedno zlyhalo, sivá = ešte sa nezistilo (na začiatku).
+const apiStatus = {
+  sun: null,        // východ/západ slnka
+  weather: null,    // počasie Vráble
+  worldWeather: null, // počasie pre svetové mestá
+  fuel: null,       // PHM ceny
+  currency: null,   // kurzy mien
+  commodities: null // zlato/bitcoin
+};
+
+function setApiStatus(key, ok){
+  apiStatus[key]=ok;
+  updateApiStatusIndicator();
+}
+
+function updateApiStatusIndicator(){
+  const el=document.getElementById('apiStatusIndicator');
+  if(!el) return;
+  const values=Object.values(apiStatus);
+  const allKnown=values.every(v=>v!==null);
+  const allOk=values.every(v=>v===true);
+  const anyFail=values.some(v=>v===false);
+
+  let color, label;
+  if(anyFail){
+    color='#ff4d4d';
+    label='Chyba načítania API';
+  } else if(allKnown && allOk){
+    color='#4caf50';
+    label='Všetky API načítané OK';
+  } else {
+    color='#888';
+    label='Načítavam API...';
+  }
+  el.style.background=color;
+  el.style.boxShadow='0 0 8px '+color;
+
+  // Detailný rozpis jednotlivých zdrojov - viditeľný panel po kliknutí (nie len hover tooltip,
+  // ktorý na dotykových/TV obrazovkách bez myši nie je dostupný)
+  const names={sun:'Slnko/mesiac', weather:'Počasie Vráble', worldWeather:'Svetové počasie', fuel:'PHM ceny', currency:'Kurzy mien', commodities:'Komodity'};
+  const lines=Object.keys(apiStatus).map(k=>{
+    const v=apiStatus[k];
+    const mark = v===true ? '✓' : (v===false ? '✗' : '…');
+    const markColor = v===true ? '#4caf50' : (v===false ? '#ff4d4d' : '#888');
+    return `<div style="margin:2px 0;"><span style="color:${markColor};font-weight:bold;">${mark}</span> ${names[k]}</div>`;
+  });
+  const panel=document.getElementById('apiStatusPanel');
+  if(panel){
+    panel.innerHTML=`<div style="font-weight:bold;margin-bottom:6px;color:${color};">${label}</div>`+lines.join('');
+  }
+  el.title=label+' (klikni pre detail)';
+}
+
+function toggleApiStatusPanel(){
+  const panel=document.getElementById('apiStatusPanel');
+  if(!panel) return;
+  panel.style.display = (panel.style.display==='none' || !panel.style.display) ? 'block' : 'none';
 }
 
 // SLNKO - VÝCHOD/ZÁPAD + MESIAC
@@ -812,13 +877,19 @@ async function loadSun(){
     
     // Nový formát - tri riadky s názvami
     document.getElementById('sun').innerHTML = `Východ slnka: ☀️ ${sunrise}<hr style="border:none;border-top:1px solid rgba(255,255,255,0.2);margin:6px 0;">Západ slnka: 🌙 ${sunset}<hr style="border:none;border-top:1px solid rgba(255,255,255,0.2);margin:6px 0;">Fáza mesiaca: ${moonEmoji} ${moonName}`;
+    document.getElementById('sun').style.cursor='pointer';
+    document.getElementById('sun').onclick=function(){ window.open('https://www.timeanddate.com/astronomy/slovakia/nitra','_blank'); };
+    document.getElementById('sun').title='Zdroj: timeanddate.com';
+    setApiStatus('sun', true);
   } catch (err) {
     document.getElementById('sun').innerHTML = "☀️ Slnko: Chyba";
+    setApiStatus('sun', false);
   }
 }
 
 // POČASIE VRÁBLE + ALERT
 async function loadWeather(){
+ try{
   const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weather_code,precipitation,wind_speed_10m,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant,precipitation_sum&current=temperature_2m,weather_code,precipitation,wind_speed_10m&forecast_days=7&timezone=Europe%2FBratislava");
   const data=await res.json();
 
@@ -934,6 +1005,11 @@ async function loadWeather(){
   document.getElementById('weather').style.display='none';
   
   console.log('Weather codes:', 'Dnes:', d.weather_code[0], 'Zajtra:', d.weather_code[1], 'Za 2 dni:', d.weather_code[2], 'Za 3 dni:', d.weather_code[3]);
+  setApiStatus('weather', true);
+ } catch(err){
+  console.log('Počasie Vráble: chyba načítania', err);
+  setApiStatus('weather', false);
+ }
 }
 
 // WORLD TIME
@@ -944,40 +1020,70 @@ const WORLD_CITIES = [
   { name:"Čína – Suzhou",         flag:"cn", tz:"Asia/Shanghai",     lat:31.30, lon:120.62 }
 ];
 let worldWeatherCache = {};
+let worldTableBuilt = false;
 
-function renderWorldTable(){
+// Vytvorí statickú štruktúru tabuľky (vlajky, mená miest) LEN RAZ.
+// Volá sa znova iba pri zmene layoutu (napr. po resize/position), nie každú sekundu.
+function buildWorldTable(){
   const box=document.getElementById('world');
   if(!box) return;
   let html=`<table style="width:100%;border-collapse:collapse;font-size:22px;">`;
   WORLD_CITIES.forEach((c,i)=>{
-    const time=new Date().toLocaleTimeString("sk-SK",{timeZone:c.tz,hour12:false});
-    const weather=worldWeatherCache[c.tz] || '';
     const borderStyle = i<WORLD_CITIES.length-1 ? "border-bottom:1px solid rgba(255,255,255,0.15);" : "";
-    html+=`<tr style="${borderStyle}">`+
-      `<td style="padding:10px 6px;text-align:left;white-space:nowrap;"><img class="flag" src="https://flagcdn.com/w40/${c.flag}.png" style="vertical-align:middle;margin-right:6px;"> ${c.name}</td>`+
-      `<td style="padding:10px 6px;text-align:center;white-space:nowrap;">${time}</td>`+
-      `<td style="padding:10px 6px;text-align:right;color:#aaa;white-space:nowrap;">${weather}</td>`+
+    const cityForUrl = encodeURIComponent(c.name.split('–')[1] ? c.name.split('–')[1].trim() : c.name);
+    html+=`<tr style="${borderStyle}cursor:pointer;" onclick="window.open('https://time.is/${cityForUrl}','_blank')" title="Zdroj: time.is">`+
+      `<td style="padding:10px 6px;text-align:left;white-space:nowrap;"><img src="https://flagcdn.com/w40/${c.flag}.png" style="width:24px;height:16px;vertical-align:middle;margin-right:8px;border-radius:2px;"> ${c.name}</td>`+
+      `<td id="worldTime_${i}" style="padding:10px 6px;text-align:center;white-space:nowrap;"></td>`+
+      `<td id="worldWeather_${i}" style="padding:10px 6px;text-align:right;color:#aaa;white-space:nowrap;"></td>`+
     `</tr>`;
   });
   html+=`</table>`;
   box.innerHTML=html;
+  worldTableBuilt=true;
+  updateWorldTimes();
+  updateWorldWeatherCells();
+}
+
+// Aktualizuje LEN textový obsah časových buniek (žiadne znova vytváranie DOM/obrázkov) - volá sa každú sekundu
+function updateWorldTimes(){
+  if(!worldTableBuilt) return;
+  WORLD_CITIES.forEach((c,i)=>{
+    const cell=document.getElementById('worldTime_'+i);
+    if(cell) cell.textContent=new Date().toLocaleTimeString("sk-SK",{timeZone:c.tz,hour12:false,hour:'2-digit',minute:'2-digit'});
+  });
+}
+
+// Aktualizuje LEN textový obsah buniek s počasím - volá sa raz za minútu po načítaní dát
+function updateWorldWeatherCells(){
+  if(!worldTableBuilt) return;
+  WORLD_CITIES.forEach((c,i)=>{
+    const cell=document.getElementById('worldWeather_'+i);
+    if(cell) cell.textContent=worldWeatherCache[c.tz] || '';
+  });
 }
 
 function world(){
-  renderWorldTable();
+  if(!worldTableBuilt){
+    buildWorldTable();
+  } else {
+    updateWorldTimes();
+  }
   if(typeof positionLeaveBox==='function') positionLeaveBox();
 }
 
 // WORLD WEATHER
 async function worldWeather(){
+  let successCount=0;
   for(const c of WORLD_CITIES){
     try{
       const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current_weather=true`);
       const d=await r.json();
       worldWeatherCache[c.tz]=icon(d.current_weather.weathercode)+" "+Math.round(d.current_weather.temperature)+"°";
+      successCount++;
     }catch(e){ /* ponechá poslednú známu hodnotu */ }
   }
-  renderWorldTable();
+  updateWorldWeatherCells();
+  setApiStatus('worldWeather', successCount===WORLD_CITIES.length);
 }
 
 // SMENA
@@ -1238,6 +1344,9 @@ function updateHolidays(){
       hb.style.left=sunBox.offsetLeft+'px';
       hb.style.right='auto';
       hb.style.width=Math.max(sunBox.offsetWidth,380)+'px';
+      hb.style.cursor='pointer';
+      hb.onclick=function(){ window.open('https://kto-ma-meniny.sk/','_blank'); };
+      hb.title='Zdroj: kto-ma-meniny.sk';
     }
     if(daysLeft===0){
       hDisplay.innerHTML=`🎉 ${nextHoliday.name} <span style="color:#00d4ff;font-weight:bold;">DNES</span>`;
@@ -1267,6 +1376,9 @@ function updateHolidays(){
 function buildMiniCalendar(){
   const cal=document.getElementById('miniCalendar');
   if(!cal) return;
+  cal.style.cursor='pointer';
+  cal.onclick=function(){ window.open('https://kalendar.sme.sk/','_blank'); };
+  cal.title='Zdroj: kalendar.sme.sk';
   const now=new Date();
   const year=now.getFullYear();
   const month=now.getMonth();
@@ -1336,20 +1448,21 @@ function renderFuel(){
     if(s.nafta  && (nMin===null || toNum(s.nafta)  < toNum(nMin)))  nMin=s.nafta;
   });
 
+  const linkStyle='cursor:pointer;';
   let html=`<div style="display:flex;align-items:stretch;">`;
-  html+=`<table style="flex:1;width:33%;border-collapse:collapse;font-size:17px;">`;
+  html+=`<table onclick="window.open('https://www.hackmath.net/sk/cerpacia-stanica?pumpa=654','_blank')" title="Zdroj: hackmath.net" style="flex:1;width:33%;border-collapse:collapse;font-size:17px;${linkStyle}">`;
   html+=`<tr><td colspan="2" style="font-weight:bold;font-size:18px;padding-bottom:10px;text-align:center;">⛽ PHM Vráble</td></tr>`;
   html+=`<tr><td style="padding:5px 4px;text-align:left;">Benzín</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${fmtPrice(bMin)||'-'} €/l</td></tr>`;
   html+=`<tr><td style="padding:5px 4px;text-align:left;">Nafta</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${fmtPrice(nMin)||'-'} €/l</td></tr>`;
   html+=`</table>`;
   html+=`<div style="width:1px;background:rgba(255,255,255,0.25);margin:0 14px;align-self:stretch;"></div>`;
-  html+=`<table style="flex:1;width:33%;border-collapse:collapse;font-size:17px;">`;
+  html+=`<table onclick="window.open('https://www.frankfurter.app/','_blank')" title="Zdroj: frankfurter.app (ECB)" style="flex:1;width:33%;border-collapse:collapse;font-size:17px;${linkStyle}">`;
   html+=`<tr><td colspan="2" style="font-weight:bold;font-size:18px;padding-bottom:10px;text-align:center;">💶 Kurzy</td></tr>`;
   html+=`<tr><td style="padding:5px 4px;text-align:left;">USD</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${currencyData.USD||'-'}</td></tr>`;
   html+=`<tr><td style="padding:5px 4px;text-align:left;">CZK</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${currencyData.CZK||'-'}</td></tr>`;
   html+=`</table>`;
   html+=`<div style="width:1px;background:rgba(255,255,255,0.25);margin:0 14px;align-self:stretch;"></div>`;
-  html+=`<table style="flex:1;width:33%;border-collapse:collapse;font-size:17px;">`;
+  html+=`<table onclick="window.open('https://gold-api.com/','_blank')" title="Zdroj: gold-api.com" style="flex:1;width:33%;border-collapse:collapse;font-size:17px;${linkStyle}">`;
   html+=`<tr><td colspan="2" style="font-weight:bold;font-size:18px;padding-bottom:10px;text-align:center;">🪙 Komodity</td></tr>`;
   html+=`<tr><td style="padding:5px 4px;text-align:left;">Bitcoin</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${commodityData.btc||'-'} $</td></tr>`;
   html+=`<tr><td style="padding:5px 4px;text-align:left;">Zlato</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${commodityData.gold||'-'} $</td></tr>`;
@@ -1379,16 +1492,34 @@ function syncFuelCurrencyHeight(){
 }
 
 // Stiahne ceny jednej stanice z hackmath.net (cez CORS proxy)
+// Skúša viacero proxy serverov postupne - verejné CORS proxy bývajú nestabilné (výpadky, limity),
+// takže viac fallbackov výrazne zvyšuje šancu na úspešné načítanie.
 async function fetchStanica(pumpa){
   const url='https://www.hackmath.net/sk/cerpacia-stanica?pumpa='+pumpa;
+  // Proxy s priamym pripojením URL (bez encode) - Corsfix
+  try{
+    const r=await fetch('https://proxy.corsfix.com/?'+url,{signal:AbortSignal.timeout(7000)});
+    if(r.ok){
+      const t=await r.text();
+      const b=t.match(/natural\s*95\s*\(benzín\)[^0-9]{0,40}?([0-9][.,][0-9]{2,3})/i);
+      const n=t.match(/diesel\s*\(nafta\)[^0-9]{0,40}?([0-9][.,][0-9]{2,3})/i);
+      if(b || n){
+        return { benzin: b ? b[1].replace('.',',') : null, nafta: n ? n[1].replace('.',',') : null };
+      }
+    }
+  }catch(e){ /* skús ďalšie proxy */ }
+
+  // Proxy s URL-encoded parametrom
   const proxies=[
     'https://api.allorigins.win/raw?url=',
     'https://corsproxy.io/?url=',
-    'https://api.codetabs.com/v1/proxy/?quest='
+    'https://api.codetabs.com/v1/proxy/?quest=',
+    'https://thingproxy.freeboard.io/fetch/'
   ];
   for(let proxy of proxies){
     try{
-      const r=await fetch(proxy+encodeURIComponent(url),{signal:AbortSignal.timeout(7000)});
+      const proxyUrl = proxy.includes('thingproxy') ? (proxy+url) : (proxy+encodeURIComponent(url));
+      const r=await fetch(proxyUrl,{signal:AbortSignal.timeout(7000)});
       if(!r.ok) continue;
       const t=await r.text();
       const b=t.match(/natural\s*95\s*\(benzín\)[^0-9]{0,40}?([0-9][.,][0-9]{2,3})/i);
@@ -1422,6 +1553,7 @@ async function loadFuelPrices(){
   } else {
     console.log('PHM: používam posledné známe ceny');
   }
+  setApiStatus('fuel', ok);
 }
 
 // ===== KURZY MIEN (EUR -> USD, CZK), z frankfurter.app (ECB dáta, bez API kľúča) =====
@@ -1449,12 +1581,14 @@ async function loadCurrency(){
         currencyInfo='ECB · '+new Date().toLocaleDateString('sk-SK');
         renderCurrency();
         console.log('✓ Kurzy mien aktualizované');
+        setApiStatus('currency', true);
         return;
       }
     }catch(e){ /* skús ďalšiu URL */ }
   }
   console.log('Kurzy mien: chyba načítania, používam posledné známe');
   renderCurrency();
+  setApiStatus('currency', false);
 }
 
 // ===== KOMODITY (zlato, Bitcoin), bez API kľúča, z gold-api.com (CORS povolené priamo) =====
@@ -1505,6 +1639,7 @@ async function loadCommodities(){
     console.log('Komodity: chyba načítania, používam posledné known');
   }
   renderFuel();
+  setApiStatus('commodities', ok);
 }
 
 // ===== DENNÁ AKTUALIZÁCIA PHM, KURZOV A KOMODÍT KAŽDÉ RÁNO O 6:00 =====
@@ -1667,6 +1802,7 @@ function renderLeave(){
     list.innerHTML=html;
   }
   positionLeaveBox();
+  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 
 // Umiestni box pod audity, v rovnakej šírke a zarovnaní ako audity
@@ -1714,21 +1850,13 @@ function positionLeftColumn(){
     hb.style.top=(areaTop+ndH+gap)+'px';
     hb.style.width=Math.max(areaWidth,380)+'px';
   }
-
-  // Svetové mestá posuň pod sviatok, aby nedošlo k prekrytiu
-  const hbH = hb ? hb.offsetHeight : 0;
-  const w=document.getElementById('world');
-  if(w){
-    const worldTop=areaTop+ndH+gap+hbH+gap;
-    const leaveBoxBottom = (function(){
-      const l=document.getElementById('leaveBox');
-      return l ? (l.offsetTop + l.offsetHeight + 15) : 0;
-    })();
-    w.style.top=Math.max(worldTop, leaveBoxBottom)+'px';
-  }
+  // Poznámka: svetový čas (#world) sa pozicuje výlučne v positionLeaveBox() - pod tabuľkou
+  // voľna v pravej hornej kolóne. Tento ľavý panel (slnko/meniny/sviatok) s ním nesúvisí
+  // a nesmie prepisovať jeho pozíciu.
 }
 
-// Umiestni kalendár + PHM/kurzy na celú šírku pod tabuľkou auditov
+// Umiestni kalendár + PHM/kurzy na celú šírku pod tabuľkou auditov (flexibilne - posúva sa
+// nadol podľa skutočnej výšky auditov/voľna, nie podľa pevnej vzdialenosti od pásu správ)
 function positionBottomBoxes(){
   const a=document.getElementById('auditsTable');
   if(!a) return;
@@ -1740,16 +1868,22 @@ function positionBottomBoxes(){
   const centerX=a.offsetLeft + offsetX;
   const totalWidth=a.offsetWidth * S;
   const areaLeft=centerX - totalWidth/2;
-  const minTop=a.offsetTop + a.offsetHeight * S + 14;
+  const auditsBottom=a.offsetTop + a.offsetHeight * S;
+
+  // Zaisti, že leaveBox/world majú aktuálnu pozíciu/výšku bez ohľadu na to, odkiaľ bola
+  // táto funkcia zavolaná (defenzívne, aby sa nespoliehalo na poradie volania zvonku).
+  if(typeof positionLeaveBox==='function') positionLeaveBox();
+
+  // Spodný bod pravej kolóny = tabuľka voľna (leaveBox). Nepoužívame "world" (svetový čas),
+  // pretože ten sa viaže na výšku ľavého panela (meniny/sviatok) a nie je spoľahlivým
+  // ukazovateľom toho, kde končí obsah súvisiaci s auditmi/voľnom.
+  const lb=document.getElementById('leaveBox');
+  const leaveBottom = lb ? (lb.offsetTop + lb.offsetHeight) : 0;
 
   const gap=15;
-  const boxHeight=218; // približná výška boxov (kalendár/PHM/kurzy)
-  const newsTicker=document.getElementById('historicalEvents');
-  const newsTop = newsTicker ? newsTicker.offsetTop : 1900;
-  const desiredGapFromNews=70;
-  // Umiestni sekciu kúsok od správ (nie hneď pod auditmi, ale ani príliš blízko správ)
-  let areaTop = newsTop - desiredGapFromNews - boxHeight;
-  if(areaTop < minTop) areaTop = minTop;
+  // Vždy sa zarovnaj presne pod nižší z oboch bodov (audity / voľno) + medzera
+  // (rovnaká medzera 15px ako medzi tabuľkou voľna a svetovým časom, pre konzistentný vzhľad)
+  const areaTop = Math.max(auditsBottom, leaveBottom) + gap;
 
   const mc=document.getElementById('miniCalendar');
   const fb=document.getElementById('fuelBox');
@@ -1773,6 +1907,10 @@ function positionBottomBoxes(){
   }
   syncFuelCurrencyHeight();
   if(typeof positionLeftColumn==='function') positionLeftColumn();
+
+  // Pás so správami dole nech ostáva pripnutý ku spodu obrazovky (CSS bottom),
+  // ale zaisti, aby sa kalendár/PHM box doňho nikdy nezarezával - ak by bola obrazovka
+  // príliš nízka, aspoň minimálna medzera sa zachová vizuálne cez z-index/scroll prirodzene.
 }
 
 // ===== PRIDÁVANIE AUDITOV (ukladá sa v prehliadači) =====
@@ -1915,36 +2053,44 @@ function renderCustomAudits(){
   // poloha tabuľky voľna a spodných boxov sa môže zmeniť (zmena výšky auditov)
   if(typeof positionLeaveBox==='function') positionLeaveBox();
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
+  // Countdown dní (.daysToAudit) sa počíta v updateVacation() - zavolaj ju hneď,
+  // aby nové/upravené riadky neukazovali "-" až do najbližšieho minútového tiku.
+  if(typeof updateVacation==='function') updateVacation();
 }
 
-// LOOP – každú sekundu
+// LOOP – každú sekundu (len digitálne hodiny + lacná kontrola dennej aktualizácie)
 setInterval(()=>{
   updateTime();
+  checkDailyMarketUpdate(); // PHM, kurzy, komodity - raz denne o 6:00
+},1000);
+
+// MINÚTOVÁ SLUČKA – lokálne prepočty bez siete: svetový čas, odpočty zmeny/obeda,
+// meniny, sviatky, kalendár (tieto údaje sa zobrazujú bez sekúnd, stačí raz za minútu)
+setInterval(()=>{
   world();
   updateShift();
   updateLunch();
   updateVacation();
   updateNameday(); // kontroluje zmenu dňa
-  checkDailyMarketUpdate(); // PHM, kurzy, komodity - raz denne o 6:00
-},1000);
-
-// POČASIE – každú minútu
-setInterval(()=>{
-  loadWeather();
-  worldWeather();
-  loadSun();
   updateHolidays();
   buildMiniCalendar();
   renderLeave();
   positionBottomBoxes();
 },60000);
 
+// 15-MINÚTOVÁ SLUČKA – sieťové volania (počasie, slnko), nemenia sa rýchlo, stačí zriedkavejšie
+setInterval(()=>{
+  loadWeather();
+  worldWeather();
+  loadSun();
+},15*60000);
+
 // INIT
+updateApiStatusIndicator(); // zobrazí sivý indikátor, kým sa API nezačnú vracať
 updateTime();
 world();
 updateShift();
 updateLunch();
-updateVacation();
 updateNameday();
 loadWeather();
 worldWeather();
@@ -1956,7 +2102,7 @@ loadFuelPrices();
 renderCurrency();
 loadCurrency();
 loadCommodities();
-renderCustomAudits();
+renderCustomAudits(); // interne zavolá aj updateVacation() pre okamžitý countdown
 renderLeave();
 positionBottomBoxes();
 
@@ -1972,107 +2118,27 @@ function fitStage(){
   if(typeof positionLeaveBox==='function') positionLeaveBox();
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
-window.addEventListener('resize', fitStage);
-window.addEventListener('orientationchange', fitStage);
+
+// Na mobile spôsobuje pinch-zoom (približovanie prstami) opakované "resize" eventy,
+// ktoré pri každom mikro-zmenení vyvolajú fitStage() a prekreslia/posunú celý dashboard -
+// to vyzerá ako preblikávanie počas približovania. Riešenie:
+// 1) debounce - fitStage() sa zavolá až keď používateľ na chvíľu prestane meniť veľkosť okna,
+//    nie pri každom jednotlivom mikro-evente počas gesta.
+// 2) ak prehliadač podporuje visualViewport, pinch-zoom mení len jeho scale/width, nie
+//    window.innerWidth/innerHeight - takéto zmeny vôbec netreba riešiť cez fitStage().
+let fitStageTimer=null;
+function scheduleFitStage(){
+  if(fitStageTimer) clearTimeout(fitStageTimer);
+  fitStageTimer=setTimeout(fitStage, 150);
+}
+window.addEventListener('resize', scheduleFitStage);
+window.addEventListener('orientationchange', scheduleFitStage);
 fitStage();
 // Zápasy natvrdo - bez API
 
-// PARSOVANIE ČLÁNKOV Z TERAZ.SK - PRIAME FETCHOVANIE
-let newsArticles = [];
-let newsCurrentIndex = 0;
-
-function rotateNews() {
-  if(newsArticles.length > 0) {
-    document.getElementById('eventScroll').innerText = newsArticles[newsCurrentIndex];
-    newsCurrentIndex = (newsCurrentIndex + 1) % newsArticles.length;
-  }
-}
-
-async function loadRSSFeeds(){
-  // RSS feedy teraz.sk (TASR) - viac kanálov pre 20 správ
-  const rssUrls = [
-    'https://www.teraz.sk/rss/vsetky-spravy.rss',
-    'https://www.teraz.sk/rss/slovensko.rss',
-    'https://www.teraz.sk/rss/zahranicie.rss'
-  ];
-  
-  // CORS proxy servery (skúšame postupne kým jeden nezafunguje)
-  const proxies = [
-    'https://api.allorigins.win/raw?url=',
-    'https://corsproxy.io/?url=',
-    'https://api.codetabs.com/v1/proxy/?quest='
-  ];
-  
-  // Funkcia na načítanie jedného feedu cez prvý fungujúci proxy
-  async function nacitajFeed(rssUrl) {
-    for(let proxy of proxies) {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000);
-        const response = await fetch(proxy + encodeURIComponent(rssUrl), { signal: controller.signal });
-        clearTimeout(timeoutId);
-        if(response.ok) {
-          const xmlText = await response.text();
-          const xml = new DOMParser().parseFromString(xmlText, "text/xml");
-          const items = xml.querySelectorAll('item');
-          let titulky = [];
-          items.forEach(item => {
-            const titleEl = item.querySelector('title');
-            if(titleEl) titulky.push(titleEl.textContent.trim());
-          });
-          if(titulky.length > 0) return titulky;
-        }
-      } catch(e) {
-        console.log('Proxy zlyhalo: ' + proxy);
-      }
-    }
-    return [];
-  }
-  
-  // Načítaj všetky feedy a spoj ich (bez duplikátov)
-  let newArticles = [];
-  for(let url of rssUrls) {
-    const titulky = await nacitajFeed(url);
-    titulky.forEach(t => {
-      if(t.length > 8 && !newArticles.includes(t)) {
-        newArticles.push(t);
-      }
-    });
-    if(newArticles.length >= 20) break; // máme dosť
-  }
-  
-  // Ak máme aspoň nejaké články, ulož ich do globálneho poľa
-  if(newArticles.length >= 3) {
-    newsArticles = newArticles.slice(0, 30);
-    newsCurrentIndex = 0;
-    console.log('✓ Načítaných ' + newsArticles.length + ' správ z teraz.sk');
-    rotateNews();
-    return;
-  }
-  
-  // Ak všetko zlyhalo - fallback
-  console.log('Všetky feedy zlyhali, používam fallback');
-  loadFallbackNews();
-}
-
-function loadFallbackNews(){
-  const newsItems = [
-    "Trump: Putin aj Zelenskyj sú otvorení riešeniu vojny na Ukrajine",
-    "Európska únia začala oficiálne prístupové rokovania s Ukrajinou",
-    "Španielski futbalisti prekvapivo remizovali s Kapverdami",
-    "Europoslanci odobrili dohodu o právach cestujúcich v leteckej doprave",
-    "Von der Leyenová: Ak Irán neurobí trvalé zmeny, sankcie EÚ sa nezrušia",
-    "Orbán označil za smiešne obmedzenie funkčného obdobia premiéra",
-    "PCA zamietol veľkú časť žaloby Kyjeva na Moskvu pre Kerčský prieliv"
-  ];
-  
-  newsArticles = newsItems;
-  newsCurrentIndex = 0;
-  rotateNews();
-}
-
-// LIVE FEED 20 SPRÁV Z TERAZ.SK - QUEUE SYSTÉM
+// LIVE FEED SPRÁV Z TERAZ.SK - QUEUE SYSTÉM (posledných 50 správ, najnovšia vpredu)
 let newsQueue = [];
+const NEWS_QUEUE_MAX = 50;
 
 async function updateNewsQueue() {
   const rssUrl = 'https://www.teraz.sk/rss/vsetky-spravy.rss';
@@ -2096,15 +2162,15 @@ async function updateNewsQueue() {
           if(title && title.length > 10) freshNews.push(title);
         });
         
-        // Spracovanie queue: pridaj nové, odstráň staré
+        // Spracovanie queue: každá nová správa pridaná na začiatok vytlačí najstaršiu (max 50)
         freshNews.forEach(title => {
           if(!newsQueue.includes(title)) {
             newsQueue.unshift(title); // Nový na začiatok
-            if(newsQueue.length > 20) newsQueue.pop(); // Najstarší sa vyhodí
+            if(newsQueue.length > NEWS_QUEUE_MAX) newsQueue.pop(); // Najstarší sa vyhodí
           }
         });
         
-        // Zobraz všetkých 20
+        // Zobraz všetky správy v queue
         if(newsQueue.length > 0) {
           document.getElementById('eventScroll').innerText = newsQueue.join(' • ');
           console.log('✓ Queue: ' + newsQueue.length + ' správ');
@@ -2115,9 +2181,9 @@ async function updateNewsQueue() {
   }
 }
 
-// Hneď načítaj, potom každých 3 minúty
+// Hneď načítaj, potom každých 5 minút
 updateNewsQueue();
-setInterval(updateNewsQueue, 3 * 60 * 1000);
+setInterval(updateNewsQueue, 5 * 60 * 1000);
 
 // ===== MINI DATE PICKER (deň.mesiac, bez roka) =====
 let mdpTargetInput = null;
