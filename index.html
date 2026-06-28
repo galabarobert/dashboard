@@ -1757,10 +1757,10 @@ function renderLeave(){
   if(groupList.length===0){
     list.innerHTML=`<div style="text-align:center;color:#aaa;padding:8px;font-size:28px;">Žiadne plánované voľno</div>`;
   } else {
-    let html=`<table style="width:100%;border-collapse:collapse;font-size:28px;">`;
+    let html=`<table style="width:100%;border-collapse:collapse;font-size:28px;table-layout:fixed;">`;
     html+=`<tr style="border-bottom:1px solid rgba(255,255,255,0.2);color:#fff;">`+
-      `<th style="text-align:center;padding:5px 6px;">Meno</th>`+
-      `<th style="text-align:center;padding:5px 6px;">Mimo pracoviska</th>`+
+      `<th style="text-align:center;padding:5px 6px;width:25%;">Meno</th>`+
+      `<th style="text-align:center;padding:5px 6px;width:75%;">Mimo pracoviska</th>`+
     `</tr>`;
     groupList.forEach(g=>{
       const termsHtml = g.terms.map(it=>{
@@ -1785,11 +1785,14 @@ function renderLeave(){
     });
     html+=`</table>`;
     list.innerHTML=html;
-    // Zmenši font v bunkách, ak text (meno alebo termíny) nezapadá na jeden riadok
-    list.querySelectorAll('tr td').forEach(td=>shrinkToFit(td, 14));
   }
+  // Najprv zaisti aktuálnu šírku boxu (môže sa zmeniť podľa obsahu), AŽ POTOM meraj a zmenšuj font -
+  // inak by sa font meral voči starej/nesprávnej šírke a text by mohol pretiecť mimo tabuľky.
   positionLeaveBox();
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
+  if(groupList.length>0){
+    list.querySelectorAll('tr td').forEach(td=>shrinkToFit(td, 14));
+  }
 }
 
 // Umiestni box pod audity, v rovnakej šírke a zarovnaní ako audity
