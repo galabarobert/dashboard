@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Dashboard</title>
+<!-- Firebase (Realtime Database) - umožňuje zdieľanie auditov a voľna medzi všetkými
+     prehliadačmi/zariadeniami, nielen lokálne v jednom prehliadači (localStorage) -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap" rel="stylesheet">
@@ -293,6 +297,45 @@ body::before {
 <div id="world" class="glass"></div>
 
 <script>
+
+// ========== FIREBASE (zdieľané audity a voľno medzi všetkými prehliadačmi/zariadeniami) ==========
+// Dáta sa naďalej ukladajú aj do localStorage (rýchle okamžité zobrazenie pri otvorení stránky),
+// ale Firebase Realtime Database je teraz "zdroj pravdy" - keď niekto zapíše audit/voľno
+// na jednom zariadení, po chvíli sa to zobrazí aj všade inde (iný prehliadač, iný počítač/mobil).
+const firebaseConfig = {
+  apiKey: "AIzaSyA2uXyx3B4W9FqmhbsKl8WYT4Uo4piX_iM",
+  authDomain: "info-tabula.firebaseapp.com",
+  databaseURL: "https://info-tabula-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "info-tabula",
+  storageBucket: "info-tabula.firebasestorage.app",
+  messagingSenderId: "580253308375",
+  appId: "1:580253308375:web:8750fe38a5710a984b2792"
+};
+let firebaseDb = null;
+try{
+  firebase.initializeApp(firebaseConfig);
+  firebaseDb = firebase.database();
+}catch(e){
+  console.warn('Firebase sa nepodarilo inicializovať, dashboard bude fungovať len lokálne (localStorage).', e);
+}
+
+// Zapíše dáta do Firebase na danej ceste (napr. 'customAudits' alebo 'officeLeave').
+// Zlyhanie (napr. výpadok siete) sa len zaloguje - localStorage zostáva ako záloha,
+// takže dashboard nikdy nezamrzne ani pri nedostupnom Firebase.
+function firebaseSave(path, data){
+  if(!firebaseDb) return;
+  firebaseDb.ref(path).set(data).catch(e=>console.warn('Firebase zápis zlyhal ('+path+'):', e));
+}
+
+// Prihlási sa na zmeny dát na danej ceste. Callback sa zavolá hneď po prvom načítaní
+// a potom znova vždy, keď sa dáta zmenia (na tomto alebo inom zariadení/prehliadači).
+function firebaseListen(path, callback){
+  if(!firebaseDb) return;
+  firebaseDb.ref(path).on('value', snapshot=>{
+    const val = snapshot.val();
+    if(val !== null && val !== undefined) callback(val);
+  }, e=>console.warn('Firebase počúvanie zlyhalo ('+path+'):', e));
+}
 
 // ========== SPOLOČNÉ CORS PROXY (verejné, bezplatné, bez API kľúča) ==========
 // Viaceré externé zdroje na stránke (PHM ceny, kurzy, komodity, RSS správy) potrebujú
@@ -1639,7 +1682,7 @@ function checkDailyMarketUpdate(){
   }
 }
 
-// ===== VOĽNO V KANCELÁRII (ukladá sa v prehliadači) =====
+// ===== VOĽNO V KANCELÁRII (ukladá sa lokálne aj zdieľane vo Firebase) =====
 let leaveData = loadLeave();
 function loadLeave(){
   try{ const s=localStorage.getItem('officeLeave'); if(s) return JSON.parse(s); }catch(e){}
@@ -1647,7 +1690,14 @@ function loadLeave(){
 }
 function saveLeave(){
   try{ localStorage.setItem('officeLeave', JSON.stringify(leaveData)); }catch(e){}
+  firebaseSave('officeLeave', leaveData);
 }
+// Keď sa voľno zmení na inom zariadení/prehliadači, premietne sa to aj sem automaticky.
+firebaseListen('officeLeave', data=>{
+  leaveData = Array.isArray(data) ? data : [];
+  try{ localStorage.setItem('officeLeave', JSON.stringify(leaveData)); }catch(e){}
+  if(typeof renderLeave==='function') renderLeave();
+});
 function parseLeaveDate(str){
   const p=String(str).split('-').map(Number);
   return new Date(p[0], (p[1]||1)-1, p[2]||1);
@@ -1912,7 +1962,7 @@ function positionBottomBoxes(){
   if(typeof positionLeftColumn==='function') positionLeftColumn();
 }
 
-// ===== PRIDÁVANIE AUDITOV (ukladá sa v prehliadači) =====
+// ===== PRIDÁVANIE AUDITOV (ukladá sa lokálne aj zdieľane vo Firebase) =====
 let auditData = loadAudits();
 function loadAudits(){
   try{ const s=localStorage.getItem('customAudits'); if(s) return JSON.parse(s); }catch(e){}
@@ -1920,7 +1970,14 @@ function loadAudits(){
 }
 function saveAudits(){
   try{ localStorage.setItem('customAudits', JSON.stringify(auditData)); }catch(e){}
+  firebaseSave('customAudits', auditData);
 }
+// Keď sa audity zmenia na inom zariadení/prehliadači, premietne sa to aj sem automaticky.
+firebaseListen('customAudits', data=>{
+  auditData = Array.isArray(data) ? data : [];
+  try{ localStorage.setItem('customAudits', JSON.stringify(auditData)); }catch(e){}
+  if(typeof renderCustomAudits==='function') renderCustomAudits();
+});
 
 // Parsuje "dd.mm." alebo "dd.mm" / "dd/mm" na "YYYY-MM-DD". Rok sa doplní automaticky:
 // ak by dátum v aktuálnom roku už bol viac ako 30 dní v minulosti, použije sa budúci rok.
