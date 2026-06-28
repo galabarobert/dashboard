@@ -315,8 +315,14 @@ let firebaseDb = null;
 try{
   firebase.initializeApp(firebaseConfig);
   firebaseDb = firebase.database();
+  // ".info/connected" je špeciálna cesta vo Firebase, ktorá hovorí, či je tento konkrétny
+  // prehliadač momentálne reálne pripojený k serveru (nielen či sa SDK podarilo načítať).
+  firebaseDb.ref('.info/connected').on('value', snap=>{
+    if(typeof setApiStatus==='function') setApiStatus('firebase', snap.val()===true);
+  });
 }catch(e){
   console.warn('Firebase sa nepodarilo inicializovať, dashboard bude fungovať len lokálne (localStorage).', e);
+  if(typeof setApiStatus==='function') setApiStatus('firebase', false);
 }
 
 // Zapíše dáta do Firebase na danej ceste (napr. 'customAudits' alebo 'officeLeave').
@@ -834,7 +840,8 @@ const apiStatus = {
   worldWeather: null, // počasie pre svetové mestá
   fuel: null,       // PHM ceny
   currency: null,   // kurzy mien
-  commodities: null // zlato/bitcoin
+  commodities: null, // zlato/bitcoin
+  firebase: null    // pripojenie k zdieľanej databáze (audity, voľno)
 };
 
 function setApiStatus(key, ok){
@@ -866,7 +873,7 @@ function updateApiStatusIndicator(){
 
   // Detailný rozpis jednotlivých zdrojov - viditeľný panel po kliknutí (nie len hover tooltip,
   // ktorý na dotykových/TV obrazovkách bez myši nie je dostupný)
-  const names={sun:'Slnko/mesiac', weather:'Počasie Vráble', worldWeather:'Svetové počasie', fuel:'PHM ceny', currency:'Kurzy mien', commodities:'Komodity'};
+  const names={sun:'Slnko/mesiac', weather:'Počasie Vráble', worldWeather:'Svetové počasie', fuel:'PHM ceny', currency:'Kurzy mien', commodities:'Komodity', firebase:'Zdieľaná databáza'};
   const lines=Object.keys(apiStatus).map(k=>{
     const v=apiStatus[k];
     const mark = v===true ? '✓' : (v===false ? '✗' : '…');
