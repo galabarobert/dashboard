@@ -170,11 +170,11 @@ body::before {
     position:absolute;
     top:216px;
     left:50%;
-    transform:translateX(calc(-50% + 38px - 5mm)) scale(1.6452230625);
+    transform:translateX(calc(-50% - 29.4px)) scale(1.6452230625);
     transform-origin:center top;
     width:auto;
-    min-width:400px;
-    max-width:500px;
+    min-width:300px;
+    max-width:419px;
     font-size:14px;
     text-align:center;
 }
@@ -229,37 +229,39 @@ body::before {
 <div id="nameday" class="glass"></div>
 
 <div id="auditsTable" class="glass">
-    <table style="width:100%;font-size:17px;border-collapse:collapse;">
+    <table style="width:100%;font-size:17px;border-collapse:collapse;table-layout:fixed;">
         <tr style="border-bottom:1px solid rgba(255,255,255,0.2);">
-            <th style="text-align:center;padding:8px;">Deň</th>
-            <th style="text-align:center;padding:8px;">Typ</th>
-            <th style="text-align:center;padding:8px;">Zákazník/Proces</th>
-            <th style="text-align:center;padding:8px;color:#fff;">Dni</th>
+            <th style="text-align:center;padding:8px 4px;width:22%;">Deň</th>
+            <th style="text-align:center;padding:8px 4px;width:18%;">Typ</th>
+            <th id="auditsHeaderZak" style="text-align:center;padding:8px 4px;width:38%;white-space:nowrap;overflow:hidden;">Zákazník/Proces</th>
+            <th style="text-align:center;padding:8px 4px;color:#fff;width:22%;">Dni</th>
         </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px;text-align:center;">23.6.</td>
-            <td style="padding:8px;text-align:center;">Návšteva</td>
-            <td style="padding:8px;text-align:center;">Hoerbiger</td>
-            <td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-06-23">-</td>
+            <td style="padding:8px 4px;text-align:center;">23.6.</td>
+            <td style="padding:8px 4px;text-align:center;">Návšteva</td>
+            <td style="padding:8px 4px;text-align:center;">Hoerbiger</td>
+            <td style="padding:8px 4px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-06-23">-</td>
         </tr>
-        <tr id="auditFormRow">
-            <td style="padding:6px 4px;text-align:center;">
-                <div style="display:flex;gap:3px;align-items:center;justify-content:center;">
-                    <input id="auditDate" type="text" placeholder="dd.mm." title="dátum začiatku auditu (deň.mesiac)" maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:48px;box-sizing:border-box;text-align:center;">
-                    <span style="font-size:10px;color:#aaa;">-</span>
-                    <input id="auditDateEnd" type="text" placeholder="dd.mm." title="dátum konca auditu (nepovinné, pre viacdňový audit)" maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:48px;box-sizing:border-box;text-align:center;">
-                </div>
+        <tr id="auditFormRow" style="display:none;">
+            <td style="padding:6px 2px;text-align:center;white-space:nowrap;">
+                    <input id="auditDate" type="text" placeholder="dd.mm." title="dátum začiatku auditu (deň.mesiac)" maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:2px;font-size:10px;width:38px;box-sizing:border-box;text-align:center;vertical-align:middle;">
+                    <span style="font-size:9px;color:#aaa;">-</span>
+                    <input id="auditDateEnd" type="text" placeholder="dd.mm." title="dátum konca auditu (nepovinné, pre viacdňový audit)" maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:2px;font-size:10px;width:38px;box-sizing:border-box;text-align:center;vertical-align:middle;">
             </td>
-            <td style="padding:6px 4px;text-align:center;"><input id="auditTyp" type="text" placeholder="Typ" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:100%;box-sizing:border-box;"></td>
-            <td style="padding:6px 4px;text-align:center;"><input id="auditZak" type="text" placeholder="Zákazník" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:100%;box-sizing:border-box;"></td>
-            <td style="padding:6px 4px;text-align:center;white-space:nowrap;"><button onclick="addAudit()" style="background:#6b7280;color:#fff;border:none;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:bold;cursor:pointer;white-space:nowrap;">Pridať</button> <button id="auditDeleteBtn" onclick="deleteEditingAudit()" style="display:none;background:#ff6b6b;color:#330000;border:none;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:bold;cursor:pointer;white-space:nowrap;">Vymazať</button></td>
+            <td style="padding:6px 4px;text-align:center;"><input id="auditTyp" type="text" placeholder="Typ" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:90px;max-width:100%;box-sizing:border-box;"></td>
+            <td style="padding:6px 4px;text-align:center;"><input id="auditZak" type="text" placeholder="Zákazník" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:80px;max-width:100%;box-sizing:border-box;"></td>
+            <td style="padding:6px 2px;text-align:left;white-space:nowrap;"><button onclick="addAudit()" style="background:#6b7280;color:#fff;border:none;border-radius:5px;padding:4px 5px;font-size:9px;font-weight:bold;cursor:pointer;white-space:nowrap;">Pridať</button><button id="auditDeleteBtn" onclick="deleteEditingAudit()" style="display:none;margin-left:3px;background:#ff6b6b;color:#330000;border:none;border-radius:5px;padding:4px 5px;font-size:9px;font-weight:bold;cursor:pointer;white-space:nowrap;">Vymazať</button></td>
+        </tr>
+        <tr id="auditAddRow" onclick="event.stopPropagation();showAuditForm()" style="cursor:pointer;color:#8ab4ff;">
+            <td colspan="4" style="padding:8px 4px;text-align:center;">+ Pridať audit</td>
         </tr>
     </table>
 </div>
 
 <div id="leaveBox" class="glass">
     <div id="leaveList" style="font-size:28px;"></div>
-    <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center;justify-content:center;">
+    <div id="leaveAddRow" onclick="event.stopPropagation();showLeaveForm()" style="cursor:pointer;color:#8ab4ff;text-align:center;padding:8px;font-size:22px;">+ Pridať voľno</div>
+    <div id="leaveFormRow" style="display:none;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center;justify-content:center;">
         <input id="leaveName" type="text" placeholder="Meno" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;width:120px;">
         <input id="leaveStart" type="text" placeholder="dd.mm." maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;width:80px;text-align:center;">
         <input id="leaveEnd" type="text" placeholder="dd.mm." title="koniec voľna (nepovinné)" maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;width:80px;text-align:center;">
@@ -1456,7 +1458,7 @@ function renderFuel(){
   const linkStyle='cursor:pointer;';
   let html=`<div style="display:flex;align-items:stretch;">`;
   html+=`<table onclick="window.open('https://www.hackmath.net/sk/cerpacia-stanica?pumpa=654','_blank')" title="Zdroj: hackmath.net" style="flex:1;width:33%;border-collapse:collapse;font-size:17px;${linkStyle}">`;
-  html+=`<tr><td colspan="2" style="font-weight:bold;font-size:18px;padding-bottom:10px;text-align:center;">⛽ PHM Vráble</td></tr>`;
+  html+=`<tr><td colspan="2" style="font-weight:bold;font-size:18px;padding-bottom:10px;text-align:center;white-space:nowrap;">⛽ PHM Vráble</td></tr>`;
   html+=`<tr><td style="padding:5px 4px;text-align:left;">Benzín</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${fmtPrice(bMin)||'-'} €/l</td></tr>`;
   html+=`<tr><td style="padding:5px 4px;text-align:left;">Nafta</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${fmtPrice(nMin)||'-'} €/l</td></tr>`;
   html+=`</table>`;
@@ -1646,6 +1648,34 @@ function parseLeaveDate(str){
 
 let editingLeaveId = null;
 
+window.showLeaveForm=function(){
+  const addRow=document.getElementById('leaveAddRow');
+  const formRow=document.getElementById('leaveFormRow');
+  if(addRow) addRow.style.display='none';
+  if(formRow) formRow.style.display='flex';
+  if(typeof positionLeaveBox==='function') positionLeaveBox();
+  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
+};
+
+window.hideLeaveForm=function(){
+  const addRow=document.getElementById('leaveAddRow');
+  const formRow=document.getElementById('leaveFormRow');
+  if(formRow) formRow.style.display='none';
+  if(addRow) addRow.style.display='';
+  editingLeaveId=null;
+  const startEl=document.getElementById('leaveStart');
+  const endEl=document.getElementById('leaveEnd');
+  document.getElementById('leaveName').value='';
+  if(startEl){ startEl.value=''; delete startEl.dataset.year; }
+  if(endEl){ endEl.value=''; delete endEl.dataset.year; }
+  const btn=document.querySelector('#leaveBox button[onclick="addLeave()"]');
+  if(btn) btn.textContent='Pridať';
+  const delBtn=document.getElementById('leaveDeleteBtn');
+  if(delBtn) delBtn.style.display='none';
+  if(typeof positionLeaveBox==='function') positionLeaveBox();
+  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
+};
+
 window.addLeave=function(){
   const name=document.getElementById('leaveName').value.trim();
   const startEl=document.getElementById('leaveStart');
@@ -1657,24 +1687,18 @@ window.addLeave=function(){
   if(editingLeaveId){
     const idx=leaveData.findIndex(x=>x.id===editingLeaveId);
     if(idx!==-1){ leaveData[idx]={...leaveData[idx], name, start, end}; }
-    editingLeaveId=null;
-    const btn=document.querySelector('#leaveBox button[onclick="addLeave()"]');
-    if(btn) btn.textContent='Pridať';
-    const delBtn=document.getElementById('leaveDeleteBtn');
-    if(delBtn) delBtn.style.display='none';
   } else {
     leaveData.push({ id: Date.now().toString(), name, start, end });
   }
   saveLeave();
-  document.getElementById('leaveName').value='';
-  startEl.value=''; delete startEl.dataset.year;
-  endEl.value=''; delete endEl.dataset.year;
+  hideLeaveForm();
   renderLeave();
 };
 
 window.editLeave=function(id){
   const x=leaveData.find(it=>it.id===id);
   if(!x) return;
+  showLeaveForm();
   editingLeaveId=id;
   const toDDMM=(iso)=>{ if(!iso) return ''; const p=iso.split('-'); return `${parseInt(p[2],10)}.${parseInt(p[1],10)}.`; };
   const toYear=(iso)=>{ if(!iso) return ''; return iso.split('-')[0]; };
@@ -1693,17 +1717,8 @@ window.editLeave=function(id){
 window.deleteEditingLeave=function(){
   if(!editingLeaveId) return;
   leaveData=leaveData.filter(x=>x.id!==editingLeaveId);
-  editingLeaveId=null;
   saveLeave();
-  const startEl=document.getElementById('leaveStart');
-  const endEl=document.getElementById('leaveEnd');
-  document.getElementById('leaveName').value='';
-  startEl.value=''; delete startEl.dataset.year;
-  endEl.value=''; delete endEl.dataset.year;
-  const btn=document.querySelector('#leaveBox button[onclick="addLeave()"]');
-  if(btn) btn.textContent='Pridať';
-  const delBtn=document.getElementById('leaveDeleteBtn');
-  if(delBtn) delBtn.style.display='none';
+  hideLeaveForm();
   renderLeave();
 };
 
@@ -1727,14 +1742,17 @@ function renderLeave(){
     return {...x, s, e, daysToStart};
   });
 
-  // Zlúč ľudí s rovnakým termínom voľna do jedného riadku
+  // Zlúč všetky termíny tej istej osoby do jedného riadku (zoskupenie podľa mena)
   const groups={};
   items.forEach(it=>{
-    const key=it.start+'|'+(it.end||it.start);
-    if(!groups[key]) groups[key]={ s:it.s, e:it.e, daysToStart:it.daysToStart, people:[] };
-    groups[key].people.push({ name:it.name, id:it.id });
+    if(!groups[it.name]) groups[it.name]={ name:it.name, terms:[] };
+    groups[it.name].terms.push(it);
   });
-  const groupList=Object.values(groups).sort((a,b)=> a.s - b.s);
+  // Každej osobe zoraď jej termíny chronologicky, zoraď osoby podľa ich najbližšieho termínu
+  const groupList=Object.values(groups).map(g=>{
+    g.terms.sort((a,b)=> a.s - b.s);
+    return g;
+  }).sort((a,b)=> a.terms[0].s - b.terms[0].s);
 
   if(groupList.length===0){
     list.innerHTML=`<div style="text-align:center;color:#aaa;padding:8px;font-size:28px;">Žiadne plánované voľno</div>`;
@@ -1742,39 +1760,33 @@ function renderLeave(){
     let html=`<table style="width:100%;border-collapse:collapse;font-size:28px;">`;
     html+=`<tr style="border-bottom:1px solid rgba(255,255,255,0.2);color:#fff;">`+
       `<th style="text-align:center;padding:5px 6px;">Meno</th>`+
-      `<th style="text-align:center;padding:5px 6px;">Voľno</th>`+
-      `<th style="text-align:center;padding:5px 6px;">Dni</th>`+
+      `<th style="text-align:center;padding:5px 6px;">Mimo pracoviska</th>`+
     `</tr>`;
     groupList.forEach(g=>{
-      // Dátum: D.M. alebo rozsah D-D.M. / D.M.-D.M.
-      let datum;
-      if(g.s.getTime()===g.e.getTime()){
-        datum=`${g.s.getDate()}.${g.s.getMonth()+1}.`;
-      } else if(g.s.getMonth()===g.e.getMonth()){
-        datum=`${g.s.getDate()}-${g.e.getDate()}.${g.s.getMonth()+1}.`;
-      } else {
-        datum=`${g.s.getDate()}.${g.s.getMonth()+1}.-${g.e.getDate()}.${g.e.getMonth()+1}.`;
-      }
-      // Odpočet presne ako v auditoch
-      let dni, color;
-      if(g.daysToStart<=0){ dni='DNES'; color='#00d4ff'; }
-      else { dni=g.daysToStart; color='#aaa'; }
-      // Každá osoba na vlastnom riadku, ceruzka pred menom; dátum a dni zlúčené cez rowspan
-      const n=g.people.length;
-      g.people.forEach((p,idx)=>{
-        const lastInGroup = idx===n-1;
-        const trBorder = lastInGroup ? "border-bottom:1px solid rgba(255,255,255,0.1);" : "";
-        html+=`<tr style="${trBorder}">`+
-          `<td style="padding:5px 6px;text-align:left;font-weight:bold;"><span onclick="editLeave('${p.id}')" title="upraviť" style="cursor:pointer;color:#8ab4ff;font-size:22px;">✎</span> ${p.name}</td>`;
-        if(idx===0){
-          html+=`<td rowspan="${n}" style="padding:5px 6px;text-align:center;">${datum}</td>`+
-                `<td rowspan="${n}" style="padding:5px 6px;text-align:center;color:${color};font-weight:bold;">${dni}</td>`;
+      const termsHtml = g.terms.map(it=>{
+        // Dátum: D.M. alebo rozsah D-D.M. / D.M.-D.M.
+        let datum;
+        if(it.s.getTime()===it.e.getTime()){
+          datum=`${it.s.getDate()}.${it.s.getMonth()+1}.`;
+        } else if(it.s.getMonth()===it.e.getMonth()){
+          datum=`${it.s.getDate()}-${it.e.getDate()}.${it.s.getMonth()+1}.`;
+        } else {
+          datum=`${it.s.getDate()}.${it.s.getMonth()+1}.-${it.e.getDate()}.${it.e.getMonth()+1}.`;
         }
-        html+=`</tr>`;
-      });
+        let dni, color;
+        if(it.daysToStart<=0){ dni='DNES'; color='#00d4ff'; }
+        else { dni=it.daysToStart; color='#aaa'; }
+        return `<span onclick="event.stopPropagation();editLeave('${it.id}')" title="upraviť" style="cursor:pointer;">${datum} <span style="color:${color};font-weight:bold;">(${dni})</span></span>`;
+      }).join(' <span style="color:#666;">•</span> ');
+      html+=`<tr style="border-bottom:1px solid rgba(255,255,255,0.1);">`+
+        `<td onclick="event.stopPropagation();editLeave('${g.terms[0].id}')" title="upraviť" style="padding:5px 6px;text-align:left;font-weight:bold;white-space:nowrap;overflow:hidden;cursor:pointer;">${g.name}</td>`+
+        `<td class="leaveTermsCell" style="padding:5px 6px;text-align:left;white-space:nowrap;overflow:hidden;">${termsHtml}</td>`+
+      `</tr>`;
     });
     html+=`</table>`;
     list.innerHTML=html;
+    // Zmenši font v bunkách, ak text (meno alebo termíny) nezapadá na jeden riadok
+    list.querySelectorAll('tr td').forEach(td=>shrinkToFit(td, 14));
   }
   positionLeaveBox();
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
@@ -1787,7 +1799,7 @@ function positionLeaveBox(){
   l.style.top='216px';
   l.style.left='auto';
   l.style.right='40px';
-  l.style.width='460px';
+  l.style.width='560px';
 
   // Svetové mestá pod tabuľkou voľna, rovnakej šírky, všetky 4 vedľa seba
   const w=document.getElementById('world');
@@ -1795,7 +1807,7 @@ function positionLeaveBox(){
     w.style.top=(l.offsetTop + l.offsetHeight + 15)+'px';
     w.style.left='auto';
     w.style.right='40px';
-    w.style.width='460px';
+    w.style.width='560px';
   }
 }
 
@@ -1839,10 +1851,10 @@ function positionBottomBoxes(){
   const tr=getComputedStyle(a).transform;
   const m=tr && tr.match(/matrix\(([^,]+),/);
   if(m){ const v=parseFloat(m[1]); if(v) S=v; }
-  const offsetX=38 - 5*96/25.4;
+  const offsetX=-29.4;
   const centerX=a.offsetLeft + offsetX;
-  const totalWidth=a.offsetWidth * S;
-  const areaLeft=centerX - totalWidth/2;
+  const auditsWidth=a.offsetWidth * S;
+  const areaLeft=centerX - auditsWidth/2;
   const auditsBottom=a.offsetTop + a.offsetHeight * S;
 
   // Zaisti, že leaveBox/world majú aktuálnu pozíciu/výšku bez ohľadu na to, odkiaľ bola
@@ -1854,11 +1866,17 @@ function positionBottomBoxes(){
   // ukazovateľom toho, kde končí obsah súvisiaci s auditmi/voľnom.
   const lb=document.getElementById('leaveBox');
   const leaveBottom = lb ? (lb.offsetTop + lb.offsetHeight) : 0;
+  const leaveLeft = lb ? lb.offsetLeft : (areaLeft+auditsWidth);
 
   const gap=15;
   // Vždy sa zarovnaj presne pod nižší z oboch bodov (audity / voľno) + medzera
   // (rovnaká medzera 15px ako medzi tabuľkou voľna a svetovým časom, pre konzistentný vzhľad)
   const areaTop = Math.max(auditsBottom, leaveBottom) + gap;
+
+  // Šírka spodnej sekcie (kalendár + PHM/Kurzy/Komodity) je NEZÁVISLÁ od šírky auditov -
+  // vyplní celý dostupný priestor od ľavého okraja auditov až po leaveBox/world vpravo,
+  // takže zúženie/rozšírenie tabuľky auditov ju neovplyvní.
+  const totalWidth = leaveLeft - gap - areaLeft;
 
   const mc=document.getElementById('miniCalendar');
   const fb=document.getElementById('fuelBox');
@@ -1880,10 +1898,6 @@ function positionBottomBoxes(){
   }
   syncFuelCurrencyHeight();
   if(typeof positionLeftColumn==='function') positionLeftColumn();
-
-  // Pás so správami dole nech ostáva pripnutý ku spodu obrazovky (CSS bottom),
-  // ale zaisti, aby sa kalendár/PHM box doňho nikdy nezarezával - ak by bola obrazovka
-  // príliš nízka, aspoň minimálna medzera sa zachová vizuálne cez z-index/scroll prirodzene.
 }
 
 // ===== PRIDÁVANIE AUDITOV (ukladá sa v prehliadači) =====
@@ -1921,6 +1935,36 @@ function parseDDMM(str, explicitYear){
 
 let editingAuditId = null;
 
+window.showAuditForm=function(){
+  const addRow=document.getElementById('auditAddRow');
+  const formRow=document.getElementById('auditFormRow');
+  if(addRow) addRow.style.display='none';
+  if(formRow) formRow.style.display='';
+  if(typeof positionLeaveBox==='function') positionLeaveBox();
+  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
+};
+
+window.hideAuditForm=function(){
+  const addRow=document.getElementById('auditAddRow');
+  const formRow=document.getElementById('auditFormRow');
+  if(formRow) formRow.style.display='none';
+  if(addRow) addRow.style.display='';
+  // Zruš prípadnú rozbehnutú úpravu a vyčisti formulár
+  editingAuditId=null;
+  const dateEl=document.getElementById('auditDate');
+  const dateEndEl=document.getElementById('auditDateEnd');
+  if(dateEl){ dateEl.value=''; delete dateEl.dataset.year; }
+  if(dateEndEl){ dateEndEl.value=''; delete dateEndEl.dataset.year; }
+  const typEl=document.getElementById('auditTyp'); if(typEl) typEl.value='';
+  const zakEl=document.getElementById('auditZak'); if(zakEl) zakEl.value='';
+  const btn=document.querySelector('#auditFormRow button[onclick="addAudit()"]');
+  if(btn) btn.textContent='Pridať';
+  const delBtn=document.getElementById('auditDeleteBtn');
+  if(delBtn) delBtn.style.display='none';
+  if(typeof positionLeaveBox==='function') positionLeaveBox();
+  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
+};
+
 window.addAudit=function(){
   const dateEl=document.getElementById('auditDate');
   const dateEndEl=document.getElementById('auditDateEnd');
@@ -1933,25 +1977,18 @@ window.addAudit=function(){
   if(editingAuditId){
     const idx=auditData.findIndex(x=>x.id===editingAuditId);
     if(idx!==-1){ auditData[idx]={...auditData[idx], date, dateEnd, typ, zak}; }
-    editingAuditId=null;
-    const btn=document.querySelector('#auditFormRow button[onclick="addAudit()"]');
-    if(btn) btn.textContent='Pridať';
-    const delBtn=document.getElementById('auditDeleteBtn');
-    if(delBtn) delBtn.style.display='none';
   } else {
     auditData.push({ id:Date.now().toString(), date, dateEnd, typ, zak });
   }
   saveAudits();
-  dateEl.value=''; delete dateEl.dataset.year;
-  dateEndEl.value=''; delete dateEndEl.dataset.year;
-  document.getElementById('auditTyp').value='';
-  document.getElementById('auditZak').value='';
+  hideAuditForm();
   renderCustomAudits();
 };
 
 window.editAudit=function(id){
   const a=auditData.find(x=>x.id===id);
   if(!a) return;
+  showAuditForm();
   editingAuditId=id;
   const toDDMM=(iso)=>{ if(!iso) return ''; const p=iso.split('-'); return `${parseInt(p[2],10)}.${parseInt(p[1],10)}.`; };
   const toYear=(iso)=>{ if(!iso) return ''; return iso.split('-')[0]; };
@@ -1971,20 +2008,24 @@ window.editAudit=function(id){
 window.deleteEditingAudit=function(){
   if(!editingAuditId) return;
   auditData=auditData.filter(x=>x.id!==editingAuditId);
-  editingAuditId=null;
   saveAudits();
-  const dateEl=document.getElementById('auditDate');
-  const dateEndEl=document.getElementById('auditDateEnd');
-  dateEl.value=''; delete dateEl.dataset.year;
-  dateEndEl.value=''; delete dateEndEl.dataset.year;
-  document.getElementById('auditTyp').value='';
-  document.getElementById('auditZak').value='';
-  const btn=document.querySelector('#auditFormRow button[onclick="addAudit()"]');
-  if(btn) btn.textContent='Pridať';
-  const delBtn=document.getElementById('auditDeleteBtn');
-  if(delBtn) delBtn.style.display='none';
+  hideAuditForm();
   renderCustomAudits();
 };
+
+// Postupne zmenší font daného elementu, kým sa jeho obsah (text) nezmestí na jeden riadok
+// (žiadne zalomenie) v rámci jeho aktuálnej šírky. Element musí mať white-space:nowrap.
+function shrinkToFit(el, minFontPx){
+  if(!el) return;
+  minFontPx = minFontPx || 9;
+  let size = parseFloat(getComputedStyle(el).fontSize);
+  let safety = 0;
+  while(el.scrollWidth > el.clientWidth + 1 && size > minFontPx && safety < 30){
+    size -= 1;
+    el.style.fontSize = size + 'px';
+    safety++;
+  }
+}
 
 function renderCustomAudits(){
   const formRow=document.getElementById('auditFormRow');
@@ -2016,13 +2057,19 @@ function renderCustomAudits(){
     const tr=document.createElement('tr');
     tr.className='customAuditRow';
     tr.style.borderBottom='1px solid rgba(255,255,255,0.1)';
+    tr.style.cursor='pointer';
+    tr.title='Kliknutím upraviť';
+    tr.onclick=function(e){ e.stopPropagation(); editAudit(a.id); };
     tr.innerHTML=
-      `<td style="padding:8px;text-align:center;"><span onclick="editAudit('${a.id}')" title="upraviť" style="cursor:pointer;color:#8ab4ff;font-size:13px;">✎</span> ${datum}</td>`+
-      `<td style="padding:8px;text-align:center;">${a.typ}</td>`+
-      `<td style="padding:8px;text-align:center;">${a.zak||''}</td>`+
-      `<td style="padding:8px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="${a.date}"${a.dateEnd?` data-end="${a.dateEnd}"`:''}>-</td>`;
+      `<td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;">${datum}</td>`+
+      `<td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;">${a.typ}</td>`+
+      `<td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;">${a.zak||''}</td>`+
+      `<td style="padding:8px 4px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="${a.date}"${a.dateEnd?` data-end="${a.dateEnd}"`:''}>-</td>`;
     formRow.parentNode.insertBefore(tr, formRow);
+    // Zmenši font v bunkách, ak text nezapadá na jeden riadok (namiesto zalomenia)
+    Array.from(tr.children).slice(0,3).forEach(td=>shrinkToFit(td));
   });
+  shrinkToFit(document.getElementById('auditsHeaderZak'));
   // poloha tabuľky voľna a spodných boxov sa môže zmeniť (zmena výšky auditov)
   if(typeof positionLeaveBox==='function') positionLeaveBox();
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
@@ -2243,6 +2290,24 @@ document.addEventListener('click', (e)=>{
   const picker = document.getElementById('miniDatePicker');
   if(picker.style.display==='block' && !picker.contains(e.target) && e.target!==mdpTargetInput){
     mdpClose();
+  }
+});
+
+// Zatvor formulár auditov pri kliknutí mimo neho (ale nie pri kliknutí na mini date picker)
+document.addEventListener('click', (e)=>{
+  const formRow = document.getElementById('auditFormRow');
+  const picker = document.getElementById('miniDatePicker');
+  if(formRow && formRow.style.display!=='none' && !formRow.contains(e.target) && !picker.contains(e.target)){
+    hideAuditForm();
+  }
+});
+
+// Zatvor formulár voľna pri kliknutí mimo neho (ale nie pri kliknutí na mini date picker)
+document.addEventListener('click', (e)=>{
+  const formRow = document.getElementById('leaveFormRow');
+  const picker = document.getElementById('miniDatePicker');
+  if(formRow && formRow.style.display!=='none' && !formRow.contains(e.target) && !picker.contains(e.target)){
+    hideLeaveForm();
   }
 });
 
