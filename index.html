@@ -565,10 +565,10 @@ const MENINY = {
   "4.7":  "Prokop",
   "5.7":  "Cyril a Metod",
   "6.7":  "Patrik a Patrícia",
-  "7.7":  "Oliver",
+  "7.7":  "Cyril",
   "8.7":  "Ivan",
   "9.7":  "Lujza",
-  "10.7": "Amália",
+  "10.7": "Amadej",
   "11.7": "Milota",
   "12.7": "Nina",
   "13.7": "Margita",
@@ -577,7 +577,7 @@ const MENINY = {
   "16.7": "Drahota",
   "17.7": "Bohuslav",
   "18.7": "Kamila",
-  "19.7": "Dušan",
+  "19.7": "Dušana",
   "20.7": "Eliáš a Iľja",
   "21.7": "Daniel",
   "22.7": "Magdaléna",
@@ -621,15 +621,15 @@ const MENINY = {
   "29.8": "Nikola",
   "30.8": "Ružena",
   "31.8": "Nora",
-  "1.9":  "Drahoslava",
-  "2.9":  "Linda",
+  "1.9":  "Drahomíra",
+  "2.9":  "Konštantín",
   "3.9":  "Belo",
   "4.9":  "Rozália",
   "5.9":  "Regína",
-  "6.9":  "Alica",
+  "6.9":  "Alžbeta",
   "7.9":  "Marianna",
-  "8.9":  "Miriama",
-  "9.9":  "Martina",
+  "8.9":  "Mária",
+  "9.9":  "Severín",
   "10.9": "Oleg",
   "11.9": "Bystrík",
   "12.9": "Mária",
@@ -639,12 +639,12 @@ const MENINY = {
   "16.9": "Ľudomila",
   "17.9": "Olympia",
   "18.9": "Eugénia",
-  "19.9": "Konštantín",
+  "19.9": "Konštantína",
   "20.9": "Ľuboslav a Ľuboslava",
   "21.9": "Matúš",
   "22.9": "Móric",
   "23.9": "Zdenka",
-  "24.9": "Ľuboš",
+  "24.9": "Ľubor",
   "25.9": "Vladislav",
   "26.9": "Edita",
   "27.9": "Cyprián",
@@ -662,7 +662,7 @@ const MENINY = {
   "9.10": "Dionýz",
   "10.10":"Slavomíra",
   "11.10":"Valentína",
-  "12.10":"Maxim",
+  "12.10":"Maximilián",
   "13.10":"Koloman",
   "14.10":"Boris",
   "15.10":"Terézia",
@@ -709,14 +709,14 @@ const MENINY = {
   "25.11":"Katarína",
   "26.11":"Kornel",
   "27.11":"Milan",
-  "28.11":"Henrieta",
-  "29.11":"Vratko",
+  "28.11":"Henrich",
+  "29.11":"Blazej",
   "30.11":"Andrej a Ondrej",
   "1.12": "Edmund",
   "2.12": "Bibiána",
   "3.12": "Oldrich",
   "4.12": "Barbora",
-  "5.12": "Oto",
+  "5.12": "Ábel",
   "6.12": "Mikuláš",
   "7.12": "Ambróz",
   "8.12": "Marína",
@@ -1505,8 +1505,8 @@ function buildMiniCalendar(){
 
 // PHM – ceny vrábeľských staníc (OMV + Slovnaft), automaticky z hackmath.net
 const PHM_STANICE = [
-  { nazov:"OMV Vráble",      pumpa:654, benzin:"1,590", nafta:"1,480" },
-  { nazov:"Slovnaft Vráble", pumpa:168, benzin:"1,650", nafta:"1,580" }
+  { nazov:"OMV Vráble",      pumpa:654, benzin:"1,820", nafta:"1,960" },
+  { nazov:"Slovnaft Vráble", pumpa:168, benzin:"1,840", nafta:"1,980" }
 ];
 let phmInfo = "najnižšia z OMV/Slovnaft · hackmath.net";
 
@@ -1568,8 +1568,11 @@ function syncFuelCurrencyHeight(){
 // Skúša viacero proxy serverov postupne - verejné CORS proxy bývajú nestabilné (výpadky, limity),
 // takže viac fallbackov výrazne zvyšuje šancu na úspešné načítanie.
 function parseStanicaText(t){
-  const b=t.match(/natural\s*95\s*\(benzín\)[^0-9]{0,40}?([0-9][.,][0-9]{2,3})/i);
-  const n=t.match(/diesel\s*\(nafta\)[^0-9]{0,40}?([0-9][.,][0-9]{2,3})/i);
+  // Formát 1 (meta description): "natural 95 (benzín): 1.600 €/l"
+  // Formát 2 (nadpis): "Natural 95 (benzín) · 1.600 €/l"  alebo "Natural 95 (benzín) · 1,600 €/l"
+  // Regex zachytí oba formáty (: alebo ·/·) a bodku aj čiarku ako desatinný oddeľovač
+  const b=t.match(/natural\s*95\s*\(benz[íi]n\)\s*[·:]\s*([0-9][.,][0-9]{2,3})/i);
+  const n=t.match(/diesel\s*\(nafta\)\s*[·:]\s*([0-9][.,][0-9]{2,3})/i);
   if(!b && !n) return null;
   return { benzin: b ? b[1].replace('.',',') : null, nafta: n ? n[1].replace('.',',') : null };
 }
@@ -1577,12 +1580,24 @@ function parseStanicaText(t){
 async function fetchStanica(pumpa){
   const url='https://www.hackmath.net/sk/cerpacia-stanica?pumpa='+pumpa;
 
-  // Corsfix má unikátny formát (URL sa pripája priamo, bez encode) - skús ako prvé
+  // allorigins.win /get vracia JSON {contents:"..."} - spoľahlivejší ako raw proxy, skúsime ako prvý
+  try{
+    const r=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});
+    if(r.ok){
+      const json=await r.json();
+      if(json && json.contents){
+        const parsed=parseStanicaText(json.contents);
+        if(parsed && (parsed.benzin || parsed.nafta)) return parsed;
+      }
+    }
+  }catch(e){ /* skús ďalšie proxy */ }
+
+  // Corsfix (URL sa pripája priamo, bez encode)
   try{
     const r=await fetch('https://proxy.corsfix.com/?'+url,{signal:AbortSignal.timeout(7000)});
     if(r.ok){
       const parsed=parseStanicaText(await r.text());
-      if(parsed) return parsed;
+      if(parsed && (parsed.benzin || parsed.nafta)) return parsed;
     }
   }catch(e){ /* skús ďalšie proxy */ }
 
