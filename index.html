@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Dashboard</title>
-<!-- Firebase (Realtime Database) - umožňuje zdieľanie auditov a voľna medzi všetkými
-     prehliadačmi/zariadeniami, nielen lokálne v jednom prehliadači (localStorage) -->
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +14,7 @@
 html, body { height:100%; }
 body {
     margin:0;
-    background: linear-gradient(135deg, #0a0015 0%, #1a0033 25%, #003366 50%, #001a33 75%, #0a0015 100%);
+    background: linear-gradient(135deg, #0b0b0d 0%, #17151c 25%, #14202b 50%, #101820 75%, #0b0b0d 100%);
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
     color:white;
@@ -27,7 +25,6 @@ body {
     padding-top: env(safe-area-inset-top);
 }
 
-/* Pevné plátno 1920x1080 - škáluje sa na veľkosť displeja (mobil na šírku ho ukáže celé) */
 #stage {
     position: absolute;
     top: 0;
@@ -46,9 +43,9 @@ body::before {
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 20% 50%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(0, 255, 200, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(255, 0, 128, 0.1) 0%, transparent 50%);
+        radial-gradient(circle at 20% 50%, rgba(138, 43, 226, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(0, 255, 200, 0.07) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255, 0, 128, 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: 1;
 }
@@ -67,7 +64,7 @@ body::before {
     border-radius:30px;
     padding:15px;
     box-shadow: 
-        0 0 40px rgba(138, 43, 226, 0.3),
+        0 0 40px rgba(138, 43, 226, 0.2),
         0 8px 32px rgba(0,0,0,0.4),
         inset 0 0 20px rgba(255,255,255,0.1);
 }
@@ -91,7 +88,6 @@ body::before {
     width:auto;
     box-sizing: border-box;
 }
-
 
 #shiftBox{
     position:absolute;
@@ -162,12 +158,6 @@ body::before {
     top:0;
     left:0;
     box-sizing:border-box;
-    background:linear-gradient(135deg, rgba(20,200,110,0.32) 0%, rgba(20,140,200,0.32) 50%, rgba(140,60,220,0.32) 100%) !important;
-    border:1.5px solid rgba(90,170,200,0.6) !important;
-    box-shadow:
-        0 0 35px rgba(60,150,180,0.4),
-        0 8px 32px rgba(0,0,0,0.4),
-        inset 0 0 20px rgba(100,170,190,0.15) !important;
 }
 
 #auditsTable {
@@ -276,7 +266,6 @@ body::before {
 
 <div id="shiftBox" class="glass" style="display:none;"></div>
 
-
 <div id="currentWeatherBox">
     <div id="currentWeatherDisplay"></div>
 </div>
@@ -297,19 +286,13 @@ body::before {
 <div id="world" class="glass"></div>
 
 <script>
-
-// Pomocná funkcia pre správne slovenské skloňovanie počtu dní: 1 deň, 2-4 dni, 5+ dní
-// (používa sa pri odpočte v tabuľke auditov aj v tabuľke voľna)
 function formatDaysSk(n){
   if(n===1) return '1 deň';
   if(n>=2 && n<=4) return n+' dni';
   return n+' dní';
 }
 
-// ========== FIREBASE (zdieľané audity a voľno medzi všetkými prehliadačmi/zariadeniami) ==========
-// Dáta sa naďalej ukladajú aj do localStorage (rýchle okamžité zobrazenie pri otvorení stránky),
-// ale Firebase Realtime Database je teraz "zdroj pravdy" - keď niekto zapíše audit/voľno
-// na jednom zariadení, po chvíli sa to zobrazí aj všade inde (iný prehliadač, iný počítač/mobil).
+// ========== FIREBASE ==========
 const firebaseConfig = {
   apiKey: "AIzaSyA2uXyx3B4W9FqmhbsKl8WYT4Uo4piX_iM",
   authDomain: "info-tabula.firebaseapp.com",
@@ -323,8 +306,6 @@ let firebaseDb = null;
 try{
   firebase.initializeApp(firebaseConfig);
   firebaseDb = firebase.database();
-  // ".info/connected" je špeciálna cesta vo Firebase, ktorá hovorí, či je tento konkrétny
-  // prehliadač momentálne reálne pripojený k serveru (nielen či sa SDK podarilo načítať).
   firebaseDb.ref('.info/connected').on('value', snap=>{
     if(typeof setApiStatus==='function') setApiStatus('firebase', snap.val()===true);
   });
@@ -333,16 +314,11 @@ try{
   if(typeof setApiStatus==='function') setApiStatus('firebase', false);
 }
 
-// Zapíše dáta do Firebase na danej ceste (napr. 'customAudits' alebo 'officeLeave').
-// Zlyhanie (napr. výpadok siete) sa len zaloguje - localStorage zostáva ako záloha,
-// takže dashboard nikdy nezamrzne ani pri nedostupnom Firebase.
 function firebaseSave(path, data){
   if(!firebaseDb) return;
   firebaseDb.ref(path).set(data).catch(e=>console.warn('Firebase zápis zlyhal ('+path+'):', e));
 }
 
-// Prihlási sa na zmeny dát na danej ceste. Callback sa zavolá hneď po prvom načítaní
-// a potom znova vždy, keď sa dáta zmenia (na tomto alebo inom zariadení/prehliadači).
 function firebaseListen(path, callback){
   if(!firebaseDb) return;
   firebaseDb.ref(path).on('value', snapshot=>{
@@ -351,10 +327,7 @@ function firebaseListen(path, callback){
   }, e=>console.warn('Firebase počúvanie zlyhalo ('+path+'):', e));
 }
 
-// ========== SPOLOČNÉ CORS PROXY (verejné, bezplatné, bez API kľúča) ==========
-// Viaceré externé zdroje na stránke (PHM ceny, kurzy, komodity, RSS správy) potrebujú
-// CORS proxy, pretože cieľové servery nemajú CORS hlavičky pre priamy fetch z prehliadača.
-// Tento zoznam je centrálny, aby sa pri pridaní/zmene proxy nemuselo upravovať na viacerých miestach.
+// ========== SPOLOČNÉ CORS PROXY ==========
 const CORS_PROXIES = [
   'https://api.allorigins.win/raw?url=',
   'https://corsproxy.io/?url=',
@@ -362,8 +335,6 @@ const CORS_PROXIES = [
   'https://thingproxy.freeboard.io/fetch/'
 ];
 
-// Skúsi stiahnuť text z danej URL postupne cez všetky proxy v CORS_PROXIES, kým jeden nezafunguje.
-// Vracia text odpovede, alebo null ak zlyhali všetky.
 async function fetchTextViaCorsProxy(targetUrl, timeoutMs){
   for(const proxy of CORS_PROXIES){
     try{
@@ -375,374 +346,20 @@ async function fetchTextViaCorsProxy(targetUrl, timeoutMs){
   return null;
 }
 
-// ========== MENINY – kompletný ročný zoznam ==========
+// ========== MENINY ==========
 const MENINY = {
-  "1.1":  "Nový rok",
-  "2.1":  "Alexandra a Karina",
-  "3.1":  "Daniela",
-  "4.1":  "Drahoslav",
-  "5.1":  "Andrea",
-  "6.1":  "Antónia",
-  "7.1":  "Bohuslava",
-  "8.1":  "Severín",
-  "9.1":  "Alexej",
-  "10.1": "Dáša",
-  "11.1": "Malvína",
-  "12.1": "Ernest",
-  "13.1": "Rastislav",
-  "14.1": "Radovan",
-  "15.1": "Dobroslav",
-  "16.1": "Kristína",
-  "17.1": "Nataša",
-  "18.1": "Bohdana",
-  "19.1": "Drahomíra a Mário",
-  "20.1": "Dalibor",
-  "21.1": "Vincent",
-  "22.1": "Zora",
-  "23.1": "Miloš",
-  "24.1": "Timotej",
-  "25.1": "Gejza",
-  "26.1": "Tamara",
-  "27.1": "Bohuš",
-  "28.1": "Alfonz",
-  "29.1": "Gašpar",
-  "30.1": "Ľubica",
-  "31.1": "Erika",
-  "1.2":  "Tatiana",
-  "2.2":  "Erik",
-  "3.2":  "Blažej",
-  "4.2":  "Veronika",
-  "5.2":  "Agáta",
-  "6.2":  "Dorota",
-  "7.2":  "Vanda",
-  "8.2":  "Zoja",
-  "9.2":  "Zdenko",
-  "10.2": "Gabriela",
-  "11.2": "Dezider",
-  "12.2": "Perla",
-  "13.2": "Arpád",
-  "14.2": "Valentín",
-  "15.2": "Pravoslav",
-  "16.2": "Ida a Liana",
-  "17.2": "Miloslava",
-  "18.2": "Jaromír",
-  "19.2": "Vlasta",
-  "20.2": "Lívia",
-  "21.2": "Eleonóra",
-  "22.2": "Etela",
-  "23.2": "Roman a Romana",
-  "24.2": "Matej",
-  "25.2": "Frederik a Frederika",
-  "26.2": "Viktor",
-  "27.2": "Alexander",
-  "28.2": "Radomír",
-  "29.2": "Radomír",
-  "1.3":  "Albín",
-  "2.3":  "Anežka",
-  "3.3":  "Bohumil a Bohumila",
-  "4.3":  "Kazimír",
-  "5.3":  "Fridrich",
-  "6.3":  "Radoslav a Radoslava",
-  "7.3":  "Tomáš",
-  "8.3":  "Alan a Alana",
-  "9.3":  "Františka",
-  "10.3": "Branislav a Bruno",
-  "11.3": "Angela a Angelika",
-  "12.3": "Gregor",
-  "13.3": "Celestín",
-  "14.3": "Matilda",
-  "15.3": "Svetlana",
-  "16.3": "Boleslav",
-  "17.3": "Ľubomír",
-  "18.3": "Eduard",
-  "19.3": "Jozef",
-  "20.3": "Víťazoslav",
-  "21.3": "Blahoslav",
-  "22.3": "Beňadik",
-  "23.3": "Adrián",
-  "24.3": "Gabriel",
-  "25.3": "Marián",
-  "26.3": "Emanuel",
-  "27.3": "Alena",
-  "28.3": "Soňa",
-  "29.3": "Miroslav",
-  "30.3": "Vieroslava",
-  "31.3": "Benjamín",
-  "1.4":  "Hugo",
-  "2.4":  "Zita",
-  "3.4":  "Richard",
-  "4.4":  "Izidor",
-  "5.4":  "Miroslava",
-  "6.4":  "Irena",
-  "7.4":  "Zoltán",
-  "8.4":  "Albert",
-  "9.4":  "Milena",
-  "10.4": "Igor",
-  "11.4": "Július",
-  "12.4": "Estera",
-  "13.4": "Aleš",
-  "14.4": "Justína",
-  "15.4": "Fedor",
-  "16.4": "Dana",
-  "17.4": "Rudolf",
-  "18.4": "Valér",
-  "19.4": "Jela",
-  "20.4": "Marcel",
-  "21.4": "Ervín",
-  "22.4": "Slavomír",
-  "23.4": "Vojtech",
-  "24.4": "Juraj",
-  "25.4": "Marek",
-  "26.4": "Jaroslava",
-  "27.4": "Jaroslav",
-  "28.4": "Jarmila",
-  "29.4": "Lea",
-  "30.4": "Anastázia",
-  "1.5":  "Sviatok práce",
-  "2.5":  "Žigmund",
-  "3.5":  "Galina",
-  "4.5":  "Florián",
-  "5.5":  "Lesana",
-  "6.5":  "Hermína",
-  "7.5":  "Monika",
-  "8.5":  "Víťazstvo",
-  "9.5":  "Roland",
-  "10.5": "Viktória",
-  "11.5": "Blažena",
-  "12.5": "Pankrác",
-  "13.5": "Servác",
-  "14.5": "Bonifác",
-  "15.5": "Žofia",
-  "16.5": "Svetozár",
-  "17.5": "Gizela",
-  "18.5": "Viola",
-  "19.5": "Gertrúda",
-  "20.5": "Bernard",
-  "21.5": "Zina",
-  "22.5": "Júlia a Juliána",
-  "23.5": "Želmíra",
-  "24.5": "Ela",
-  "25.5": "Urban",
-  "26.5": "Dušan",
-  "27.5": "Iveta",
-  "28.5": "Viliam",
-  "29.5": "Tamara",
-  "30.5": "Ferdinand",
-  "31.5": "Petrana",
-  "1.6":  "Žaneta",
-  "2.6":  "Xénia a Oxana",
-  "3.6":  "Karolína",
-  "4.6":  "Lenka",
-  "5.6":  "Laura",
-  "6.6":  "Norbert",
-  "7.6":  "Róbert",
-  "8.6":  "Medard",
-  "9.6":  "Stanislava",
-  "10.6": "Margaréta",
-  "11.6": "Dobroslava",
-  "12.6": "Zlatko",
-  "13.6": "Anton",
-  "14.6": "Vasil",
-  "15.6": "Vít",
-  "16.6": "Blanka a Bianka",
-  "17.6": "Adolf",
-  "18.6": "Vratislav",
-  "19.6": "Alfréd",
-  "20.6": "Valéria",
-  "21.6": "Alojz",
-  "22.6": "Paulína",
-  "23.6": "Sidónia",
-  "24.6": "Ján",
-  "25.6": "Tadeáš a Olívia",
-  "26.6": "Adriána",
-  "27.6": "Ladislav a Ladislava",
-  "28.6": "Beáta",
-  "29.6": "Peter a Pavol",
-  "30.6": "Melánia",
-  "1.7":  "Diana",
-  "2.7":  "Berta",
-  "3.7":  "Miloslav",
-  "4.7":  "Prokop",
-  "5.7":  "Cyril a Metod",
-  "6.7":  "Patrik a Patrícia",
-  "7.7":  "Cyril",
-  "8.7":  "Ivan",
-  "9.7":  "Lujza",
-  "10.7": "Amadej",
-  "11.7": "Milota",
-  "12.7": "Nina",
-  "13.7": "Margita",
-  "14.7": "Kamil",
-  "15.7": "Henrich",
-  "16.7": "Drahota",
-  "17.7": "Bohuslav",
-  "18.7": "Kamila",
-  "19.7": "Dušana",
-  "20.7": "Eliáš a Iľja",
-  "21.7": "Daniel",
-  "22.7": "Magdaléna",
-  "23.7": "Oľga",
-  "24.7": "Vladimír",
-  "25.7": "Jakub",
-  "26.7": "Anna a Hana",
-  "27.7": "Božena",
-  "28.7": "Krištof",
-  "29.7": "Marta",
-  "30.7": "Libuša",
-  "31.7": "Ignác",
-  "1.8":  "Božidara",
-  "2.8":  "Gustáv",
-  "3.8":  "Jerguš",
-  "4.8":  "Dominik a Dominika",
-  "5.8":  "Hortenzia",
-  "6.8":  "Jozefína",
-  "7.8":  "Štefánia",
-  "8.8":  "Oskar",
-  "9.8":  "Ľubomíra",
-  "10.8": "Vavrinec",
-  "11.8": "Zuzana",
-  "12.8": "Darina",
-  "13.8": "Ľuboslav",
-  "14.8": "Mojmír",
-  "15.8": "Nanebovzatie Panny Márie",
-  "16.8": "Jozefína",
-  "17.8": "Milica",
-  "18.8": "Helena a Elena",
-  "19.8": "Lýdia",
-  "20.8": "Anabela",
-  "21.8": "Jana",
-  "22.8": "Tichomír",
-  "23.8": "Filip",
-  "24.8": "Bartolomej",
-  "25.8": "Ľudovít",
-  "26.8": "Samuel",
-  "27.8": "Silvia",
-  "28.8": "Augustín",
-  "29.8": "Nikola",
-  "30.8": "Ružena",
-  "31.8": "Nora",
-  "1.9":  "Drahomíra",
-  "2.9":  "Konštantín",
-  "3.9":  "Belo",
-  "4.9":  "Rozália",
-  "5.9":  "Regína",
-  "6.9":  "Alžbeta",
-  "7.9":  "Marianna",
-  "8.9":  "Mária",
-  "9.9":  "Severín",
-  "10.9": "Oleg",
-  "11.9": "Bystrík",
-  "12.9": "Mária",
-  "13.9": "Ctibor",
-  "14.9": "Ľudomil",
-  "15.9": "Jolana",
-  "16.9": "Ľudomila",
-  "17.9": "Olympia",
-  "18.9": "Eugénia",
-  "19.9": "Konštantína",
-  "20.9": "Ľuboslav a Ľuboslava",
-  "21.9": "Matúš",
-  "22.9": "Móric",
-  "23.9": "Zdenka",
-  "24.9": "Ľubor",
-  "25.9": "Vladislav",
-  "26.9": "Edita",
-  "27.9": "Cyprián",
-  "28.9": "Václav",
-  "29.9": "Michal a Michaela",
-  "30.9": "Jarolím",
-  "1.10": "Arnold",
-  "2.10": "Levoslav",
-  "3.10": "Stela",
-  "4.10": "František",
-  "5.10": "Viera",
-  "6.10": "Natália",
-  "7.10": "Eliška",
-  "8.10": "Brigita",
-  "9.10": "Dionýz",
-  "10.10":"Slavomíra",
-  "11.10":"Valentína",
-  "12.10":"Maximilián",
-  "13.10":"Koloman",
-  "14.10":"Boris",
-  "15.10":"Terézia",
-  "16.10":"Vladimíra",
-  "17.10":"Hedviga",
-  "18.10":"Lukáš",
-  "19.10":"Kristián",
-  "20.10":"Vendelín",
-  "21.10":"Uršuľa",
-  "22.10":"Sergej",
-  "23.10":"Alojzia",
-  "24.10":"Kvetoslava",
-  "25.10":"Aurel",
-  "26.10":"Demeter",
-  "27.10":"Sabína",
-  "28.10":"Dobromila",
-  "29.10":"Klára",
-  "30.10":"Šimon a Simona",
-  "31.10":"Aurélia",
-  "1.11": "Všetkých svätých",
-  "2.11": "Pamiatka zosnulých",
-  "3.11": "Hubert",
-  "4.11": "Karol",
-  "5.11": "Imrich",
-  "6.11": "Renáta",
-  "7.11": "René",
-  "8.11": "Bohumír",
-  "9.11": "Teodor",
-  "10.11":"Tibor",
-  "11.11":"Martin a Maroš",
-  "12.11":"Svätopluk",
-  "13.11":"Stanislav",
-  "14.11":"Irma",
-  "15.11":"Leopold",
-  "16.11":"Agnesa",
-  "17.11":"Klaudia",
-  "18.11":"Eugen",
-  "19.11":"Alžbeta",
-  "20.11":"Félix",
-  "21.11":"Elvíra",
-  "22.11":"Cecília",
-  "23.11":"Klement",
-  "24.11":"Emília",
-  "25.11":"Katarína",
-  "26.11":"Kornel",
-  "27.11":"Milan",
-  "28.11":"Henrich",
-  "29.11":"Blazej",
-  "30.11":"Andrej a Ondrej",
-  "1.12": "Edmund",
-  "2.12": "Bibiána",
-  "3.12": "Oldrich",
-  "4.12": "Barbora",
-  "5.12": "Ábel",
-  "6.12": "Mikuláš",
-  "7.12": "Ambróz",
-  "8.12": "Marína",
-  "9.12": "Izabela",
-  "10.12":"Radúz",
-  "11.12":"Hilda",
-  "12.12":"Otília",
-  "13.12":"Lucia",
-  "14.12":"Branislava a Bronislava",
-  "15.12":"Ivica",
-  "16.12":"Albína",
-  "17.12":"Kornélia",
-  "18.12":"Sláva",
-  "19.12":"Judita",
-  "20.12":"Dagmar",
-  "21.12":"Bohdan",
-  "22.12":"Adela",
-  "23.12":"Nadežda",
-  "24.12":"Adam a Eva",
-  "25.12":"Vianoce",
-  "26.12":"Štefan",
-  "27.12":"Filomena",
-  "28.12":"Ivana a Ivona",
-  "29.12":"Milada",
-  "30.12":"Dávid",
-  "31.12":"Silvester"
+  "1.1":"Nový rok","2.1":"Alexandra a Karina","3.1":"Daniela","4.1":"Drahoslav","5.1":"Andrea","6.1":"Antónia","7.1":"Bohuslava","8.1":"Severín","9.1":"Alexej","10.1":"Dáša","11.1":"Malvína","12.1":"Ernest","13.1":"Rastislav","14.1":"Radovan","15.1":"Dobroslav","16.1":"Kristína","17.1":"Nataša","18.1":"Bohdana","19.1":"Drahomíra a Mário","20.1":"Dalibor","21.1":"Vincent","22.1":"Zora","23.1":"Miloš","24.1":"Timotej","25.1":"Gejza","26.1":"Tamara","27.1":"Bohuš","28.1":"Alfonz","29.1":"Gašpar","30.1":"Ľubica","31.1":"Erika",
+  "1.2":"Tatiana","2.2":"Erik","3.2":"Blažej","4.2":"Veronika","5.2":"Agáta","6.2":"Dorota","7.2":"Vanda","8.2":"Zoja","9.2":"Zdenko","10.2":"Gabriela","11.2":"Dezider","12.2":"Perla","13.2":"Arpád","14.2":"Valentín","15.2":"Pravoslav","16.2":"Ida a Liana","17.2":"Miloslava","18.2":"Jaromír","19.2":"Vlasta","20.2":"Lívia","21.2":"Eleonóra","22.2":"Etela","23.2":"Roman a Romana","24.2":"Matej","25.2":"Frederik a Frederika","26.2":"Viktor","27.2":"Alexander","28.2":"Radomír","29.2":"Radomír",
+  "1.3":"Albín","2.3":"Anežka","3.3":"Bohumil a Bohumila","4.3":"Kazimír","5.3":"Fridrich","6.3":"Radoslav a Radoslava","7.3":"Tomáš","8.3":"Alan a Alana","9.3":"Františka","10.3":"Branislav a Bruno","11.3":"Angela a Angelika","12.3":"Gregor","13.3":"Celestín","14.3":"Matilda","15.3":"Svetlana","16.3":"Boleslav","17.3":"Ľubomír","18.3":"Eduard","19.3":"Jozef","20.3":"Víťazoslav","21.3":"Blahoslav","22.3":"Beňadik","23.3":"Adrián","24.3":"Gabriel","25.3":"Marián","26.3":"Emanuel","27.3":"Alena","28.3":"Soňa","29.3":"Miroslav","30.3":"Vieroslava","31.3":"Benjamín",
+  "1.4":"Hugo","2.4":"Zita","3.4":"Richard","4.4":"Izidor","5.4":"Miroslava","6.4":"Irena","7.4":"Zoltán","8.4":"Albert","9.4":"Milena","10.4":"Igor","11.4":"Július","12.4":"Estera","13.4":"Aleš","14.4":"Justína","15.4":"Fedor","16.4":"Dana","17.4":"Rudolf","18.4":"Valér","19.4":"Jela","20.4":"Marcel","21.4":"Ervín","22.4":"Slavomír","23.4":"Vojtech","24.4":"Juraj","25.4":"Marek","26.4":"Jaroslava","27.4":"Jaroslav","28.4":"Jarmila","29.4":"Lea","30.4":"Anastázia",
+  "1.5":"Sviatok práce","2.5":"Žigmund","3.5":"Galina","4.5":"Florián","5.5":"Lesana","6.5":"Hermína","7.5":"Monika","8.5":"Víťazstvo","9.5":"Roland","10.5":"Viktória","11.5":"Blažena","12.5":"Pankrác","13.5":"Servác","14.5":"Bonifác","15.5":"Žofia","16.5":"Svetozár","17.5":"Gizela","18.5":"Viola","19.5":"Gertrúda","20.5":"Bernard","21.5":"Zina","22.5":"Júlia a Juliána","23.5":"Želmíra","24.5":"Ela","25.5":"Urban","26.5":"Dušan","27.5":"Iveta","28.5":"Viliam","29.5":"Tamara","30.5":"Ferdinand","31.5":"Petrana",
+  "1.6":"Žaneta","2.6":"Xénia a Oxana","3.6":"Karolína","4.6":"Lenka","5.6":"Laura","6.6":"Norbert","7.6":"Róbert","8.6":"Medard","9.6":"Stanislava","10.6":"Margaréta","11.6":"Dobroslava","12.6":"Zlatko","13.6":"Anton","14.6":"Vasil","15.6":"Vít","16.6":"Blanka a Bianka","17.6":"Adolf","18.6":"Vratislav","19.6":"Alfréd","20.6":"Valéria","21.6":"Alojz","22.6":"Paulína","23.6":"Sidónia","24.6":"Ján","25.6":"Tadeáš a Olívia","26.6":"Adriána","27.6":"Ladislav a Ladislava","28.6":"Beáta","29.6":"Peter a Pavol","30.6":"Melánia",
+  "1.7":"Diana","2.7":"Berta","3.7":"Miloslav","4.7":"Prokop","5.7":"Cyril a Metod","6.7":"Patrik a Patrícia","7.7":"Cyril","8.7":"Ivan","9.7":"Lujza","10.7":"Amadej","11.7":"Milota","12.7":"Nina","13.7":"Margita","14.7":"Kamil","15.7":"Henrich","16.7":"Drahota","17.7":"Bohuslav","18.7":"Kamila","19.7":"Dušana","20.7":"Eliáš a Iľja","21.7":"Daniel","22.7":"Magdaléna","23.7":"Oľga","24.7":"Vladimír","25.7":"Jakub","26.7":"Anna a Hana","27.7":"Božena","28.7":"Krištof","29.7":"Marta","30.7":"Libuša","31.7":"Ignác",
+  "1.8":"Božidara","2.8":"Gustáv","3.8":"Jerguš","4.8":"Dominik a Dominika","5.8":"Hortenzia","6.8":"Jozefína","7.8":"Štefánia","8.8":"Oskar","9.8":"Ľubomíra","10.8":"Vavrinec","11.8":"Zuzana","12.8":"Darina","13.8":"Ľuboslav","14.8":"Mojmír","15.8":"Nanebovzatie Panny Márie","16.8":"Jozefína","17.8":"Milica","18.8":"Helena a Elena","19.8":"Lýdia","20.8":"Anabela","21.8":"Jana","22.8":"Tichomír","23.8":"Filip","24.8":"Bartolomej","25.8":"Ľudovít","26.8":"Samuel","27.8":"Silvia","28.8":"Augustín","29.8":"Nikola","30.8":"Ružena","31.8":"Nora",
+  "1.9":"Drahomíra","2.9":"Konštantín","3.9":"Belo","4.9":"Rozália","5.9":"Regína","6.9":"Alžbeta","7.9":"Marianna","8.9":"Mária","9.9":"Severín","10.9":"Oleg","11.9":"Bystrík","12.9":"Mária","13.9":"Ctibor","14.9":"Ľudomil","15.9":"Jolana","16.9":"Ľudomila","17.9":"Olympia","18.9":"Eugénia","19.9":"Konštantína","20.9":"Ľuboslav a Ľuboslava","21.9":"Matúš","22.9":"Móric","23.9":"Zdenka","24.9":"Ľubor","25.9":"Vladislav","26.9":"Edita","27.9":"Cyprián","28.9":"Václav","29.9":"Michal a Michaela","30.9":"Jarolím",
+  "1.10":"Arnold","2.10":"Levoslav","3.10":"Stela","4.10":"František","5.10":"Viera","6.10":"Natália","7.10":"Eliška","8.10":"Brigita","9.10":"Dionýz","10.10":"Slavomíra","11.10":"Valentína","12.10":"Maximilián","13.10":"Koloman","14.10":"Boris","15.10":"Terézia","16.10":"Vladimíra","17.10":"Hedviga","18.10":"Lukáš","19.10":"Kristián","20.10":"Vendelín","21.10":"Uršuľa","22.10":"Sergej","23.10":"Alojzia","24.10":"Kvetoslava","25.10":"Aurel","26.10":"Demeter","27.10":"Sabína","28.10":"Dobromila","29.10":"Klára","30.10":"Šimon a Simona","31.10":"Aurélia",
+  "1.11":"Všetkých svätých","2.11":"Pamiatka zosnulých","3.11":"Hubert","4.11":"Karol","5.11":"Imrich","6.11":"Renáta","7.11":"René","8.11":"Bohumír","9.11":"Teodor","10.11":"Tibor","11.11":"Martin a Maroš","12.11":"Svätopluk","13.11":"Stanislav","14.11":"Irma","15.11":"Leopold","16.11":"Agnesa","17.11":"Klaudia","18.11":"Eugen","19.11":"Alžbeta","20.11":"Félix","21.11":"Elvíra","22.11":"Cecília","23.11":"Klement","24.11":"Emília","25.11":"Katarína","26.11":"Kornel","27.11":"Milan","28.11":"Henrich","29.11":"Blazej","30.11":"Andrej a Ondrej",
+  "1.12":"Edmund","2.12":"Bibiána","3.12":"Oldrich","4.12":"Barbora","5.12":"Ábel","6.12":"Mikuláš","7.12":"Ambróz","8.12":"Marína","9.12":"Izabela","10.12":"Radúz","11.12":"Hilda","12.12":"Otília","13.12":"Lucia","14.12":"Branislava a Bronislava","15.12":"Ivica","16.12":"Albína","17.12":"Kornélia","18.12":"Sláva","19.12":"Judita","20.12":"Dagmar","21.12":"Bohdan","22.12":"Adela","23.12":"Nadežda","24.12":"Adam a Eva","25.12":"Vianoce","26.12":"Štefan","27.12":"Filomena","28.12":"Ivana a Ivona","29.12":"Milada","30.12":"Dávid","31.12":"Silvester"
 };
 
 function getNameday(d){
@@ -751,7 +368,6 @@ function getNameday(d){
   return entry ? entry : "–";
 }
 
-// FORMAT
 function format(sec){
   sec=Math.floor(sec);
   let h=Math.floor(sec/3600);
@@ -759,25 +375,18 @@ function format(sec){
   return `${h}h ${m}m`;
 }
 
-// IKONY
 function icon(code){
-  // WMO Weather interpretation codes
-  // 0 = Clear, 1-2 = Mainly clear, 3 = Overcast, 45-48 = Fog
-  // 51-67 = Drizzle/Rain, 71-77 = Snow, 80-82 = Rain showers
-  // 85-86 = Snow showers, 95-99 = Thunderstorm
-  
-  if (code === 0 || code === 1 || code === 2) return "☀️";      // Clear/Mainly clear
-  if (code === 3) return "⛅";                                    // Overcast
-  if (code === 45 || code === 48) return "🌫️";                  // Fog/Depositing rime fog
-  if (code === 51 || code === 53 || code === 55) return "🌦️";   // Light/Moderate/Dense drizzle
-  if (code === 61 || code === 63 || code === 65) return "🌧️";   // Slight/Moderate/Heavy rain
-  if (code === 71 || code === 73 || code === 75) return "❄️";    // Slight/Moderate/Heavy snow
-  if (code === 77) return "🌨️";                                  // Snow grains
-  if (code === 80 || code === 81 || code === 82) return "⛈️";   // Slight/Moderate/Violent rain showers
-  if (code === 85 || code === 86) return "🌨️";                  // Slight/Heavy snow showers
-  if (code === 95 || code === 96 || code === 99) return "⚡";    // Thunderstorm (slight/moderate/violent)
-  
-  return "☁️";  // Default fallback
+  if (code === 0 || code === 1 || code === 2) return "☀️";
+  if (code === 3) return "⛅";
+  if (code === 45 || code === 48) return "🌫️";
+  if (code === 51 || code === 53 || code === 55) return "🌦️";
+  if (code === 61 || code === 63 || code === 65) return "🌧️";
+  if (code === 71 || code === 73 || code === 75) return "❄️";
+  if (code === 77) return "🌨️";
+  if (code === 80 || code === 81 || code === 82) return "⛈️";
+  if (code === 85 || code === 86) return "🌨️";
+  if (code === 95 || code === 96 || code === 99) return "⚡";
+  return "☁️";
 }
 
 function windDir(deg){
@@ -785,7 +394,6 @@ function windDir(deg){
   return d[Math.round(deg/45)%8];
 }
 
-// ISO TÝŽDEŇ
 function getISOWeek(d){
   const date=new Date(d);
   date.setDate(date.getDate()+3-(date.getDay()+6)%7);
@@ -793,7 +401,6 @@ function getISOWeek(d){
   return 1+Math.round(((date-week1)/86400000)/7);
 }
 
-// ČIAS + DÁTUM
 function updateTime(){
   const n=new Date();
   time.innerText=n.toLocaleTimeString("sk-SK",{hour12:false});
@@ -802,7 +409,6 @@ function updateTime(){
   dateWeek.innerText=d+" "+n.toLocaleDateString("sk-SK",{day:"numeric",month:"long",year:"numeric"})+" • týždeň "+getISOWeek(n);
 }
 
-// MENINY – aktualizuje každý deň automaticky
 let lastNamedayDate = -1;
 
 function updateNameday(){
@@ -822,13 +428,9 @@ function updateNameday(){
   nameday.onclick=function(){ window.open('https://kto-ma-meniny.sk/','_blank'); };
   nameday.title='Zdroj: kto-ma-meniny.sk';
 
-  // Ak sa pri dlhších/dvojitých menách (napr. "Peter a Pavol") text nezmestí na jeden
-  // riadok v rámci skutočnej šírky boxu, zmenši font (rovnako ako pri tabuľke auditov),
-  // nech ostane vždy presne na 2 riadkoch (Dnes/Zajtra) bez zalomenia textu na tretí riadok.
-  // Najprv treba zaistiť, že box má nastavenú svoju skutočnú (nie len CSS min-width) šírku.
   if(typeof positionLeftColumn==='function') positionLeftColumn();
   nameday.style.fontSize = '28px';
-  const minFontPx = 14; // bezpečný spodný limit, aby text ostal čitateľný
+  const minFontPx = 14;
   let safety = 0;
   while(nameday.scrollWidth > nameday.clientWidth + 1 && safety < 30){
     const curSize = parseFloat(getComputedStyle(nameday).fontSize);
@@ -839,17 +441,15 @@ function updateNameday(){
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 
-// ===== INDIKÁTOR STAVU API (ľavý horný rohok) =====
-// Sleduje úspech/neúspech každého externého API zdroja na stránke.
-// Zelená = všetko OK, červená = aspoň jedno zlyhalo, sivá = ešte sa nezistilo (na začiatku).
+// ===== INDIKÁTOR STAVU API =====
 const apiStatus = {
-  sun: null,        // východ/západ slnka
-  weather: null,    // počasie Vráble
-  worldWeather: null, // počasie pre svetové mestá
-  fuel: null,       // PHM ceny
-  currency: null,   // kurzy mien
-  commodities: null, // zlato/bitcoin
-  firebase: null    // pripojenie k zdieľanej databáze (audity, voľno)
+  sun: null,
+  weather: null,
+  worldWeather: null,
+  fuel: null,
+  currency: null,
+  commodities: null,
+  firebase: null
 };
 
 function setApiStatus(key, ok){
@@ -879,8 +479,6 @@ function updateApiStatusIndicator(){
   el.style.background=color;
   el.style.boxShadow='0 0 8px '+color;
 
-  // Detailný rozpis jednotlivých zdrojov - viditeľný panel po kliknutí (nie len hover tooltip,
-  // ktorý na dotykových/TV obrazovkách bez myši nie je dostupný)
   const names={sun:'Slnko/mesiac', weather:'Počasie Vráble', worldWeather:'Svetové počasie', fuel:'PHM ceny', currency:'Kurzy mien', commodities:'Komodity', firebase:'Zdieľaná databáza'};
   const lines=Object.keys(apiStatus).map(k=>{
     const v=apiStatus[k];
@@ -910,23 +508,18 @@ async function loadSun(){
     const sunrise = new Date(data.daily.sunrise[0]).toLocaleTimeString('sk-SK', {hour: '2-digit', minute: '2-digit'});
     const sunset = new Date(data.daily.sunset[0]).toLocaleTimeString('sk-SK', {hour: '2-digit', minute: '2-digit'});
     
-    // Výpočet fázy mesiaca - DO SPLNÉHO MESIACA (30. júna 2026)
     const now = new Date();
-    const fullMoonDate = new Date(2026, 5, 30, 1, 57); // 30. jún 2026
+    const fullMoonDate = new Date(2026, 5, 30, 1, 57);
     const lunarCycle = 29.53;
     
-    // New moon pre tento cyklus (14.765 dní pred full moon)
     let newMoonDate = new Date(fullMoonDate.getTime() - (14.765 * 24 * 60 * 60 * 1000));
     
-    // Ak je new moon v budúcnosti, vezmem predchádzajúci cyklus
     while (newMoonDate > now) {
       newMoonDate = new Date(newMoonDate.getTime() - (lunarCycle * 24 * 60 * 60 * 1000));
     }
     
-    // Dní od new moonu
     const daysSinceNewMoon = (now - newMoonDate) / (1000 * 60 * 60 * 24);
     
-    // Správny piktogram a názov fázy podľa lunárneho veku
     let moonEmoji = '🌑';
     let moonName = 'Nový mesiac';
     
@@ -939,12 +532,10 @@ async function loadSun(){
     else if (daysSinceNewMoon < 23.99) { moonEmoji = '🌗'; moonName = 'Posledná štvrť'; }
     else { moonEmoji = '🌘'; moonName = 'Ubúdajúci mesiac'; }
     
-    // Skontroluj či je dnes new moon alebo full moon
     const today = new Date();
     const isNewMoonDay = today.getDate() === newMoonDate.getDate() && today.getMonth() === newMoonDate.getMonth();
     if (isNewMoonDay) moonName = 'Now';
     
-    // Nový formát - tri riadky s názvami
     document.getElementById('sun').innerHTML = `Východ slnka: ☀️ ${sunrise}<hr style="border:none;border-top:1px solid rgba(255,255,255,0.2);margin:6px 0;">Západ slnka: 🌙 ${sunset}<hr style="border:none;border-top:1px solid rgba(255,255,255,0.2);margin:6px 0;">Fáza mesiaca: ${moonEmoji} ${moonName}`;
     document.getElementById('sun').style.cursor='pointer';
     document.getElementById('sun').onclick=function(){ window.open('https://www.timeanddate.com/astronomy/slovakia/nitra','_blank'); };
@@ -962,19 +553,18 @@ async function loadWeather(){
   const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weather_code,precipitation,wind_speed_10m,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant,precipitation_sum&current=temperature_2m,weather_code,precipitation,wind_speed_10m&forecast_days=7&timezone=Europe%2FBratislava");
   const data=await res.json();
 
-  // Piktogram podľa počasia
   function weatherIcon(code){
-    if([0].includes(code)) return "🌞";           // Clear - slnečno
-    if([1,2].includes(code)) return "⛅";         // Partly cloudy - čiastočne oblačno
-    if([3].includes(code)) return "☁️";           // Overcast - oblačno
-    if([45,48].includes(code)) return "🌫️";      // Fog - hmla
-    if([51,53,55].includes(code)) return "🌦️";   // Drizzle - mrholenie
-    if([61,63,65].includes(code)) return "🌧️";   // Rain - dážď
-    if([71,73,75].includes(code)) return "❄️";    // Snow - sneh
-    if([77].includes(code)) return "🌨️";         // Snow grains - snehy zrnka
-    if([80,81,82].includes(code)) return "⛈️";   // Rain showers - lejaky
-    if([85,86].includes(code)) return "🌨️";      // Snow showers - snehové zrážky
-    if([95,96,99].includes(code)) return "⚡";    // Thunderstorm - búrka
+    if([0].includes(code)) return "🌞";
+    if([1,2].includes(code)) return "⛅";
+    if([3].includes(code)) return "☁️";
+    if([45,48].includes(code)) return "🌫️";
+    if([51,53,55].includes(code)) return "🌦️";
+    if([61,63,65].includes(code)) return "🌧️";
+    if([71,73,75].includes(code)) return "❄️";
+    if([77].includes(code)) return "🌨️";
+    if([80,81,82].includes(code)) return "⛈️";
+    if([85,86].includes(code)) return "🌨️";
+    if([95,96,99].includes(code)) return "⚡";
     return "🌤️";
   }
 
@@ -987,7 +577,6 @@ async function loadWeather(){
 
   console.log('Aktuálny kód:', currentCode, 'Zrážky:', currentPrec, 'Vietor:', currentWind);
   
-  // LEPŠIA DETEKCIA - kontrola zrážok + vietor + kódy
   if([95,96,99].includes(currentCode) || (currentPrec > 0.5 && currentWind > 25)){
     alert=`⚡ Búrka teraz | ${currentPrec.toFixed(1)} mm`;
   } else if([80,81,82].includes(currentCode) || (currentPrec > 2 && currentWind > 15)){
@@ -995,7 +584,6 @@ async function loadWeather(){
   } else if([61,63,65].includes(currentCode) || currentPrec > 1){
     alert=`🌧️ Dážď teraz | ${currentPrec.toFixed(1)} mm`;
   } else {
-    // Hľadaj v nasledujúcich 120 minútach
     for(let i=0;i<Math.min(data.hourly.time.length, 120);i++){
       let t=new Date(data.hourly.time[i]);
       let diff=(t-now)/60000;
@@ -1004,7 +592,6 @@ async function loadWeather(){
         let prec=data.hourly.precipitation[i] || 0;
         let wind=data.hourly.wind_speed_10m[i] || 0;
         
-        // Detekcia búrky - alebo kód alebo vysoké zrážky + vietor
         if([95,96,99].includes(code) || (prec > 0.5 && wind > 25)){
           alert=`⚡ Búrka ~${Math.round(diff)} min | ${prec.toFixed(1)} mm`;
           break;
@@ -1019,14 +606,12 @@ async function loadWeather(){
     }
   }
 
-  // Iba do tempNow elementu pod Vráble - v jednom riadku
   if(alert.trim()){
     document.getElementById('tempNow').innerHTML=`${currentIcon} ${temp}° | <span style='color:white;'>${alert}</span>`;
   } else {
     document.getElementById('tempNow').innerHTML=`${currentIcon} ${temp}°`;
   }
 
-  // Dynamické názvy dní podľa dátumu
   const d=data.daily;
   const dayNames=[];
   for(let i=0;i<4;i++){
@@ -1045,7 +630,6 @@ async function loadWeather(){
   const day3 = new Date(today);
   day3.setDate(day3.getDate() + 3);
   
-  // Zobraz: Dnes [0], Zajtra [1], +2dni [2], +3dni [3]
   const day1Name = daysOfWeek[tomorrow.getDay()];
   const day2Name = daysOfWeek[day2.getDay()];
   const day3Name = daysOfWeek[day3.getDay()];
@@ -1091,8 +675,6 @@ const WORLD_CITIES = [
 let worldWeatherCache = {};
 let worldTableBuilt = false;
 
-// Vytvorí statickú štruktúru tabuľky (vlajky, mená miest) LEN RAZ.
-// Volá sa znova iba pri zmene layoutu (napr. po resize/position), nie každú sekundu.
 function buildWorldTable(){
   const box=document.getElementById('world');
   if(!box) return;
@@ -1113,7 +695,6 @@ function buildWorldTable(){
   updateWorldWeatherCells();
 }
 
-// Aktualizuje LEN textový obsah časových buniek (žiadne znova vytváranie DOM/obrázkov) - volá sa každú sekundu
 function updateWorldTimes(){
   if(!worldTableBuilt) return;
   WORLD_CITIES.forEach((c,i)=>{
@@ -1122,7 +703,6 @@ function updateWorldTimes(){
   });
 }
 
-// Aktualizuje LEN textový obsah buniek s počasím - volá sa raz za minútu po načítaní dát
 function updateWorldWeatherCells(){
   if(!worldTableBuilt) return;
   WORLD_CITIES.forEach((c,i)=>{
@@ -1140,7 +720,6 @@ function world(){
   if(typeof positionLeaveBox==='function') positionLeaveBox();
 }
 
-// WORLD WEATHER
 async function worldWeather(){
   let successCount=0;
   for(const c of WORLD_CITIES){
@@ -1156,33 +735,29 @@ async function worldWeather(){
 }
 
 // SMENA
-// ZVUK PRE KONIEC SMENY
 let shiftAlertPlayed=false;
 
 function updateShift(){
   const n=new Date();
   const s=new Date(); s.setHours(7,0,0,0);
   const e=new Date(); e.setHours(15,0,0,0);
-  const a=new Date(); a.setHours(14,45,0,0); // Alert o 14:45
+  const a=new Date(); a.setHours(14,45,0,0);
 
-  // Zvuk keď je čas 14:45-14:50
   if(n>=s && n<=e){
     if(n>=a && n<new Date(a.getTime()+5*60000) && !shiftAlertPlayed){
       playAlert();
       shiftAlertPlayed=true;
     }
   } else {
-    shiftAlertPlayed=false; // Reset keď nie je smena
+    shiftAlertPlayed=false;
   }
 }
 
-// GONG - VYRAZNÝ ALERT
 // ZVUK NOTIFIKÁCIA - GONG
 function playAlert(){
   try {
     const ctx=new (window.AudioContext||window.webkitAudioContext)();
     
-    // Prvý tón - hlboký gong
     const osc1=ctx.createOscillator();
     const gain1=ctx.createGain();
     osc1.connect(gain1);
@@ -1193,7 +768,6 @@ function playAlert(){
     osc1.start(ctx.currentTime);
     osc1.stop(ctx.currentTime+3.5);
     
-    // Druhý tón - vyšší "zvonenie" (harmonický)
     const osc2=ctx.createOscillator();
     const gain2=ctx.createGain();
     osc2.connect(gain2);
@@ -1206,19 +780,17 @@ function playAlert(){
   } catch(e){}
 }
 
-// PREMIENNE PRE ZVUKY
 let lunchAlertPlayed=false;
 let lunchEndAlertPlayed=false;
 
 function updateLunch(){
   const n=new Date();
-  const s=new Date();s.setHours(7,0,0,0); // Začiatok zmeny
-  const l=new Date();l.setHours(10,30,0,0); // Obed
-  const a=new Date();a.setHours(10,15,0,0); // Alert o 10:15
-  const e=new Date();e.setHours(15,0,0,0); // Koniec zmeny
+  const s=new Date();s.setHours(7,0,0,0);
+  const l=new Date();l.setHours(10,30,0,0);
+  const a=new Date();a.setHours(10,15,0,0);
+  const e=new Date();e.setHours(15,0,0,0);
 
-  if(n>=s&&n<e){ // Počas zmeny (7:00-15:00)
-    // Zvuk keď je čas 10:15-10:20
+  if(n>=s&&n<e){
     if(n>=a&&n<new Date(a.getTime()+5*60000)&&!lunchAlertPlayed){
       playAlert();
       lunchAlertPlayed=true;
@@ -1229,16 +801,15 @@ function updateLunch(){
   }
 }
 
-// DOVOLENKA + VIANOCE + ZMENA + OBED - BANERY V STREDE
+// DOVOLENKA + VIANOCE + ZMENA + OBED
 function updateVacation(){
   const n=new Date();
-  const s=new Date();s.setHours(7,0,0,0); // Začiatok zmeny dnes
-  const shiftEnd=new Date();shiftEnd.setHours(15,0,0,0); // Koniec zmeny
-  const lunchTime=new Date();lunchTime.setHours(10,30,0,0); // Obed
-  const vacStart=new Date(2026,7,3); // 3.8.2026
-  const christmas=new Date(2026,11,25); // 25.12.2026
+  const s=new Date();s.setHours(7,0,0,0);
+  const shiftEnd=new Date();shiftEnd.setHours(15,0,0,0);
+  const lunchTime=new Date();lunchTime.setHours(10,30,0,0);
+  const vacStart=new Date(2026,7,3);
+  const christmas=new Date(2026,11,25);
   
-  // Ďalší začiatok zmeny - ak je po 7:00, tak zajtra (preskočí víkend)
   const nextShift=new Date();nextShift.setHours(7,0,0,0);
   while(nextShift<=n || nextShift.getDay()===0 || nextShift.getDay()===6){
     nextShift.setDate(nextShift.getDate()+1);
@@ -1246,13 +817,12 @@ function updateVacation(){
   
   const diffVac=Math.ceil((vacStart-n)/(1000*60*60*24));
   const diffChrist=Math.ceil((christmas-n)/(1000*60*60*24));
-  const diffShift=Math.ceil((shiftEnd-n)/1000); // Do konca zmeny
-  const diffToShift=(nextShift-n)/1000; // Do ďalšieho začiatku zmeny
-  const diffLunch=(lunchTime-n)/1000; // Do obeda
+  const diffShift=Math.ceil((shiftEnd-n)/1000);
+  const diffToShift=(nextShift-n)/1000;
+  const diffLunch=(lunchTime-n)/1000;
   
   const today=n.getDay();
   
-  // Dovolenka / Vianoce - vždy zobraz v boxe hore
   if(n>=vacStart && n<=new Date(2026,7,9)){
     vacationTime.innerHTML=`Dovolenka<br><span style="color:#00d4ff;font-weight:bold;">DNES</span>`;
     vacationTime.style.display="block";
@@ -1266,25 +836,20 @@ function updateVacation(){
     vacationTime.style.display="none";
   }
   
-  // Odpočet zmeny a obeda - v strede hore
-  const lunchStart=new Date();lunchStart.setHours(10,30,0,0); // Obed 1
-  const lunchEnd=new Date();lunchEnd.setHours(11,30,0,0); // Koniec obeda
-  const beforeLunch=new Date();beforeLunch.setHours(10,15,0,0); // Zvuk pred obedом
-  const soundTime=new Date();soundTime.setHours(11,15,0,0); // Zvuk počas obeda
-  const lateAfternoon=new Date();lateAfternoon.setHours(14,45,0,0); // Zvuk o 14:45
+  const lunchStart=new Date();lunchStart.setHours(10,30,0,0);
+  const lunchEnd=new Date();lunchEnd.setHours(11,30,0,0);
+  const beforeLunch=new Date();beforeLunch.setHours(10,15,0,0);
+  const soundTime=new Date();soundTime.setHours(11,15,0,0);
+  const lateAfternoon=new Date();lateAfternoon.setHours(14,45,0,0);
   
-  // Najbližší obed (10:30-11:30) - funguje 24/7, aj cez víkend/sviatky mimo zmeny
   function getLunchBannerText(){
     if(n<lunchStart && today>=1 && today<=5){
-      // Pred obedom dnes (pracovný deň)
       const diffToLunch=(lunchStart-n)/1000;
       return `🍽️ Obed o: ${format(diffToLunch)}`;
     } else if(n>=lunchStart && n<lunchEnd && today>=1 && today<=5){
-      // Počas obeda dnes
       const diffToLunchEnd=(lunchEnd-n)/1000;
       return `🍽️ Obed o: ${format(diffToLunchEnd)}`;
     } else {
-      // Po obede, alebo víkend - odpočet do ďalšieho pracovného obeda
       const nextLunch=new Date();nextLunch.setHours(10,30,0,0);
       if(n>=lunchStart || today===0 || today===6){
         nextLunch.setDate(nextLunch.getDate()+1);
@@ -1298,11 +863,9 @@ function updateVacation(){
   }
   
   if(n>=s&&n<shiftEnd && today>=1 && today<=5){
-    // Počas zmeny (7:00-15:00, pondelok-piatok)
     let bannerText = `⏱️ Do konca zmeny: ${format(diffShift)}`;
     bannerText += `<br>${getLunchBannerText()}`;
     
-    // Gong v 11:15 (10:15 a 14:45 riešia updateLunch/updateShift)
     if(n>=soundTime && n<new Date(soundTime.getTime()+5*60000) && !lunchEndAlertPlayed){
       playAlert();
       lunchEndAlertPlayed=true;
@@ -1310,28 +873,16 @@ function updateVacation(){
       lunchEndAlertPlayed=false;
     }
     
-    // Zobrazovať banner vždy počas zmeny (s obedom alebo bez)
     document.getElementById('shiftBox').innerHTML = bannerText;
     document.getElementById('shiftBox').style.display="block";
   }
   else {
-    // Mimo zmeny - zobrazuj odpočet do ďalšieho začiatku zmeny + odpočet do obeda (24/7)
-    if(today>=1 && today<=5){
-      // V pracovný deň mimo zmeny
-      let bannerText = `⏱️ Do začiatku zmeny: ${format(diffToShift)}`;
-      bannerText += `<br>${getLunchBannerText()}`;
-      document.getElementById('shiftBox').innerHTML = bannerText;
-      document.getElementById('shiftBox').style.display="block";
-    } else {
-      // Cez víkend - zobraz aspoň odpočet do obeda (ďalší pracovný deň)
-      let bannerText = `⏱️ Do začiatku zmeny: ${format(diffToShift)}`;
-      bannerText += `<br>${getLunchBannerText()}`;
-      document.getElementById('shiftBox').innerHTML = bannerText;
-      document.getElementById('shiftBox').style.display="block";
-    }
+    let bannerText = `⏱️ Do začiatku zmeny: ${format(diffToShift)}`;
+    bannerText += `<br>${getLunchBannerText()}`;
+    document.getElementById('shiftBox').innerHTML = bannerText;
+    document.getElementById('shiftBox').style.display="block";
   }
   
-  // Výpočet dní do auditov + automatické skrytie udalostí po ich skončení
   const auditCells = document.querySelectorAll('.daysToAudit');
   auditCells.forEach(cell => {
     const startDate = new Date(cell.getAttribute('data-date'));
@@ -1344,7 +895,6 @@ function updateVacation(){
     const row = cell.closest('tr');
     const daysAfterEnd = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
 
-    // Udalosť už skončila -> riadok automaticky skry
     if (daysAfterEnd < 0) {
       if (row) row.style.display = 'none';
       return;
@@ -1363,25 +913,23 @@ function updateVacation(){
       cell.textContent = 'o ' + formatDaysSk(daysLeft);
       cell.style.color = '#aaa';
     }
-    // "o X dní" je dlhšie ako pôvodné holé číslo - nech sa font zmenší a nezalomí na 2 riadky
     cell.style.whiteSpace = 'nowrap';
     cell.style.fontSize = '';
     if(typeof shrinkToFit==='function') shrinkToFit(cell, 11);
   });
 }
 
-// PRACOVNÉ VOĽNO - SVIATKY (len pracovný týždeň)
+// SVIATKY
 function updateHolidays(){
   const n=new Date();
   const today=new Date(n.getFullYear(), n.getMonth(), n.getDate());
   
-  // Sviatky SR 2026
   const holidays=[
     {date: new Date(2026,0,1), name:"Nový rok"},
     {date: new Date(2026,0,6), name:"Zjavenie Pána"},
     {date: new Date(2026,0,27), name:"Deň pamiatky obetí holokaustu a rasového násilia"},
-    {date: new Date(2026,3,17), name:"Veľký piatok"}, // 2026
-    {date: new Date(2026,3,20), name:"Veľkonočný pondelok"}, // 2026
+    {date: new Date(2026,3,17), name:"Veľký piatok"},
+    {date: new Date(2026,3,20), name:"Veľkonočný pondelok"},
     {date: new Date(2026,4,1), name:"Sviatok práce"},
     {date: new Date(2026,4,8), name:"Deň víťazstva nad fašizmom"},
     {date: new Date(2026,6,5), name:"Sviatok svätého Cyrila a svätého Metoda"},
@@ -1395,7 +943,6 @@ function updateHolidays(){
     {date: new Date(2026,11,26), name:"Druhý sviatok vianočný"}
   ];
   
-  // Nájdi najbližší sviatok (bez ohľadu na deň v týždni)
   let nextHoliday=null;
   let minDiff=Infinity;
   
@@ -1411,7 +958,6 @@ function updateHolidays(){
     const daysLeft=Math.ceil(minDiff);
     const hDisplay=document.getElementById('holidayDisplay');
     const hb=document.getElementById('holidayBox');
-    // Zaisti správnu šírku boxu PRED meraním textu (rovnaká min. šírka ako box menín, 380px)
     const sunBox=document.getElementById('sun');
     if(hb && sunBox){
       hb.style.left=sunBox.offsetLeft+'px';
@@ -1429,8 +975,6 @@ function updateHolidays(){
       hDisplay.innerHTML=`🎉 ${nextHoliday.name} <span style="color:#aaa;">o ${daysLeft} dní</span>`;
     }
     hDisplay.style.display="block";
-    // Rovnaké písmo ako "Východ slnka" (28px). Text sa môže zalomiť na 2 riadky bez problémov,
-    // ale ak by potreboval 3. riadok, font sa postupne zmenší, aby sa zmestil na 2 riadky.
     hDisplay.style.fontSize='28px';
     let safety=0;
     let curSize=parseFloat(getComputedStyle(hDisplay).fontSize);
@@ -1448,7 +992,7 @@ function updateHolidays(){
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 
-// MINI KALENDÁR CELÉHO MESIACA
+// MINI KALENDÁR
 function buildMiniCalendar(){
   const cal=document.getElementById('miniCalendar');
   if(!cal) return;
@@ -1461,7 +1005,6 @@ function buildMiniCalendar(){
   const todayDate=now.getDate();
   const monthNames=["Január","Február","Marec","Apríl","Máj","Jún","Júl","August","September","Október","November","December"];
   const firstDay=new Date(year,month,1);
-  // Po=0 ... Ne=6 (JS má Ne=0)
   const startOffset=(firstDay.getDay()+6)%7;
   const daysInMonth=new Date(year,month+1,0).getDate();
 
@@ -1503,7 +1046,7 @@ function buildMiniCalendar(){
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 
-// PHM – ceny vrábeľských staníc (OMV + Slovnaft), automaticky z hackmath.net
+// PHM
 const PHM_STANICE = [
   { nazov:"OMV Vráble",      pumpa:654, benzin:"1,820", nafta:"1,960" },
   { nazov:"Slovnaft Vráble", pumpa:168, benzin:"1,840", nafta:"1,980" }
@@ -1517,7 +1060,6 @@ function renderFuel(){
   const box=document.getElementById('fuelBox');
   if(!box) return;
 
-  // Najnižšia cena z dostupných staníc (pre každé palivo zvlášť)
   let bMin=null, nMin=null;
   PHM_STANICE.forEach(s=>{
     if(s.benzin && (bMin===null || toNum(s.benzin) < toNum(bMin))) bMin=s.benzin;
@@ -1549,7 +1091,6 @@ function renderFuel(){
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 
-// Zrovnaj výšku PHM/Kurzy/Komodity boxu a kalendára na rovnakú hodnotu
 function syncFuelCurrencyHeight(){
   const box=document.getElementById('fuelBox');
   const cal=document.getElementById('miniCalendar');
@@ -1564,13 +1105,7 @@ function syncFuelCurrencyHeight(){
   });
 }
 
-// Stiahne ceny jednej stanice z hackmath.net (cez CORS proxy)
-// Skúša viacero proxy serverov postupne - verejné CORS proxy bývajú nestabilné (výpadky, limity),
-// takže viac fallbackov výrazne zvyšuje šancu na úspešné načítanie.
 function parseStanicaText(t){
-  // Formát 1 (meta description): "natural 95 (benzín): 1.600 €/l"
-  // Formát 2 (nadpis): "Natural 95 (benzín) · 1.600 €/l"  alebo "Natural 95 (benzín) · 1,600 €/l"
-  // Regex zachytí oba formáty (: alebo ·/·) a bodku aj čiarku ako desatinný oddeľovač
   const b=t.match(/natural\s*95\s*\(benz[íi]n\)\s*[·:]\s*([0-9][.,][0-9]{2,3})/i);
   const n=t.match(/diesel\s*\(nafta\)\s*[·:]\s*([0-9][.,][0-9]{2,3})/i);
   if(!b && !n) return null;
@@ -1580,7 +1115,6 @@ function parseStanicaText(t){
 async function fetchStanica(pumpa){
   const url='https://www.hackmath.net/sk/cerpacia-stanica?pumpa='+pumpa;
 
-  // allorigins.win /get vracia JSON {contents:"..."} - spoľahlivejší ako raw proxy, skúsime ako prvý
   try{
     const r=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});
     if(r.ok){
@@ -1592,7 +1126,6 @@ async function fetchStanica(pumpa){
     }
   }catch(e){ /* skús ďalšie proxy */ }
 
-  // Corsfix (URL sa pripája priamo, bez encode)
   try{
     const r=await fetch('https://proxy.corsfix.com/?'+url,{signal:AbortSignal.timeout(7000)});
     if(r.ok){
@@ -1601,12 +1134,10 @@ async function fetchStanica(pumpa){
     }
   }catch(e){ /* skús ďalšie proxy */ }
 
-  // Zvyšné proxy (spoločná funkcia, URL-encoded parameter)
   const text = await fetchTextViaCorsProxy(url);
   return text ? parseStanicaText(text) : null;
 }
 
-// Aktualizuje ceny oboch staníc
 async function loadFuelPrices(){
   let ok=false;
   for(let s of PHM_STANICE){
@@ -1627,12 +1158,11 @@ async function loadFuelPrices(){
   setApiStatus('fuel', ok);
 }
 
-// ===== KURZY MIEN (EUR -> USD, CZK), z frankfurter.app (ECB dáta, bez API kľúča) =====
+// KURZY MIEN
 let currencyData = { USD:null, CZK:null };
 let currencyInfo = "ECB · frankfurter.app";
 
 function renderCurrency(){
-  // Kurzy sa zobrazujú spolu s PHM v jednej tabuľke (fuelBox)
   renderFuel();
 }
 
@@ -1662,11 +1192,10 @@ async function loadCurrency(){
   setApiStatus('currency', false);
 }
 
-// ===== KOMODITY (zlato, Bitcoin), bez API kľúča, z gold-api.com (CORS povolené priamo) =====
+// KOMODITY
 let commodityData = { btc:null, gold:null };
 let commodityInfo = "gold-api.com";
 
-// gold-api.com má CORS povolené priamo, skús aj cez proxy ako záložný plán
 async function fetchGoldApiPrice(symbol){
   const url='https://api.gold-api.com/price/'+symbol;
   try{
@@ -1703,7 +1232,7 @@ async function loadCommodities(){
   setApiStatus('commodities', ok);
 }
 
-// ===== DENNÁ AKTUALIZÁCIA PHM, KURZOV A KOMODÍT KAŽDÉ RÁNO O 6:00 =====
+// DENNÁ AKTUALIZÁCIA O 6:00
 let lastDailyUpdateDate=-1;
 function checkDailyMarketUpdate(){
   const n=new Date();
@@ -1716,7 +1245,7 @@ function checkDailyMarketUpdate(){
   }
 }
 
-// ===== VOĽNO V KANCELÁRII (ukladá sa lokálne aj zdieľane vo Firebase) =====
+// ===== VOĽNO V KANCELÁRII =====
 let leaveData = loadLeave();
 function loadLeave(){
   try{ const s=localStorage.getItem('officeLeave'); if(s) return JSON.parse(s); }catch(e){}
@@ -1726,7 +1255,6 @@ function saveLeave(){
   try{ localStorage.setItem('officeLeave', JSON.stringify(leaveData)); }catch(e){}
   firebaseSave('officeLeave', leaveData);
 }
-// Keď sa voľno zmení na inom zariadení/prehliadači, premietne sa to aj sem automaticky.
 firebaseListen('officeLeave', data=>{
   leaveData = Array.isArray(data) ? data : [];
   try{ localStorage.setItem('officeLeave', JSON.stringify(leaveData)); }catch(e){}
@@ -1818,7 +1346,6 @@ function renderLeave(){
   if(!list) return;
   const today=new Date(); today.setHours(0,0,0,0);
 
-  // Odstráň skutočne skončené (koniec voľna už prešiel)
   const before=leaveData.length;
   leaveData = leaveData.filter(x=>{
     const e=parseLeaveDate(x.end||x.start); e.setHours(0,0,0,0);
@@ -1830,7 +1357,6 @@ function renderLeave(){
     const s=parseLeaveDate(x.start); s.setHours(0,0,0,0);
     const e=parseLeaveDate(x.end||x.start); e.setHours(0,0,0,0);
     const daysToStart=Math.ceil((s-today)/86400000);
-    // Dátum: D.M. alebo rozsah D-D.M. / D.M.-D.M. - rovnaký rozsah = rovnaký kľúč zoskupenia
     let datum;
     if(s.getTime()===e.getTime()){
       datum=`${s.getDate()}.${s.getMonth()+1}.`;
@@ -1842,15 +1368,12 @@ function renderLeave(){
     return {...x, s, e, daysToStart, datum};
   });
 
-  // Zlúč všetky osoby s rovnakým dátumom/rozsahom do jedného riadku (zoskupenie podľa termínu,
-  // nie podľa mena) - napr. keď majú dvaja-traja ľudia voľno v ten istý deň, sú spolu v 1 riadku.
   const groups={};
   items.forEach(it=>{
     const key=it.start+'|'+(it.end||it.start);
     if(!groups[key]) groups[key]={ datum:it.datum, s:it.s, daysToStart:it.daysToStart, people:[] };
     groups[key].people.push(it);
   });
-  // Každému termínu zoraď jeho ľudí abecedne, zoraď termíny chronologicky
   const groupList=Object.values(groups).map(g=>{
     g.people.sort((a,b)=> a.name.localeCompare(b.name,'sk'));
     return g;
@@ -1881,19 +1404,14 @@ function renderLeave(){
     html+=`</table>`;
     list.innerHTML=html;
   }
-  // Najprv zaisti aktuálnu šírku boxu (môže sa zmeniť podľa obsahu), AŽ POTOM meraj a zmenšuj font -
-  // inak by sa font meral voči starej/nesprávnej šírke a text by mohol pretiecť mimo tabuľky.
   positionLeaveBox();
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
   if(groupList.length>0){
-    // Stĺpec mien môže obsahovať viac mien naraz (keď má viac ľudí voľno v ten istý deň),
-    // preto má nižšiu spodnú hranicu fontu než dátum/odpočet, ktoré sú vždy krátke.
     list.querySelectorAll('tr td:not(.leaveNamesCell)').forEach(td=>shrinkToFit(td, 14));
     list.querySelectorAll('tr td.leaveNamesCell').forEach(td=>shrinkToFit(td, 9));
   }
 }
 
-// Umiestni box pod audity, v rovnakej šírke a zarovnaní ako audity
 function positionLeaveBox(){
   const l=document.getElementById('leaveBox');
   if(!l) return;
@@ -1902,7 +1420,6 @@ function positionLeaveBox(){
   l.style.right='40px';
   l.style.width='560px';
 
-  // Svetové mestá pod tabuľkou voľna, rovnakej šírky, všetky 4 vedľa seba
   const w=document.getElementById('world');
   if(w){
     w.style.top=(l.offsetTop + l.offsetHeight + 15)+'px';
@@ -1912,13 +1429,10 @@ function positionLeaveBox(){
   }
 }
 
-// Umiestni meniny/sviatok pod box slnka/mesiaca (ľavý panel); Dovolenka je samostatne hore
 function positionLeftColumn(){
   const sunBox=document.getElementById('sun');
   if(!sunBox) return;
   const areaLeft=sunBox.offsetLeft;
-  // Box meniny/sviatok môže byť širší než samotný text v boxe slnka (ten je krátky a nesmie
-  // obmedzovať dostupný priestor). 480px je bezpečná šírka, ktorá nezasahuje do tabuľky auditov.
   const areaWidth=Math.max(sunBox.offsetWidth, 480);
   const areaTop=sunBox.offsetTop + sunBox.offsetHeight + 15;
   const gap=15;
@@ -1940,13 +1454,8 @@ function positionLeftColumn(){
     hb.style.top=(areaTop+ndH+gap)+'px';
     hb.style.width=areaWidth+'px';
   }
-  // Poznámka: svetový čas (#world) sa pozicuje výlučne v positionLeaveBox() - pod tabuľkou
-  // voľna v pravej hornej kolóne. Tento ľavý panel (slnko/meniny/sviatok) s ním nesúvisí
-  // a nesmie prepisovať jeho pozíciu.
 }
 
-// Umiestni kalendár + PHM/kurzy na celú šírku pod tabuľkou auditov (flexibilne - posúva sa
-// nadol podľa skutočnej výšky auditov/voľna, nie podľa pevnej vzdialenosti od pásu správ)
 function positionBottomBoxes(){
   const a=document.getElementById('auditsTable');
   if(!a) return;
@@ -1960,31 +1469,19 @@ function positionBottomBoxes(){
   const areaLeft=centerX - auditsWidth/2;
   const auditsBottom=a.offsetTop + a.offsetHeight * S;
 
-  // Zaisti, že leaveBox/world majú aktuálnu pozíciu/výšku bez ohľadu na to, odkiaľ bola
-  // táto funkcia zavolaná (defenzívne, aby sa nespoliehalo na poradie volania zvonku).
   if(typeof positionLeaveBox==='function') positionLeaveBox();
 
-  // Spodný bod pravej kolóny = tabuľka voľna (leaveBox). Nepoužívame "world" (svetový čas),
-  // pretože ten sa viaže na výšku ľavého panela (meniny/sviatok) a nie je spoľahlivým
-  // ukazovateľom toho, kde končí obsah súvisiaci s auditmi/voľnom.
   const lb=document.getElementById('leaveBox');
   const leaveBottom = lb ? (lb.offsetTop + lb.offsetHeight) : 0;
   const leaveLeft = lb ? lb.offsetLeft : (areaLeft+auditsWidth);
 
   const gap=15;
-  // Vždy sa zarovnaj presne pod nižší z oboch bodov (audity / voľno) + medzera
-  // (rovnaká medzera 15px ako medzi tabuľkou voľna a svetovým časom, pre konzistentný vzhľad)
   const areaTop = Math.max(auditsBottom, leaveBottom) + gap;
-
-  // Šírka spodnej sekcie (kalendár + PHM/Kurzy/Komodity) je NEZÁVISLÁ od šírky auditov -
-  // vyplní celý dostupný priestor od ľavého okraja auditov až po leaveBox/world vpravo,
-  // takže zúženie/rozšírenie tabuľky auditov ju neovplyvní.
   const totalWidth = leaveLeft - gap - areaLeft;
 
   const mc=document.getElementById('miniCalendar');
   const fb=document.getElementById('fuelBox');
 
-  // Kalendár (menší) a PHM/Kurzy/Komodity (väčší) vedľa seba v jednom riadku
   const calWidth=totalWidth*0.34;
   const fuelWidth=totalWidth - gap - calWidth;
   if(mc){
@@ -2003,7 +1500,7 @@ function positionBottomBoxes(){
   if(typeof positionLeftColumn==='function') positionLeftColumn();
 }
 
-// ===== PRIDÁVANIE AUDITOV (ukladá sa lokálne aj zdieľane vo Firebase) =====
+// ===== AUDITY =====
 let auditData = loadAudits();
 function loadAudits(){
   try{ const s=localStorage.getItem('customAudits'); if(s) return JSON.parse(s); }catch(e){}
@@ -2013,15 +1510,12 @@ function saveAudits(){
   try{ localStorage.setItem('customAudits', JSON.stringify(auditData)); }catch(e){}
   firebaseSave('customAudits', auditData);
 }
-// Keď sa audity zmenia na inom zariadení/prehliadači, premietne sa to aj sem automaticky.
 firebaseListen('customAudits', data=>{
   auditData = Array.isArray(data) ? data : [];
   try{ localStorage.setItem('customAudits', JSON.stringify(auditData)); }catch(e){}
   if(typeof renderCustomAudits==='function') renderCustomAudits();
 });
 
-// Parsuje "dd.mm." alebo "dd.mm" / "dd/mm" na "YYYY-MM-DD". Rok sa doplní automaticky:
-// ak by dátum v aktuálnom roku už bol viac ako 30 dní v minulosti, použije sa budúci rok.
 function parseDDMM(str, explicitYear){
   if(!str) return '';
   const m=String(str).trim().match(/^(\d{1,2})[.\/](\d{1,2})\.?$/);
@@ -2059,7 +1553,6 @@ window.hideAuditForm=function(){
   const formRow=document.getElementById('auditFormRow');
   if(formRow) formRow.style.display='none';
   if(addRow) addRow.style.display='';
-  // Zruš prípadnú rozbehnutú úpravu a vyčisti formulár
   editingAuditId=null;
   const dateEl=document.getElementById('auditDate');
   const dateEndEl=document.getElementById('auditDateEnd');
@@ -2123,8 +1616,6 @@ window.deleteEditingAudit=function(){
   renderCustomAudits();
 };
 
-// Postupne zmenší font daného elementu, kým sa jeho obsah (text) nezmestí na jeden riadok
-// (žiadne zalomenie) v rámci jeho aktuálnej šírky. Element musí mať white-space:nowrap.
 function shrinkToFit(el, minFontPx){
   if(!el) return;
   minFontPx = minFontPx || 9;
@@ -2142,7 +1633,6 @@ function renderCustomAudits(){
   if(!formRow) return;
   const today=new Date(); today.setHours(0,0,0,0);
 
-  // Odstráň skončené (koniec auditu už prešiel)
   const before=auditData.length;
   auditData=auditData.filter(a=>{
     const e=parseLeaveDate(a.dateEnd||a.date); e.setHours(0,0,0,0);
@@ -2150,14 +1640,12 @@ function renderCustomAudits(){
   });
   if(auditData.length!==before) saveAudits();
 
-  // Odstráň staré DOM riadky a vlož nanovo (zoradené čisto podľa dátumu začiatku) pred formulár
   document.querySelectorAll('tr.customAuditRow').forEach(r=>r.remove());
   auditData.slice().sort((a,b)=> parseLeaveDate(a.date)-parseLeaveDate(b.date)).forEach(a=>{
     const d=parseLeaveDate(a.date);
     let datum=`${d.getDate()}.${d.getMonth()+1}.`;
     if(a.dateEnd && a.dateEnd!==a.date){
       const dEnd=parseLeaveDate(a.dateEnd);
-      // rovnaký mesiac -> "21-22.7.", inak "30.6.-2.7."
       if(d.getMonth()===dEnd.getMonth()){
         datum=`${d.getDate()}-${dEnd.getDate()}.${d.getMonth()+1}.`;
       } else {
@@ -2176,39 +1664,34 @@ function renderCustomAudits(){
       `<td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;">${a.zak||''}</td>`+
       `<td style="padding:8px 4px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="${a.date}"${a.dateEnd?` data-end="${a.dateEnd}"`:''}>-</td>`;
     formRow.parentNode.insertBefore(tr, formRow);
-    // Zmenši font v bunkách, ak text nezapadá na jeden riadok (namiesto zalomenia)
     Array.from(tr.children).slice(0,3).forEach(td=>shrinkToFit(td));
   });
   shrinkToFit(document.getElementById('auditsHeaderZak'));
-  // poloha tabuľky voľna a spodných boxov sa môže zmeniť (zmena výšky auditov)
   if(typeof positionLeaveBox==='function') positionLeaveBox();
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
-  // Countdown dní (.daysToAudit) sa počíta v updateVacation() - zavolaj ju hneď,
-  // aby nové/upravené riadky neukazovali "-" až do najbližšieho minútového tiku.
   if(typeof updateVacation==='function') updateVacation();
 }
 
-// LOOP – každú sekundu (len digitálne hodiny + lacná kontrola dennej aktualizácie)
+// LOOP – každú sekundu
 setInterval(()=>{
   updateTime();
-  checkDailyMarketUpdate(); // PHM, kurzy, komodity - raz denne o 6:00
+  checkDailyMarketUpdate();
 },1000);
 
-// MINÚTOVÁ SLUČKA – lokálne prepočty bez siete: svetový čas, odpočty zmeny/obeda,
-// meniny, sviatky, kalendár (tieto údaje sa zobrazujú bez sekúnd, stačí raz za minútu)
+// MINÚTOVÁ SLUČKA
 setInterval(()=>{
   world();
   updateShift();
   updateLunch();
   updateVacation();
-  updateNameday(); // kontroluje zmenu dňa
+  updateNameday();
   updateHolidays();
   buildMiniCalendar();
   renderLeave();
   positionBottomBoxes();
 },60000);
 
-// 15-MINÚTOVÁ SLUČKA – sieťové volania (počasie, slnko), nemenia sa rýchlo, stačí zriedkavejšie
+// 15-MINÚTOVÁ SLUČKA
 setInterval(()=>{
   loadWeather();
   worldWeather();
@@ -2216,7 +1699,7 @@ setInterval(()=>{
 },15*60000);
 
 // INIT
-updateApiStatusIndicator(); // zobrazí sivý indikátor, kým sa API nezačnú vracať
+updateApiStatusIndicator();
 updateTime();
 world();
 updateShift();
@@ -2232,11 +1715,11 @@ loadFuelPrices();
 renderCurrency();
 loadCurrency();
 loadCommodities();
-renderCustomAudits(); // interne zavolá aj updateVacation() pre okamžitý countdown
+renderCustomAudits();
 renderLeave();
 positionBottomBoxes();
 
-// ŠKÁLOVANIE PLÁTNA – aby sa dashboard zmestil na akúkoľvek obrazovku (aj mobil na šírku)
+// ŠKÁLOVANIE PLÁTNA
 function fitStage(){
   const stage=document.getElementById('stage');
   if(!stage) return;
@@ -2249,13 +1732,6 @@ function fitStage(){
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 
-// Na mobile spôsobuje pinch-zoom (približovanie prstami) opakované "resize" eventy,
-// ktoré pri každom mikro-zmenení vyvolajú fitStage() a prekreslia/posunú celý dashboard -
-// to vyzerá ako preblikávanie počas približovania. Riešenie:
-// 1) debounce - fitStage() sa zavolá až keď používateľ na chvíľu prestane meniť veľkosť okna,
-//    nie pri každom jednotlivom mikro-evente počas gesta.
-// 2) ak prehliadač podporuje visualViewport, pinch-zoom mení len jeho scale/width, nie
-//    window.innerWidth/innerHeight - takéto zmeny vôbec netreba riešiť cez fitStage().
 let fitStageTimer=null;
 function scheduleFitStage(){
   if(fitStageTimer) clearTimeout(fitStageTimer);
@@ -2265,7 +1741,7 @@ window.addEventListener('resize', scheduleFitStage);
 window.addEventListener('orientationchange', scheduleFitStage);
 fitStage();
 
-// LIVE FEED SPRÁV Z TERAZ.SK - QUEUE SYSTÉM (posledných 50 správ, najnovšia vpredu)
+// LIVE FEED SPRÁV Z TERAZ.SK
 let newsQueue = [];
 const NEWS_QUEUE_MAX = 50;
 
@@ -2283,26 +1759,23 @@ async function updateNewsQueue() {
     if(title && title.length > 10) freshNews.push(title);
   });
 
-  // Spracovanie queue: každá nová správa pridaná na začiatok vytlačí najstaršiu (max 50)
   freshNews.forEach(title => {
     if(!newsQueue.includes(title)) {
-      newsQueue.unshift(title); // Nový na začiatok
-      if(newsQueue.length > NEWS_QUEUE_MAX) newsQueue.pop(); // Najstarší sa vyhodí
+      newsQueue.unshift(title);
+      if(newsQueue.length > NEWS_QUEUE_MAX) newsQueue.pop();
     }
   });
 
-  // Zobraz všetky správy v queue
   if(newsQueue.length > 0) {
     document.getElementById('eventScroll').innerText = newsQueue.join(' • ');
     console.log('✓ Queue: ' + newsQueue.length + ' správ');
   }
 }
 
-// Hneď načítaj, potom každých 5 minút
 updateNewsQueue();
 setInterval(updateNewsQueue, 5 * 60 * 1000);
 
-// ===== MINI DATE PICKER (deň.mesiac, bez roka) =====
+// ===== MINI DATE PICKER =====
 let mdpTargetInput = null;
 let mdpViewMonth = new Date().getMonth();
 let mdpViewYear = new Date().getFullYear();
@@ -2310,7 +1783,6 @@ let mdpViewYear = new Date().getFullYear();
 function mdpOpen(inputEl){
   mdpTargetInput = inputEl;
   const now = new Date();
-  // Ak pole už má hodnotu dd.mm., otvor kalendár na tom mesiaci (a roku, ak je známy)
   const m = (inputEl.value||'').trim().match(/^(\d{1,2})[.\/](\d{1,2})\.?$/);
   if(m){
     mdpViewMonth = parseInt(m[2],10)-1;
@@ -2325,7 +1797,6 @@ function mdpOpen(inputEl){
   picker.style.display = 'block';
   let top = rect.bottom + window.scrollY + 6;
   let left = rect.left + window.scrollX;
-  // Zabráň pretečeniu mimo obrazovky vpravo
   if(left + 220 > window.innerWidth) left = window.innerWidth - 230;
   picker.style.top = top + 'px';
   picker.style.left = left + 'px';
@@ -2342,12 +1813,11 @@ const MDP_DOWS = ['Po','Ut','St','Št','Pi','So','Ne'];
 function mdpRender(){
   const picker = document.getElementById('miniDatePicker');
   const firstDay = new Date(mdpViewYear, mdpViewMonth, 1);
-  let startDow = firstDay.getDay(); // 0=Ne
-  startDow = (startDow+6)%7; // posun na Po=0
+  let startDow = firstDay.getDay();
+  startDow = (startDow+6)%7;
   const daysInMonth = new Date(mdpViewYear, mdpViewMonth+1, 0).getDate();
   const now = new Date();
 
-  // Rozsah výberu: od aktuálneho mesiaca, max 12 mesiacov dopredu
   const monthsFromNow = (mdpViewYear - now.getFullYear())*12 + (mdpViewMonth - now.getMonth());
   const canPrev = monthsFromNow > 0;
   const canNext = monthsFromNow < 12;
@@ -2395,7 +1865,6 @@ window.mdpSelect = function(day){
   mdpClose();
 };
 
-// Zatvor picker pri kliknutí mimo neho
 document.addEventListener('click', (e)=>{
   const picker = document.getElementById('miniDatePicker');
   if(picker.style.display==='block' && !picker.contains(e.target) && e.target!==mdpTargetInput){
@@ -2403,7 +1872,6 @@ document.addEventListener('click', (e)=>{
   }
 });
 
-// Zatvor formulár auditov pri kliknutí mimo neho (ale nie pri kliknutí na mini date picker)
 document.addEventListener('click', (e)=>{
   const formRow = document.getElementById('auditFormRow');
   const picker = document.getElementById('miniDatePicker');
@@ -2412,7 +1880,6 @@ document.addEventListener('click', (e)=>{
   }
 });
 
-// Zatvor formulár voľna pri kliknutí mimo neho (ale nie pri kliknutí na mini date picker)
 document.addEventListener('click', (e)=>{
   const formRow = document.getElementById('leaveFormRow');
   const picker = document.getElementById('miniDatePicker');
@@ -2421,7 +1888,6 @@ document.addEventListener('click', (e)=>{
   }
 });
 
-// Naviaž picker na všetky 4 dátumové polia
 ['auditDate','auditDateEnd','leaveStart','leaveEnd'].forEach(id=>{
   const el = document.getElementById(id);
   if(el){
