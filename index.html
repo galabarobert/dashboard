@@ -94,16 +94,37 @@ body::before {
     box-sizing: border-box;
 }
 
+/* Kompaktný pracovný časovač vo veľkosti približne bloku hodín */
 #shiftBox{
-    position:absolute;
-    top:12px;
-    left:605px;
-    font-size:28px;
-    text-align:center;
-    backdrop-filter:none;
-    -webkit-backdrop-filter:none;
+    position:absolute;top:21px;left:605px;width:580px;
+    box-sizing:border-box;padding:6px 9px !important;
+    text-align:left;backdrop-filter:none;-webkit-backdrop-filter:none;
 }
-#lunchTime{font-size:34px;margin-bottom:10px;}
+#shiftBox .workdayHeader{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px;}
+#shiftBox .workdayTitle{font-size:16px;font-weight:700;color:#fff;white-space:nowrap;}
+#shiftBox .workdayHours{font-size:14px;font-weight:600;color:#fff;white-space:nowrap;}
+#shiftBox .workdayGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px;}
+#shiftBox .workCard{box-sizing:border-box;min-width:0;min-height:112px;position:relative;
+    background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.06));
+    border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px 30px 13px 10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.10);}
+#shiftBox .workIcon{font-size:23px;line-height:1;opacity:.95;flex-shrink:0;}
+#shiftBox .workLabel{font-size:17px;line-height:1.12;color:#fff;opacity:.95;text-align:center;min-height:15px;}
+#shiftBox .workValue{font-size:34px;line-height:1.05;font-weight:700;color:#fff;margin-top:4px;letter-spacing:.3px;white-space:nowrap;}
+#shiftBox .workHint{font-size:14px;line-height:1.25;color:#fff;opacity:.9;margin-top:5px;margin-bottom:12px;min-height:18px;text-align:center;white-space:normal;overflow-wrap:break-word;}
+#shiftBox .workBar{position:absolute;top:12px;right:10px;bottom:12px;width:7px;height:auto;box-sizing:border-box;border-radius:99px;background:rgba(0,0,0,.48);overflow:hidden;margin:0;}
+#shiftBox .workBarFill{position:absolute;bottom:0;left:0;right:0;display:block;width:100%;border-radius:99px;background:#63a9ff;transition:height .4s ease;}
+#shiftBox .workBarFill.lunch{background:#f0be62;}
+#shiftBox .workBarFill.warn{background:#ff9b57 !important;}
+#shiftBox .workValue.warn{color:#ffd2ad;}
+#shiftBox .workdayFooter{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:7px;font-size:13px;font-weight:600;color:#fff;white-space:nowrap;}
+#shiftBox .workdayFooter .right{color:#7dff98;}
+#shiftBox .workdayFooter .muted{opacity:.9;}
+#shiftBox .workCard.done .workValue{font-size:27px;}
+#shiftBox .workCard.done .workHint{opacity:.88;}
+#shiftBox .workMain{display:flex;justify-content:center;align-items:center;gap:9px;min-height:45px;margin-top:5px;width:100%;}
+#shiftBox .workMain .workValue{margin-top:0;min-width:0;}
 
 #shiftBanners {
     position:absolute;
@@ -558,7 +579,7 @@ body::after { display:none !important; content:none !important; }
 /* Čitateľné a konzistentné tabuľky: pevné stĺpce, individuálne prispôsobenie obsahu */
 #auditsTable table, #leaveList table {table-layout:fixed;width:100%;}
 #auditsTable td, #leaveList td {box-sizing:border-box;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:clip;font-weight:400;}
-#auditsTable tr:not(#auditFormRow) td {padding-left:3px!important;padding-right:3px!important;}
+#auditsTable tr:not(#auditFormRow) td {padding-left:5px!important;padding-right:5px!important;}
 #leaveList td {padding-left:3px!important;padding-right:3px!important;}
 #leaveList .leaveNamesCell span{font-size:inherit!important;}
 
@@ -651,6 +672,136 @@ body::after { display:none !important; content:none !important; }
 #world.worldCompact .worldWeatherIcon{font-size:22px;}
 #world.worldCompact .worldTemperature{font-size:16px;}
 
+
+/* Pracovne casovace: bez horizontálneho prelínania pozadia a mimo dátumu. */
+#shiftBox{
+    top:25px !important;
+    left:605px !important;
+    width:490px !important;
+    padding:5px 7px !important;
+    background:#356c9c !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    isolation:isolate;
+    box-shadow:0 8px 20px rgba(0,0,0,.18), inset 0 1px rgba(255,255,255,.17) !important;
+    border:1px solid rgba(255,255,255,.28) !important;
+    z-index:8;
+}
+#shiftBox .workdayGrid{gap:7px;}
+#shiftBox .workCard{
+    background:#4279aa !important;
+    background-image:none !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    border-color:rgba(255,255,255,.15) !important;
+    min-height:102px !important;
+    padding:9px 20px 10px 6px !important;
+    overflow:hidden;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.12) !important;
+}
+#shiftBox .workLabel{font-size:14px !important;white-space:normal;}
+#shiftBox .workValue{font-size:29px !important;letter-spacing:0 !important;}
+#shiftBox .workCard.done .workValue{font-size:24px !important;}
+#shiftBox .workMain{gap:5px !important;min-height:38px !important;margin-top:3px !important;}
+#shiftBox .workIcon{font-size:20px !important;}
+#shiftBox .workHint{font-size:12px !important;margin-top:2px !important;margin-bottom:2px !important;min-height:16px !important;}
+#shiftBox .workBar{right:7px !important;top:10px !important;bottom:10px !important;}
+#shiftBox, #shiftBox *{animation:none !important;}
+
+
+#holidayAddRow{cursor:pointer;color:#fff;text-align:center;padding:7px 3px 2px;font-size:17px;}
+#holidayFormRow{display:none;flex-wrap:wrap;align-items:center;gap:7px;margin-top:8px;}
+#holidayFormRow input,#holidayFormRow button{box-sizing:border-box;min-width:0;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:8px;padding:6px 8px;font-size:15px;}
+#holidayCustomName{flex:2 1 175px;}
+#holidayCustomDate{flex:1 1 155px;color-scheme:dark;}
+#holidayFormRow button{flex:1 1 auto;cursor:pointer;}
+#holidayBox .holidayRow[onclick]:hover{background:rgba(255,255,255,.10);}
+
+
+/* Jednotné sklenené formuláre – Audity a Neprítomnosť */
+#leaveFormRow.panelEntryForm{display:none;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:9px;margin:10px 0 0;}
+.panelEntryForm{box-sizing:border-box;width:100%;padding:9px;border-radius:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);}
+.panelEntryForm .formFields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;min-width:0;}
+.leaveEntryForm .formFields{grid-template-columns:repeat(3,minmax(0,1fr));}
+.panelEntryForm label{display:flex;flex-direction:column;gap:4px;min-width:0;font-size:12px;color:#fff;}
+.panelEntryForm label span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.panelEntryForm input{width:100%!important;min-width:0;max-width:100%!important;box-sizing:border-box;background:rgba(255,255,255,.11)!important;border:1px solid rgba(255,255,255,.25)!important;border-radius:8px!important;color:#fff!important;padding:7px 8px!important;font-size:14px!important;text-align:left!important;}
+.panelEntryForm input::placeholder{color:rgba(255,255,255,.7);}
+.panelEntryForm .formActions{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px;}
+.panelEntryForm .formActions button{cursor:pointer;flex:1 1 0;min-width:0;white-space:nowrap;border-radius:8px!important;padding:7px 9px!important;font-size:14px!important;color:#fff!important;background:rgba(255,255,255,.15)!important;border:1px solid rgba(255,255,255,.24)!important;}
+.panelEntryForm .formActions button:hover{background:rgba(255,255,255,.25)!important;}
+.panelEntryForm .formActions button[id$="DeleteBtn"]{background:rgba(210,70,70,.4)!important;}
+#auditFormRow td{overflow:visible!important;white-space:normal!important;}
+#auditFormRow .panelEntryForm{font-weight:400;}
+
+/* Zjednotené jemnejšie a kompaktnejšie formuláre */
+.panelEntryForm{padding:6px!important;border-radius:11px!important;gap:5px!important;background:rgba(255,255,255,.035)!important;border-color:rgba(255,255,255,.12)!important;box-shadow:none!important;}
+.panelEntryForm .formFields{gap:5px!important;}
+.panelEntryForm label{font-size:10px!important;gap:2px!important;}
+.panelEntryForm input{font-size:12px!important;padding:5px 6px!important;border-radius:7px!important;background:rgba(255,255,255,.055)!important;border-color:rgba(255,255,255,.15)!important;}
+.panelEntryForm .formActions{gap:5px!important;margin-top:5px!important;}
+.panelEntryForm .formActions button{padding:5px 6px!important;font-size:12px!important;border-radius:7px!important;background:rgba(255,255,255,.065)!important;border-color:rgba(255,255,255,.17)!important;box-shadow:none!important;}
+.panelEntryForm .formActions button[id$="DeleteBtn"]{background:rgba(170,65,65,.18)!important;}
+#leaveFormRow.panelEntryForm{margin-top:6px!important;}
+
+/* Jednotné nenápadné pridávacie riadky – bez modrej výplne */
+#auditAddRow, #leaveAddRow, #holidayAddRow {
+  background:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
+  border:0 !important;
+  color:#fff !important;
+  font-size:17px !important;
+  font-weight:400 !important;
+  text-align:center !important;
+}
+#auditAddRow td {
+  background:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
+  border:0 !important;
+  padding:7px 4px !important;
+  font-size:17px !important;
+  font-weight:400 !important;
+  color:#fff !important;
+}
+#leaveAddRow{padding:7px 3px 2px !important;}
+#auditAddRow:hover, #auditAddRow:hover td, #leaveAddRow:hover, #holidayAddRow:hover{
+  background:rgba(255,255,255,.04) !important;
+}
+
+/* Jemné zvislé oddeľovače stĺpcov – rovnaké ako deliace čiary riadkov. */
+#auditsTable table tr:not(#auditFormRow):not(#auditAddRow) > td:not(:last-child),
+#leaveList table tr > td:not(:last-child) {
+  border-right:1px solid rgba(255,255,255,0.10) !important;
+}
+/* Sviatky sú vykreslené pomocou CSS grid, nie HTML tabuľky. */
+#holidayBox .holidayRow > span:not(:last-child) {
+  border-right:1px solid rgba(255,255,255,0.10);
+  padding-right:8px;
+  box-sizing:border-box;
+}
+#holidayBox .holidayRow {
+  column-gap:7px;
+}
+
+
+/* Sviatky môžu obsahovať ľubovoľný počet ručne pridaných riadkov.
+   Posúva sa iba zoznam, ovládanie pridania zostáva vždy dostupné. */
+#holidayDisplay{
+  max-height:245px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,.30) transparent;
+}
+#holidayDisplay::-webkit-scrollbar{width:6px;}
+#holidayDisplay::-webkit-scrollbar-thumb{background:rgba(255,255,255,.30);border-radius:6px;}
+#holidayAddRow{position:relative;z-index:1;}
+/* Piktogramy sviatkov pred názvom */
+#holidayBox .holidayName{display:flex;align-items:center;gap:7px;}
+#holidayBox .holidayIcon{flex:0 0 auto;font-size:18px;line-height:1.1;}
+#holidayBox .holidayLabel{min-width:0;overflow-wrap:anywhere;}
 </style>
 </head>
 
@@ -677,26 +828,33 @@ body::after { display:none !important; content:none !important; }
 
 <div id="auditsTable" class="glass">
     <div class="dashboardSectionTitle auditSectionTitle">Audity a návštevy</div>
-    <table style="width:100%;font-size:17px;border-collapse:collapse;table-layout:fixed;">
-        <colgroup><col style="width:33%"><col style="width:19%"><col style="width:30%"><col style="width:18%"></colgroup>
+    <table style="width:100%;font-size:15.5px;border-collapse:collapse;table-layout:fixed;">
+        <colgroup><col style="width:27%"><col style="width:22%"><col style="width:33%"><col style="width:18%"></colgroup>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
-            <td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;" class="eventDateCell">Ut 23.06.</td>
-            <td style="padding:8px 4px;text-align:center;">Návšteva</td>
             <td style="padding:8px 4px;text-align:center;">Hoerbiger</td>
+            <td style="padding:8px 4px;text-align:center;">Návšteva</td>
+            <td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;" class="eventDateCell">Ut 23.06.</td>
             <td style="padding:8px 4px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-06-23">-</td>
         </tr>
         <tr id="auditFormRow" style="display:none;">
-            <td style="padding:6px 2px;text-align:center;white-space:nowrap;">
-                    <input id="auditDate" type="text" placeholder="dd.mm." title="dátum začiatku auditu (deň.mesiac)" maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:2px;font-size:10px;width:38px;box-sizing:border-box;text-align:center;vertical-align:middle;">
-                    <span style="font-size:9px;color:#aaa;">-</span>
-                    <input id="auditDateEnd" type="text" placeholder="dd.mm." title="dátum konca auditu (nepovinné, pre viacdňový audit)" maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:2px;font-size:10px;width:38px;box-sizing:border-box;text-align:center;vertical-align:middle;">
-            </td>
-            <td style="padding:6px 4px;text-align:center;"><input id="auditTyp" type="text" placeholder="Typ" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:90px;max-width:100%;box-sizing:border-box;"></td>
-            <td style="padding:6px 4px;text-align:center;"><input id="auditZak" type="text" placeholder="Zákazník" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:3px;font-size:11px;width:80px;max-width:100%;box-sizing:border-box;"></td>
-            <td style="padding:6px 2px;text-align:left;white-space:nowrap;"><button onclick="addAudit()" style="background:#6b7280;color:#fff;border:none;border-radius:5px;padding:4px 5px;font-size:9px;font-weight:bold;cursor:pointer;white-space:nowrap;">Pridať</button><button id="auditDeleteBtn" onclick="deleteEditingAudit()" style="display:none;margin-left:3px;background:#ff6b6b;color:#330000;border:none;border-radius:5px;padding:4px 5px;font-size:9px;font-weight:bold;cursor:pointer;white-space:nowrap;">Vymazať</button></td>
+          <td colspan="4" style="padding:9px 5px;">
+            <div class="panelEntryForm auditEntryForm" onclick="event.stopPropagation()">
+              <div class="formFields">
+                <label><span>Zákazník / proces</span><input id="auditZak" type="text" placeholder="Zákazník alebo proces"></label>
+                <label><span>Typ</span><input id="auditTyp" type="text" placeholder="Typ auditu"></label>
+                <label><span>Od dátumu</span><input id="auditDate" type="text" placeholder="dd.mm." maxlength="6" title="Začiatok auditu"></label>
+                <label><span>Do dátumu (nepovinné)</span><input id="auditDateEnd" type="text" placeholder="dd.mm." maxlength="6" title="Koniec auditu"></label>
+              </div>
+              <div class="formActions">
+                <button type="button" onclick="addAudit()">Pridať</button>
+                <button type="button" onclick="hideAuditForm()">Zrušiť</button>
+                <button type="button" id="auditDeleteBtn" onclick="deleteEditingAudit()" style="display:none;">Vymazať</button>
+              </div>
+            </div>
+          </td>
         </tr>
         <tr id="auditAddRow" onclick="event.stopPropagation();showAuditForm()" style="cursor:pointer;color:#8ab4ff;">
-            <td colspan="4" style="padding:8px 4px;text-align:center;">+ Pridať audit</td>
+            <td colspan="4" style="padding:8px 4px;text-align:center;">+ Audit</td>
         </tr>
     </table>
 </div>
@@ -704,13 +862,18 @@ body::after { display:none !important; content:none !important; }
 <div id="leaveBox" class="glass">
     <div class="dashboardSectionTitle">Neprítomnosť</div>
     <div id="leaveList" style="font-size:28px;"></div>
-    <div id="leaveAddRow" onclick="event.stopPropagation();showLeaveForm()" style="cursor:pointer;color:#8ab4ff;text-align:center;padding:8px;font-size:22px;">+ Pridať voľno</div>
-    <div id="leaveFormRow" style="display:none;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center;justify-content:center;">
-        <input id="leaveName" type="text" placeholder="Meno" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;width:120px;">
-        <input id="leaveStart" type="text" placeholder="dd.mm." maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;width:80px;text-align:center;">
-        <input id="leaveEnd" type="text" placeholder="dd.mm." title="koniec voľna (nepovinné)" maxlength="6" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 8px;font-size:15px;width:80px;text-align:center;">
-        <button onclick="addLeave()" style="background:#6b7280;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:15px;font-weight:bold;cursor:pointer;">Pridať</button>
-        <button id="leaveDeleteBtn" onclick="deleteEditingLeave()" style="display:none;background:#ff6b6b;color:#330000;border:none;border-radius:8px;padding:7px 14px;font-size:15px;font-weight:bold;cursor:pointer;">Vymazať</button>
+    <div id="leaveAddRow" onclick="event.stopPropagation();showLeaveForm()" style="cursor:pointer;color:#8ab4ff;text-align:center;padding:8px;font-size:22px;">+ Neprítomnosť</div>
+    <div id="leaveFormRow" class="panelEntryForm leaveEntryForm" style="display:none;">
+      <div class="formFields">
+        <label><span>Meno</span><input id="leaveName" type="text" placeholder="Meno"></label>
+        <label><span>Od dátumu</span><input id="leaveStart" type="text" placeholder="dd.mm." maxlength="6"></label>
+        <label><span>Do dátumu (nepovinné)</span><input id="leaveEnd" type="text" placeholder="dd.mm." maxlength="6" title="Koniec voľna"></label>
+      </div>
+      <div class="formActions">
+        <button type="button" onclick="addLeave()">Pridať</button>
+        <button type="button" onclick="hideLeaveForm()">Zrušiť</button>
+        <button type="button" id="leaveDeleteBtn" onclick="deleteEditingLeave()" style="display:none;">Vymazať</button>
+      </div>
     </div>
 </div>
 
@@ -722,6 +885,14 @@ body::after { display:none !important; content:none !important; }
 
 <div id="holidayBox" class="glass">
     <div id="holidayDisplay"></div>
+    <div id="holidayAddRow" role="button" tabindex="0" onclick="showHolidayForm()" onkeydown="if(event.key==='Enter')showHolidayForm()">+ Sviatok</div>
+    <div id="holidayFormRow" style="display:none;">
+      <input id="holidayCustomName" type="text" maxlength="100" placeholder="Názov sviatku" aria-label="Názov sviatku">
+      <input id="holidayCustomDate" type="date" aria-label="Dátum sviatku">
+      <button type="button" onclick="saveCustomHoliday()">Uložiť</button>
+      <button type="button" onclick="cancelHolidayForm()">Zrušiť</button>
+      <button id="holidayDeleteBtn" type="button" style="display:none" onclick="deleteCustomHoliday()">Vymazať</button>
+    </div>
 </div>
 
 <section id="radioPanel" class="glass" aria-label="Online rádio">
@@ -736,6 +907,19 @@ body::after { display:none !important; content:none !important; }
 <div id="world" class="glass"></div>
 
 <script>
+// Stav služieb musí existovať už pri inicializácii Firebase;
+// inak výpadok Firebase zastaví celý dashboard ešte pred správami.
+const apiStatus = {
+  sun: null,
+  weather: null,
+  worldWeather: null,
+  firebase: null,
+  radio: null,
+  news: null
+};
+const radioHealth=[];
+let radioHealthRunning=false;
+
 // Spoločný odpočet auditov a neprítomnosti k 7:00 v deň začiatku.
 function countdownToSeven(isoDate, now=new Date()){
   const parts=String(isoDate).split('-').map(Number);
@@ -1206,8 +1390,41 @@ function format(sec){
   return `${h}h ${m}m`;
 }
 
+function formatClock(sec){
+  sec=Math.max(0,Math.ceil(sec));
+  const mins=Math.ceil(sec/60);
+  const h=Math.floor(mins/60);
+  const m=mins%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+}
+
+function formatHoursMins(sec){
+  sec=Math.max(0,Math.floor(sec));
+  const mins=Math.floor(sec/60);
+  const h=Math.floor(mins/60);
+  const m=mins%60;
+  return `${h} h ${m} min`;
+}
+
+function clamp01(v){
+  return Math.max(0, Math.min(1, v));
+}
+
+function nextWeekdayTime(from, hour, minute){
+  const d=new Date(from);
+  d.setSeconds(0,0);
+  d.setHours(hour,minute,0,0);
+  if(d<=from) d.setDate(d.getDate()+1);
+  while(d.getDay()===0 || d.getDay()===6){
+    d.setDate(d.getDate()+1);
+  }
+  d.setHours(hour,minute,0,0);
+  return d;
+}
+
 function icon(code){
-  if (code === 0 || code === 1 || code === 2) return "☀️";
+  if (code === 0) return "☀️";
+  if (code === 1 || code === 2) return "🌤️";
   if (code === 3) return "⛅";
   if (code === 45 || code === 48) return "🌫️";
   if (code === 51 || code === 53 || code === 55) return "🌦️";
@@ -1246,15 +1463,6 @@ function updateNameday(){
 }
 
 // ===== INDIKÁTOR STAVU API =====
-const apiStatus = {
-  sun: null,
-  weather: null,
-  worldWeather: null,
-  firebase: null,
-  radio: null
-};
-const radioHealth=[];
-let radioHealthRunning=false;
 
 function setApiStatus(key, ok){
   apiStatus[key]=ok;
@@ -1265,53 +1473,56 @@ function updateApiStatusIndicator(){
   const el=document.getElementById('apiStatusIndicator');
   if(!el) return;
   const values=Object.values(apiStatus);
-  const allKnown=values.every(v=>v!==null);
-  const allOk=values.every(v=>v===true);
-  const anyFail=values.some(v=>v===false);
-  const anyUnknown=values.some(v=>v==='unknown');
-
-  let color, label;
-  if(anyFail){
-    color='#ff4d4d';
-    label='Niektorá služba alebo rádio má chybu';
-  } else if(anyUnknown){
-    color='#ffbf47';label='Niektoré služby sa nepodarilo overiť';
-  } else if(allKnown && allOk){
-    color='#4caf50';
-    label='Všetky služby a rádiá sú OK';
-  } else {
-    color='#888';
-    label='Načítavam a kontrolujem služby…';
-  }
+  const failures=values.filter(v=>v===false).length;
+  const unknown=values.filter(v=>v==='unknown').length;
+  const pending=values.filter(v=>v===null).length;
+  const color=failures?'#ff4d4d':(unknown?'#ffbf47':pending?'#888':'#4caf50');
+  const heading=failures?'Niektorá služba nefunguje':unknown?'Niektoré služby sa nepodarilo overiť':pending?'Kontrolujem služby…':'Všetky sledované služby sú OK';
   el.style.background=color;
   el.style.boxShadow='0 0 8px '+color;
-
-  const names={sun:'Slnko/mesiac', weather:'Počasie Vráble', worldWeather:'Svetové počasie', firebase:'Zdieľaná databáza', radio:'Online rádiá (10 staníc)'};
-  const lines=Object.keys(apiStatus).map(k=>{
-    const v=apiStatus[k];
-    const mark = v===true ? '✓' : (v===false ? '✗' : v==='unknown' ? '?' : '…');
-    const markColor = v===true ? '#4caf50' : (v===false ? '#ff4d4d' : v==='unknown' ? '#ffbf47' : '#888');
-    return `<div style="margin:2px 0;"><span style="color:${markColor};font-weight:bold;">${mark}</span> ${names[k]}</div>`;
-  });
+  el.title=heading+' (klikni pre detail)';
+  const names={
+    weather:'Počasie Vráble (aktuálne + predpoveď)',
+    sun:'Východ a západ slnka',
+    worldWeather:'Svetové počasie',
+    firebase:'Zdieľaná databáza Firebase',
+    news:'Správy Teraz.sk (RSS)',
+    radio:'Online rádiá (spolu 10)'
+  };
   const panel=document.getElementById('apiStatusPanel');
-  if(panel){
-    panel.innerHTML=`<div style="font-weight:bold;margin-bottom:6px;color:${color};">${label}</div>`+lines.join('');
-    if(radioHealth.length){
-      const details=document.createElement('div');
-      details.style.cssText='border-top:1px solid #555;margin-top:8px;padding-top:6px;';
-      for(const item of radioHealth){
-        const row=document.createElement('div');
-        row.style.cssText='margin:3px 0;font-size:12px;';
-        row.style.color=item.state===true?'#82d487':item.state===false?'#ff8282':item.state==='unknown'?'#ffbf47':'#aaa';
-        row.textContent=(item.state===true?'✓ ':item.state===false?'✗ ':item.state==='unknown'?'? ':'… ')+item.name+' — '+item.message;
-        if(item.checkedAt)row.title='Overené: '+new Date(item.checkedAt).toLocaleString('sk-SK');
-        details.appendChild(row);
-      }
-      const note=document.createElement('div');note.textContent='Kontrola načítania zvuku • každých 15 minút';note.style.cssText='font-size:11px;color:#aaa;margin:7px 0;';details.appendChild(note);
-      const button=document.createElement('button');button.textContent=radioHealthRunning?'Kontrolujem…':'Znova skontrolovať rádiá';button.disabled=radioHealthRunning;button.style.cssText='cursor:pointer;background:#444;color:white;border:1px solid #777;border-radius:5px;padding:5px 8px;';button.onclick=()=>window.checkRadioHealth?.();details.appendChild(button);panel.appendChild(details);
-    }
+  if(!panel) return;
+  const header=document.createElement('div');
+  header.textContent=heading;
+  header.style.cssText='font-weight:bold;margin-bottom:7px;color:'+color+';';
+  panel.replaceChildren(header);
+  Object.keys(names).forEach(key=>{
+    const v=apiStatus[key];
+    const mark=v===true?'✓':v===false?'✗':v==='unknown'?'?':'…';
+    const markColor=v===true?'#77df8d':v===false?'#ff7272':v==='unknown'?'#ffbf47':'#ccc';
+    const line=document.createElement('div');
+    line.style.cssText='margin:4px 0;white-space:nowrap;';
+    const symbol=document.createElement('span');
+    symbol.textContent=mark+' ';
+    symbol.style.color=markColor;
+    symbol.style.fontWeight='bold';
+    line.append(symbol,document.createTextNode(names[key]));
+    panel.appendChild(line);
+  });
+  // Rádiá sú jeden spoločný stav; nesypeme sem zoznam staníc.
+  if(radioHealth.length){
+    const summary=document.createElement('div');
+    const checked=radioHealth.filter(r=>r.state!==null).length;
+    summary.textContent='Rádiá: overené '+checked+'/'+radioHealth.length+' • kontrola raz za hodinu';
+    summary.style.cssText='margin-top:7px;font-size:11px;color:#fff;';
+    panel.appendChild(summary);
+    const button=document.createElement('button');
+    button.type='button';
+    button.textContent=radioHealthRunning?'Kontrolujem…':'Znova skontrolovať rádiá';
+    button.disabled=radioHealthRunning;
+    button.style.cssText='cursor:pointer;background:rgba(255,255,255,.15);color:white;border:1px solid #777;border-radius:6px;padding:5px 8px;margin-top:6px;';
+    button.onclick=()=>window.checkRadioHealth?.();
+    panel.appendChild(button);
   }
-  el.title=label+' (klikni pre detail)';
 }
 
 function toggleApiStatusPanel(){
@@ -1358,6 +1569,7 @@ async function loadSun(){
     if (isNewMoonDay) moonName = 'Now';
     
     window.dashboardSunTimes={sunrise,sunset};
+    saveWeatherCache(DASHBOARD_SUN_CACHE_KEY,{sunrise,sunset,savedAt:Date.now()});
     const sunriseNode=document.querySelector('[data-sunrise]');
     const sunsetNode=document.querySelector('[data-sunset]');
     if(sunriseNode) sunriseNode.textContent=sunrise;
@@ -1374,11 +1586,56 @@ async function loadSun(){
 }
 
 // POČASIE VRÁBLE + ALERT
+// Trvalá lokálna záloha posledných platných meteorologických údajov.
+const DASHBOARD_WEATHER_CACHE_KEY='dashboard_weather_vrable_v2';
+const DASHBOARD_WORLD_CACHE_KEY='dashboard_world_weather_v2';
+const DASHBOARD_SUN_CACHE_KEY='dashboard_sun_times_v1';
+function readWeatherCache(key){
+  try { const raw=localStorage.getItem(key); return raw?JSON.parse(raw):null; }
+  catch(e){ return null; }
+}
+function saveWeatherCache(key,value){
+  try {localStorage.setItem(key,JSON.stringify(value));}catch(e){console.warn('Počasie: zálohu nemožno uložiť',e);}
+}
+function validVrábleWeather(data){
+  return !!(data && data.current && Number.isFinite(data.current.temperature_2m) &&
+    data.daily && Array.isArray(data.daily.time) && data.daily.time.length>=4 &&
+    Array.isArray(data.daily.temperature_2m_max) && data.daily.temperature_2m_max.length>=4 &&
+    Array.isArray(data.daily.weather_code) && data.daily.weather_code.length>=4);
+}
+const weatherInitialCache=readWeatherCache(DASHBOARD_WEATHER_CACHE_KEY);
+if(weatherInitialCache?.data && validVrábleWeather(weatherInitialCache.data)){
+  // Záložné údaje sa zobrazia ihneď aj pri prvom štarte bez internetu.
+  window.dashboardWeatherLastGood=weatherInitialCache.data;
+}
+const sunInitialCache=readWeatherCache(DASHBOARD_SUN_CACHE_KEY);
+if(sunInitialCache?.sunrise && sunInitialCache?.sunset) window.dashboardSunTimes=sunInitialCache;
+
 async function loadWeather(){
+ let usingCachedData=false;
  try{
   const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weather_code,precipitation,wind_speed_10m,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant,precipitation_sum,precipitation_probability_max&current=temperature_2m,apparent_temperature,weather_code,precipitation,wind_speed_10m&forecast_days=7&timezone=Europe%2FBratislava");
+  if(!res.ok) throw new Error('Počasie HTTP '+res.status);
   const data=await res.json();
-
+  if(!validVrábleWeather(data)) throw new Error('Neúplné údaje predpovede');
+  window.dashboardWeatherLastGood=data;
+  saveWeatherCache(DASHBOARD_WEATHER_CACHE_KEY,{savedAt:Date.now(),data});
+  renderDashboardWeather(data,false);
+  setApiStatus('weather',true);
+  return;
+ }catch(err){
+  console.warn('Počasie Vráble: nové údaje nie sú dostupné, používam zálohu',err);
+  const cached=window.dashboardWeatherLastGood || readWeatherCache(DASHBOARD_WEATHER_CACHE_KEY)?.data;
+  if(validVrábleWeather(cached)){
+    renderDashboardWeather(cached,true);
+  }else{
+    const box=document.getElementById('forecast3days');
+    if(box && !box.querySelector('.weatherToday')) box.innerHTML='<div class="dashboardSectionTitle">Počasie</div><div style="padding:14px">Údaje o počasí zatiaľ nie sú dostupné.</div>';
+  }
+  setApiStatus('weather',false);
+ }
+}
+function renderDashboardWeather(data,usingCachedData){
   function weatherIcon(code){
     if([0].includes(code)) return "🌞";
     if([1,2].includes(code)) return "⛅";
@@ -1455,7 +1712,7 @@ async function loadWeather(){
   const sunset=window.dashboardSunTimes?.sunset||'–';
   let fHtml=`<div class="dashboardSectionTitle">Počasie</div>`+
     `<div class="weatherToday" title="Aktuálne počasie a dnešná denná predpoveď">`+
-      `<div class="weatherTodayTop"><strong>Dnes • ${dayLabel(0)}</strong><span>Vráble</span></div>`+
+      `<div class="weatherTodayTop"><strong>Dnes</strong><span>Vráble</span></div>`+
       `<div class="weatherTodayMain">`+
       `<div class="weatherCurrentBlock"><div class="weatherMainTemp">${currentTemp}°</div>`+
       `${currentFeels===null?'':`<div class="weatherFeels">Pocitovo ${currentFeels}°</div>`}</div>`+
@@ -1483,11 +1740,8 @@ async function loadWeather(){
   document.getElementById('weather').style.display='none';
   
   console.log('Weather codes:', 'Dnes:', d.weather_code[0], 'Zajtra:', d.weather_code[1], 'Za 2 dni:', d.weather_code[2], 'Za 3 dni:', d.weather_code[3]);
-  setApiStatus('weather', true);
- } catch(err){
-  console.log('Počasie Vráble: chyba načítania', err);
-  setApiStatus('weather', false);
- }
+  const boxTitle=document.querySelector('#forecast3days .dashboardSectionTitle');
+  if(boxTitle) boxTitle.title=usingCachedData?'Posledná úspešne načítaná predpoveď (offline)':'Aktuálna predpoveď';
 }
 
 // Rýchla aktualizácia iba aktuálnej teploty, pocitovej teploty a ikony.
@@ -1507,6 +1761,12 @@ async function refreshCurrentWeather(){
     if(current) current.textContent=Math.round(data.current.temperature_2m)+'°';
     if(pictogram) pictogram.textContent=icon;
     if(feels && Number.isFinite(data.current.apparent_temperature)) feels.textContent='Pocitovo '+Math.round(data.current.apparent_temperature)+'°';
+    const saved=window.dashboardWeatherLastGood || readWeatherCache(DASHBOARD_WEATHER_CACHE_KEY)?.data;
+    if(validVrábleWeather(saved)){
+      saved.current={...saved.current,...data.current};
+      window.dashboardWeatherLastGood=saved;
+      saveWeatherCache(DASHBOARD_WEATHER_CACHE_KEY,{savedAt:Date.now(),data:saved});
+    }
     setApiStatus('weather',true);
   }catch(error){
     console.warn('Aktuálne počasie: nepodarilo sa obnoviť',error);
@@ -1521,7 +1781,8 @@ const WORLD_CITIES = [
   { name:"India – Pune",          flag:"in", tz:"Asia/Kolkata",      lat:18.52, lon:73.85 },
   { name:"Čína – Suzhou",         flag:"cn", tz:"Asia/Shanghai",     lat:31.30, lon:120.62 }
 ];
-let worldWeatherCache = {};
+let worldWeatherCache = readWeatherCache(DASHBOARD_WORLD_CACHE_KEY)?.data || {};
+if(!worldWeatherCache || typeof worldWeatherCache!=='object' || Array.isArray(worldWeatherCache)) worldWeatherCache={};
 let worldTableBuilt = false;
 
 function buildWorldTable(){
@@ -1556,9 +1817,19 @@ function updateWorldWeatherCells(){
   WORLD_CITIES.forEach((c,i)=>{
     const cell=document.getElementById('worldWeather_'+i);
     const ico=document.getElementById('worldWeatherIcon_'+i);
-    const raw=worldWeatherCache[c.tz]||'';
-    if(ico)ico.textContent=raw.match(/^(\S+)/)?.[1]||'🌤️';
-    if(cell)cell.textContent=raw.replace(/^\S+\s*/, '')||'--°';
+    const data=worldWeatherCache[c.tz];
+    if(data && typeof data==='object'){
+      if(ico) ico.textContent=data.icon;
+      if(cell) cell.textContent=data.temperature+'°';
+    }else if(typeof data==='string' && data){
+      // Kompatibilita so starým formátom. Emoji sa nesmie deliť regexom \S.
+      const match=data.match(/(-?\d+)°\s*$/);
+      if(ico) ico.textContent=match ? data.slice(0,match.index).trim() : '☁️';
+      if(cell) cell.textContent=match ? match[1]+'°' : '--°';
+    }else{
+      if(ico) ico.textContent='☁️';
+      if(cell) cell.textContent='--°';
+    }
   });
 }
 
@@ -1577,7 +1848,9 @@ async function worldWeather(){
     try{
       const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current_weather=true`);
       const d=await r.json();
-      worldWeatherCache[c.tz]=icon(d.current_weather.weathercode)+" "+Math.round(d.current_weather.temperature)+"°";
+      if(!d.current_weather || !Number.isFinite(d.current_weather.temperature)) throw new Error('Nedostupné údaje počasia');
+      worldWeatherCache[c.tz]={icon:icon(d.current_weather.weathercode),temperature:Math.round(d.current_weather.temperature)};
+      saveWeatherCache(DASHBOARD_WORLD_CACHE_KEY,{savedAt:Date.now(),data:worldWeatherCache});
       successCount++;
     }catch(e){ /* ponechá poslednú známu hodnotu */ }
   }
@@ -1655,62 +1928,183 @@ function updateLunch(){
 // DOVOLENKA + VIANOCE + ZMENA + OBED
 function updateVacation(){
   const n=new Date();
-  const s=new Date();s.setHours(7,0,0,0);
-  const shiftEnd=new Date();shiftEnd.setHours(15,0,0,0);
-  const lunchTime=new Date();lunchTime.setHours(10,30,0,0);
-  const nextShift=new Date();nextShift.setHours(7,0,0,0);
-  while(nextShift<=n || nextShift.getDay()===0 || nextShift.getDay()===6) nextShift.setDate(nextShift.getDate()+1);
-  const diffShift=Math.ceil((shiftEnd-n)/1000);
-  const diffToShift=(nextShift-n)/1000;
-  const today=n.getDay();
+  const day=n.getDay();
+  const isWeekday=day>=1 && day<=5;
+  const shiftStart=new Date(n); shiftStart.setHours(7,0,0,0);
+  const shiftEnd=new Date(n); shiftEnd.setHours(15,0,0,0);
+  const lunchStart=new Date(n); lunchStart.setHours(10,30,0,0);
+  const lunchEnd=new Date(n); lunchEnd.setHours(11,30,0,0);
 
-  const lunchStart=new Date();lunchStart.setHours(10,30,0,0);
-  const lunchEnd=new Date();lunchEnd.setHours(11,30,0,0);
-  const beforeLunch=new Date();beforeLunch.setHours(10,15,0,0);
-  const soundTime=new Date();soundTime.setHours(11,15,0,0);
-  const lateAfternoon=new Date();lateAfternoon.setHours(14,45,0,0);
-  
-  function getLunchBannerText(){
-    if(n<lunchStart && today>=1 && today<=5){
-      const diffToLunch=(lunchStart-n)/1000;
-      return `🍽️ Obed o: ${format(diffToLunch)}`;
-    } else if(n>=lunchStart && n<lunchEnd && today>=1 && today<=5){
-      const diffToLunchEnd=(lunchEnd-n)/1000;
-      return `🍽️ Obed o: ${format(diffToLunchEnd)}`;
+  const nextShift=nextWeekdayTime(n,7,0);
+  const nextLunch=nextWeekdayTime(n,10,30);
+  const shiftDuration=8*3600;
+  const lunchDuration=60*60;
+
+  const shiftBox=document.getElementById('shiftBox');
+  if(shiftBox){
+    let shiftTitle='Do začiatku zmeny';
+    let shiftValue=formatClock((nextShift-n)/1000);
+    let shiftHint='Najbližšia zmena';
+    let shiftProgress=0;
+    let shiftWarn=false;
+    let shiftDone=false;
+
+    let lunchTitle='Do obeda';
+    let lunchValue=formatClock((nextLunch-n)/1000);
+    let lunchHint='Najbližší obed';
+    let lunchProgress=0;
+    let lunchWarn=false;
+    let lunchDone=false;
+
+    let workedSec=0;
+    let workedPct=0;
+
+    if(isWeekday && n < shiftStart){
+      shiftTitle='Do začiatku zmeny';
+      const sec=(shiftStart-n)/1000;
+      shiftValue=formatClock(sec);
+      shiftHint='Začiatok dnes o 07:00';
+      shiftProgress=clamp01(1 - sec/(7*3600));
+      shiftWarn=sec<=15*60;
+
+      const secLunch=(lunchStart-n)/1000;
+      lunchTitle='Do obeda';
+      lunchValue=formatClock(secLunch);
+      lunchHint='Dnešná obedná prestávka';
+      lunchProgress=clamp01(1 - secLunch/(10.5*3600));
+      lunchWarn=secLunch<=15*60;
+    } else if(isWeekday && n >= shiftStart && n < lunchStart){
+      const shiftSec=(shiftEnd-n)/1000;
+      shiftTitle='Koniec zmeny';
+      shiftValue=formatClock(shiftSec);
+      shiftHint='Zmena prebieha';
+      shiftProgress=clamp01((n-shiftStart)/1000 / shiftDuration);
+      shiftWarn=shiftSec<=15*60;
+
+      const lunchSec=(lunchStart-n)/1000;
+      lunchTitle='Do obeda';
+      lunchValue=formatClock(lunchSec);
+      lunchHint='Obed začne o 10:30';
+      lunchProgress=clamp01((n-shiftStart)/1000 / (3.5*3600));
+      lunchWarn=lunchSec<=15*60;
+
+      workedSec=(n-shiftStart)/1000;
+      workedPct=clamp01(workedSec/shiftDuration);
+    } else if(isWeekday && n >= lunchStart && n < lunchEnd){
+      const shiftSec=(shiftEnd-n)/1000;
+      shiftTitle='Koniec zmeny';
+      shiftValue=formatClock(shiftSec);
+      shiftHint='Zmena prebieha';
+      shiftProgress=clamp01((n-shiftStart)/1000 / shiftDuration);
+      shiftWarn=shiftSec<=15*60;
+
+      const lunchSec=(lunchEnd-n)/1000;
+      lunchTitle='Obedná prestávka';
+      lunchValue=formatClock(lunchSec);
+      lunchHint='Obed prebieha';
+      lunchProgress=clamp01((n-lunchStart)/1000 / lunchDuration);
+      lunchWarn=lunchSec<=15*60;
+
+      workedSec=(n-shiftStart)/1000;
+      workedPct=clamp01(workedSec/shiftDuration);
+    } else if(isWeekday && n >= lunchEnd && n < shiftEnd){
+      const shiftSec=(shiftEnd-n)/1000;
+      shiftTitle='Koniec zmeny';
+      shiftValue=formatClock(shiftSec);
+      shiftHint='Zmena prebieha';
+      shiftProgress=clamp01((n-shiftStart)/1000 / shiftDuration);
+      shiftWarn=shiftSec<=15*60;
+
+      lunchTitle='Po obede';
+      lunchValue='Hotovo';
+      lunchHint='Obed už prebehol';
+      lunchProgress=1;
+      lunchDone=true;
+
+      workedSec=(n-shiftStart)/1000;
+      workedPct=clamp01(workedSec/shiftDuration);
+    } else if(isWeekday && n >= shiftEnd){
+      shiftTitle='Zmena ukončená';
+      shiftValue='Hotovo';
+      shiftHint='Dnešná zmena skončila';
+      shiftProgress=1;
+      shiftDone=true;
+
+      lunchTitle='Po obede';
+      lunchValue='Hotovo';
+      lunchHint='Obed už prebehol';
+      lunchProgress=1;
+      lunchDone=true;
+
+      workedSec=shiftDuration;
+      workedPct=1;
     } else {
-      const nextLunch=new Date();nextLunch.setHours(10,30,0,0);
-      if(n>=lunchStart || today===0 || today===6){
-        nextLunch.setDate(nextLunch.getDate()+1);
-      }
-      while(nextLunch.getDay()===0 || nextLunch.getDay()===6){
-        nextLunch.setDate(nextLunch.getDate()+1);
-      }
-      const diffNextLunch=(nextLunch-n)/1000;
-      return `🍽️ Obed o: ${format(diffNextLunch)}`;
+      const shiftSec=(nextShift-n)/1000;
+      shiftTitle='Do začiatku zmeny';
+      shiftValue=formatClock(shiftSec);
+      shiftHint='Víkend – najbližšia zmena';
+      shiftProgress=0;
+
+      const lunchSec=(nextLunch-n)/1000;
+      lunchTitle='Do obeda';
+      lunchValue=formatClock(lunchSec);
+      lunchHint='Najbližší obed';
+      lunchProgress=0;
+
+      workedSec=0;
+      workedPct=0;
     }
-  }
-  
-  if(n>=s&&n<shiftEnd && today>=1 && today<=5){
-    let bannerText = `⏱️ Do konca zmeny: ${format(diffShift)}`;
-    bannerText += `<br>${getLunchBannerText()}`;
-    
-    if(n>=soundTime && n<new Date(soundTime.getTime()+5*60000) && !lunchEndAlertPlayed){
-      playAlert();
-      lunchEndAlertPlayed=true;
-    } else if(n<soundTime || n>=new Date(soundTime.getTime()+5*60000)){
-      lunchEndAlertPlayed=false;
+
+    const leftClass = lunchDone ? 'workCard done' : 'workCard';
+    const rightClass = shiftDone ? 'workCard done' : 'workCard';
+    const workdayMarkup = `
+      <div class="workdayGrid">
+        <div class="${leftClass}">
+          <div class="workLabel">${lunchTitle}</div>
+          <div class="workMain"><div class="workIcon">🍽️</div><div class="workValue ${lunchWarn ? 'warn' : ''}">${lunchValue}</div></div>
+          <div class="workHint">${lunchHint}</div>
+          <div class="workBar"><span class="workBarFill lunch ${lunchWarn ? 'warn' : ''}" style="height:${Math.round(lunchProgress*100)}%"></span></div>
+        </div>
+        <div class="${rightClass}">
+          <div class="workLabel">${shiftTitle}</div>
+          <div class="workMain"><div class="workIcon">💼</div><div class="workValue ${shiftWarn ? 'warn' : ''}">${shiftValue}</div></div>
+          <div class="workHint">${shiftHint}</div>
+          <div class="workBar"><span class="workBarFill ${shiftWarn ? 'warn' : ''}" style="height:${Math.round(shiftProgress*100)}%"></span></div>
+        </div>
+      </div>
+`;
+    // Pri každej aktualizácii nevytvárať panel odznova: to spôsobovalo
+    // prebliknutie priehľadného skla aj animácie výplne odspodu.
+    if(!shiftBox.querySelector('.workdayGrid')){
+      shiftBox.innerHTML=workdayMarkup;
+    } else {
+      const holder=document.createElement('div');
+      holder.innerHTML=workdayMarkup;
+      const oldCards=shiftBox.querySelectorAll('.workCard');
+      const newCards=holder.querySelectorAll('.workCard');
+      oldCards.forEach((card,i)=>{
+        const next=newCards[i];
+        if(!next) return;
+        if(card.className!==next.className) card.className=next.className;
+        for(const selector of ['.workLabel','.workValue','.workHint']){
+          const oldEl=card.querySelector(selector);
+          const nextEl=next.querySelector(selector);
+          if(oldEl && nextEl){
+            if(oldEl.textContent!==nextEl.textContent) oldEl.textContent=nextEl.textContent;
+            if(oldEl.className!==nextEl.className) oldEl.className=nextEl.className;
+          }
+        }
+        const bar=card.querySelector('.workBarFill');
+        const nextBar=next.querySelector('.workBarFill');
+        if(bar && nextBar){
+          if(bar.className!==nextBar.className) bar.className=nextBar.className;
+          if(bar.style.height!==nextBar.style.height) bar.style.height=nextBar.style.height;
+        }
+      });
     }
-    
-    document.getElementById('shiftBox').innerHTML = bannerText;
-    document.getElementById('shiftBox').style.display="block";
+    shiftBox.style.display='block';
   }
-  else {
-    let bannerText = `⏱️ Do začiatku zmeny: ${format(diffToShift)}`;
-    bannerText += `<br>${getLunchBannerText()}`;
-    document.getElementById('shiftBox').innerHTML = bannerText;
-    document.getElementById('shiftBox').style.display="block";
-  }
-  
+
   const auditCells = document.querySelectorAll('.daysToAudit');
   auditCells.forEach(cell => {
     const startDate = new Date(cell.getAttribute('data-date'));
@@ -1770,26 +2164,122 @@ function holidaysForYear(y){
     {date:new Date(y,11,26),name:'Druhý sviatok vianočný'}
   ];
 }
+// Vlastné sviatky – lokálne uloženie aj synchronizácia Firebase.
+let customHolidayData=loadCustomHolidays();
+let editingCustomHolidayId=null;
+function loadCustomHolidays(){
+  try{const value=JSON.parse(localStorage.getItem('dashboardCustomHolidays')||'[]'); return Array.isArray(value)?value:[];}
+  catch(e){return [];}
+}
+function persistCustomHolidays(){
+  try{localStorage.setItem('dashboardCustomHolidays',JSON.stringify(customHolidayData));}catch(e){}
+  firebaseSave('dashboardCustomHolidays',customHolidayData);
+}
+firebaseListen('dashboardCustomHolidays',data=>{
+  if(Array.isArray(data)){
+    customHolidayData=data;
+    try{localStorage.setItem('dashboardCustomHolidays',JSON.stringify(data));}catch(e){}
+    updateHolidays();
+  }
+});
+function parseCustomHolidayDate(iso){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(iso||''))return null;
+  const [year,month,day]=iso.split('-').map(Number);
+  const d=new Date(year,month-1,day);
+  return d.getFullYear()===year && d.getMonth()===month-1 && d.getDate()===day?d:null;
+}
+function escapeHolidayText(text){
+  return String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+window.showHolidayForm=function(id=null){
+  const item=customHolidayData.find(x=>x.id===id);
+  editingCustomHolidayId=item?item.id:null;
+  document.getElementById('holidayCustomName').value=item?item.name:'';
+  document.getElementById('holidayCustomDate').value=item?item.date:'';
+  document.getElementById('holidayDeleteBtn').style.display=item?'inline-block':'none';
+  document.getElementById('holidayAddRow').style.display='none';
+  document.getElementById('holidayFormRow').style.display='flex';
+  document.getElementById('holidayCustomName').focus();
+  positionLeaveBox();
+};
+window.cancelHolidayForm=function(){
+  editingCustomHolidayId=null;
+  document.getElementById('holidayFormRow').style.display='none';
+  document.getElementById('holidayAddRow').style.display='block';
+  positionLeaveBox();
+};
+window.saveCustomHoliday=function(){
+  const name=document.getElementById('holidayCustomName').value.trim();
+  const date=document.getElementById('holidayCustomDate').value;
+  if(!name || !parseCustomHolidayDate(date)){alert('Zadaj názov a platný dátum sviatku.');return;}
+  if(editingCustomHolidayId){
+    const item=customHolidayData.find(x=>x.id===editingCustomHolidayId);
+    if(item){item.name=name;item.date=date;}
+  }else{
+    customHolidayData.push({id:'h_'+Date.now()+'_'+Math.random().toString(36).slice(2,8),name,date});
+  }
+  persistCustomHolidays();cancelHolidayForm();updateHolidays();
+};
+window.deleteCustomHoliday=function(){
+  if(!editingCustomHolidayId)return;
+  customHolidayData=customHolidayData.filter(x=>x.id!==editingCustomHolidayId);
+  persistCustomHolidays();cancelHolidayForm();updateHolidays();
+};
+window.editCustomHoliday=function(id){showHolidayForm(id);};
+// Symboly priradené k významu sviatku; fungujú bez externých obrázkov.
+function holidayPictogram(name){
+  const key=String(name||'').toLocaleLowerCase('sk-SK').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const rules=[
+    [/vianoc|stedr|jezisk|mikul|christmas|advent/, '🎄'],
+    [/velkonoc|easter|velk[y ] piatok/, '🐣'],
+    [/troch kral|traja kral|zjavenie pana/, '⭐'],
+    [/novy rok|silvest|vznik slovenskej republiky/, '🎆'],
+    [/snp|slovenske narodn[eé] povstanie|osloboden|vitazstv.*fasiz|vojnov/, '🕊️'],
+    [/ustav|slobodu a demokraciu|nezavisl|cesko.slovenskeho statu|statn[y ] sviat/, '🇸🇰'],
+    [/cyril|metod|sedembolestn|panny mar|panna maria/, '⛪'],
+    [/vsetkych svat|dusick|zosnul|pamiatk/, '🕯️'],
+    [/sviatok prace|prace|pracujuc/, '🛠️'],
+    [/narodenin|narodky|vyroci[e ]|jubileum/, '🎂'],
+    [/meniny/, '💐'],
+    [/svadb|vyroc.*svadb/, '💍'],
+    [/dovolen|volno|prazdnin/, '🏖️'],
+    [/den deti|deti/, '🧸'],
+    [/valentin|lask/, '❤️'],
+    [/halloween/, '🎃'],
+    [/den matiek|mamin/, '💐'],
+    [/den otcov|otcov/, '👔'],
+    [/november|oktober|september|august/, '📅']
+  ];
+  for(const [pattern,icon] of rules){if(pattern.test(key))return icon;}
+  return '📅';
+}
 function updateHolidays(){
-  const n=new Date(),today=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+  const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
   const oneDay=86400000;
-  const upcoming=[...holidaysForYear(today.getFullYear()),...holidaysForYear(today.getFullYear()+1)]
-    .filter(h=>h.date>=today && !(h.date.getMonth()===11 && [24,25,26].includes(h.date.getDate()))).sort((a,b)=>a.date-b.date).slice(0,3);
+  const automatic=[...holidaysForYear(today.getFullYear()),...holidaysForYear(today.getFullYear()+1)]
+    .filter(h=>h.date>=today && !(h.date.getMonth()===11 && [24,25,26].includes(h.date.getDate())));
+  const own=customHolidayData.map(item=>({...item,parsedDate:parseCustomHolidayDate(item.date)}))
+    .filter(item=>item.parsedDate && item.parsedDate>=today)
+    .map(item=>({date:item.parsedDate,name:item.name,id:item.id,custom:true}));
+  // Tri najbližšie kalendárne sviatky + VŠETKY budúce ručne pridané udalosti.
+  // Pôvodné slice(0,3) skrývalo ďalšie uložené vlastné sviatky.
+  const upcoming=[...automatic.sort((a,b)=>a.date-b.date).slice(0,3),...own]
+    .sort((a,b)=>a.date-b.date);
   const display=document.getElementById('holidayDisplay');
-  if(!display) return;
+  if(!display)return;
   const when=(date)=>{
     const days=Math.round((date-today)/oneDay);
     return days===0?'Dnes':days===1?'Zajtra':'o '+days+' dní';
   };
-  const row=(name,date)=>`<div class="holidayRow"><span class="holidayName">${name}</span><span class="holidayDate">${["Ne","Po","Ut","St","Št","Pi","So"][date.getDay()]} ${String(date.getDate()).padStart(2,"0")}.${String(date.getMonth()+1).padStart(2,"0")}.</span><span class="holidayWhen">${when(date)}</span></div>`;
-  let christmas=new Date(today.getFullYear(),11,24);
-  if(christmas<today)christmas=new Date(today.getFullYear()+1,11,24);
-  display.innerHTML='<div class="holidayHeading">Sviatky</div>'+
-    upcoming.map(h=>row(h.name,h.date)).join('')+
-    '<div class="holidayChristmas">'+row('🎄 Do Vianoc',christmas)+'</div>';
+  const row=(item)=>{
+    const date=item.date;
+    const attrs=item.custom?` onclick="editCustomHoliday('${item.id}')" title="Upraviť vlastný sviatok" style="cursor:pointer"`:'';
+    return `<div class="holidayRow"${attrs}><span class="holidayName"><span class="holidayIcon" aria-hidden="true">${holidayPictogram(item.name)}</span><span class="holidayLabel">${escapeHolidayText(item.name)}</span></span><span class="holidayDate">${['Ne','Po','Ut','St','Št','Pi','So'][date.getDay()]} ${String(date.getDate()).padStart(2,'0')}.${String(date.getMonth()+1).padStart(2,'0')}.</span><span class="holidayWhen">${when(date)}</span></div>`;
+  };
+  display.innerHTML='<div class="holidayHeading">Sviatky</div>'+upcoming.map(row).join('');
   display.style.display='block';
-  if(typeof positionLeaveBox==='function') positionLeaveBox();
-  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
+  if(typeof positionLeaveBox==='function')positionLeaveBox();
+  if(typeof positionBottomBoxes==='function')positionBottomBoxes();
 }
 
 // ===== VOĽNO V KANCELÁRII =====
@@ -1934,7 +2424,7 @@ function renderLeave(){
     list.innerHTML=`<div style="text-align:center;color:#aaa;padding:8px;font-size:28px;">Žiadne plánované voľno</div>`;
   } else {
     let html=`<table style="width:100%;border-collapse:collapse;font-size:22px;table-layout:fixed;">`;
-    html+=`<colgroup><col style="width:43%"><col style="width:34%"><col style="width:23%"></colgroup>`;
+    html+=`<colgroup><col style="width:34%"><col style="width:43%"><col style="width:23%"></colgroup>`;
     groupList.forEach(g=>{
       const countdown=countdownToSeven(g.people[0].start);
       const dni=countdown.text;
@@ -1943,8 +2433,8 @@ function renderLeave(){
       ).join(', ');
       const soon=isEventWithin24h(g.people[0].start);
       html+=`<tr class="${soon?'event-soon':''}" style="border-bottom:1px solid rgba(255,255,255,0.1);">`+
-        `<td class="eventDateCell" onclick="event.stopPropagation();editLeave('${g.people[0].id}')" title="upraviť" style="padding:5px 6px;text-align:center;white-space:nowrap;overflow:hidden;cursor:pointer;">${g.datum}</td>`+
         `<td class="leaveNamesCell" style="padding:5px 6px;text-align:center;white-space:nowrap;overflow:hidden;">${namesHtml}</td>`+
+        `<td class="eventDateCell" onclick="event.stopPropagation();editLeave('${g.people[0].id}')" title="upraviť" style="padding:5px 6px;text-align:center;white-space:nowrap;overflow:hidden;cursor:pointer;">${g.datum}</td>`+
         `<td onclick="event.stopPropagation();editLeave('${g.people[0].id}')" title="upraviť" style="padding:5px 6px;text-align:center;white-space:nowrap;overflow:hidden;cursor:pointer;color:#f4f7f8;font-weight:400;">${dni}</td>`+
       `</tr>`;
     });
@@ -2161,7 +2651,7 @@ function shrinkToFit(el, minFontPx=10, maxFontPx=null){
   const table=el.closest('table');
   const section=el.closest('#auditsTable, #leaveList, #forecast3days, #world, #holidayBox');
   const id=section?.id||'';
-  const base=id==='leaveList'?21:id==='auditsTable'?18:id==='forecast3days'?23:id==='world'?21:18;
+  const base=id==='leaveList'?21:id==='auditsTable'?15.5:id==='forecast3days'?23:id==='world'?21:18;
   const maximum=maxFontPx??base;
   const minimum=id==='auditsTable'?10:id==='leaveList'?12:Math.min(12,minimumSafe(minFontPx));
   const padding=(parseFloat(cs.paddingLeft)||0)+(parseFloat(cs.paddingRight)||0);
@@ -2228,9 +2718,9 @@ function renderCustomAudits(){
     tr.title='Kliknutím upraviť';
     tr.onclick=function(e){ e.stopPropagation(); editAudit(a.id); };
     tr.innerHTML=
-      `<td class="eventDateCell" style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;">${datum}</td>`+
-      `<td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;">${a.typ}</td>`+
       `<td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;">${a.zak||''}</td>`+
+      `<td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;">${a.typ}</td>`+
+      `<td class="eventDateCell" style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;">${datum}</td>`+
       `<td style="padding:8px 4px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="${a.date}"${a.dateEnd?` data-end="${a.dateEnd}"`:''}>-</td>`;
     formRow.parentNode.insertBefore(tr, formRow);
     Array.from(tr.children).slice(0,3).forEach(td=>shrinkToFit(td));
@@ -2317,39 +2807,198 @@ window.addEventListener('resize', scheduleFitStage);
 window.addEventListener('orientationchange', scheduleFitStage);
 fitStage();
 
-// LIVE FEED SPRÁV Z TERAZ.SK
-let newsQueue = [];
+// SPRÁVY TERAZ.SK – odolné načítavanie z viacerých brán a lokálna záloha.
 const NEWS_QUEUE_MAX = 50;
+const NEWS_RSS_URL = 'https://www.teraz.sk/rss/vsetky-spravy.rss';
+const NEWS_CACHE_KEY = 'dashboardTerazNewsCacheV3';
+let newsQueue = [];
+let newsUpdating = false;
+let lastNewsSuccess = null;
+let newsRetryTimer = null;
 
-async function updateNewsQueue() {
-  const rssUrl = 'https://www.teraz.sk/rss/vsetky-spravy.rss';
-  const xmlText = await fetchTextViaCorsProxy(rssUrl, 5000);
-  if(!xmlText) return;
-
-  const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
-  const items = xml.querySelectorAll('item');
-
-  let freshNews = [];
-  items.forEach(item => {
-    const title = item.querySelector('title')?.textContent?.trim();
-    if(title && title.length > 10) freshNews.push(title);
-  });
-
-  freshNews.forEach(title => {
-    if(!newsQueue.includes(title)) {
-      newsQueue.unshift(title);
-      if(newsQueue.length > NEWS_QUEUE_MAX) newsQueue.pop();
-    }
-  });
-
-  if(newsQueue.length > 0) {
-    document.getElementById('eventScroll').innerText = newsQueue.join(' • ');
-    console.log('✓ Queue: ' + newsQueue.length + ' správ');
-  }
+function setNewsStatus(message, error = false){
+  const status=document.getElementById('newsUpdateStatus');
+  if(!status) return;
+  status.textContent=message;
+  status.title=message;
+  status.style.color=error?'#ffe1c9':'#fff';
 }
 
-updateNewsQueue();
-setInterval(updateNewsQueue, 5 * 60 * 1000);
+function normalizeNews(raw,idx){
+  const title=String(raw.title||'').replace(/\s+/g,' ').trim();
+  const pubDate=raw.pubDate||raw.published||raw.date||'';
+  const parsedDate=typeof raw.when==='number' && Number.isFinite(raw.when) ? raw.when : Date.parse(pubDate);
+  let url='';
+  try{
+    const link=new URL(String(raw.url||raw.link||''));
+    if(['https:','http:'].includes(link.protocol) &&
+       (link.hostname==='teraz.sk' || link.hostname.endsWith('.teraz.sk'))) url=link.href;
+  }catch(e){}
+  return {title, url, when:Number.isFinite(parsedDate)?parsedDate:0, idx};
+}
+function sortAndValidateNews(rows){
+  if(!Array.isArray(rows)) throw new Error('Neznámy formát zoznamu');
+  const valid=rows.map(normalizeNews).filter(item=>item.title.length>10 && item.url);
+  if(!valid.length) throw new Error('Zdroj nevrátil platné titulky Teraz.sk');
+  valid.sort((a,b)=>b.when-a.when || a.idx-b.idx);
+  return valid.slice(0,NEWS_QUEUE_MAX);
+}
+function parseNewsXML(xmlText){
+  if(typeof xmlText!=='string' || !xmlText.trim()) throw new Error('Prázdna odpoveď RSS');
+  const xml=new DOMParser().parseFromString(xmlText,'application/xml');
+  if(xml.querySelector('parsererror')) throw new Error('Proxy vrátilo neplatné RSS XML');
+  const items=Array.from(xml.querySelectorAll('item'));
+  if(!items.length) throw new Error('V odpovedi nie sú RSS články');
+  return sortAndValidateNews(items.map(item=>({
+    title:item.querySelector('title')?.textContent||'',
+    link:item.querySelector('link')?.textContent||'',
+    pubDate:item.querySelector('pubDate')?.textContent||''
+  })));
+}
+async function newsFetch(url, timeoutMs=8500){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),timeoutMs);
+  try{
+    const response=await fetch(url,{signal:controller.signal,cache:'no-store'});
+    if(!response.ok) throw new Error('HTTP '+response.status);
+    return response;
+  }finally{clearTimeout(timer);}
+}
+async function newsFromXMLProxy(base){
+  const response=await newsFetch(base,8500);
+  // Platná HTTP odpoveď nie je ešte platné RSS: každú bránu overíme osobitne.
+  return parseNewsXML(await response.text());
+}
+async function newsFromJSONConverter(){
+  const url='https://api.rss2json.com/v1/api.json?rss_url='
+    +encodeURIComponent(NEWS_RSS_URL)+'&count=50';
+  const response=await newsFetch(url,9500);
+  const data=await response.json();
+  if(data.status!=='ok') throw new Error('RSS2JSON: '+String(data.message||data.status||'chyba'));
+  return sortAndValidateNews(data.items||[]);
+}
+async function newsFromAllOriginsJSON(){
+  const url='https://api.allorigins.win/get?url='+encodeURIComponent(NEWS_RSS_URL);
+  const response=await newsFetch(url,8500);
+  const data=await response.json();
+  return parseNewsXML(data.contents);
+}
+async function fetchFreshNews(){
+  // Dve nezávislé metódy sú skúšané súbežne. Prvá úspešná musí mať reálne články.
+  try{
+    return await Promise.any([
+      newsFromXMLProxy('https://proxy.cors.dev/'+NEWS_RSS_URL),
+      newsFromJSONConverter()
+    ]);
+  }catch(primaryError){
+    // Záloha, ak prvé dve služby blokujú feed, CORS alebo vracajú chybové HTML.
+    console.warn('Správy: hlavné zdroje zlyhali, skúšam záložné:',primaryError);
+    return Promise.any([
+      newsFromAllOriginsJSON(),
+      newsFromXMLProxy('https://corsproxy.io/?url='+encodeURIComponent(NEWS_RSS_URL)),
+      newsFromXMLProxy('https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(NEWS_RSS_URL))
+    ]);
+  }
+}
+function setNewsMarqueeSpeed(){
+  const scroll=document.getElementById('eventScroll');
+  if(!scroll)return;
+  // Zámerne svižnejší pás správ, nezávislý od dĺžky RSS titulkov.
+  const pixels=Math.max(1,scroll.scrollWidth);
+  scroll.style.animationDuration=Math.max(12,pixels/150).toFixed(2)+'s';
+}
+function drawNewsQueue(){
+  const scroll=document.getElementById('eventScroll');
+  if(!scroll || !newsQueue.length) return;
+  const fragment=document.createDocumentFragment();
+  newsQueue.forEach((item,index)=>{
+    if(index){
+      const sep=document.createElement('span');
+      sep.textContent='  •  ';
+      sep.setAttribute('aria-hidden','true');
+      fragment.appendChild(sep);
+    }
+    const a=document.createElement('a');
+    a.href=item.url;
+    a.target='_blank';
+    a.rel='noopener noreferrer';
+    a.textContent=item.title;
+    a.title='Otvoriť článok na Teraz.sk';
+    fragment.appendChild(a);
+  });
+  scroll.replaceChildren(fragment);
+  requestAnimationFrame(setNewsMarqueeSpeed);
+}
+function restoreSavedNews(){
+  try{
+    const data=JSON.parse(localStorage.getItem(NEWS_CACHE_KEY)||'null');
+    if(!data || !Array.isArray(data.items)) return;
+    newsQueue=sortAndValidateNews(data.items);
+    if(Number.isFinite(data.savedAt))lastNewsSuccess=new Date(data.savedAt);
+    drawNewsQueue();
+    setNewsStatus('Zobrazené uložené správy • overujem nové…',true);
+  }catch(e){console.info('Správy: nebola dostupná miestna záloha.');}
+}
+function saveNewsLocally(){
+  try{localStorage.setItem(NEWS_CACHE_KEY,JSON.stringify({
+    items:newsQueue,savedAt:Date.now()
+  }));}catch(e){console.info('Správy: prehliadač neumožňuje uložiť zálohu.');}
+}
+async function updateNewsQueue(){
+  if(newsUpdating) return;
+  newsUpdating=true;
+  try{
+    const fresh=await fetchFreshNews();
+    const unique=new Map();
+    fresh.concat(newsQueue).forEach(item=>{
+      const key=item.url||item.title;
+      if(!unique.has(key)) unique.set(key,item);
+    });
+    newsQueue=sortAndValidateNews(Array.from(unique.values()));
+    drawNewsQueue();
+    lastNewsSuccess=new Date();
+    saveNewsLocally();
+    setNewsStatus('Správy aktualizované '+lastNewsSuccess.toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'}));
+    setApiStatus('news',true);
+    if(newsRetryTimer){clearTimeout(newsRetryTimer);newsRetryTimer=null;}
+  }catch(err){
+    console.warn('Teraz.sk: načítanie cez všetky dostupné brány zlyhalo:',err);
+    setApiStatus('news',false);
+    setNewsStatus(lastNewsSuccess && newsQueue.length
+      ? 'Správy: uložené z '+lastNewsSuccess.toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'})+' • zdroj nedostupný ⚠'
+      : 'Správy: zdroj dočasne nedostupný ⚠',true);
+    if(!newsQueue.length){
+      const scroll=document.getElementById('eventScroll');
+      if(scroll){
+        const a=document.createElement('a');
+        a.href='https://www.teraz.sk/spravy/';
+        a.target='_blank';a.rel='noopener noreferrer';
+        a.textContent='Správy sa nepodarilo načítať. Otvoriť správy na Teraz.sk ↗';
+        scroll.replaceChildren(a);
+      }
+    }
+    if(!newsRetryTimer){
+      newsRetryTimer=setTimeout(()=>{newsRetryTimer=null;updateNewsQueue();},60*1000);
+    }
+  }finally{newsUpdating=false;}
+}
+
+// Spúšťame až po vytvorení spodnej tabuľky; pri file:// by sa inak
+// prvá obnovená položka vykresľovala do ešte neexistujúceho prvku.
+window.addEventListener("resize",setNewsMarqueeSpeed);
+function startNewsFeed(){
+  restoreSavedNews();
+  requestAnimationFrame(setNewsMarqueeSpeed);
+  updateNewsQueue();
+  setInterval(updateNewsQueue,5*60*1000);
+  window.addEventListener('online',updateNewsQueue);
+  document.addEventListener('visibilitychange',()=>{
+    if(!document.hidden && (!lastNewsSuccess || Date.now()-lastNewsSuccess.getTime()>5*60*1000)) updateNewsQueue();
+  });
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',startNewsFeed,{once:true});
+}else{startNewsFeed();}
 
 // ===== MINI DATE PICKER =====
 let mdpTargetInput = null;
@@ -2478,12 +3127,16 @@ document.addEventListener('click', (e)=>{
 
 <div id="historicalEvents" class="glass" style="position:absolute;bottom:11px;left:40px;right:40px;width:auto;overflow:hidden;height:auto;display:flex;align-items:center;padding:15px;text-align:center;justify-content:flex-start;">
     <div id="eventScroll" style="display:inline-block;font-size:35px;color:#fff;white-space:nowrap;animation:scrollLeft 225s linear infinite;padding-left:100%;">Načítavam správy...</div>
+    <span id="newsUpdateStatus" title="Aktualizácia správ" style="position:absolute;right:14px;bottom:3px;z-index:2;font-size:12px;color:#fff;background:transparent;border-radius:0;padding:0;pointer-events:none;">Správy: načítavam…</span>
 </div>
 
 </div>
 <!-- /stage -->
 
 <style>
+#eventScroll a {color:#fff!important;text-decoration:none!important;cursor:pointer;}
+#eventScroll a:hover {text-decoration:underline!important;}
+#historicalEvents:hover #eventScroll {animation-play-state:paused;}
 @keyframes scrollLeft {
   from { transform: translateX(0); }
   to { transform: translateX(-100%); }
@@ -2563,7 +3216,7 @@ if(typeof ResizeObserver!=='undefined'){
   finally{radioHealthRunning=false;refreshRadioHealth();}
  };
  setTimeout(()=>window.checkRadioHealth(),1000);
- setInterval(()=>{if(!document.hidden)window.checkRadioHealth();},15*60*1000);
+ setInterval(()=>{if(!document.hidden)window.checkRadioHealth();},60*60*1000);
  refreshRadioHealth();
  const $=id=>document.getElementById(id),audio=$('radioAudio'),status=$('radioStatus'),play=$('radioPlay'),vol=$('radioVolume');
  let selected=stations[0],wanted=false,attempt=0,timer,sourceIndex=0,nextSwitchAt=0;
