@@ -14,7 +14,12 @@
 html, body { height:100%; }
 body {
     margin:0;
-    background: #000;
+    /* Neutrálny sivý podklad – bez zelenej z referenčného obrázka. */
+    background: #30343a;
+    background-image:
+        radial-gradient(ellipse at 12% 15%, rgba(255,255,255,0.075), transparent 45%),
+        radial-gradient(ellipse at 88% 82%, rgba(0,0,0,0.14), transparent 48%),
+        linear-gradient(145deg, #383c42 0%, #30343a 55%, #282c32 100%);
     color:white;
     font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     position: relative;
@@ -51,17 +56,22 @@ body::before {
     100% { background-position: 0% 50%; }
 }
 
+/* Mliečne sivé sklo podľa referencie: bez zeleného tónovania. */
 .glass {
-    background:rgba(255,255,255,0.12);
-    backdrop-filter:blur(50px) saturate(200%);
-    -webkit-backdrop-filter:blur(50px) saturate(200%);
-    border:1.5px solid rgba(255,255,255,0.25);
-    border-radius:30px;
+    background: linear-gradient(135deg,
+        rgba(255,255,255,0.22) 0%,
+        rgba(232,235,240,0.13) 52%,
+        rgba(255,255,255,0.16) 100%);
+    backdrop-filter:blur(38px) saturate(125%);
+    -webkit-backdrop-filter:blur(38px) saturate(125%);
+    border:1px solid rgba(255,255,255,0.27);
+    border-radius:24px;
     padding:15px;
-    box-shadow: 
-        0 0 40px rgba(255, 255, 255, 0.15),
-        0 8px 32px rgba(0,0,0,0.4),
-        inset 0 0 20px rgba(255,255,255,0.1);
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.27),
+        0 0 24px rgba(255,255,255,0.045),
+        inset 0 1px 1px rgba(255,255,255,0.23),
+        inset 0 -1px 0 rgba(255,255,255,0.055);
 }
 
 .glow {text-shadow:0 0 15px rgba(255,255,255,0.4);}
@@ -195,10 +205,320 @@ body::before {
 #radioPanel button{cursor:pointer;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.10);color:#fff;border-radius:8px;padding:6px 4px;font-size:14px;font-weight:600;line-height:18px;}
 #radioPanel button:hover{background:rgba(255,255,255,.22);}#radioPanel button:focus-visible,#radioPanel input:focus-visible{outline:2px solid #00d4ff;outline-offset:2px;}
 #radioStations button{font-size:13px;white-space:nowrap;}
-#radioStations button[aria-pressed="true"]{background:rgba(0,212,255,.18);color:#00d4ff;border-color:#00d4ff;}
-.radioRotation{grid-column:1/-1;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:4px 18px;min-width:0;font-size:12px;line-height:16px;}.radioRotation label{display:flex;align-items:center;gap:6px;cursor:pointer;}.radioRotation input{accent-color:#00d4ff;margin:0;width:16px;height:16px;}.radioRotation small{flex-basis:100%;font-size:11px;color:#aaa;}
-.radioControls{grid-column:1/-1;display:flex;align-items:center;gap:7px;min-width:0;}#radioPlay{border-radius:50%!important;width:34px;height:34px;flex-shrink:0;background:rgba(0,212,255,.18)!important;color:#00d4ff!important;font-size:17px!important;padding:0!important;}#radioMute{background:transparent!important;border:0!important;font-size:16px!important;padding:2px!important;}#radioVolume{flex:1;width:0;min-width:0;accent-color:#00d4ff;}#radioVolumeLabel{width:37px;flex-shrink:0;font-size:12px;}
+#radioStations button[aria-pressed="true"]{background:rgba(75,155,255,.27);color:#d2e8ff;border-color:#60a8ff;box-shadow:inset 0 1px 0 rgba(255,255,255,.15);} 
+.radioRotation{
+    grid-column:1/-1;
+    display:flex;
+    flex-direction:row;
+    flex-wrap:nowrap; /* Nastavenia a hodinový odpočet sú v jednom riadku. */
+    align-items:center;
+    gap:12px;
+    min-width:0;
+    font-size:12px;
+    line-height:18px;
+    padding:5px 7px;
+    border:1px solid rgba(255,255,255,0.10);
+    border-radius:12px;
+    background:rgba(255,255,255,0.045);
+}
+.radioRotation label{display:inline-flex;flex:0 0 auto;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;}
+.radioRotation input{accent-color:#4b9bff;margin:0;width:16px;height:16px;flex:none;}
+.radioRotation small{
+    display:block;
+    margin-left:auto;
+    min-width:0;
+    flex:0 1 auto;
+    font-size:12px;
+    font-variant-numeric:tabular-nums;
+    color:#d1e3ff;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    text-align:right;
+}
+.radioControls{grid-column:1/-1;display:flex;align-items:center;gap:7px;min-width:0;}#radioPlay{border-radius:50%!important;width:34px;height:34px;flex-shrink:0;background:rgba(75,155,255,.27)!important;color:#d2e8ff!important;font-size:17px!important;padding:0!important;}#radioMute{background:transparent!important;border:0!important;font-size:16px!important;padding:2px!important;}#radioVolume{flex:1;width:0;min-width:0;accent-color:#4b9bff;}#radioVolumeLabel{width:37px;flex-shrink:0;font-size:12px;}
 .radioFooter{grid-column:1/-1;display:flex;justify-content:space-between;gap:10px;font-size:12px;color:#aaa;line-height:16px;}#radioStatus{flex:1;min-width:0;}#radioWebsite{color:#8ab4ff;white-space:nowrap;}
+
+
+/* ===== Motív bližší referenčnému obrázku ===== */
+:root{
+    --glass-fill-1: rgba(234,241,241,0.18);
+    --glass-fill-2: rgba(88,111,118,0.17);
+    --glass-fill-3: rgba(128,108,95,0.15);
+    --glass-border: rgba(255,255,255,0.18);
+    --glass-highlight: rgba(255,255,255,0.18);
+    --soft-text: rgba(255,255,255,0.92);
+    --muted-text: rgba(229,232,236,0.72);
+    --accent-blue: #4e97ff;
+    --accent-blue-soft: rgba(78,151,255,0.24);
+}
+body{
+    background:
+      radial-gradient(ellipse at 15% 20%, rgba(27,110,94,0.48) 0%, rgba(27,110,94,0.18) 20%, transparent 42%),
+      radial-gradient(ellipse at 48% 18%, rgba(8,46,55,0.78) 0%, rgba(8,46,55,0.35) 28%, transparent 56%),
+      radial-gradient(ellipse at 92% 18%, rgba(90,66,48,0.42) 0%, rgba(90,66,48,0.20) 22%, transparent 48%),
+      linear-gradient(180deg, #071215 0%, #183740 14%, #24434a 28%, #434449 54%, #76675f 76%, #5d4a41 100%) !important;
+    color: var(--soft-text) !important;
+}
+body::before{
+    background:
+      radial-gradient(circle at 11% 54%, rgba(123,188,111,0.26) 0%, rgba(123,188,111,0.12) 10%, transparent 24%),
+      radial-gradient(circle at 48% 73%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.05) 10%, transparent 21%),
+      linear-gradient(90deg, transparent 0%, transparent 73%, rgba(54,32,22,0.34) 73.5%, rgba(54,32,22,0.34) 74.6%, transparent 74.6%, transparent 100%);
+    opacity: 1;
+}
+body::after{
+    content:'';
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    height:32%;
+    pointer-events:none;
+    z-index:0;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.00) 0%, rgba(255,255,255,0.06) 8%, rgba(0,0,0,0.10) 100%),
+      repeating-linear-gradient(90deg,
+        rgba(103,77,61,0.88) 0px, rgba(103,77,61,0.88) 118px,
+        rgba(83,60,48,0.90) 118px, rgba(83,60,48,0.90) 124px,
+        rgba(128,100,80,0.86) 124px, rgba(128,100,80,0.86) 242px,
+        rgba(95,71,57,0.88) 242px, rgba(95,71,57,0.88) 248px);
+    box-shadow: inset 0 18px 55px rgba(255,255,255,0.05);
+}
+#stage{ z-index:2; }
+#stage::before{
+    content:'';
+    position:absolute;
+    inset:18px;
+    border-radius:34px;
+    background: linear-gradient(145deg, rgba(238,243,244,0.08), rgba(66,86,95,0.12) 45%, rgba(110,92,80,0.08));
+    filter: blur(2px);
+    pointer-events:none;
+    z-index:-1;
+}
+.glass,
+#currentWeatherBox,
+#apiStatusPanel{
+    background: linear-gradient(145deg,
+      rgba(234,241,241,0.17) 0%,
+      rgba(73,92,98,0.20) 44%,
+      rgba(118,101,90,0.18) 100%) !important;
+    backdrop-filter: blur(34px) saturate(120%) !important;
+    -webkit-backdrop-filter: blur(34px) saturate(120%) !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow:
+      0 16px 34px rgba(6,13,17,0.28),
+      inset 0 1px 0 rgba(255,255,255,0.20),
+      inset 0 -1px 0 rgba(255,255,255,0.05),
+      0 0 0 1px rgba(255,255,255,0.03) !important;
+    color: var(--soft-text);
+}
+.glass{ border-radius:28px !important; }
+#forecast3days, #sun, #nameday, #holidayBox, #world, #radioPanel, #leaveBox, #auditsTable, #shiftBox, #vacationBox{
+    overflow:hidden;
+}
+#currentWeatherBox{
+    padding: 8px 18px !important;
+    height:auto !important;
+    min-height:34px;
+    border-radius:18px !important;
+}
+#location, #time, .radioHeading strong{ color:#f4f7f8; }
+#tempNow, #dateWeek, #holidayDisplay, #vacationTime, #currentWeatherDisplay,
+#world td, #forecast3days td, #nameday, #sun, #leaveList, #radioStatus, #radioVolumeLabel{
+    color:var(--soft-text) !important;
+}
+#radioPanel .radioHeading span,
+#radioRotationStatus,
+.radioFooter,
+#world td:last-child,
+#forecast3days td:last-child,
+#dateWeek,
+#auditsTable th,
+#auditsTable td,
+#leaveAddRow,
+#auditAddRow,
+#vacationTime span,
+#holidayDisplay span,
+#nameday hr + *{
+    color: var(--muted-text) !important;
+}
+#radioPanel button,
+#radioPanel a,
+#leaveBox button,
+#auditsTable button,
+#miniDatePicker .mdpHeader span,
+#miniDatePicker .mdpDay,
+#apiStatusPanel button{
+    background: linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.07)) !important;
+    border: 1px solid rgba(255,255,255,0.17) !important;
+    color: #f4f7f8 !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 20px rgba(0,0,0,0.18) !important;
+}
+#radioPanel button:hover,
+#leaveBox button:hover,
+#auditsTable button:hover,
+#miniDatePicker .mdpHeader span:hover,
+#miniDatePicker .mdpDay:hover,
+#apiStatusPanel button:hover{
+    background: linear-gradient(145deg, rgba(255,255,255,0.21), rgba(255,255,255,0.10)) !important;
+}
+#radioStations button[aria-pressed="true"],
+#radioPlay,
+#auditAddRow,
+#leaveAddRow{
+    background: linear-gradient(145deg, rgba(78,151,255,0.42), rgba(78,151,255,0.19)) !important;
+    border-color: rgba(129,186,255,0.55) !important;
+    color:#f9fcff !important;
+}
+#radioMute{ background: linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.08)) !important; border:1px solid rgba(255,255,255,0.17) !important; border-radius:50% !important; }
+#radioVolume{ accent-color: var(--accent-blue); }
+#radioRotate, #radioSchedule{ accent-color: var(--accent-blue); }
+#radioWebsite{ color:#d7e7ff !important; }
+#apiStatusIndicator{
+    background: linear-gradient(145deg, rgba(255,255,255,0.38), rgba(255,255,255,0.14)) !important;
+    border:1px solid rgba(255,255,255,0.26) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.28), 0 8px 20px rgba(0,0,0,0.25) !important;
+    backdrop-filter: blur(18px) saturate(120%);
+    -webkit-backdrop-filter: blur(18px) saturate(120%);
+}
+#apiStatusPanel{
+    border-radius:16px !important;
+    color:#f3f6f7 !important;
+}
+#miniDatePicker{
+    background: linear-gradient(145deg, rgba(47,63,69,0.94), rgba(91,82,79,0.92)) !important;
+    border:1px solid rgba(255,255,255,0.18) !important;
+}
+#miniDatePicker .mdpDay.today{ outline:1px solid rgba(129,186,255,0.9) !important; }
+#auditsTable table,
+#world table,
+#forecast3days table{
+    color:var(--soft-text);
+}
+#auditsTable tr,
+#world tr,
+#forecast3days tr,
+#nameday hr,
+#sun hr{
+    border-color: rgba(255,255,255,0.12) !important;
+}
+/* Jemný mliečny vzhľad ikon/ovládania aj mimo panelov */
+img, canvas {
+    border-radius: 12px;
+}
+
+
+/* Jemne modré pozadie bez plota alebo drevenej podlahy. */
+body {
+    background:
+      radial-gradient(ellipse at 12% 21%, rgba(37, 115, 158, 0.45) 0%, transparent 42%),
+      radial-gradient(ellipse at 87% 22%, rgba(41, 83, 150, 0.35) 0%, transparent 49%),
+      radial-gradient(ellipse at 54% 73%, rgba(102, 155, 202, 0.20) 0%, transparent 52%),
+      linear-gradient(155deg, #0b1c32 0%, #153c61 30%, #27577e 59%, #496b8e 100%) !important;
+}
+body::before {
+    background:
+      radial-gradient(ellipse at 19% 54%, rgba(180, 213, 245, 0.08) 0%, transparent 47%),
+      radial-gradient(ellipse at 82% 78%, rgba(179, 214, 255, 0.09) 0%, transparent 45%) !important;
+    opacity: 1;
+}
+body::after { display:none !important; content:none !important; }
+#stage::before {
+    background: linear-gradient(145deg, rgba(219,237,255,0.09), rgba(80,125,164,0.09) 45%, rgba(154,184,215,0.06)) !important;
+}
+/* Rovnaké mliečne sklo, ale s chladným modrastým nádychom. */
+.glass, #apiStatusPanel {
+    background: linear-gradient(145deg,
+        rgba(223,239,253,0.19) 0%,
+        rgba(86,124,165,0.22) 45%,
+        rgba(129,161,199,0.16) 100%) !important;
+}
+/* Prázdne okienko pri aktuálnej teplote vytváralo osamotenú guľôčku. */
+#currentWeatherBox { display:none !important; }
+
+
+/* Rádio: kratší posuvník a viac miesta pre stanicu / aktuálnu skladbu. */
+#radioVolume{flex:0 0 138px !important;width:138px !important;max-width:138px !important;}
+#radioVolumeLabel{width:34px !important;}
+.radioFooter{align-items:center;min-width:0;gap:10px;flex-wrap:nowrap;}
+#radioStatus{flex:0 1 auto !important;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;}
+#radioNowPlaying{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;color:#dceaff !important;}
+#radioNowPlaying:not([hidden])::before{content:'♪ ';color:#8dbfff;}
+#radioNowPlaying[hidden]{display:none !important;}
+#radioWebsite{flex:0 0 auto;font-size:12px;}
+
+
+/* Aktuálna skladba je priamo za ovládaním hlasitosti; spodný riadok je skrytý,
+   pričom stavové prvky ostávajú v DOM pre pôvodnú logiku prehrávača. */
+#radioPanel .radioFooter{display:none !important;}
+#radioPanel .radioControls{display:flex;min-width:0;gap:8px;}
+#radioPanel #radioVolume{flex:0 0 138px !important;width:138px !important;min-width:0;}
+#radioPanel #radioVolumeLabel{flex:0 0 36px !important;width:36px !important;white-space:nowrap;}
+#radioPanel #radioNowPlaying{flex:1 1 0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;font-size:13px;color:#e6f1ff !important;}
+#radioPanel #radioNowPlaying[hidden]{display:none !important;}
+
+
+/* Jednotné nadpisy panelov v štýle hlavičky rádia. */
+.dashboardSectionTitle {
+    display:flex;align-items:center;min-height:22px;
+    margin:0 0 10px 0; font-size:18px;line-height:22px;
+    font-weight:700;color:#f4f7f8;letter-spacing:0;justify-content:center;text-align:center;
+}
+.radioHeading{justify-content:center !important;position:relative;text-align:center;}
+.radioHeading strong{display:block;width:100%;text-align:center;}
+.radioHeading span{position:absolute;right:0;top:50%;transform:translateY(-50%);}
+/* Všetky hlavičky stĺpcov auditov sú výrazne tučné. */
+#auditsTable table tr:first-child th {font-weight:800 !important; color:#fff !important;}
+/* Auditový panel je zväčšovaný cez transform(scale), preto menšie základné písmo. */
+.auditSectionTitle {font-size:12px;line-height:15px;min-height:15px;margin-bottom:8px;}
+
+/* Jemné červené zvýraznenie celého riadku pri udalostiach do 24 hodín. */
+#stage tr.event-soon > td {
+  background-color: rgba(255, 128, 140, 0.20) !important;
+  border-top: 1px solid rgba(255, 175, 183, 0.24);
+  border-bottom: 1px solid rgba(255, 175, 183, 0.24);
+}
+#stage tr.event-soon > td:first-child { border-radius: 9px 0 0 9px; }
+#stage tr.event-soon > td:last-child { border-radius: 0 9px 9px 0; }
+
+/* Lepšia čitateľnosť rádia – bez zmeny pozícií ostatných panelov. */
+#radioPanel .radioHeading { font-size:21px !important; line-height:27px !important; }
+#radioPanel .radioHeading span { font-size:13px !important; }
+#radioPanel #radioStations { gap:8px !important; }
+#radioPanel #radioStations button {
+  font-size:16px !important;
+  line-height:21px !important;
+  padding:8px 3px !important;
+  min-width:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#radioPanel .radioRotation {
+  font-size:15px !important;
+  line-height:22px !important;
+  gap:10px !important;
+  padding:7px 8px !important;
+}
+#radioPanel .radioRotation label { gap:6px !important; }
+#radioPanel .radioRotation input { width:18px !important; height:18px !important; }
+#radioPanel #radioRotationStatus { font-size:15px !important; line-height:22px !important; }
+#radioPanel .radioControls { gap:10px !important; min-height:40px; }
+#radioPanel #radioPlay { width:39px !important; height:39px !important; font-size:19px !important; }
+#radioPanel #radioMute { font-size:20px !important; }
+#radioPanel #radioVolume { flex:0 0 112px !important; width:112px !important; max-width:112px !important; }
+#radioPanel #radioVolumeLabel { flex:0 0 47px !important; width:47px !important; font-size:16px !important; }
+#radioPanel #radioNowPlaying {
+  flex:1 1 0 !important;
+  min-width:0;
+  font-size:18px !important;
+  line-height:25px !important;
+  font-weight:500;
+  letter-spacing:0.1px;
+  color:#f2f7ff !important;
+}
+
 </style>
 </head>
 
@@ -225,12 +545,13 @@ body::before {
 <div id="nameday" class="glass"></div>
 
 <div id="auditsTable" class="glass">
+    <div class="dashboardSectionTitle auditSectionTitle">Audity a návštevy</div>
     <table style="width:100%;font-size:17px;border-collapse:collapse;table-layout:fixed;">
         <tr style="border-bottom:1px solid rgba(255,255,255,0.2);">
             <th style="text-align:center;padding:8px 4px;width:22%;">Dátum</th>
             <th style="text-align:center;padding:8px 4px;width:18%;">Typ</th>
             <th id="auditsHeaderZak" style="text-align:center;padding:8px 4px;width:38%;white-space:nowrap;overflow:hidden;">Zákazník/Proces</th>
-            <th style="text-align:center;padding:8px 4px;color:#fff;width:22%;"></th>
+            <th style="text-align:center;padding:8px 4px;color:#fff;width:22%;">Čas</th>
         </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
             <td style="padding:8px 4px;text-align:center;">23.6.</td>
@@ -255,6 +576,7 @@ body::before {
 </div>
 
 <div id="leaveBox" class="glass">
+    <div class="dashboardSectionTitle">Neprítomnosť</div>
     <div id="leaveList" style="font-size:28px;"></div>
     <div id="leaveAddRow" onclick="event.stopPropagation();showLeaveForm()" style="cursor:pointer;color:#8ab4ff;text-align:center;padding:8px;font-size:22px;">+ Pridať voľno</div>
     <div id="leaveFormRow" style="display:none;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center;justify-content:center;">
@@ -281,10 +603,10 @@ body::before {
 </div>
 
 <section id="radioPanel" class="glass" aria-label="Online rádio">
-  <div class="radioHeading"><strong>◉ Rádio</strong><span>ONLINE</span></div>
+  <div class="radioHeading"><strong>Rádiá</strong><span>ONLINE</span></div>
   <div id="radioStations" aria-label="Výber stanice"></div>
   <div class="radioRotation"><label><input id="radioRotate" type="checkbox">Náhodné striedanie každú hodinu</label><label title="Denne podľa času na Slovensku"><input id="radioSchedule" type="checkbox" checked>Automaticky 7:00 – 17:00</label><small id="radioRotationStatus">Automatické striedanie je vypnuté.</small></div>
-  <div class="radioControls"><button id="radioPlay" type="button" aria-label="Spustiť rádio">▶</button><button id="radioMute" type="button" aria-label="Stlmiť zvuk">🔊</button><input id="radioVolume" aria-label="Hlasitosť" type="range" min="0" max="100" value="60"><output id="radioVolumeLabel">60 %</output></div>
+  <div class="radioControls"><button id="radioPlay" type="button" aria-label="Spustiť rádio">▶</button><button id="radioMute" type="button" aria-label="Stlmiť zvuk">🔊</button><input id="radioVolume" aria-label="Hlasitosť" type="range" min="0" max="100" value="60"><output id="radioVolumeLabel">60 %</output><span id="radioNowPlaying" aria-live="off" title="Aktuálne hraná skladba" hidden></span></div>
   <div class="radioFooter"><span id="radioStatus" role="status" aria-live="polite">Vyber stanicu a spusti prehrávanie.</span><a id="radioWebsite" target="_blank" rel="noopener noreferrer">Web rádia ↗</a></div>
   <audio id="radioAudio" preload="none"></audio>
 </section>
@@ -292,6 +614,33 @@ body::before {
 <div id="world" class="glass"></div>
 
 <script>
+// Spoločný odpočet auditov a neprítomnosti k 7:00 v deň začiatku.
+function countdownToSeven(isoDate, now=new Date()){
+  const parts=String(isoDate).split('-').map(Number);
+  if(parts.length!==3 || parts.some(x=>!Number.isFinite(x))) return {text:'–',color:'#aaa'};
+  const target=new Date(parts[0],parts[1]-1,parts[2],7,0,0,0);
+  const dayStart=new Date(parts[0],parts[1]-1,parts[2]);
+  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  const calendarDays=Math.round((Date.UTC(parts[0],parts[1]-1,parts[2])-Date.UTC(today.getFullYear(),today.getMonth(),today.getDate()))/86400000);
+  if(calendarDays<0 || (calendarDays===0 && now>=target)) return {text:'Dnes',color:'#00d4ff'};
+  // Odpočet k 7:00: pri jednom kalendárnom dni alebo menej len celé hodiny, zaokrúhlené nahor.
+  if(calendarDays<=1){
+    const h=Math.max(1,Math.ceil((target-now)/3600000));
+    return {text:'o '+h+' h',color:'#ff6b6b'};
+  }
+  return {text:'o '+formatDaysSk(calendarDays),color:calendarDays<=3?'#ff6b6b':'#aaa'};
+}
+
+function isEventWithin24h(isoDate, now=new Date()) {
+  const parts=String(isoDate).split('-').map(Number);
+  if(parts.length!==3 || parts.some(x=>!Number.isFinite(x))) return false;
+  const start=new Date(parts[0], parts[1]-1, parts[2], 7, 0, 0, 0);
+  const todayStart=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  // Po 7:00 v deň udalosti zostáva zvýraznenie počas celého dnešného dňa.
+  return (start-now>0 && start-now<=86400000) ||
+         (start>=todayStart && start<new Date(todayStart.getTime()+86400000) && now>=start);
+}
+
 function formatDaysSk(n){
   if(n===1) return '1 deň';
   if(n>=2 && n<=4) return n+' dni';
@@ -677,7 +1026,8 @@ async function loadWeather(){
     `</tr>`;
   });
   fHtml+=`</table>`;
-  document.getElementById('forecast3days').innerHTML=fHtml;
+  document.getElementById('forecast3days').innerHTML='<div class="dashboardSectionTitle">Počasie</div>'+fHtml;
+  if(typeof positionLeftColumn==='function') positionLeftColumn();
   document.getElementById('weather').style.display='none';
   
   console.log('Weather codes:', 'Dnes:', d.weather_code[0], 'Zajtra:', d.weather_code[1], 'Za 2 dni:', d.weather_code[2], 'Za 3 dni:', d.weather_code[3]);
@@ -922,20 +1272,14 @@ function updateVacation(){
       if (row) row.style.display = 'none';
       return;
     }
-    if (row) row.style.display = '';
-
-    const daysLeft = Math.ceil((startDate - today) / (1000 * 60 * 60 * 24));
-
-    if (daysLeft <= 0) {
-      cell.textContent = 'DNES';
-      cell.style.color = '#00d4ff';
-    } else if (daysLeft <= 3) {
-      cell.textContent = 'o ' + formatDaysSk(daysLeft);
-      cell.style.color = '#ff6b6b';
-    } else {
-      cell.textContent = 'o ' + formatDaysSk(daysLeft);
-      cell.style.color = '#aaa';
+    if (row) {
+      row.style.display = '';
+      row.classList.toggle('event-soon', isEventWithin24h(cell.getAttribute('data-date')));
     }
+
+    const left = countdownToSeven(cell.getAttribute('data-date'));
+    cell.textContent = left.text;
+    cell.style.color = left.color;
     cell.style.whiteSpace = 'nowrap';
     cell.style.fontSize = '';
     if(typeof shrinkToFit==='function') shrinkToFit(cell, 11);
@@ -1156,19 +1500,19 @@ function renderLeave(){
     html+=`<tr style="border-bottom:1px solid rgba(255,255,255,0.2);color:#fff;">`+
       `<th style="text-align:center;padding:5px 6px;width:30%;">Dátum</th>`+
       `<th style="text-align:center;padding:5px 6px;width:35%;">Meno</th>`+
-      `<th style="text-align:center;padding:5px 6px;width:35%;"></th>`+
+      `<th style="text-align:center;padding:5px 6px;width:35%;">Čas</th>`+
     `</tr>`;
     groupList.forEach(g=>{
-      let dni, color;
-      if(g.daysToStart<=0){ dni='DNES'; color='#00d4ff'; }
-      else { dni='o '+formatDaysSk(g.daysToStart); color='#aaa'; }
+      const countdown=countdownToSeven(g.people[0].start);
+      const dni=countdown.text;
       const namesHtml = g.people.map(p=>
         `<span onclick="event.stopPropagation();editLeave('${p.id}')" title="upraviť" style="cursor:pointer;">${p.name}</span>`
       ).join(', ');
-      html+=`<tr style="border-bottom:1px solid rgba(255,255,255,0.1);">`+
+      const soon=isEventWithin24h(g.people[0].start);
+      html+=`<tr class="${soon?'event-soon':''}" style="border-bottom:1px solid rgba(255,255,255,0.1);">`+
         `<td onclick="event.stopPropagation();editLeave('${g.people[0].id}')" title="upraviť" style="padding:5px 6px;text-align:center;white-space:nowrap;overflow:hidden;cursor:pointer;">${g.datum}</td>`+
         `<td class="leaveNamesCell" style="padding:5px 6px;text-align:center;white-space:nowrap;overflow:hidden;">${namesHtml}</td>`+
-        `<td onclick="event.stopPropagation();editLeave('${g.people[0].id}')" title="upraviť" style="padding:5px 6px;text-align:center;white-space:nowrap;overflow:hidden;cursor:pointer;color:${color};font-weight:bold;">${dni}</td>`+
+        `<td onclick="event.stopPropagation();editLeave('${g.people[0].id}')" title="upraviť" style="padding:5px 6px;text-align:center;white-space:nowrap;overflow:hidden;cursor:pointer;color:#f4f7f8;font-weight:400;">${dni}</td>`+
       `</tr>`;
     });
     html+=`</table>`;
@@ -1206,6 +1550,8 @@ function positionLeftColumn(){
   // Zjednotenie ľavého okraja a šírky s panelom predpovede počasia.
   const areaLeft=forecastBox.offsetLeft;
   const areaWidth=forecastBox.offsetWidth;
+  // Predpoveď s novým nadpisom môže byť vyššia, preto panel slnka posuň pod ňu.
+  sunBox.style.top=(forecastBox.offsetTop + forecastBox.offsetHeight + 15)+'px';
   sunBox.style.left=areaLeft+'px';
   sunBox.style.width=areaWidth+'px';
   const areaTop=sunBox.offsetTop + sunBox.offsetHeight + 15;
@@ -1776,11 +2122,57 @@ if(typeof ResizeObserver!=='undefined'){
   const next=eligible[Math.floor(Math.random()*eligible.length)];
   remainingStations=remainingStations.filter(s=>s!==next);return next;
  }
+ const nowPlaying=$('radioNowPlaying');
+ let metadataToken=0,metadataRequest=0,metadataMisses=0;
+ const funMounts={'Fun Rádio':'funpgm256.mp3','Fun Dance':'dance128.mp3','Fun Chill':'chill128.mp3','Fun Mileniálky':'milenialky128.mp3','Fun CZ/SK':'cs128.mp3','Fun 80/90':'80-90-128.mp3'};
+ const cleanSong=s=>typeof s==='string'?s.replace(/\s+/g,' ').trim().slice(0,150):'';
+ function showSong(title){
+  const song=cleanSong(title);
+  nowPlaying.hidden=!song;
+  nowPlaying.textContent=song;
+  nowPlaying.title=song?('Aktuálna skladba: '+song):'Údaje o skladbe nie sú dostupné';
+ }
+ function resetSong(){metadataToken++;metadataRequest++;metadataMisses=0;showSong('');}
+ function getMountSong(data,mount){
+  const source=data?.icestats?.source;
+  const sources=Array.isArray(source)?source:[source].filter(Boolean);
+  const wantedMount=mount.toLowerCase();
+  const found=sources.find(x=>{
+   const urls=[x.listenurl,x.server_url,x.mount].filter(v=>typeof v==='string');
+   return urls.some(url=>{try{return new URL(url,'https://stream.funradio.sk').pathname.toLowerCase().replace(/^\//,'')===wantedMount;}catch(e){return false;}});
+  });
+  const song=cleanSong(found?.title||found?.yp_currently_playing||found?.stream_title||'');
+  return /^(hity,? ktore milujete|fun radio live|unknown|offline)$/i.test(song)?'':song;
+ }
+ async function fetchSongMetadata(){
+  if(!wanted||audio.paused||document.hidden)return;
+  const mount=funMounts[selected[0]];
+  if(!mount){showSong('');return;}
+  const token=metadataToken,request=++metadataRequest,key=selected[0];
+  // Unikátny parameter bráni prehliadaču aj proxy v opakovaní starej odpovede.
+  const url='https://stream.funradio.sk/status-json.xsl?_='+Date.now();
+  let data=null;
+  try{
+   const response=await fetch(url,{signal:AbortSignal.timeout(5000),cache:'no-store'});
+   if(response.ok)data=await response.json();
+  }catch(e){}
+  if(!data){
+   try{const raw=await fetchTextViaCorsProxy(url,4500);if(raw)data=JSON.parse(raw);}catch(e){}
+  }
+  // Neskoré odpovede predchádzajúcich kontrol nesmú prepísať novšiu skladbu.
+  if(token!==metadataToken||request!==metadataRequest||!wanted||audio.paused||selected[0]!==key)return;
+  const song=data?getMountSong(data,mount):'';
+  if(song){metadataMisses=0;showSong(song);}
+  else if(++metadataMisses>=2){showSong('');}
+ }
+ // Aktualizácia každých 5 sekúnd; obnova aj po návrate na kartu.
+ setInterval(fetchSongMetadata,5000);
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)fetchSongMetadata();});
  const stored=read('dashboardRadioVolume');vol.value=stored!==null&&Number.isFinite(+stored)?Math.max(0,Math.min(100,+stored)):60;
  function volume(){audio.volume=+vol.value/100;$('radioVolumeLabel').textContent=vol.value+' %';save('dashboardRadioVolume',vol.value)}volume();
  function controls(){play.textContent=wanted?'■':'▶';play.setAttribute('aria-label',wanted?'Zastaviť rádio':'Spustiť rádio');}
  function selection(){$('radioWebsite').textContent='Web rádia ↗';[...$('radioStations').children].forEach((b,i)=>b.setAttribute('aria-pressed',String(stations[i]===selected)));$('radioWebsite').hidden=!selected[2];if(selected[2])$('radioWebsite').href=selected[2];}
- function stop(){wanted=false;attempt++;nextSwitchAt=0;updateRotation();clearTimeout(timer);audio.pause();audio.removeAttribute('src');audio.load();controls();}
+ function stop(){resetSong();wanted=false;attempt++;nextSwitchAt=0;updateRotation();clearTimeout(timer);audio.pause();audio.removeAttribute('src');audio.load();controls();}
  function fail(message){stop();status.textContent=message;}
  function start(){
   if(schedule.checked&&!inWindow()){stop();status.textContent='Čakám na 7:00 • pre ručné hranie vypni automatický čas.';return;}
@@ -1815,11 +2207,12 @@ if(typeof ResizeObserver!=='undefined'){
  $('radioMute').onclick=()=>{audio.muted=!audio.muted;$('radioMute').textContent=audio.muted?'🔇':'🔊';$('radioMute').setAttribute('aria-label',audio.muted?'Zapnúť zvuk':'Stlmiť zvuk');};
  // Schedule relative to playback start (not the next clock-hour).
  function updateRotation(){
-  if(!rotation.checked){rotationStatus.textContent='Automatické striedanie je vypnuté.';return;}
-  if(!wanted||!nextSwitchAt){rotationStatus.textContent=schedule.checked?'Denne 7:00–17:00 • náhodne bez opakovania':'Spusti rádio • prepnutie po 60 minútach.';return;}
+  if(!rotation.checked){rotationStatus.textContent='Automatické striedanie je vypnuté.';rotationStatus.title=rotationStatus.textContent;return;}
+  if(!wanted||!nextSwitchAt){rotationStatus.textContent=schedule.checked?'Denne 7:00–17:00 • náhodne bez opakovania':'Spusti rádio • prepnutie po 60 minútach.';rotationStatus.title=rotationStatus.textContent;return;}
   const remaining=Math.max(0,Math.ceil((nextSwitchAt-Date.now())/1000));
   const minutes=Math.floor(remaining/60),seconds=remaining%60;
-  rotationStatus.textContent='Náhodné rádio'+' o '+minutes+':'+String(seconds).padStart(2,'0');
+  rotationStatus.textContent='Náhodné rádio o '+minutes+':'+String(seconds).padStart(2,'0');
+  rotationStatus.title='Ďalšia náhodná stanica za '+minutes+' min '+seconds+' s';
  }
  function checkRotation(){
   checkSchedule();
@@ -1855,7 +2248,7 @@ if(typeof ResizeObserver!=='undefined'){
  document.addEventListener('visibilitychange',checkRotation);
  window.addEventListener('pageshow',checkRotation);
  updateRotation();
- audio.addEventListener('playing',()=>{if(!wanted)return;recordHealth(selected,true,'práve hrá');clearTimeout(timer);if(rotation.checked&&!nextSwitchAt)nextSwitchAt=Date.now()+hour;updateRotation();status.textContent='● Naživo: '+selected[0]+(stations.includes(selected)?' • '+(selected[0]==='Fun Rádio'?[256,192,128][sourceIndex]:128)+' kb/s':'');});
+ audio.addEventListener('playing',()=>{if(!wanted)return;fetchSongMetadata();recordHealth(selected,true,'práve hrá');clearTimeout(timer);if(rotation.checked&&!nextSwitchAt)nextSwitchAt=Date.now()+hour;updateRotation();status.textContent='● Naživo: '+selected[0]+(stations.includes(selected)?' • '+(selected[0]==='Fun Rádio'?[256,192,128][sourceIndex]:128)+' kb/s':'');});
  audio.addEventListener('waiting',()=>{if(wanted)status.textContent='Načítavam zvuk: '+selected[0]+'…';});
  audio.addEventListener('ended',()=>{if(wanted)fail('Vysielanie sa skončilo. Klikni na ▶ pre nové pripojenie.');});
  checkSchedule();
