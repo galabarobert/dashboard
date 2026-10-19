@@ -77,14 +77,14 @@ body::before {
 .glow {text-shadow:0 0 15px rgba(255,255,255,0.4);}
 
 #location {position:absolute;top:1px;left:40px;font-size:109px;}
-#tempNow {margin-top:0px;font-size:34px;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;font-weight:400;}
+#tempNow {display:none!important;margin-top:0px;font-size:34px;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;font-weight:400;}
 
 #clock-box {position:absolute;top:-37px;right:40px;text-align:right;}
 #time {font-size:170px;}
 #dateWeek {font-size:34px;margin-top:-38px;white-space:nowrap;}
 
 #weather {position:absolute;top:219px;left:40px;font-size:28px;line-height:1.8;width:auto;white-space:nowrap;height:50px;display:flex;align-items:center;display:none;}
-#forecast3days {position:absolute;top:219px;left:40px;width:501px;box-sizing:border-box;}
+#forecast3days {position:absolute;top:147px;left:40px;width:501px;box-sizing:border-box;}
 #sun {position:absolute;top:516px;left:40px;width:501px;box-sizing:border-box;font-size:28px;text-align:left;line-height:1.5;}
 #nameday {position:absolute;width:501px;min-width:0;font-size:28px;text-align:left;padding-left:25px;white-space:nowrap;box-sizing:border-box;}
 
@@ -561,6 +561,96 @@ body::after { display:none !important; content:none !important; }
 #auditsTable tr:not(#auditFormRow) td {padding-left:3px!important;padding-right:3px!important;}
 #leaveList td {padding-left:3px!important;padding-right:3px!important;}
 #leaveList .leaveNamesCell span{font-size:inherit!important;}
+
+/* Dnešná karta + tri dni pod ňou */
+#sun{display:none!important;}
+#forecast3days{padding:15px!important;overflow:hidden;}
+#forecast3days .weatherToday,#forecast3days .weatherDayCard{color:white;box-sizing:border-box;min-width:0;}
+#forecast3days .weatherToday{border-radius:21px;padding:16px 18px;background:linear-gradient(135deg,rgba(99,164,218,.48),rgba(85,146,199,.26));border:1px solid rgba(255,255,255,.20);}
+.weatherTodayTop{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:19px;}
+.weatherTodayTop span{font-size:15px;}
+.weatherTodayMain{display:flex;justify-content:space-between;align-items:center;gap:6px;min-width:0;margin:9px 0;}
+.weatherMainTemp{font-size:83px;line-height:1;font-weight:650;letter-spacing:-3px;}
+.weatherTempLine{display:flex;align-items:center;gap:14px;min-width:0;}
+.weatherTempLine .weatherTempRange{font-size:32px;line-height:1.18;white-space:nowrap;font-weight:750;letter-spacing:-1px;}
+.weatherMainIcon{font-size:68px;line-height:1.25;flex:none;}
+.weatherTempRange{font-size:16px;line-height:1.45;white-space:nowrap;}
+.weatherTodayDetails{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px;border-top:1px solid rgba(255,255,255,.2);padding-top:12px;font-size:16px;}
+.weatherTodayDetails span{min-width:0;white-space:nowrap;}
+.weatherTodayDetails b{font-weight:600;}
+.weatherNextDays{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px;}
+.weatherDayCard{border-radius:18px;padding:12px 4px 13px;text-align:center;background:rgba(19,36,57,.37);border:1px solid rgba(255,255,255,.18);display:flex;flex-direction:column;align-items:center;gap:8px;overflow:hidden;}
+.weatherDayName{font-weight:650;font-size:16px;white-space:nowrap;}
+.weatherDayIcon{font-size:38px;line-height:1.2;}
+.weatherDayTemp{font-size:24px;font-weight:700;white-space:nowrap;}
+.weatherDayTemp span{font-size:15px;font-weight:400;}
+.weatherDayRain,.weatherDayMm{font-size:15px;white-space:nowrap;}
+@media(max-width:700px){.weatherMainTemp{font-size:70px;}}
+
+
+/* Karty svetových miest: mriežka 2 × 2, čas a teplota stále viditeľné */
+#world{padding:14px!important;box-sizing:border-box;}
+.worldSectionTitle{margin-bottom:12px!important;}
+.worldTiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;}
+.worldTile{cursor:pointer;min-width:0;min-height:116px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;padding:12px 14px;border-radius:19px;background:linear-gradient(145deg,rgba(16,27,43,.52),rgba(32,45,62,.40));border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 1px rgba(255,255,255,.08);}
+.worldTile:hover{background:linear-gradient(145deg,rgba(44,71,102,.7),rgba(39,56,79,.55));}
+.worldTileTop{display:flex;align-items:center;justify-content:space-between;gap:5px;min-width:0;}
+.worldCountry{font-size:13px;color:white;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.worldClock{font-size:17px;font-weight:700;color:white;white-space:nowrap;}
+.worldCity{font-size:22px;font-weight:650;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.worldTileBottom{display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.worldWeatherIcon{font-size:29px;line-height:1;}
+.worldTemperature{font-size:29px;font-weight:700;color:white;white-space:nowrap;}
+.weatherTempLine .weatherTempRange{font-size:32px!important;line-height:1.16!important;font-weight:750!important;}
+#forecast3days{top:147px!important;}
+
+
+/* Usporiadanie dneška: piktogram | max/min | aktuálna teplota */
+#forecast3days .weatherTodayMain{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.18fr) minmax(0,1.28fr);gap:7px;align-items:center;justify-content:initial;}
+#forecast3days .weatherMainIcon{font-size:60px;text-align:center;white-space:nowrap;min-width:0;}
+#forecast3days .weatherTodayMain>.weatherTempRange{font-size:27px!important;font-weight:740!important;line-height:1.24!important;letter-spacing:-.7px;white-space:nowrap;text-align:center;min-width:0;}
+#forecast3days .weatherCurrentBlock{min-width:0;text-align:right;}
+#forecast3days .weatherMainTemp{font-size:74px;letter-spacing:-3px;white-space:nowrap;}
+#forecast3days .weatherFeels{font-size:13px;font-weight:400;white-space:nowrap;}
+/* Svetové časy: štát/mesto/veľký čas vľavo, ikona nad menšou teplotou vpravo */
+.worldTile{display:grid;grid-template-columns:minmax(0,1fr) 62px;align-items:center;gap:5px;min-height:128px;}
+.worldTileInfo{min-width:0;display:flex;flex-direction:column;gap:5px;align-items:flex-start;}
+.worldCountry{font-size:14px;}
+.worldCity{font-size:19px;max-width:100%;}
+.worldClock{font-size:27px;font-weight:750;letter-spacing:-.7px;line-height:1.18;}
+.worldTileBottom{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;}
+.worldWeatherIcon{font-size:32px;line-height:1.2;}
+.worldTemperature{font-size:21px;font-weight:650;}
+
+
+/* Dnešná teplota znova vľavo, max/min uprostred, piktogram vpravo. */
+#forecast3days .weatherTodayMain{
+    display:grid;
+    grid-template-columns:minmax(0,1.3fr) minmax(0,1.2fr) minmax(0,.9fr);
+    align-items:center;
+    column-gap:7px;
+}
+#forecast3days .weatherCurrentBlock{text-align:left;grid-column:1;grid-row:1;}
+#forecast3days .weatherTodayMain>.weatherTempRange{grid-column:2;grid-row:1;font-size:26px!important;}
+#forecast3days .weatherMainIcon{grid-column:3;grid-row:1;font-size:59px;text-align:center;}
+/* Kompaktnejšie svetové časy, bez straty výrazných hodín. */
+#world{padding:10px 12px!important;}
+#world .worldSectionTitle{margin-bottom:7px!important;}
+#world .worldTiles{gap:7px;}
+#world .worldTile{min-height:91px;padding:7px 10px;border-radius:16px;gap:3px;grid-template-columns:minmax(0,1fr) 49px;}
+#world .worldTileInfo{gap:2px;}
+#world .worldCountry{font-size:12px;}
+#world .worldCity{font-size:17px;}
+#world .worldClock{font-size:25px;line-height:1.05;}
+#world .worldTileBottom{gap:3px;}
+#world .worldWeatherIcon{font-size:25px;line-height:1;}
+#world .worldTemperature{font-size:18px;}
+#world.worldCompact .worldTile{min-height:78px;padding:5px 8px;}
+#world.worldCompact .worldClock{font-size:22px;}
+#world.worldCompact .worldCity{font-size:15px;}
+#world.worldCompact .worldWeatherIcon{font-size:22px;}
+#world.worldCompact .worldTemperature{font-size:16px;}
+
 </style>
 </head>
 
@@ -1267,6 +1357,11 @@ async function loadSun(){
     const isNewMoonDay = today.getDate() === newMoonDate.getDate() && today.getMonth() === newMoonDate.getMonth();
     if (isNewMoonDay) moonName = 'Now';
     
+    window.dashboardSunTimes={sunrise,sunset};
+    const sunriseNode=document.querySelector('[data-sunrise]');
+    const sunsetNode=document.querySelector('[data-sunset]');
+    if(sunriseNode) sunriseNode.textContent=sunrise;
+    if(sunsetNode) sunsetNode.textContent=sunset;
     document.getElementById('sun').innerHTML = `Východ slnka: ☀️ ${sunrise}<hr style="border:none;border-top:1px solid rgba(255,255,255,0.2);margin:6px 0;">Západ slnka: 🌙 ${sunset}<hr style="border:none;border-top:1px solid rgba(255,255,255,0.2);margin:6px 0;">Fáza mesiaca: ${moonEmoji} ${moonName}`;
     document.getElementById('sun').style.cursor='pointer';
     document.getElementById('sun').onclick=function(){ window.open('https://www.timeanddate.com/astronomy/slovakia/nitra','_blank'); };
@@ -1281,7 +1376,7 @@ async function loadSun(){
 // POČASIE VRÁBLE + ALERT
 async function loadWeather(){
  try{
-  const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weather_code,precipitation,wind_speed_10m,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant,precipitation_sum&current=temperature_2m,weather_code,precipitation,wind_speed_10m&forecast_days=7&timezone=Europe%2FBratislava");
+  const res=await fetch("https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=weather_code,precipitation,wind_speed_10m,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,wind_direction_10m_dominant,precipitation_sum,precipitation_probability_max&current=temperature_2m,apparent_temperature,weather_code,precipitation,wind_speed_10m&forecast_days=7&timezone=Europe%2FBratislava");
   const data=await res.json();
 
   function weatherIcon(code){
@@ -1344,48 +1439,46 @@ async function loadWeather(){
   }
 
   const d=data.daily;
-  const dayNames=[];
-  for(let i=0;i<4;i++){
-    const dt=new Date(d.time[i]);
-    let dn=dt.toLocaleDateString("sk-SK",{weekday:"long",timeZone:"Europe/Bratislava"});
-    dn=dn.charAt(0).toUpperCase()+dn.slice(1);
-    dayNames.push(dn);
+  const box=document.getElementById('forecast3days');
+  const fmt=(num, digits=1)=>Number.isFinite(Number(num))?Number(num).toFixed(digits).replace('.',','):'–';
+  const percent=(n)=>Number.isFinite(Number(n))?Math.round(Number(n))+' %':'–';
+  const capDay=(str)=>str.charAt(0).toUpperCase()+str.slice(1);
+  const dayLabel=(i)=>capDay(new Date(d.time[i]+'T12:00:00').toLocaleDateString('sk-SK',{weekday:'long'}));
+  const currentTemp=Math.round(data.current.temperature_2m);
+  const currentFeels=Number.isFinite(data.current.apparent_temperature)?Math.round(data.current.apparent_temperature):null;
+  const todaysMax=Math.round(d.temperature_2m_max[0]);
+  const todaysMin=Math.round(d.temperature_2m_min[0]);
+  const currentRain=percent(d.precipitation_probability_max?.[0]);
+  const currentMm=fmt(d.precipitation_sum?.[0]);
+  const todayIcon=weatherIcon(data.current.weather_code);
+  const sunrise=window.dashboardSunTimes?.sunrise||'–';
+  const sunset=window.dashboardSunTimes?.sunset||'–';
+  let fHtml=`<div class="dashboardSectionTitle">Počasie</div>`+
+    `<div class="weatherToday" title="Aktuálne počasie a dnešná denná predpoveď">`+
+      `<div class="weatherTodayTop"><strong>Dnes • ${dayLabel(0)}</strong><span>Vráble</span></div>`+
+      `<div class="weatherTodayMain">`+
+      `<div class="weatherCurrentBlock"><div class="weatherMainTemp">${currentTemp}°</div>`+
+      `${currentFeels===null?'':`<div class="weatherFeels">Pocitovo ${currentFeels}°</div>`}</div>`+
+      `<div class="weatherTempRange">Max ${todaysMax}°<br>Min ${todaysMin}°</div>`+
+      `<div class="weatherMainIcon">${todayIcon}</div></div>`+
+      
+      `<div class="weatherTodayDetails">`+
+        `<span>🌅 Východ <b data-sunrise>${sunrise}</b></span>`+
+        `<span>🌇 Západ <b data-sunset>${sunset}</b></span>`+
+        `<span>💧 Dážď <b>${currentRain}</b></span>`+
+        `<span>🌧️ Zrážky <b>${currentMm} mm</b></span>`+
+      `</div></div>`+
+      `<div class="weatherNextDays">`;
+  for(let i=1;i<=3;i++){
+    const rain=percent(d.precipitation_probability_max?.[i]);
+    fHtml+=`<div class="weatherDayCard"><div class="weatherDayName">${dayLabel(i)}</div>`+
+      `<div class="weatherDayIcon">${weatherIcon(d.weather_code[i])}</div>`+
+      `<div class="weatherDayTemp">${Math.round(d.temperature_2m_max[i])}° <span>/ ${Math.round(d.temperature_2m_min[i])}°</span></div>`+
+      `<div class="weatherDayRain">💧 ${rain}</div>`+
+      `<div class="weatherDayMm">🌧️ ${fmt(d.precipitation_sum[i])} mm</div></div>`;
   }
-
-  const daysOfWeek = ['ne','po','ut','st','št','pi','so'];
-  const today = new Date();
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const day2 = new Date(today);
-  day2.setDate(day2.getDate() + 2);
-  const day3 = new Date(today);
-  day3.setDate(day3.getDate() + 3);
-  
-  const day1Name = daysOfWeek[tomorrow.getDay()];
-  const day2Name = daysOfWeek[day2.getDay()];
-  const day3Name = daysOfWeek[day3.getDay()];
-  
-  const rows=[
-    {name:'Dnes', idx:0},
-    {name:day1Name, idx:1},
-    {name:day2Name, idx:2},
-    {name:day3Name, idx:3}
-  ];
-  let fHtml=`<table style="width:100%;border-collapse:collapse;font-size:24px;">`;
-  rows.forEach((r,i)=>{
-    const borderStyle = i<rows.length-1 ? "border-bottom:1px solid rgba(255,255,255,0.15);" : "";
-    const nameStyle = r.name==='Dnes' ? "font-weight:bold;color:#fff;" : "color:#aaa;";
-    const precip = d.precipitation_sum[r.idx];
-    const precipHtml = precip>0 ? ` 💧 ${precip.toFixed(1)} mm` : '';
-    fHtml+=`<tr style="${borderStyle}">`+
-      `<td style="padding:10px 6px;text-align:left;width:60px;${nameStyle}">${r.name}</td>`+
-      `<td style="padding:10px 12px;text-align:left;font-size:32px;width:50px;">${icon(d.weather_code[r.idx])}</td>`+
-      `<td style="padding:10px 12px;text-align:left;white-space:nowrap;">${Math.round(d.temperature_2m_max[r.idx])}°/${Math.round(d.temperature_2m_min[r.idx])}°</td>`+
-      `<td style="padding:10px 12px;text-align:left;color:#aaa;white-space:nowrap;width:100%;">💨 ${Math.round(d.wind_speed_10m_max[r.idx])} ${windDir(d.wind_direction_10m_dominant[r.idx])}${precipHtml}</td>`+
-    `</tr>`;
-  });
-  fHtml+=`</table>`;
-  document.getElementById('forecast3days').innerHTML='<div class="dashboardSectionTitle">Počasie</div>'+fHtml;
+  fHtml+='</div>';
+  box.innerHTML=fHtml;
   if(typeof positionLeftColumn==='function') positionLeftColumn();
   document.getElementById('weather').style.display='none';
   
@@ -1395,6 +1488,30 @@ async function loadWeather(){
   console.log('Počasie Vráble: chyba načítania', err);
   setApiStatus('weather', false);
  }
+}
+
+// Rýchla aktualizácia iba aktuálnej teploty, pocitovej teploty a ikony.
+// Dennú predpoveď nemeníme: obnovuje sa samostatne každých 15 minút.
+async function refreshCurrentWeather(){
+  try{
+    const url='https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&current=temperature_2m,apparent_temperature,weather_code&timezone=Europe%2FBratislava';
+    const response=await fetch(url,{cache:'no-store'});
+    if(!response.ok) throw new Error('HTTP '+response.status);
+    const data=await response.json();
+    if(!data.current || !Number.isFinite(data.current.temperature_2m)) throw new Error('Chýbajú aktuálne údaje');
+    const code=data.current.weather_code;
+    const icon=([0].includes(code)?'🌞':[1,2].includes(code)?'⛅':[3].includes(code)?'☁️':[45,48].includes(code)?'🌫️':[51,53,55].includes(code)?'🌦️':[61,63,65].includes(code)?'🌧️':[71,73,75].includes(code)?'❄️':[77,85,86].includes(code)?'🌨️':[80,81,82].includes(code)?'⛈️':[95,96,99].includes(code)?'⚡':'🌤️');
+    const current=document.querySelector('#forecast3days .weatherMainTemp');
+    const pictogram=document.querySelector('#forecast3days .weatherMainIcon');
+    const feels=document.querySelector('#forecast3days .weatherFeels');
+    if(current) current.textContent=Math.round(data.current.temperature_2m)+'°';
+    if(pictogram) pictogram.textContent=icon;
+    if(feels && Number.isFinite(data.current.apparent_temperature)) feels.textContent='Pocitovo '+Math.round(data.current.apparent_temperature)+'°';
+    setApiStatus('weather',true);
+  }catch(error){
+    console.warn('Aktuálne počasie: nepodarilo sa obnoviť',error);
+    // Posledné funkčné údaje nechávame zobrazené.
+  }
 }
 
 // WORLD TIME
@@ -1409,38 +1526,39 @@ let worldTableBuilt = false;
 
 function buildWorldTable(){
   const box=document.getElementById('world');
-  if(!box) return;
-  let html=`<table style="width:100%;border-collapse:collapse;font-size:22px;">`;
-  WORLD_CITIES.forEach((c,i)=>{
-    const borderStyle = i<WORLD_CITIES.length-1 ? "border-bottom:1px solid rgba(255,255,255,0.15);" : "";
-    const cityForUrl = encodeURIComponent(c.name.split('–')[1] ? c.name.split('–')[1].trim() : c.name);
-    html+=`<tr style="${borderStyle}cursor:pointer;" onclick="window.open('https://time.is/${cityForUrl}','_blank')" title="Zdroj: time.is">`+
-      `<td style="padding:10px 6px;text-align:left;white-space:nowrap;"><img src="https://flagcdn.com/w40/${c.flag}.png" style="width:24px;height:16px;vertical-align:middle;margin-right:8px;border-radius:2px;"> ${c.name}</td>`+
-      `<td id="worldTime_${i}" style="padding:10px 6px;text-align:center;white-space:nowrap;"></td>`+
-      `<td id="worldWeather_${i}" style="padding:10px 6px;text-align:right;color:#aaa;white-space:nowrap;"></td>`+
-    `</tr>`;
+  if(!box)return;
+  const cityForUrl=(c)=>encodeURIComponent(c.name.split('–')[1]?.trim()||c.name);
+  box.innerHTML=`<div class="dashboardSectionTitle worldSectionTitle">Svetové časy</div><div class="worldTiles">`+
+    WORLD_CITIES.map((c,i)=>`<div class="worldTile" title="Otvoriť miestny čas na time.is" role="link" tabindex="0" data-world-url="https://time.is/${cityForUrl(c)}">
+      <div class="worldTileInfo"><span class="worldCountry">${c.name.split('–')[0].trim()}</span>
+      <div class="worldCity">${c.name.split('–').slice(1).join('–').trim()}</div>
+      <span id="worldTime_${i}" class="worldClock">--:--</span></div>
+      <div class="worldTileBottom"><span id="worldWeatherIcon_${i}" class="worldWeatherIcon">🌤️</span><span id="worldWeather_${i}" class="worldTemperature">--°</span></div>
+    </div>`).join('')+`</div>`;
+  box.querySelectorAll('[data-world-url]').forEach(tile=>{
+    tile.onclick=()=>window.open(tile.dataset.worldUrl,'_blank');
+    tile.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tile.click();}};
   });
-  html+=`</table>`;
-  box.innerHTML=html;
   worldTableBuilt=true;
-  if(typeof fitSwappedPanelText==='function') fitSwappedPanelText();
-  updateWorldTimes();
-  updateWorldWeatherCells();
+  updateWorldTimes();updateWorldWeatherCells();
 }
 
 function updateWorldTimes(){
-  if(!worldTableBuilt) return;
+  if(!worldTableBuilt)return;
   WORLD_CITIES.forEach((c,i)=>{
     const cell=document.getElementById('worldTime_'+i);
-    if(cell) cell.textContent=new Date().toLocaleTimeString("sk-SK",{timeZone:c.tz,hour12:false,hour:'2-digit',minute:'2-digit'});
+    if(cell)cell.textContent=new Date().toLocaleTimeString('sk-SK',{timeZone:c.tz,hour12:false,hour:'2-digit',minute:'2-digit'});
   });
 }
 
 function updateWorldWeatherCells(){
-  if(!worldTableBuilt) return;
+  if(!worldTableBuilt)return;
   WORLD_CITIES.forEach((c,i)=>{
     const cell=document.getElementById('worldWeather_'+i);
-    if(cell) cell.textContent=worldWeatherCache[c.tz] || '';
+    const ico=document.getElementById('worldWeatherIcon_'+i);
+    const raw=worldWeatherCache[c.tz]||'';
+    if(ico)ico.textContent=raw.match(/^(\S+)/)?.[1]||'🌤️';
+    if(cell)cell.textContent=raw.replace(/^\S+\s*/, '')||'--°';
   });
 }
 
@@ -1840,25 +1958,7 @@ function renderLeave(){
 
 // Prispôsobenie písma obsahu po výmene panelov; nezmení ostatné panely.
 function fitSwappedPanelText(){
-  const worldBox=document.getElementById('world');
-  const worldTable=worldBox?.querySelector('table');
-  if(worldBox && worldTable && worldBox.clientWidth){
-    let fs=22;
-    worldTable.style.fontSize=fs+'px';
-    // Najprv zmenši len písmo, nie šírku celej tabuľky.
-    while(fs>12 && worldTable.scrollWidth>worldBox.clientWidth-30){
-      fs--;
-      worldTable.style.fontSize=fs+'px';
-    }
-    // Pre malé panely zmenši aj vnútorné odsadenie buniek.
-    const cells=worldTable.querySelectorAll('td');
-    cells.forEach(c=>{c.style.padding='8px 4px';});
-    while(fs>12 && worldTable.scrollWidth>worldBox.clientWidth-30){
-      fs--;
-      worldTable.style.fontSize=fs+'px';
-    }
-  }
-
+  // Dlaždice majú pružnú mriežku, bez zmeny veľkosti písma v iných paneloch.
 }
 
 function positionLeaveBox(){
@@ -1881,26 +1981,22 @@ function positionLeaveBox(){
 }
 
 function positionLeftColumn(){
-  const sunBox=document.getElementById('sun');
   const forecastBox=document.getElementById('forecast3days');
-  if(!sunBox || !forecastBox) return;
-  // Zjednotenie ľavého okraja a šírky s panelom predpovede počasia.
-  const areaLeft=forecastBox.offsetLeft;
-  const areaWidth=forecastBox.offsetWidth;
-  // Predpoveď s novým nadpisom môže byť vyššia, preto panel slnka posuň pod ňu.
-  sunBox.style.top=(forecastBox.offsetTop + forecastBox.offsetHeight + 15)+'px';
-  sunBox.style.left=areaLeft+'px';
-  sunBox.style.width=areaWidth+'px';
-  const areaTop=sunBox.offsetTop + sunBox.offsetHeight + 15;
-  const gap=15;
-
-  // Svetové metropoly teraz patria pod ľavé panely.
-  const w=document.getElementById('world');
-  if(w){
-    w.style.left=areaLeft+'px';
-    w.style.right='auto';
-    w.style.top=areaTop+'px';
-    w.style.width=areaWidth+'px';
+  const sunBox=document.getElementById('sun');
+  if(!forecastBox) return;
+  if(sunBox) sunBox.style.display='none';
+  const worldBox=document.getElementById('world');
+  if(worldBox){
+    worldBox.style.left=forecastBox.offsetLeft+'px';
+    worldBox.style.right='auto';
+    worldBox.style.top=(forecastBox.offsetTop+forecastBox.offsetHeight+15)+'px';
+    worldBox.style.width=forecastBox.offsetWidth+'px';
+    // Znížiť výšku svetových časov, ak sa dotýkajú pásu správ.
+    worldBox.classList.remove('worldCompact');
+    const news=document.getElementById('historicalEvents');
+    if(news && worldBox.offsetTop+worldBox.offsetHeight>news.offsetTop-14){
+      worldBox.classList.add('worldCompact');
+    }
   }
   if(typeof fitSwappedPanelText==='function') fitSwappedPanelText();
 }
@@ -2152,9 +2248,11 @@ setInterval(()=>{
   
 },1000);
 
+// SVETOVÉ ČASY – aktualizácia každú hodinu
+setInterval(world,60*60000);
+
 // MINÚTOVÁ SLUČKA
 setInterval(()=>{
-  world();
   updateShift();
   updateLunch();
   updateVacation();
@@ -2165,6 +2263,9 @@ setInterval(()=>{
   positionBottomBoxes();
   fitAllDashboardTables();
 },60000);
+
+// AKTUÁLNE POČASIE – každých 5 minút, bez zmeny trojdňovej predpovede
+setInterval(refreshCurrentWeather,5*60000);
 
 // 15-MINÚTOVÁ SLUČKA
 setInterval(()=>{
@@ -2373,7 +2474,7 @@ document.addEventListener('click', (e)=>{
 });
 
 </script>
-<div id="copyrightTag" style="position:absolute;top:12px;left:355px;width:245px;text-align:center;font-family:'Caveat', cursive;font-weight:600;font-size:21px;color:rgba(255,255,255,0.5);letter-spacing:0.3px;white-space:nowrap;overflow:hidden;">© Robert Galaba</div>
+<div id="copyrightTag" style="position:absolute;top:29px;left:355px;width:245px;text-align:center;font-family:'Caveat', cursive;font-weight:600;font-size:21px;color:rgba(255,255,255,0.5);letter-spacing:0.3px;white-space:nowrap;overflow:hidden;">© Robert Galaba</div>
 
 <div id="historicalEvents" class="glass" style="position:absolute;bottom:11px;left:40px;right:40px;width:auto;overflow:hidden;height:auto;display:flex;align-items:center;padding:15px;text-align:center;justify-content:flex-start;">
     <div id="eventScroll" style="display:inline-block;font-size:35px;color:#fff;white-space:nowrap;animation:scrollLeft 225s linear infinite;padding-left:100%;">Načítavam správy...</div>
