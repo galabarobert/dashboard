@@ -75,8 +75,8 @@ body::before {
 
 #weather {position:absolute;top:219px;left:40px;font-size:28px;line-height:1.8;width:auto;white-space:nowrap;height:50px;display:flex;align-items:center;display:none;}
 #forecast3days {position:absolute;top:219px;left:40px;width:501px;box-sizing:border-box;}
-#sun {position:absolute;top:516px;left:40px;font-size:28px;text-align:left;line-height:1.5;}
-#nameday {position:absolute;min-width:380px;font-size:28px;text-align:left;padding-left:25px;white-space:nowrap;box-sizing:border-box;}
+#sun {position:absolute;top:516px;left:40px;width:501px;box-sizing:border-box;font-size:28px;text-align:left;line-height:1.5;}
+#nameday {position:absolute;width:501px;min-width:0;font-size:28px;text-align:left;padding-left:25px;white-space:nowrap;box-sizing:border-box;}
 
 #world{
     position:absolute;
@@ -135,6 +135,7 @@ body::before {
 
 #holidayBox{
     position:absolute;
+    width:501px;
     font-size:42px;
     text-align:left;
     padding-left:25px;
@@ -142,16 +143,6 @@ body::before {
 }
 #holidayDisplay{font-size:28px;color:white;line-height:1.3;}
 
-#miniCalendar{
-    position:absolute;
-    padding:15px;
-    box-sizing:border-box;
-}
-#fuelBox{
-    position:absolute;
-    padding:15px;
-    box-sizing:border-box;
-}
 #leaveBox{
     position:absolute;
     top:0;
@@ -196,6 +187,18 @@ body::before {
 #miniDatePicker .mdpDay.empty{cursor:default;}
 #miniDatePicker .mdpDay.empty:hover{background:none;}
 #miniDatePicker .mdpDay.today{outline:1px solid #00d4ff;}
+/* Radio inherits the same glass surface as all dashboard panels. */
+#radioPanel{position:absolute;box-sizing:border-box;padding:15px;color:#fff;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 12px;overflow:auto;scrollbar-width:thin;}
+#radioPanel button,#radioPanel input{font:inherit;box-sizing:border-box;}
+.radioHeading{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;font-size:18px;line-height:22px;}.radioHeading span{font-size:11px;letter-spacing:1px;color:#aaa;}
+#radioStations{grid-column:1/-1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;}
+#radioPanel button{cursor:pointer;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.10);color:#fff;border-radius:8px;padding:6px 4px;font-size:14px;font-weight:600;line-height:18px;}
+#radioPanel button:hover{background:rgba(255,255,255,.22);}#radioPanel button:focus-visible,#radioPanel input:focus-visible{outline:2px solid #00d4ff;outline-offset:2px;}
+#radioStations button{font-size:13px;white-space:nowrap;}
+#radioStations button[aria-pressed="true"]{background:rgba(0,212,255,.18);color:#00d4ff;border-color:#00d4ff;}
+.radioRotation{grid-column:1/-1;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:4px 18px;min-width:0;font-size:12px;line-height:16px;}.radioRotation label{display:flex;align-items:center;gap:6px;cursor:pointer;}.radioRotation input{accent-color:#00d4ff;margin:0;width:16px;height:16px;}.radioRotation small{flex-basis:100%;font-size:11px;color:#aaa;}
+.radioControls{grid-column:1/-1;display:flex;align-items:center;gap:7px;min-width:0;}#radioPlay{border-radius:50%!important;width:34px;height:34px;flex-shrink:0;background:rgba(0,212,255,.18)!important;color:#00d4ff!important;font-size:17px!important;padding:0!important;}#radioMute{background:transparent!important;border:0!important;font-size:16px!important;padding:2px!important;}#radioVolume{flex:1;width:0;min-width:0;accent-color:#00d4ff;}#radioVolumeLabel{width:37px;flex-shrink:0;font-size:12px;}
+.radioFooter{grid-column:1/-1;display:flex;justify-content:space-between;gap:10px;font-size:12px;color:#aaa;line-height:16px;}#radioStatus{flex:1;min-width:0;}#radioWebsite{color:#8ab4ff;white-space:nowrap;}
 </style>
 </head>
 
@@ -277,9 +280,14 @@ body::before {
     <div id="holidayDisplay"></div>
 </div>
 
-<div id="miniCalendar" class="glass"></div>
-
-<div id="fuelBox" class="glass"></div>
+<section id="radioPanel" class="glass" aria-label="Online rádio">
+  <div class="radioHeading"><strong>◉ Rádio</strong><span>ONLINE</span></div>
+  <div id="radioStations" aria-label="Výber stanice"></div>
+  <div class="radioRotation"><label><input id="radioRotate" type="checkbox">Náhodné striedanie každú hodinu</label><label title="Denne podľa času na Slovensku"><input id="radioSchedule" type="checkbox" checked>Automaticky 7:00 – 17:00</label><small id="radioRotationStatus">Automatické striedanie je vypnuté.</small></div>
+  <div class="radioControls"><button id="radioPlay" type="button" aria-label="Spustiť rádio">▶</button><button id="radioMute" type="button" aria-label="Stlmiť zvuk">🔊</button><input id="radioVolume" aria-label="Hlasitosť" type="range" min="0" max="100" value="60"><output id="radioVolumeLabel">60 %</output></div>
+  <div class="radioFooter"><span id="radioStatus" role="status" aria-live="polite">Vyber stanicu a spusti prehrávanie.</span><a id="radioWebsite" target="_blank" rel="noopener noreferrer">Web rádia ↗</a></div>
+  <audio id="radioAudio" preload="none"></audio>
+</section>
 
 <div id="world" class="glass"></div>
 
@@ -444,11 +452,11 @@ const apiStatus = {
   sun: null,
   weather: null,
   worldWeather: null,
-  fuel: null,
-  currency: null,
-  commodities: null,
-  firebase: null
+  firebase: null,
+  radio: null
 };
+const radioHealth=[];
+let radioHealthRunning=false;
 
 function setApiStatus(key, ok){
   apiStatus[key]=ok;
@@ -462,31 +470,48 @@ function updateApiStatusIndicator(){
   const allKnown=values.every(v=>v!==null);
   const allOk=values.every(v=>v===true);
   const anyFail=values.some(v=>v===false);
+  const anyUnknown=values.some(v=>v==='unknown');
 
   let color, label;
   if(anyFail){
     color='#ff4d4d';
-    label='Chyba načítania API';
+    label='Niektorá služba alebo rádio má chybu';
+  } else if(anyUnknown){
+    color='#ffbf47';label='Niektoré služby sa nepodarilo overiť';
   } else if(allKnown && allOk){
     color='#4caf50';
-    label='Všetky API načítané OK';
+    label='Všetky služby a rádiá sú OK';
   } else {
     color='#888';
-    label='Načítavam API...';
+    label='Načítavam a kontrolujem služby…';
   }
   el.style.background=color;
   el.style.boxShadow='0 0 8px '+color;
 
-  const names={sun:'Slnko/mesiac', weather:'Počasie Vráble', worldWeather:'Svetové počasie', fuel:'PHM ceny', currency:'Kurzy mien', commodities:'Komodity', firebase:'Zdieľaná databáza'};
+  const names={sun:'Slnko/mesiac', weather:'Počasie Vráble', worldWeather:'Svetové počasie', firebase:'Zdieľaná databáza', radio:'Online rádiá (10 staníc)'};
   const lines=Object.keys(apiStatus).map(k=>{
     const v=apiStatus[k];
-    const mark = v===true ? '✓' : (v===false ? '✗' : '…');
-    const markColor = v===true ? '#4caf50' : (v===false ? '#ff4d4d' : '#888');
+    const mark = v===true ? '✓' : (v===false ? '✗' : v==='unknown' ? '?' : '…');
+    const markColor = v===true ? '#4caf50' : (v===false ? '#ff4d4d' : v==='unknown' ? '#ffbf47' : '#888');
     return `<div style="margin:2px 0;"><span style="color:${markColor};font-weight:bold;">${mark}</span> ${names[k]}</div>`;
   });
   const panel=document.getElementById('apiStatusPanel');
   if(panel){
     panel.innerHTML=`<div style="font-weight:bold;margin-bottom:6px;color:${color};">${label}</div>`+lines.join('');
+    if(radioHealth.length){
+      const details=document.createElement('div');
+      details.style.cssText='border-top:1px solid #555;margin-top:8px;padding-top:6px;';
+      for(const item of radioHealth){
+        const row=document.createElement('div');
+        row.style.cssText='margin:3px 0;font-size:12px;';
+        row.style.color=item.state===true?'#82d487':item.state===false?'#ff8282':item.state==='unknown'?'#ffbf47':'#aaa';
+        row.textContent=(item.state===true?'✓ ':item.state===false?'✗ ':item.state==='unknown'?'? ':'… ')+item.name+' — '+item.message;
+        if(item.checkedAt)row.title='Overené: '+new Date(item.checkedAt).toLocaleString('sk-SK');
+        details.appendChild(row);
+      }
+      const note=document.createElement('div');note.textContent='Kontrola načítania zvuku • každých 15 minút';note.style.cssText='font-size:11px;color:#aaa;margin:7px 0;';details.appendChild(note);
+      const button=document.createElement('button');button.textContent=radioHealthRunning?'Kontrolujem…':'Znova skontrolovať rádiá';button.disabled=radioHealthRunning;button.style.cssText='cursor:pointer;background:#444;color:white;border:1px solid #777;border-radius:5px;padding:5px 8px;';button.onclick=()=>window.checkRadioHealth?.();details.appendChild(button);panel.appendChild(details);
+    }
   }
   el.title=label+' (klikni pre detail)';
 }
@@ -990,259 +1015,6 @@ function updateHolidays(){
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
 
-// MINI KALENDÁR
-function buildMiniCalendar(){
-  const cal=document.getElementById('miniCalendar');
-  if(!cal) return;
-  cal.style.cursor='pointer';
-  cal.onclick=function(){ window.open('https://kalendar.sme.sk/','_blank'); };
-  cal.title='Zdroj: kalendar.sme.sk';
-  const now=new Date();
-  const year=now.getFullYear();
-  const month=now.getMonth();
-  const todayDate=now.getDate();
-  const monthNames=["Január","Február","Marec","Apríl","Máj","Jún","Júl","August","September","Október","November","December"];
-  const firstDay=new Date(year,month,1);
-  const startOffset=(firstDay.getDay()+6)%7;
-  const daysInMonth=new Date(year,month+1,0).getDate();
-
-  let html=`<div style="font-weight:bold;font-size:16px;margin-bottom:6px;text-align:center;">📅 ${monthNames[month]} ${year}</div>`;
-  html+=`<table style="width:100%;border-collapse:collapse;font-size:13px;text-align:center;">`;
-  html+=`<tr>`;
-  ["Po","Ut","St","Št","Pi","So","Ne"].forEach((d,i)=>{
-    const wc=(i>=5)?'#ff8a8a':'#aaa';
-    html+=`<th style="padding:2px;color:${wc};font-weight:normal;">${d}</th>`;
-  });
-  html+=`</tr>`;
-
-  let day=1;
-  for(let row=0; row<6; row++){
-    html+=`<tr>`;
-    for(let col=0; col<7; col++){
-      const cellIndex=row*7+col;
-      if(cellIndex<startOffset || day>daysInMonth){
-        html+=`<td style="padding:2px;"></td>`;
-      } else {
-        const isToday=(day===todayDate);
-        const isWeekend=(col>=5);
-        let content=String(day);
-        let style="padding:2px;";
-        if(isToday){
-          content=`<span style="background:#00d4ff;color:#001a33;border-radius:50%;padding:2px 5px;font-weight:bold;">${day}</span>`;
-        } else if(isWeekend){
-          style+="color:#ff8a8a;";
-        }
-        html+=`<td style="${style}">${content}</td>`;
-        day++;
-      }
-    }
-    html+=`</tr>`;
-    if(day>daysInMonth) break;
-  }
-  html+=`</table>`;
-  cal.innerHTML=html;
-  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
-}
-
-// PHM
-const PHM_STANICE = [
-  { nazov:"OMV Vráble",      pumpa:654, benzin:"1,820", nafta:"1,960" },
-  { nazov:"Slovnaft Vráble", pumpa:168, benzin:"1,840", nafta:"1,980" }
-];
-let phmInfo = "najnižšia z OMV/Slovnaft · hackmath.net";
-
-function toNum(s){ return parseFloat(String(s).replace(',','.')); }
-function fmtPrice(s){ if(!s) return null; return toNum(s).toFixed(2).replace('.',','); }
-
-function renderFuel(){
-  const box=document.getElementById('fuelBox');
-  if(!box) return;
-
-  let bMin=null, nMin=null;
-  PHM_STANICE.forEach(s=>{
-    if(s.benzin && (bMin===null || toNum(s.benzin) < toNum(bMin))) bMin=s.benzin;
-    if(s.nafta  && (nMin===null || toNum(s.nafta)  < toNum(nMin)))  nMin=s.nafta;
-  });
-
-  const linkStyle='cursor:pointer;';
-  let html=`<div style="display:flex;align-items:stretch;">`;
-  html+=`<table onclick="window.open('https://www.hackmath.net/sk/cerpacia-stanica?pumpa=654','_blank')" title="Zdroj: hackmath.net" style="flex:1;width:33%;border-collapse:collapse;font-size:17px;${linkStyle}">`;
-  html+=`<tr><td colspan="2" style="font-weight:bold;font-size:18px;padding-bottom:10px;text-align:center;white-space:nowrap;">⛽ PHM Vráble</td></tr>`;
-  html+=`<tr><td style="padding:5px 4px;text-align:left;">Benzín</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${fmtPrice(bMin)||'-'} €/l</td></tr>`;
-  html+=`<tr><td style="padding:5px 4px;text-align:left;">Nafta</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${fmtPrice(nMin)||'-'} €/l</td></tr>`;
-  html+=`</table>`;
-  html+=`<div style="width:1px;background:rgba(255,255,255,0.25);margin:0 14px;align-self:stretch;"></div>`;
-  html+=`<table onclick="window.open('https://www.frankfurter.app/','_blank')" title="Zdroj: frankfurter.app (ECB)" style="flex:1;width:33%;border-collapse:collapse;font-size:17px;${linkStyle}">`;
-  html+=`<tr><td colspan="2" style="font-weight:bold;font-size:18px;padding-bottom:10px;text-align:center;">💶 Kurzy</td></tr>`;
-  html+=`<tr><td style="padding:5px 4px;text-align:left;">USD</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${currencyData.USD||'-'}</td></tr>`;
-  html+=`<tr><td style="padding:5px 4px;text-align:left;">CZK</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${currencyData.CZK||'-'}</td></tr>`;
-  html+=`</table>`;
-  html+=`<div style="width:1px;background:rgba(255,255,255,0.25);margin:0 14px;align-self:stretch;"></div>`;
-  html+=`<table onclick="window.open('https://gold-api.com/','_blank')" title="Zdroj: gold-api.com" style="flex:1;width:33%;border-collapse:collapse;font-size:17px;${linkStyle}">`;
-  html+=`<tr><td colspan="2" style="font-weight:bold;font-size:18px;padding-bottom:10px;text-align:center;">🪙 Komodity</td></tr>`;
-  html+=`<tr><td style="padding:5px 4px;text-align:left;">Bitcoin</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${commodityData.btc||'-'} $</td></tr>`;
-  html+=`<tr><td style="padding:5px 4px;text-align:left;">Zlato</td><td style="padding:5px 4px;text-align:right;white-space:nowrap;color:#00d4ff;font-weight:bold;">${commodityData.gold||'-'} $</td></tr>`;
-  html+=`</table>`;
-  html+=`</div>`;
-  html+=`<div style="font-size:11px;color:#aaa;text-align:center;margin-top:8px;">${phmInfo} • ${currencyInfo} • ${commodityInfo}</div>`;
-  box.innerHTML=html;
-  if(typeof positionBottomBoxes==='function') positionBottomBoxes();
-}
-
-function syncFuelCurrencyHeight(){
-  const box=document.getElementById('fuelBox');
-  const cal=document.getElementById('miniCalendar');
-  if(!box) return;
-  box.style.height="auto";
-  if(cal) cal.style.height="auto";
-  requestAnimationFrame(()=>{
-    let h=box.offsetHeight;
-    if(cal) h=Math.max(h, cal.offsetHeight);
-    box.style.height=h+"px";
-    if(cal) cal.style.height=h+"px";
-  });
-}
-
-function parseStanicaText(t){
-  const b=t.match(/natural\s*95\s*\(benz[íi]n\)\s*[·:]\s*([0-9][.,][0-9]{2,3})/i);
-  const n=t.match(/diesel\s*\(nafta\)\s*[·:]\s*([0-9][.,][0-9]{2,3})/i);
-  if(!b && !n) return null;
-  return { benzin: b ? b[1].replace('.',',') : null, nafta: n ? n[1].replace('.',',') : null };
-}
-
-async function fetchStanica(pumpa){
-  const url='https://www.hackmath.net/sk/cerpacia-stanica?pumpa='+pumpa;
-
-  try{
-    const r=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});
-    if(r.ok){
-      const json=await r.json();
-      if(json && json.contents){
-        const parsed=parseStanicaText(json.contents);
-        if(parsed && (parsed.benzin || parsed.nafta)) return parsed;
-      }
-    }
-  }catch(e){ /* skús ďalšie proxy */ }
-
-  try{
-    const r=await fetch('https://proxy.corsfix.com/?'+url,{signal:AbortSignal.timeout(7000)});
-    if(r.ok){
-      const parsed=parseStanicaText(await r.text());
-      if(parsed && (parsed.benzin || parsed.nafta)) return parsed;
-    }
-  }catch(e){ /* skús ďalšie proxy */ }
-
-  const text = await fetchTextViaCorsProxy(url);
-  return text ? parseStanicaText(text) : null;
-}
-
-async function loadFuelPrices(){
-  let ok=false;
-  for(let s of PHM_STANICE){
-    const d=await fetchStanica(s.pumpa);
-    if(d){
-      if(d.benzin) s.benzin=d.benzin;
-      if(d.nafta)  s.nafta=d.nafta;
-      ok=true;
-    }
-  }
-  if(ok){
-    phmInfo='najnižšia z OMV/Slovnaft · '+new Date().toLocaleDateString('sk-SK');
-    renderFuel();
-    console.log('✓ Ceny PHM Vráble aktualizované');
-  } else {
-    console.log('PHM: používam posledné známe ceny');
-  }
-  setApiStatus('fuel', ok);
-}
-
-// KURZY MIEN
-let currencyData = { USD:null, CZK:null };
-let currencyInfo = "ECB · frankfurter.app";
-
-function renderCurrency(){
-  renderFuel();
-}
-
-async function loadCurrency(){
-  const urls=[
-    'https://api.frankfurter.dev/v1/latest?base=EUR&symbols=USD,CZK',
-    'https://api.frankfurter.app/latest?from=EUR&to=USD,CZK'
-  ];
-  for(const url of urls){
-    try{
-      const r=await fetch(url,{signal:AbortSignal.timeout(7000)});
-      if(!r.ok) continue;
-      const data=await r.json();
-      if(data && data.rates && (data.rates.USD || data.rates.CZK)){
-        if(data.rates.USD) currencyData.USD=data.rates.USD.toFixed(3);
-        if(data.rates.CZK) currencyData.CZK=data.rates.CZK.toFixed(2);
-        currencyInfo='ECB · '+new Date().toLocaleDateString('sk-SK');
-        renderCurrency();
-        console.log('✓ Kurzy mien aktualizované');
-        setApiStatus('currency', true);
-        return;
-      }
-    }catch(e){ /* skús ďalšiu URL */ }
-  }
-  console.log('Kurzy mien: chyba načítania, používam posledné známe');
-  renderCurrency();
-  setApiStatus('currency', false);
-}
-
-// KOMODITY
-let commodityData = { btc:null, gold:null };
-let commodityInfo = "gold-api.com";
-
-async function fetchGoldApiPrice(symbol){
-  const url='https://api.gold-api.com/price/'+symbol;
-  try{
-    const r=await fetch(url,{signal:AbortSignal.timeout(7000)});
-    if(r.ok){
-      const data=await r.json();
-      if(data && data.price) return data.price;
-    }
-  }catch(e){ /* skús cez proxy */ }
-  const text = await fetchTextViaCorsProxy(url);
-  if(text){
-    try{ const data=JSON.parse(text); if(data && data.price) return data.price; }catch(e){}
-  }
-  return null;
-}
-
-async function loadCommodities(){
-  let ok=false;
-  try{
-    const gold=await fetchGoldApiPrice('XAU');
-    if(gold){ commodityData.gold=gold.toFixed(0); ok=true; }
-  }catch(e){}
-  try{
-    const btc=await fetchGoldApiPrice('BTC');
-    if(btc){ commodityData.btc=Math.round(btc).toLocaleString('sk-SK'); ok=true; }
-  }catch(e){}
-  if(ok){
-    commodityInfo='gold-api.com · '+new Date().toLocaleDateString('sk-SK');
-    console.log('✓ Komodity aktualizované (zlato: '+(commodityData.gold||'-')+', Bitcoin: '+(commodityData.btc||'-')+')');
-  } else {
-    console.log('Komodity: chyba načítania, používam posledné known');
-  }
-  renderFuel();
-  setApiStatus('commodities', ok);
-}
-
-// DENNÁ AKTUALIZÁCIA O 6:00
-let lastDailyUpdateDate=-1;
-function checkDailyMarketUpdate(){
-  const n=new Date();
-  if(n.getHours()===6 && n.getDate()!==lastDailyUpdateDate){
-    lastDailyUpdateDate=n.getDate();
-    loadFuelPrices();
-    loadCurrency();
-    loadCommodities();
-    console.log('✓ Ranná aktualizácia (6:00): PHM, kurzy, komodity');
-  }
-}
-
 // ===== VOĽNO V KANCELÁRII =====
 let leaveData = loadLeave();
 function loadLeave(){
@@ -1429,9 +1201,13 @@ function positionLeaveBox(){
 
 function positionLeftColumn(){
   const sunBox=document.getElementById('sun');
-  if(!sunBox) return;
-  const areaLeft=sunBox.offsetLeft;
-  const areaWidth=Math.max(sunBox.offsetWidth, 480);
+  const forecastBox=document.getElementById('forecast3days');
+  if(!sunBox || !forecastBox) return;
+  // Zjednotenie ľavého okraja a šírky s panelom predpovede počasia.
+  const areaLeft=forecastBox.offsetLeft;
+  const areaWidth=forecastBox.offsetWidth;
+  sunBox.style.left=areaLeft+'px';
+  sunBox.style.width=areaWidth+'px';
   const areaTop=sunBox.offsetTop + sunBox.offsetHeight + 15;
   const gap=15;
 
@@ -1477,24 +1253,16 @@ function positionBottomBoxes(){
   const areaTop = Math.max(auditsBottom, leaveBottom) + gap;
   const totalWidth = leaveLeft - gap - areaLeft;
 
-  const mc=document.getElementById('miniCalendar');
-  const fb=document.getElementById('fuelBox');
-
-  const calWidth=totalWidth*0.34;
-  const fuelWidth=totalWidth - gap - calWidth;
-  if(mc){
-    mc.style.left=areaLeft+'px';
-    mc.style.right='auto';
-    mc.style.top=areaTop+'px';
-    mc.style.width=calWidth+'px';
+  const radio=document.getElementById('radioPanel');
+  if(radio){
+    radio.style.left=areaLeft+'px';
+    radio.style.top=areaTop+'px';
+    radio.style.width=totalWidth+'px';
+    // Keep a clear gap above the news ticker, even when audits grow.
+    const ticker=document.getElementById('historicalEvents');
+    const bottomLimit=ticker ? ticker.offsetTop : 990;
+    radio.style.maxHeight=Math.max(0,bottomLimit-gap-areaTop)+'px';
   }
-  if(fb){
-    fb.style.left=(areaLeft+calWidth+gap)+'px';
-    fb.style.right='auto';
-    fb.style.top=areaTop+'px';
-    fb.style.width=fuelWidth+'px';
-  }
-  syncFuelCurrencyHeight();
   if(typeof positionLeftColumn==='function') positionLeftColumn();
 }
 
@@ -1673,7 +1441,7 @@ function renderCustomAudits(){
 // LOOP – každú sekundu
 setInterval(()=>{
   updateTime();
-  checkDailyMarketUpdate();
+  
 },1000);
 
 // MINÚTOVÁ SLUČKA
@@ -1684,7 +1452,7 @@ setInterval(()=>{
   updateVacation();
   updateNameday();
   updateHolidays();
-  buildMiniCalendar();
+  
   renderLeave();
   positionBottomBoxes();
 },60000);
@@ -1707,12 +1475,12 @@ loadWeather();
 worldWeather();
 loadSun();
 updateHolidays();
-buildMiniCalendar();
-renderFuel();
-loadFuelPrices();
-renderCurrency();
-loadCurrency();
-loadCommodities();
+
+
+
+
+
+
 renderCustomAudits();
 renderLeave();
 positionBottomBoxes();
@@ -1914,5 +1682,184 @@ document.addEventListener('click', (e)=>{
 
 <div id="miniDatePicker"></div>
 
+<script>
+// Recompute once the bottom ticker and all page elements exist.
+positionBottomBoxes();
+if(typeof ResizeObserver!=='undefined'){
+  const radioLayoutObserver=new ResizeObserver(()=>positionBottomBoxes());
+  radioLayoutObserver.observe(document.getElementById('historicalEvents'));
+}
+// Online radio player and silent, bounded stream availability checks.
+(()=>{
+ const stations=[
+ ['Europa 2','https://stream.bauermedia.sk/europa2.mp3','https://www.europa2.sk/',128],
+ ['Expres','https://stream.bauermedia.sk/128.mp3','https://www.expres.sk/',128],
+ ['Fun Rádio','https://stream.funradio.sk/funpgm256.mp3','https://www.funradio.sk/',256],
+ ['Rádio Melody','https://stream.bauermedia.sk/melody-hi.mp3','https://www.radiomelody.sk/',128],
+ ['Rádio Vlna','https://stream.radiovlna.sk/vlna-hi.mp3','https://radiovlna.sk/',128],
+ ['Fun Dance','https://stream.funradio.sk/dance128.mp3','https://www.funradio.sk/',128],
+ ['Fun Chill','https://stream.funradio.sk/chill128.mp3','https://www.funradio.sk/',128],
+ ['Fun Mileniálky','https://stream.funradio.sk/milenialky128.mp3','https://www.funradio.sk/',128],
+ ['Fun CZ/SK','https://stream.funradio.sk/cs128.mp3','https://www.funradio.sk/',128],
+ ['Fun 80/90','https://stream.funradio.sk/80-90-128.mp3','https://www.funradio.sk/',128]
+ ];
+ // Audio loading avoids fetch/CORS restrictions and never plays probe sound.
+ stations.forEach(station=>radioHealth.push({name:station[0],state:null,message:'čaká na kontrolu',checkedAt:0}));
+ function refreshRadioHealth(){
+  const states=radioHealth.map(item=>item.state);
+  setApiStatus('radio',states.some(v=>v===false)?false:states.some(v=>v===null)?null:states.some(v=>v==='unknown')?'unknown':true);
+ }
+ function recordHealth(station,state,message){
+  const item=radioHealth.find(item=>item.name===station[0]);
+  if(item){Object.assign(item,{state,message,checkedAt:Date.now()});refreshRadioHealth();}
+ }
+ function probeStream(url){
+  return new Promise(resolve=>{
+   const probe=new Audio();probe.muted=true;probe.volume=0;probe.preload='auto';
+   let finished=false,timeout;
+   function done(state,message){
+    if(finished)return;finished=true;clearTimeout(timeout);
+    probe.onloadeddata=null;probe.oncanplay=null;probe.onerror=null;
+    probe.pause();probe.removeAttribute('src');probe.load();resolve({state,message});
+   }
+   probe.onloadeddata=probe.oncanplay=()=>done(true,'zvuk sa načítal');
+   probe.onerror=()=>done(false,'stream sa nepodarilo načítať');
+   timeout=setTimeout(()=>done('unknown','neoverené – časový limit'),12000);
+   probe.src=url;probe.load();
+  });
+ }
+ window.checkRadioHealth=async()=>{
+  if(radioHealthRunning)return;
+  radioHealthRunning=true;
+  radioHealth.forEach(item=>{item.state=null;item.message='kontrolujem…';});refreshRadioHealth();
+  let cursor=0;
+  async function worker(){
+   while(cursor<stations.length){
+    const station=stations[cursor++];
+    let result=await probeStream(station[1]);
+    if(result.state!==true&&station[0]==='Fun Rádio'){
+     const fallback=await probeStream('https://stream.funradio.sk/fun192.mp3');
+     if(fallback.state===true)result={state:true,message:'OK • záložný stream 192 kb/s'};
+     else {
+      const low=await probeStream('https://stream.funradio.sk/fun128.mp3');
+      if(low.state===true)result={state:true,message:'OK • záložný stream 128 kb/s'};
+      else if([result,fallback,low].some(r=>r.state==='unknown'))result={state:'unknown',message:'neoverené – časový limit'};
+     }
+    }
+    recordHealth(station,result.state,result.message);
+   }
+  }
+  try{await Promise.all([worker(),worker()]);}
+  finally{radioHealthRunning=false;refreshRadioHealth();}
+ };
+ setTimeout(()=>window.checkRadioHealth(),1000);
+ setInterval(()=>{if(!document.hidden)window.checkRadioHealth();},15*60*1000);
+ refreshRadioHealth();
+ const $=id=>document.getElementById(id),audio=$('radioAudio'),status=$('radioStatus'),play=$('radioPlay'),vol=$('radioVolume');
+ let selected=stations[0],wanted=false,attempt=0,timer,sourceIndex=0,nextSwitchAt=0;
+ const schedule=$('radioSchedule');
+ const rotation=$('radioRotate'),rotationStatus=$('radioRotationStatus'),hour=60*60*1000;
+ const read=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+ const save=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+ const legacyNames={'Rádio Expres':'Expres','Fun SK/CZ':'Fun CZ/SK','Fun 80’s – 90’s':'Fun 80/90'};
+ const savedStation=read('dashboardRadioStation');
+ selected=stations.find(s=>s[0]===(legacyNames[savedStation]||savedStation))||selected;
+ rotation.checked=read('dashboardRadioRotate')!=='false';
+ schedule.checked=read('dashboardRadioSchedule')!=='false';
+ let remainingStations=stations.slice(),startedDay='';
+ const scheduleClock=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+ function clock(){const parts=Object.fromEntries(scheduleClock.formatToParts(new Date()).map(p=>[p.type,p.value]));return {day:parts.year+'-'+parts.month+'-'+parts.day,minute:Number(parts.hour)*60+Number(parts.minute)};}
+ function inWindow(){const t=clock().minute;return t>=420&&t<1020;}
+ function nextRandom(){
+  if(!remainingStations.length)remainingStations=stations.slice();
+  const eligible=remainingStations.filter(s=>s!==selected);
+  const next=eligible[Math.floor(Math.random()*eligible.length)];
+  remainingStations=remainingStations.filter(s=>s!==next);return next;
+ }
+ const stored=read('dashboardRadioVolume');vol.value=stored!==null&&Number.isFinite(+stored)?Math.max(0,Math.min(100,+stored)):60;
+ function volume(){audio.volume=+vol.value/100;$('radioVolumeLabel').textContent=vol.value+' %';save('dashboardRadioVolume',vol.value)}volume();
+ function controls(){play.textContent=wanted?'■':'▶';play.setAttribute('aria-label',wanted?'Zastaviť rádio':'Spustiť rádio');}
+ function selection(){$('radioWebsite').textContent='Web rádia ↗';[...$('radioStations').children].forEach((b,i)=>b.setAttribute('aria-pressed',String(stations[i]===selected)));$('radioWebsite').hidden=!selected[2];if(selected[2])$('radioWebsite').href=selected[2];}
+ function stop(){wanted=false;attempt++;nextSwitchAt=0;updateRotation();clearTimeout(timer);audio.pause();audio.removeAttribute('src');audio.load();controls();}
+ function fail(message){stop();status.textContent=message;}
+ function start(){
+  if(schedule.checked&&!inWindow()){stop();status.textContent='Čakám na 7:00 • pre ručné hranie vypni automatický čas.';return;}
+  if(schedule.checked)startedDay=clock().day;
+  remainingStations=remainingStations.filter(s=>s!==selected);
+  stop();wanted=true;const token=++attempt;controls();
+  sourceIndex=0;
+  const sources=selected[0]==='Fun Rádio'?[selected[1],'https://stream.funradio.sk/fun192.mp3','https://stream.funradio.sk/fun128.mp3']:[selected[1]];
+  function connect(){
+    if(token!==attempt)return;
+    status.textContent='Pripájam: '+selected[0]+'…';audio.src=sources[sourceIndex];audio.load();
+    clearTimeout(timer);timer=setTimeout(()=>fallback(),20000);
+    const promise=audio.play();if(promise)promise.catch(e=>{
+      if(token!==attempt)return;
+      if(e.name==='NotAllowedError')fail('Prehliadač vyžaduje kliknutie na ▶.');
+      else if(e.name!=='AbortError')fallback();
+    });
+  }
+  let switching=false;
+  function fallback(){
+    if(token!==attempt||switching)return;
+    switching=true;clearTimeout(timer);
+    if(sourceIndex+1<sources.length){sourceIndex++;audio.pause();setTimeout(()=>{switching=false;connect();},0);}
+    else {recordHealth(selected,false,'prehrávanie zlyhalo');fail('Stream je nedostupný. Skús znova, inú stanicu alebo web rádia.');}
+  }
+  audio.onerror=()=>{if(wanted)fallback();};connect();
+ }
+ stations.forEach(s=>{const b=document.createElement('button');b.type='button';b.textContent=s[0];b.title=(s[3]||128)+' kb/s MP3';b.onclick=()=>{selected=s;save('dashboardRadioStation',s[0]);selection();start();};$('radioStations').appendChild(b)});
+ selection();status.textContent=selected[0]+' • pripravené na prehrávanie';
+ play.onclick=()=>{if(wanted){stop();status.textContent=selected[0]+' • zastavené';}else start();};
+ vol.oninput=volume;
+ $('radioMute').onclick=()=>{audio.muted=!audio.muted;$('radioMute').textContent=audio.muted?'🔇':'🔊';$('radioMute').setAttribute('aria-label',audio.muted?'Zapnúť zvuk':'Stlmiť zvuk');};
+ // Schedule relative to playback start (not the next clock-hour).
+ function updateRotation(){
+  if(!rotation.checked){rotationStatus.textContent='Automatické striedanie je vypnuté.';return;}
+  if(!wanted||!nextSwitchAt){rotationStatus.textContent=schedule.checked?'Denne 7:00–17:00 • náhodne bez opakovania':'Spusti rádio • prepnutie po 60 minútach.';return;}
+  const remaining=Math.max(0,Math.ceil((nextSwitchAt-Date.now())/1000));
+  const minutes=Math.floor(remaining/60),seconds=remaining%60;
+  rotationStatus.textContent='Náhodné rádio'+' o '+minutes+':'+String(seconds).padStart(2,'0');
+ }
+ function checkRotation(){
+  checkSchedule();
+  if(rotation.checked&&wanted&&nextSwitchAt&&Date.now()>=nextSwitchAt){
+   selected=nextRandom();
+   save('dashboardRadioStation',selected[0]);selection();start();
+  }
+  updateRotation();
+ }
+ function checkSchedule(){
+  if(!schedule.checked)return;
+  const t=clock();
+  if(t.minute<420||t.minute>=1020){
+   if(wanted){stop();status.textContent='Rádio vypnuté • ďalší štart o 7:00.';}
+   return;
+  }
+  if(startedDay!==t.day){
+   startedDay=t.day;
+   if(!wanted){selected=nextRandom();save('dashboardRadioStation',selected[0]);selection();start();}
+  }
+ }
+ schedule.onchange=()=>{
+  save('dashboardRadioSchedule',String(schedule.checked));
+  if(schedule.checked){startedDay='';checkSchedule();}
+  updateRotation();
+ };
+ rotation.onchange=()=>{
+  save('dashboardRadioRotate',String(rotation.checked));
+  nextSwitchAt=rotation.checked&&wanted&&!audio.paused&&audio.readyState>=3?Date.now()+hour:0;
+  updateRotation();
+ };
+ setInterval(checkRotation,1000);
+ document.addEventListener('visibilitychange',checkRotation);
+ window.addEventListener('pageshow',checkRotation);
+ updateRotation();
+ audio.addEventListener('playing',()=>{if(!wanted)return;recordHealth(selected,true,'práve hrá');clearTimeout(timer);if(rotation.checked&&!nextSwitchAt)nextSwitchAt=Date.now()+hour;updateRotation();status.textContent='● Naživo: '+selected[0]+(stations.includes(selected)?' • '+(selected[0]==='Fun Rádio'?[256,192,128][sourceIndex]:128)+' kb/s':'');});
+ audio.addEventListener('waiting',()=>{if(wanted)status.textContent='Načítavam zvuk: '+selected[0]+'…';});
+ audio.addEventListener('ended',()=>{if(wanted)fail('Vysielanie sa skončilo. Klikni na ▶ pre nové pripojenie.');});
+ checkSchedule();
+})();
+</script>
 </body>
 </html>
