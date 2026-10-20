@@ -605,7 +605,7 @@ body::after { display:none !important; content:none !important; }
 .weatherDayIcon{font-size:38px;line-height:1.2;}
 .weatherDayTemp{font-size:24px;font-weight:700;white-space:nowrap;}
 .weatherDayTemp span{font-size:15px;font-weight:400;}
-.weatherDayRain,.weatherDayMm{font-size:15px;white-space:nowrap;}
+.weatherDayRain,.weatherDayWind,.weatherDayMm{font-size:15px;white-space:nowrap;}
 @media(max-width:700px){.weatherMainTemp{font-size:70px;}}
 
 
@@ -1049,7 +1049,7 @@ body::after { display:none !important; content:none !important; }
 #stage #forecast3days .weatherDayName{font-size:20px!important;}
 #stage #forecast3days .weatherDayIcon{font-size:44px!important;}
 #stage #forecast3days .weatherDayTemp{font-size:27px!important;}
-#stage #forecast3days .weatherDayRain,#stage #forecast3days .weatherDayMm{font-size:17px!important;}
+#stage #forecast3days .weatherDayRain,#stage #forecast3days .weatherDayWind,#stage #forecast3days .weatherDayMm{font-size:17px!important;}
 #stage #forecast3days .weatherNextDays{margin-top:auto!important;gap:10px!important;}
 #stage #world{display:flex!important;flex-direction:column!important;overflow:hidden!important;}
 #stage #world .worldTiles{flex:1 1 auto!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;min-height:0!important;}
@@ -1077,7 +1077,7 @@ body::after { display:none !important; content:none !important; }
 #stage #forecast3days .weatherDayIcon{font-size:36px!important;line-height:1!important;}
 #stage #forecast3days .weatherDayTemp{font-size:23px!important;}
 #stage #forecast3days .weatherDayTemp span{font-size:14px!important;}
-#stage #forecast3days .weatherDayRain,#stage #forecast3days .weatherDayMm{font-size:14px!important;}
+#stage #forecast3days .weatherDayRain,#stage #forecast3days .weatherDayWind,#stage #forecast3days .weatherDayMm{font-size:14px!important;}
 /* Svetové hodiny sa zmestia nad spodný pás správ, bez nadmerných rozostupov. */
 #stage #world{padding:9px 12px!important;}
 #stage #world .worldTiles{gap:7px!important;}
@@ -1132,7 +1132,7 @@ body::after { display:none !important; content:none !important; }
 #stage #forecast3days .weatherDayIcon{font-size:45px!important;}
 #stage #forecast3days .weatherDayTemp{font-size:29px!important;}
 #stage #forecast3days .weatherDayTemp span{font-size:18px!important;}
-#stage #forecast3days .weatherDayRain,#stage #forecast3days .weatherDayMm{font-size:17px!important;}
+#stage #forecast3days .weatherDayRain,#stage #forecast3days .weatherDayWind,#stage #forecast3days .weatherDayMm{font-size:17px!important;}
 #stage #world{height:185px!important;max-height:185px!important;min-height:185px!important;}
 #stage #world .worldTile{padding:5px 8px!important;}
 #stage #world .worldSectionTitle{margin-bottom:4px!important;}
@@ -1173,6 +1173,7 @@ body::after { display:none !important; content:none !important; }
   font-weight:500!important;
 }
 #forecast3days .weatherDayRain,
+#forecast3days .weatherDayWind,
 #forecast3days .weatherDayMm{
   font-size:18px!important;
   line-height:1.15!important;
@@ -1403,6 +1404,7 @@ body::after { display:none !important; content:none !important; }
   font-weight:520!important;
 }
 #forecast3days .weatherDayRain,
+#forecast3days .weatherDayWind,
 #forecast3days .weatherDayMm{
   font-size:19px!important;
   line-height:1.1!important;
@@ -1422,6 +1424,7 @@ body::after { display:none !important; content:none !important; }
 /* Väčšie podčiarknuté údaje bez orezávania spodného riadka */
 #stage #forecast3days .weatherDayCard {padding:10px 4px 13px!important; gap:6px!important; justify-content:space-between!important;}
 #stage #forecast3days .weatherDayRain,
+#stage #forecast3days .weatherDayWind,
 #stage #forecast3days .weatherDayMm {font-size:20px!important;line-height:1.12!important;font-weight:650!important;letter-spacing:-.35px!important;white-space:nowrap!important;}
 #stage #forecast3days .weatherDayIcon {position:relative;overflow:visible!important;}
 /* Plastický oblak a jednotlivé animované kvapky, nie statický dážď v emoji. */
@@ -1558,6 +1561,453 @@ body::after { display:none !important; content:none !important; }
 #stage tr.event-soon > td {background:transparent!important;border-top:0!important;border-bottom:1px solid rgba(255,255,255,.1)!important;}
 #shiftBox .workBarFill,#shiftBox .workBarFill.lunch,#shiftBox .workBarFill.warn {background:#4b9bff!important;}
 </style>
+
+<style id="leave-calendar-glass-cards">
+#leaveBox{padding-bottom:14px!important;}
+#leaveList{font-size:28px!important;padding:0 8px 8px!important;}
+.leaveCardsWrap{display:flex;flex-direction:column;gap:8px;}
+.leaveGlassCard{display:grid;grid-template-columns:96px minmax(0,1fr) auto;align-items:center;gap:12px;padding:8px 10px;border-radius:16px;background:linear-gradient(145deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));border:1px solid rgba(255,255,255,0.10);box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 6px 16px rgba(0,0,0,0.10);}
+.leaveGlassCard:hover{background:linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.07));}
+.leaveDateTile{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:58px;padding:6px 8px;box-sizing:border-box;border-radius:16px;background:linear-gradient(160deg, rgba(255,255,255,0.17), rgba(255,255,255,0.08));border:1px solid rgba(255,255,255,0.12);box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), inset 0 -1px 0 rgba(255,255,255,0.05);cursor:pointer;}
+.leaveDateTile::before{content:"";position:absolute;top:23px;left:0;right:0;height:1px;background:rgba(255,255,255,0.10);}
+.leaveDateDow{font-size:13px;line-height:1;letter-spacing:.35px;color:rgba(255,255,255,0.82);text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+.leaveDateMain{font-size:20px;line-height:1.05;font-weight:800;color:#ffffff;text-align:center;white-space:nowrap;}
+.leaveDateRange{display:none;}
+.leavePersonInfo{min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:0;}
+.leavePeople{min-width:0;font-size:18px;line-height:1.1;font-weight:700;color:#fff;}
+.leavePeople .leavePersonName{cursor:pointer;display:inline-block;}
+.leavePeople .leavePersonName:hover{text-decoration:underline;}
+.leaveSubtitle{display:none;}
+.leaveCountdownPill{align-self:center;justify-self:end;min-width:78px;max-width:102px;padding:8px 10px;border-radius:999px;text-align:center;font-size:15px;line-height:1.05;font-weight:800;background:linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));border:1px solid rgba(255,255,255,0.12);box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);cursor:pointer;white-space:nowrap;}
+.leaveCountdownPill.isBlue{color:#4b9bff!important;}
+.leaveCountdownPill.isWhite{color:#ffffff!important;}
+.leaveEmptyState{text-align:center;color:#d7e7ff;padding:14px 8px;font-size:22px;}
+</style>
+<style id="leave-calendar-compact-horizontal-final">
+/* Nizsie karty; datum a den su v jednom riadku */
+#stage #leaveList{padding:0 8px 5px!important;}
+#stage #leaveList .leaveCardsWrap{gap:5px!important;}
+#stage #leaveList .leaveGlassCard{
+ grid-template-columns:122px minmax(0,1fr) 99px!important;
+ gap:12px!important;padding:5px 9px!important;
+ min-height:0!important;border-radius:13px!important;
+}
+#stage #leaveList .leaveDateTile{
+ display:flex!important;flex-direction:row!important;
+ align-items:center!important;justify-content:center!important;
+ gap:7px!important;min-height:35px!important;height:35px!important;
+ padding:4px 7px!important;border-radius:11px!important;
+ white-space:nowrap!important;
+}
+#stage #leaveList .leaveDateTile::before{display:none!important;}
+#stage #leaveList .leaveDateDow{
+ font-size:15px!important;line-height:1!important;margin:0!important;
+ letter-spacing:0!important;
+}
+#stage #leaveList .leaveDateMain{font-size:19px!important;line-height:1!important;}
+#stage #leaveList .leavePeople{font-size:22px!important;font-weight:700!important;line-height:1.07!important;}
+#stage #leaveList .leaveCountdownPill{
+ font-size:19px!important;line-height:1.05!important;
+ min-width:0!important;width:99px!important;max-width:none!important;
+ padding:7px 5px!important;box-sizing:border-box!important;
+}
+</style>
+
+<style id="workday-larger-text">
+/* Výraznejšie nápisy obeda a zmeny bez zväčšenia dvoch kariet. */
+#shiftBox .workLabel {font-size:17px!important;line-height:1.12!important;font-weight:700!important;}
+#shiftBox .workValue {font-size:33px!important;line-height:1.04!important;}
+#shiftBox .workCard.done .workValue {font-size:29px!important;}
+#shiftBox .workHint {font-size:14px!important;line-height:1.15!important;margin-top:3px!important;min-height:17px!important;}
+#shiftBox .workIcon {font-size:23px!important;}
+#shiftBox .workMain {min-height:39px!important;margin-top:2px!important;}
+#shiftBox .workCard {padding-top:7px!important;padding-bottom:7px!important;}
+</style>
+<style id="leave-normal-font-weight">
+/* Neprítomnosť: iba nadpis ostáva tučný. */
+#stage #leaveBox #leaveList .leaveDateDow,
+#stage #leaveBox #leaveList .leaveDateMain,
+#stage #leaveBox #leaveList .leavePeople,
+#stage #leaveBox #leaveList .leavePersonName,
+#stage #leaveBox #leaveList .leaveCountdownPill,
+#stage #leaveBox #leaveList .leaveSubtitle {font-weight:400!important;}
+</style>
+<style id="leave-names-center-final">
+/* Mená v kartách Neprítomnosti sú vodorovne vycentrované, bez tučného písma. */
+#stage #leaveBox #leaveList .leavePersonInfo{align-items:center!important;text-align:center!important;}
+#stage #leaveBox #leaveList .leavePeople{width:100%!important;text-align:center!important;font-weight:400!important;}
+#stage #leaveBox #leaveList .leavePersonName{font-weight:400!important;}
+</style>
+
+<style id="radio-modern-controls-only">
+/* Výber staníc bez zmien: nemeníme rozmery ani rozloženie #radioStations a tlačidiel. */
+#stage #radioPanel{
+  gap:7px!important;
+  padding-bottom:11px!important;
+  overflow:visible!important;
+}
+#stage #radioPanel .radioHeading span{
+  color:rgba(228,245,255,.86)!important;
+  font-size:11px!important;
+  letter-spacing:.5px!important;
+}
+#stage #radioPanel .radioDivider{
+  background:linear-gradient(90deg,transparent,rgba(202,229,255,.43) 12%,rgba(202,229,255,.43) 88%,transparent)!important;
+  height:1px!important;
+  margin:1px 0 0!important;
+}
+/* Skladba zaberie priestor iba vtedy, keď stream odošle názov. */
+#stage #radioPanel #radioSongRow.radioSongModern{
+  display:flex!important;
+  align-items:center!important;
+  box-sizing:border-box!important;
+  gap:9px!important;
+  min-height:0!important;
+  width:100%!important;
+  height:auto!important;
+  margin:0!important;
+  padding:6px 11px!important;
+  border-radius:11px;
+  background:linear-gradient(125deg,rgba(24,78,141,.27),rgba(141,200,250,.11));
+  border:1px solid rgba(190,221,250,.22);
+}
+#stage #radioPanel #radioSongRow.radioSongModern:has(#radioNowPlaying[hidden]){
+  display:none!important;height:0!important;padding:0!important;margin:0!important;border:0!important;
+}
+#stage #radioPanel #radioSongRow .radioSongGlyph{
+  font-size:17px;line-height:1;color:#c5e7ff;flex:none;
+}
+#stage #radioPanel #radioSongRow #radioNowPlaying{
+  display:block!important;position:static!important;flex:1 1 auto!important;
+  font-size:15px!important;line-height:21px!important;
+  min-width:0!important;max-width:100%!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  color:#fff!important;
+}
+#stage #radioPanel #radioSongRow #radioNowPlaying[hidden]{display:none!important;}
+/* Moderné, ale úsporné ovládanie. */
+#stage #radioPanel .radioControls{
+  display:flex!important;flex-wrap:nowrap!important;align-items:center!important;
+  gap:11px!important;min-height:39px!important;width:100%!important;
+  padding:3px 3px!important;box-sizing:border-box!important;
+}
+#stage #radioPanel #radioPlay{
+  display:grid!important;place-items:center!important;
+  flex:0 0 38px!important;width:38px!important;height:38px!important;
+  padding:0!important;border-radius:50%!important;
+  font-size:19px!important;font-weight:700!important;
+  color:#fff!important;background:linear-gradient(145deg,#368cdb,#2363ad)!important;
+  border:1px solid rgba(177,222,255,.64)!important;
+  box-shadow:0 3px 12px rgba(12,71,148,.23),inset 0 1px 0 rgba(255,255,255,.35)!important;
+}
+#stage #radioPanel #radioMute{
+  display:grid!important;place-items:center!important;
+  flex:0 0 35px!important;width:35px!important;height:35px!important;
+  padding:0!important;border-radius:50%!important;
+  font-size:16px!important;background:rgba(185,220,255,.15)!important;
+  border:1px solid rgba(205,232,255,.38)!important;
+}
+#stage #radioPanel #radioVolume{
+  flex:1 1 115px!important;width:auto!important;min-width:75px!important;
+  max-width:205px!important;height:7px!important;
+  accent-color:#4b9bff!important;cursor:pointer!important;
+}
+#stage #radioPanel #radioVolumeLabel{
+  flex:0 0 46px!important;width:46px!important;
+  font-size:15px!important;font-weight:650!important;
+  color:#fff!important;text-align:right!important;
+}
+/* Nastavenia sú kompaktné v jednom riadku; odpočet ostáva viditeľný. */
+#stage #radioPanel .radioRotation{
+  display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
+  align-items:center!important;gap:11px!important;
+  width:100%!important;min-width:0!important;
+  padding:7px 10px!important;margin-top:0!important;
+  box-sizing:border-box!important;border-radius:13px!important;
+  background:rgba(16,56,108,.23)!important;
+  border:1px solid rgba(188,219,249,.21)!important;
+}
+#stage #radioPanel .radioRotation label{
+  display:inline-flex!important;align-items:center!important;
+  flex:0 0 auto!important;white-space:nowrap!important;
+  font-size:13px!important;line-height:18px!important;gap:5px!important;
+  color:#fff!important;
+}
+#stage #radioPanel .radioRotation input{
+  width:16px!important;height:16px!important;flex:none!important;
+  accent-color:#4b9bff!important;
+}
+#stage #radioPanel #radioRotationStatus{
+  flex:1 1 0!important;min-width:0!important;width:auto!important;
+  overflow:hidden!important;text-overflow:ellipsis!important;
+  white-space:nowrap!important;text-align:right!important;
+  font-size:12px!important;line-height:18px!important;
+  color:rgba(240,249,255,.9)!important;
+}
+</style>
+
+<style id="radio-song-inline-volume-final">
+/* Play, mute, polovičná hlasitosť, interpret a pieseň v jedinom riadku. */
+#stage #radioPanel .radioControls{gap:8px!important;min-width:0!important;}
+#stage #radioPanel #radioVolume{
+  flex:0 0 72px!important;width:72px!important;min-width:72px!important;
+  max-width:72px!important;
+}
+#stage #radioPanel #radioVolumeLabel{
+  flex:0 0 43px!important;width:43px!important;font-size:14px!important;
+}
+#stage #radioPanel .radioControls #radioSongRow.radioSongModern{
+  display:flex!important;flex:1 1 0!important;width:auto!important;min-width:0!important;
+  align-items:center!important;gap:6px!important;min-height:34px!important;
+  padding:5px 8px!important;margin:0!important;border-radius:10px!important;
+  overflow:hidden!important;
+}
+#stage #radioPanel .radioControls #radioSongRow.radioSongModern:has(#radioNowPlaying[hidden]){
+  display:none!important;min-height:0!important;height:0!important;
+  margin:0!important;padding:0!important;border:0!important;
+}
+#stage #radioPanel .radioControls #radioSongRow #radioNowPlaying{
+  flex:1 1 0!important;min-width:0!important;max-width:100%!important;
+  font-size:14px!important;line-height:20px!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+#stage #radioPanel .radioControls #radioSongRow #radioNowPlaying[hidden]{display:none!important;}
+</style>
+
+<style id="current-row-glass-highlight">
+/* Jednotný jemný glass štýl pre Audity, Neprítomnosť a Sviatky.
+   Svetlejší odtieň sa používa len pre dnešný riadok alebo hodinový odpočet. */
+#stage #auditsTable table tr:not(#auditFormRow):not(#auditAddRow) > td {
+  background:rgba(20,66,116,.13)!important;
+  transition:background .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+#stage #auditsTable table tr:not(#auditFormRow):not(#auditAddRow) > td:first-child {
+  border-top-left-radius:7px; border-bottom-left-radius:7px;
+}
+#stage #auditsTable table tr:not(#auditFormRow):not(#auditAddRow) > td:last-child {
+  border-top-right-radius:7px; border-bottom-right-radius:7px;
+}
+#stage #auditsTable table tr:not(#auditFormRow):not(#auditAddRow):hover > td,
+#stage #holidayBox .holidayRow:hover,
+#stage #leaveList .leaveGlassCard:hover {
+  background:rgba(143,207,250,.22)!important;
+}
+#stage #auditsTable table tr.currentCountdownRow:not(#auditFormRow):not(#auditAddRow) > td,
+#stage #holidayBox .holidayRow.currentCountdownRow,
+#stage #leaveList .leaveGlassCard.currentCountdownRow {
+  background:rgba(134,197,243,.145)!important;
+}
+#stage .currentCountdownText,
+#stage #holidayBox .holidayWhen.currentCountdownText,
+#stage #auditsTable .daysToAudit.currentCountdownText,
+#stage #leaveList .leaveCountdownPill.isBlue {
+  color:#4b9bff!important;
+}
+#stage #holidayBox .holidayRow {
+  align-items:center;
+  margin-bottom:5px;
+  padding:8px 10px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(20,66,116,.13);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+}
+#stage #holidayBox .holidayRow:last-child {margin-bottom:0;}
+#stage #holidayBox .holidayRow > span:not(:last-child) {
+  border-right:1px solid rgba(255,255,255,.13);
+  padding-right:8px;
+}
+#stage #holidayBox .holidayRow {border-bottom:0!important;}
+#stage #leaveList .leaveGlassCard {
+  background:rgba(20,66,116,.13)!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 6px 16px rgba(0,0,0,0.10)!important;
+}
+</style>
+
+<style id="audit-style-leave-forecast-tuning">
+/* Neprítomnosť: rovnaký vzhľad buniek ako Audity, bez dátumových kociek a piluliek */
+#stage #leaveBox #leaveList{padding:0 0 5px!important;}
+#stage #leaveBox #leaveList .leaveAuditStyleTable{width:100%;font-size:22px!important;color:white;border-collapse:collapse;table-layout:fixed;}
+#stage #leaveBox #leaveList .leaveAuditStyleTable tr{border-bottom:1px solid rgba(255,255,255,.10);}
+#stage #leaveBox #leaveList .leaveAuditStyleTable tr > td{
+  background:rgba(20,66,116,.13)!important;
+  font-size:22px!important;
+  font-weight:400!important;
+  line-height:1.26!important;
+  text-align:center!important;
+  padding:10px 5px!important;
+  color:white!important;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+  box-sizing:border-box;
+  transition:background .2s ease;
+}
+#stage #leaveBox #leaveList .leaveAuditStyleTable tr > td:first-child{border-radius:7px 0 0 7px;}
+#stage #leaveBox #leaveList .leaveAuditStyleTable tr > td:last-child{border-radius:0 7px 7px 0;}
+#stage #leaveBox #leaveList .leaveAuditStyleTable tr.currentCountdownRow > td{background:rgba(134,197,243,.145)!important;}
+#stage #leaveBox #leaveList .leaveAuditStyleTable tr:hover > td{background:rgba(143,207,250,.22)!important;}
+#stage #leaveBox #leaveList .leaveTablePerson{font-size:inherit!important;font-weight:400!important;cursor:pointer;}
+#stage #leaveBox #leaveList .leaveTablePerson:hover{text-decoration:underline;}
+/* Dnes aj hodinový odpočet zostávajú biele v Auditoch a Neprítomnosti */
+#stage #auditsTable .daysToAudit,
+#stage #auditsTable .daysToAudit.currentCountdownText,
+#stage #leaveBox #leaveList .leaveAuditStyleTable td:last-child{color:#fff!important;}
+/* Kompaktnejšie počasie: percentá, mm a vietor */
+#stage #forecast3days .weatherDayRain,
+#stage #forecast3days .weatherDayMm,
+#stage #forecast3days .weatherDayWind{
+  font-size:17px!important;
+  line-height:1.06!important;
+  letter-spacing:-.25px!important;
+  font-weight:550!important;
+  margin:0!important;
+}
+#stage #forecast3days .weatherDayCard{gap:5px!important;}
+</style>
+
+<style id="namedays-match-holiday-design">
+/* Meniny používajú rovnaké sklenené riadky ako Sviatky, len 2 stĺpce. */
+#stage #namedayBox #namedayDisplay{overflow-y:visible!important;max-height:none!important;}
+#stage #namedayBox #namedayDisplay .holidayRow{
+  display:grid!important;
+  grid-template-columns:minmax(0,43%) minmax(0,1fr)!important;
+  align-items:center!important;
+  column-gap:7px!important;
+  min-height:35px!important;
+  margin-bottom:5px!important;
+  padding:8px 10px!important;
+  border-radius:12px!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  background:rgba(20,66,116,.13)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;
+  cursor:pointer;
+}
+#stage #namedayBox #namedayDisplay .holidayRow:last-child{margin-bottom:0!important;}
+#stage #namedayBox #namedayDisplay .holidayRow:hover{background:rgba(143,207,250,.22)!important;}
+#stage #namedayBox #namedayDisplay .holidayDate{
+  font-size:22px!important;
+  font-weight:400!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  border-right:1px solid rgba(255,255,255,.13)!important;
+  padding-right:6px!important;
+  min-width:0;
+}
+#stage #namedayBox #namedayDisplay .holidayName{
+  font-size:22px!important;
+  font-weight:400!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  min-width:0;
+}
+#stage #namedayBox #namedayDisplay .holidayLabel{font-size:inherit!important;font-weight:400!important;text-align:center!important;}
+</style>
+<style id="audit-current-event-23h-fix">
+/* Silnejšia špecificita než predvolený tmavý riadok: zvýrazní 23 h pred 7:00 a v deň auditu. */
+#stage #auditsTable table tr.currentCountdownRow:not(#auditFormRow):not(#auditAddRow) > td {
+  background:rgba(134,197,243,.145)!important;
+}
+#stage #auditsTable table tr.currentCountdownRow:not(#auditFormRow):not(#auditAddRow):hover > td {
+  background:rgba(143,207,250,.22)!important;
+}
+</style>
+<style id="holiday-today-visible-highlight">
+/* Rovnaké svetlé zvýraznenie dnešného sviatku ako pri aktuálnych auditoch. */
+#stage #holidayBox #holidayDisplay .holidayRow.currentCountdownRow,
+#stage #holidayBox #holidayDisplay .holidayRow.currentCountdownRow:hover {
+  background:rgba(134,197,243,.30)!important;
+  border-color:rgba(185,225,251,.28)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12)!important;
+}
+#stage #holidayBox #holidayDisplay .holidayRow.currentCountdownRow .holidayWhen {
+  color:#fff!important;
+}
+</style>
+
+<style id="weather-three-metrics-bottom-group">
+/* Informácie o daždi a vetre držať spolu dole v každej trojdňovej karte.
+   Bez zmeny poradia, veľkosti písma alebo výšky panela. */
+#stage #forecast3days .weatherDayCard{
+  justify-content:flex-start!important;
+  gap:4px!important;
+}
+#stage #forecast3days .weatherDayRain{
+  margin-top:auto!important;
+  margin-bottom:0!important;
+}
+#stage #forecast3days .weatherDayMm,
+#stage #forecast3days .weatherDayWind{
+  margin-top:0!important;
+  margin-bottom:0!important;
+}
+</style>
+<style id="today-weather-with-wind-below-feels">
+/* Uvoľnené miesto po nadpise prenechať dnešnej karte. */
+#stage #forecast3days > .dashboardSectionTitle{display:none!important;}
+#stage #forecast3days{gap:9px!important;}
+#stage #forecast3days .weatherToday{padding-top:20px!important;padding-bottom:19px!important;flex-shrink:0!important;}
+#stage #forecast3days .weatherTodayMain{margin-bottom:12px!important;}
+#stage #forecast3days .weatherCurrentBlock{min-width:0;}
+#stage #forecast3days .weatherFeels{width:auto!important;max-width:100%!important;white-space:nowrap!important;margin-top:2px!important;font-size:15px!important;line-height:1.25!important;}
+#stage #forecast3days .weatherWindRow{display:block;max-width:100%;font-size:15px;line-height:1.32;margin-top:5px;color:#fff;white-space:nowrap;}
+</style>
+
+<style id="weather-layout-tighten-final">
+/* Dnes vyššie, deliaca čiara vyššie a cez celú šírku vrátane Mesiaca. */
+#stage #forecast3days > .dashboardSectionTitle{display:none!important;}
+#stage #forecast3days .weatherToday{padding-top:12px!important;padding-bottom:18px!important;}
+#stage #forecast3days .weatherTodayTop{justify-content:flex-start!important;align-items:flex-start!important;margin-top:-4px!important;margin-bottom:2px!important;}
+#stage #forecast3days .weatherTodayTop .weatherTodayLabel,
+#stage #forecast3days .weatherTodayTop strong,
+#stage #forecast3days .weatherTodayTop span:first-child{position:relative;top:-2px;}
+#stage #forecast3days .weatherTodayMain{margin-top:2px!important;margin-bottom:10px!important;}
+#stage #forecast3days .weatherTodayDetails{padding-top:12px!important;row-gap:5px!important;column-gap:8px!important;}
+#stage #forecast3days .weatherTodayDetails::before{right:0!important;top:-2px!important;}
+#stage #forecast3days .moonInfo{justify-content:flex-start!important;padding-top:2px!important;}
+
+/* Trojdňová predpoveď – hornú časť posunúť nižšie a mať menšie medzery. */
+#stage #forecast3days .weatherNextDays{margin-top:10px!important;}
+#stage #forecast3days .weatherDayCard{padding:16px 5px 11px!important;gap:4px!important;justify-content:flex-start!important;}
+#stage #forecast3days .weatherDayName{margin-top:1px!important;margin-bottom:6px!important;}
+#stage #forecast3days .weatherDayIcon{margin-top:5px!important;margin-bottom:4px!important;min-height:40px!important;}
+#stage #forecast3days .weatherDayTemp{margin-top:1px!important;margin-bottom:8px!important;}
+#stage #forecast3days .weatherDayRain{margin-top:auto!important;}
+</style>
+
+<style id="forecast-more-even-spacing-final">
+/* Lepšie vertikálne rozloženie trojdňových kariet. */
+#stage #forecast3days .weatherDayCard{
+  display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:flex-start!important;
+  padding:13px 5px 13px!important;gap:0!important;
+}
+#stage #forecast3days .weatherDayName{margin:0 0 18px!important;}
+#stage #forecast3days .weatherDayIcon{margin:0 0 18px!important;min-height:44px!important;}
+#stage #forecast3days .weatherDayTemp{margin:0 0 12px!important;}
+#stage #forecast3days .weatherDayRain{margin-top:auto!important;margin-bottom:8px!important;}
+#stage #forecast3days .weatherDayMm{margin:0 0 8px!important;}
+#stage #forecast3days .weatherDayWind{margin:0!important;}
+</style>
+<style id="forecast-more-air-and-sources">
+#stage #forecast3days .weatherDayCard{padding-top:13px!important;padding-bottom:11px!important;}
+#stage #forecast3days .weatherDayName{margin-bottom:24px!important;}
+#stage #forecast3days .weatherDayIcon{margin-bottom:24px!important;min-height:44px!important;}
+#stage #forecast3days .weatherDayTemp{margin-bottom:18px!important;}
+#stage #forecast3days .weatherDayRain{margin-top:auto!important;margin-bottom:8px!important;}
+#stage #forecast3days .weatherDayMm{margin-bottom:8px!important;}
+#stage #forecast3days .weatherDayWind{margin-bottom:0!important;}
+#stage #namedayBox .panelSourceLink,#stage #holidayBox .panelSourceLink{color:inherit!important;text-decoration:none!important;font:inherit!important;cursor:pointer;}
+#stage #namedayBox .panelSourceLink:hover,#stage #holidayBox .panelSourceLink:hover{color:#c2e6ff!important;text-decoration:underline!important;text-underline-offset:3px;}
+#stage #namedayBox .panelSourceLink:focus-visible,#stage #holidayBox .panelSourceLink:focus-visible{outline:2px solid #c2e6ff;outline-offset:3px;border-radius:3px;}
+</style>
+<style id="forecast-bottom-metrics-slightly-up">
+/* Zdvihnúť spodnú trojicu údajov o 9 px bez zmeny rozostupov medzi nimi. */
+#stage #forecast3days .weatherDayCard{padding-bottom:20px!important;}
+</style>
 </head>
 
 <body>
@@ -1589,7 +2039,7 @@ body::after { display:none !important; content:none !important; }
             <td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;" class="eventDateCell">Ut 23.06.</td>
             <td style="padding:8px 4px;text-align:center;">Hoerbiger</td>
             <td style="padding:8px 4px;text-align:center;">Návšteva</td>
-            <td style="padding:8px 4px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="2026-06-23">-</td>
+            <td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;" class="daysToAudit" data-date="2026-06-23">-</td>
         </tr>
         <tr id="auditFormRow" style="display:none;">
           <td colspan="4" style="padding:9px 5px;">
@@ -1637,7 +2087,7 @@ body::after { display:none !important; content:none !important; }
 </div>
 
 <div id="holidayBox" class="glass">
-    <div class="panelHeader holidayPanelHeader"><span>Sviatky</span><button type="button" id="holidayAddRow" class="panelAddButton" onclick="showHolidayForm()" aria-label="Pridať Sviatok" title="Pridať Sviatok">+</button></div>
+    <div class="panelHeader holidayPanelHeader"><a class="panelSourceLink" href="https://kalendar.aktuality.sk/sviatky/rok/2026/" target="_blank" rel="noopener noreferrer" title="Otvoriť kalendár sviatkov (zdroj)">Sviatky</a><button type="button" id="holidayAddRow" class="panelAddButton" onclick="showHolidayForm()" aria-label="Pridať Sviatok" title="Pridať Sviatok">+</button></div>
     <div id="holidayDisplay"></div>
     <div id="holidayFormRow" style="display:none;">
       <input id="holidayCustomName" type="text" maxlength="100" placeholder="Názov sviatku" aria-label="Názov sviatku">
@@ -1649,7 +2099,7 @@ body::after { display:none !important; content:none !important; }
 </div>
 
 <div id="namedayBox" class="glass">
-  <div class="panelHeader namedayPanelHeader"><span>Meniny</span><button type="button" id="namedayAddButton" class="panelAddButton" onclick="showNamedayForm()" aria-label="Pridať Meniny" title="Pridať Meniny">+</button></div>
+  <div class="panelHeader namedayPanelHeader"><a class="panelSourceLink" href="https://kalendar.aktuality.sk/meninovy/rok/2026/" target="_blank" rel="noopener noreferrer" title="Otvoriť kalendár menín (zdroj)">Meniny</a><button type="button" id="namedayAddButton" class="panelAddButton" onclick="showNamedayForm()" aria-label="Pridať Meniny" title="Pridať Meniny">+</button></div>
   <div id="namedayDisplay"></div>
   <div id="namedayForm" class="panelEntryForm" style="display:none">
     <div class="formFields">
@@ -1664,8 +2114,8 @@ body::after { display:none !important; content:none !important; }
   <div class="radioHeading"><strong>Rádiá</strong><span>ONLINE</span></div>
   <div id="radioStations" aria-label="Výber stanice"></div>
   <div class="radioDivider" aria-hidden="true"></div>
-  <div class="radioControls"><button id="radioPlay" type="button" aria-label="Spustiť rádio">▶</button><button id="radioMute" type="button" aria-label="Stlmiť zvuk">🔊</button><input id="radioVolume" aria-label="Hlasitosť" type="range" min="0" max="100" value="60"><output id="radioVolumeLabel">60 %</output><span id="radioNowPlaying" aria-live="off" title="Aktuálne hraná skladba" hidden></span></div>
-  <div class="radioRotation"><label><input id="radioRotate" type="checkbox">Náhodné striedanie každú hodinu</label><label title="Denne podľa času na Slovensku"><input id="radioSchedule" type="checkbox" checked>Automaticky 7:00 – 17:00</label><small id="radioRotationStatus">Automatické striedanie je vypnuté.</small></div>
+  <div class="radioControls"><button id="radioPlay" type="button" aria-label="Spustiť rádio">▶</button><button id="radioMute" type="button" aria-label="Stlmiť zvuk">🔊</button><input id="radioVolume" aria-label="Hlasitosť" type="range" min="0" max="100" value="60"><output id="radioVolumeLabel">60 %</output><div id="radioSongRow" class="radioSongModern" aria-label="Aktuálne hraná skladba"><span class="radioSongGlyph" aria-hidden="true">♫</span><span id="radioNowPlaying" aria-live="off" title="Aktuálne hraná skladba" hidden></span></div></div>
+  <div class="radioRotation"><label><input id="radioRotate" type="checkbox">Náhodne každú hodinu</label><label title="Automatické prehrávanie denne od 7:00 do 17:00 (slovenský čas)"><input id="radioSchedule" type="checkbox" checked>7:00 – 17:00</label><small id="radioRotationStatus">Automatické striedanie je vypnuté.</small></div>
   <div class="radioFooter"><span id="radioStatus" role="status" aria-live="polite">Vyber stanicu a spusti prehrávanie.</span><a id="radioWebsite" target="_blank" rel="noopener noreferrer">Web rádia ↗</a></div>
   <audio id="radioAudio" preload="none"></audio>
 </section>
@@ -2449,7 +2899,7 @@ async function loadWeather(){
     renderDashboardWeather(cached,true);
   }else{
     const box=document.getElementById('forecast3days');
-    if(box && !box.querySelector('.weatherToday')) box.innerHTML='<div class="dashboardSectionTitle">Počasie</div><div style="padding:14px">Údaje o počasí zatiaľ nie sú dostupné.</div>';
+    if(box && !box.querySelector('.weatherToday')) box.innerHTML='<div style="padding:14px">Údaje o počasí zatiaľ nie sú dostupné.</div>';
   }
   setApiStatus('weather',false);
  }
@@ -2557,12 +3007,12 @@ function renderDashboardWeather(data,usingCachedData){
   const todayIcon=dashboardMainWeatherVisual(data.current.weather_code);
   const sunrise=window.dashboardSunTimes?.sunrise||'–';
   const sunset=window.dashboardSunTimes?.sunset||'–';
-  let fHtml=`<div class="dashboardSectionTitle">Počasie</div>`+
-    `<div class="weatherToday" title="Aktuálne počasie a dnešná denná predpoveď">`+
+  let fHtml=`<div class="weatherToday" title="Aktuálne počasie a dnešná denná predpoveď">`+
       `<div class="weatherTodayTop"><strong>Dnes</strong></div>`+
       `<div class="weatherTodayMain">`+
       `<div class="weatherCurrentBlock"><div class="weatherMainTemp">${currentTemp}°</div>`+
-      `${`<div class="weatherFeels">${currentFeels===null?'':`Pocitovo ${currentFeels}°`}${windText?`<span class="windInline">${windText}</span>`:''}</div>`}</div>`+
+      `<div class="weatherFeels"><span class="weatherFeelsValue">${currentFeels===null?'':`Pocitovo ${currentFeels}°`}</span></div>`+
+      `<div class="weatherWindRow">${windText}</div></div>`+
       `<div class="weatherTempRange">Max ${todaysMax}°<br>Min ${todaysMin}°</div>`+
       `<div class="weatherMainIcon">${todayIcon}</div></div>`+
       
@@ -2576,11 +3026,17 @@ function renderDashboardWeather(data,usingCachedData){
       `<div class="weatherNextDays">`;
   for(let i=1;i<=3;i++){
     const rain=percent(d.precipitation_probability_max?.[i]);
+    const dayWindSpeed=Number(d.wind_speed_10m_max?.[i]);
+    const dayWindDir=Number(d.wind_direction_10m_dominant?.[i]);
+    const windLabel = Number.isFinite(dayWindSpeed)
+      ? `🧭 ${Number.isFinite(dayWindDir) ? windDir(dayWindDir)+' ' : ''}${Math.round(dayWindSpeed)} km/h`
+      : '🧭 –';
     fHtml+=`<div class="weatherDayCard"><div class="weatherDayName">${dayLabel(i)}</div>`+
       `<div class="weatherDayIcon">${forecastDayIcon(d.weather_code[i])}</div>`+
       `<div class="weatherDayTemp">${Math.round(d.temperature_2m_max[i])}° <span>/ ${Math.round(d.temperature_2m_min[i])}°</span></div>`+
       `<div class="weatherDayRain">💧 ${rain}</div>`+
-      `<div class="weatherDayMm">🌧️ ${fmt(d.precipitation_sum[i])} mm</div></div>`;
+      `<div class="weatherDayMm">🌧️ ${fmt(d.precipitation_sum[i])} mm</div>`+
+      `<div class="weatherDayWind">${windLabel}</div></div>`;
   }
   fHtml+='</div>';
   box.innerHTML=fHtml;
@@ -2675,7 +3131,7 @@ async function refreshCurrentWeather(){
     const icon=dashboardMainWeatherVisual(code);
     const current=document.querySelector('#forecast3days .weatherMainTemp');
     const pictogram=document.querySelector('#forecast3days .weatherMainIcon');
-    const feels=document.querySelector('#forecast3days .weatherFeels');
+    const feels=document.querySelector('#forecast3days .weatherFeelsValue');
     if(current) current.textContent=Math.round(data.current.temperature_2m)+'°';
     if(pictogram) pictogram.innerHTML=icon;
     if(feels && Number.isFinite(data.current.apparent_temperature)) feels.textContent='Pocitovo '+Math.round(data.current.apparent_temperature)+'°';
@@ -3042,14 +3498,20 @@ function updateVacation(){
     }
     if (row) {
       row.style.display = '';
-      row.classList.remove('event-soon');
+      row.classList.remove('event-soon','currentCountdownRow');
     }
 
     const left = countdownToSeven(cell.getAttribute('data-date'));
     cell.textContent = left.text;
-    cell.style.color = left.color;
+    cell.style.color = '#ffffff';
     cell.style.whiteSpace = 'nowrap';
     cell.style.fontSize = '';
+    const eventParts = cell.getAttribute('data-date').split('-').map(Number);
+    const eventStart = new Date(eventParts[0],eventParts[1]-1,eventParts[2],7,0,0,0);
+    const msUntilStart = eventStart.getTime()-Date.now();
+    const isCurrent = left.text==='Dnes' || (msUntilStart>=0 && msUntilStart<=23*3600000);
+    cell.classList.toggle('currentCountdownText', isCurrent);
+    if (row) row.classList.toggle('currentCountdownRow', isCurrent);
     if(typeof shrinkToFit==='function') shrinkToFit(cell, 11);
   });
 }
@@ -3221,7 +3683,9 @@ function updateHolidays(){
     const date=item.date;
     const editId=item.custom?item.id:'auto:'+item.automaticKey;
     const attrs=` onclick="showHolidayForm('${editId}')" title="Klikni a uprav sviatok" style="cursor:pointer"`;
-    return `<div class="holidayRow"${attrs}><span class="holidayDate">${['Ne','Po','Ut','St','Št','Pi','So'][date.getDay()]} ${String(date.getDate()).padStart(2,'0')}.${String(date.getMonth()+1).padStart(2,'0')}.</span><span class="holidayName"><span class="holidayIcon" aria-hidden="true">${holidayPictogram(item.name)}</span><span class="holidayLabel">${escapeHolidayText(item.name)}</span></span><span class="holidayWhen">${when(date)}</span></div>`;
+    const whenLabel=when(date);
+    const isCurrent=date.getFullYear()===today.getFullYear() && date.getMonth()===today.getMonth() && date.getDate()===today.getDate();
+    return `<div class="holidayRow ${isCurrent?'currentCountdownRow':''}"${attrs}><span class="holidayDate">${['Ne','Po','Ut','St','Št','Pi','So'][date.getDay()]} ${String(date.getDate()).padStart(2,'0')}.${String(date.getMonth()+1).padStart(2,'0')}.</span><span class="holidayName"><span class="holidayIcon" aria-hidden="true">${holidayPictogram(item.name)}</span><span class="holidayLabel">${escapeHolidayText(item.name)}</span></span><span class="holidayWhen ${isCurrent?'currentCountdownText':''}">${whenLabel}</span></div>`;
   };
   display.innerHTML=upcoming.map(row).join('');
   display.style.display='block';
@@ -3303,8 +3767,8 @@ function renderNamedays(){
   const today=new Date();today.setHours(0,0,0,0);
   const dateLabel=d=>['Ne','Po','Ut','St','Št','Pi','So'][d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.';
   const items=[];
-  // Tri nadchádzajúce dni. Zmeny pôvodných menín sú trvalé aj po načítaní.
-  for(let i=1;i<=3;i++){
+  // Dva najbližšie záznamy vrátane vlastných menín.
+  for(let i=1;i<=2;i++){
     const date=new Date(today.getFullYear(),today.getMonth(),today.getDate()+i);
     const key=isoLocalDate(date);
     const override=namedayOverrides[key];
@@ -3317,7 +3781,7 @@ function renderNamedays(){
     items.push({date:d,name:item.name,id:item.id});
   }
   items.sort((a,b)=>a.date-b.date||Number(!!a.id)-Number(!!b.id));
-  display.innerHTML=items.slice(0,3).map(x=>{
+  display.innerHTML=items.slice(0,2).map(x=>{
     const editId=x.id||'auto:'+x.automaticKey;
     const attrs=` onclick="showNamedayForm('${editId}')" title="Klikni a uprav meniny" style="cursor:pointer"`;
     return `<div class="holidayRow"${attrs}><span class="holidayDate">${dateLabel(x.date)}</span><span class="holidayName"><span class="holidayLabel">${escapeHolidayText(x.name)}</span></span></div>`;
@@ -3421,6 +3885,18 @@ window.deleteEditingLeave=function(){
   renderLeave();
 };
 
+
+function leaveDateCardParts(startDate,endDate){
+  const same = !endDate || startDate.getTime()===endDate.getTime();
+  const dow = SHORT_SK_DAYS[startDate.getDay()];
+  const main = `${String(startDate.getDate()).padStart(2,'0')}.${String(startDate.getMonth()+1).padStart(2,'0')}.`;
+  let range='';
+  if(!same){
+    range = `${String(startDate.getDate()).padStart(2,'0')}.${String(startDate.getMonth()+1).padStart(2,'0')}. – ${String(endDate.getDate()).padStart(2,'0')}.${String(endDate.getMonth()+1).padStart(2,'0')}.`;
+  }
+  return { dow, main };
+}
+
 // Skratka dňa podľa slovenského kalendára.
 const SHORT_SK_DAYS=['Ne','Po','Ut','St','Št','Pi','So'];
 function dayDateShort(date){
@@ -3455,7 +3931,7 @@ function renderLeave(){
   const groups={};
   items.forEach(it=>{
     const key=it.start+'|'+(it.end||it.start);
-    if(!groups[key]) groups[key]={ datum:it.datum, s:it.s, daysToStart:it.daysToStart, people:[] };
+    if(!groups[key]) groups[key]={ datum:it.datum, s:it.s, e:it.e, daysToStart:it.daysToStart, people:[] };
     groups[key].people.push(it);
   });
   const groupList=Object.values(groups).map(g=>{
@@ -3464,24 +3940,25 @@ function renderLeave(){
   }).sort((a,b)=> a.s - b.s);
 
   if(groupList.length===0){
-    list.innerHTML=`<div style="text-align:center;color:#aaa;padding:8px;font-size:28px;">Žiadne plánované voľno</div>`;
+    list.innerHTML=`<div class="leaveEmptyState">Žiadne plánované voľno</div>`;
   } else {
-    let html=`<table style="width:100%;border-collapse:collapse;font-size:22px;table-layout:fixed;">`;
-    html+=`<colgroup><col style="width:43%"><col style="width:34%"><col style="width:23%"></colgroup>`;
+    let html=`<table class="leaveAuditStyleTable" style="width:100%;border-collapse:collapse;table-layout:fixed;">`
+      + `<colgroup><col style="width:39%"><col style="width:38%"><col style="width:23%"></colgroup>`;
     groupList.forEach(g=>{
       const countdown=countdownToSeven(g.people[0].start);
       const dni=countdown.text;
-      const namesHtml = g.people.map(p=>
-        `<span onclick="event.stopPropagation();editLeave('${p.id}')" title="upraviť" style="cursor:pointer;">${p.name}</span>`
+      const isCurrent=dni==='Dnes' || /\bh\b/.test(dni);
+      const editFirst=g.people[0].id;
+      const namesHtml=g.people.map(p=>
+        `<span class="leaveTablePerson" onclick="event.stopPropagation();editLeave('${p.id}')" title="Upraviť">${escapeHolidayText(p.name)}</span>`
       ).join(', ');
-      const soon=false;
-      html+=`<tr style="border-bottom:1px solid rgba(255,255,255,0.1);">`+
-        `<td class="eventDateCell" onclick="event.stopPropagation();editLeave('${g.people[0].id}')" title="upraviť" style="padding:5px 6px;text-align:center;white-space:nowrap;overflow:hidden;cursor:pointer;">${g.datum}</td>`+
-        `<td class="leaveNamesCell" style="padding:5px 6px;text-align:center;white-space:nowrap;overflow:hidden;">${namesHtml}</td>`+
-        `<td onclick="event.stopPropagation();editLeave('${g.people[0].id}')" title="upraviť" style="padding:5px 6px;text-align:center;white-space:nowrap;overflow:hidden;cursor:pointer;color:${countdown.color};font-weight:400;">${dni}</td>`+
-      `</tr>`;
+      html += `<tr class="${isCurrent?'currentCountdownRow':''}">`
+        + `<td class="eventDateCell" onclick="event.stopPropagation();editLeave('${editFirst}')" title="Upraviť" style="cursor:pointer;">${g.datum}</td>`
+        + `<td class="leaveNamesCell">${namesHtml}</td>`
+        + `<td onclick="event.stopPropagation();editLeave('${editFirst}')" title="Upraviť" style="cursor:pointer;">${dni}</td>`
+      + `</tr>`;
     });
-    html+=`</table>`;
+    html += `</table>`;
     list.innerHTML=html;
   }
   positionLeaveBox();
@@ -3760,7 +4237,7 @@ function renderCustomAudits(){
       `<td class="eventDateCell" style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;">${datum}</td>`+
       `<td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;">${a.zak||''}</td>`+
       `<td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;">${a.typ}</td>`+
-      `<td style="padding:8px 4px;text-align:center;color:#00d4ff;" class="daysToAudit" data-date="${a.date}"${a.dateEnd?` data-end="${a.dateEnd}"`:''}>-</td>`;
+      `<td style="padding:8px 4px;text-align:center;white-space:nowrap;overflow:hidden;" class="daysToAudit" data-date="${a.date}"${a.dateEnd?` data-end="${a.dateEnd}"`:''}>-</td>`;
     formRow.parentNode.insertBefore(tr, formRow);
     Array.from(tr.children).slice(0,3).forEach(td=>shrinkToFit(td));
   });
@@ -4466,6 +4943,16 @@ if(typeof ResizeObserver!=='undefined'){
  audio.addEventListener('ended',()=>{if(wanted)fail('Vysielanie sa skončilo. Klikni na ▶ pre nové pripojenie.');});
  checkSchedule();
 })();
+</script>
+<script>
+/* Zdroje kalendára sledujú aktuálny rok. */
+document.addEventListener('DOMContentLoaded',()=>{
+  const y=new Date().getFullYear();
+  const h=document.querySelector('#holidayBox .panelSourceLink');
+  const n=document.querySelector('#namedayBox .panelSourceLink');
+  if(h) h.href=`https://kalendar.aktuality.sk/sviatky/rok/${y}/`;
+  if(n) n.href=`https://kalendar.aktuality.sk/meninovy/rok/${y}/`;
+});
 </script>
 </body>
 </html>
