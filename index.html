@@ -2008,6 +2008,243 @@ body::after { display:none !important; content:none !important; }
 /* Zdvihnúť spodnú trojicu údajov o 9 px bez zmeny rozostupov medzi nimi. */
 #stage #forecast3days .weatherDayCard{padding-bottom:20px!important;}
 </style>
+
+<style id="birthday-cards-style">
+/* Narodeniny: rovnaké sklenené modré plochy ako Neprítomnosť, tri kocky vedľa seba. */
+#stage #birthdayBox{position:absolute;box-sizing:border-box;padding:12px 13px!important;overflow:hidden;min-width:0;}
+#stage #birthdayBox .panelHeader{font-size:21px!important;margin-bottom:8px!important;}
+#stage #birthdayBox .birthdayCards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;}
+#stage #birthdayBox .birthdayCard{display:flex;flex-direction:row;align-items:center;justify-content:space-between;min-width:0;min-height:55px;gap:8px;padding:8px 10px;box-sizing:border-box;border-radius:12px;background:rgba(20,66,116,.13);border:1px solid rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);text-align:left;color:#fff;}
+#stage #birthdayBox .birthdayLeft{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;min-width:0;flex:1 1 auto;gap:4px;}
+#stage #birthdayBox .birthdayCard.isToday{background:rgba(134,197,243,.145);}
+#stage #birthdayBox .birthdayPerson{font-size:18px;line-height:1.15;font-weight:500;white-space:normal;overflow-wrap:anywhere;}
+#stage #birthdayBox .birthdayDate{font-size:16px;line-height:1.1;white-space:nowrap;color:#fff;}
+#stage #birthdayBox .birthdayCountdown{font-size:14px;line-height:1.1;color:#d7e8f7;white-space:nowrap;text-align:right;flex:0 0 auto;}
+</style>
+<style id="birthday-font-and-upcoming-highlight">
+/* Narodeniny: typografia zhodná s Neprítomnosťou, bez zmeny troch vodorovných kartičiek. */
+#stage #birthdayBox .birthdayPerson{font-size:22px!important;line-height:1.12!important;font-weight:400!important;}
+#stage #birthdayBox .birthdayDate{font-size:20px!important;line-height:1.12!important;font-weight:400!important;}
+#stage #birthdayBox .birthdayCountdown{font-size:20px!important;line-height:1.12!important;font-weight:400!important;color:#fff!important;}
+#stage #birthdayBox .birthdayCard{min-height:64px!important;height:auto!important;padding:9px 10px!important;gap:6px!important;}
+#stage #birthdayBox .birthdayLeft{gap:3px!important;}
+#stage #birthdayBox .birthdayCard.isSoon{background:rgba(134,197,243,.145)!important;}
+</style>
+
+<style id="nameday-audits-radio-birthday-alignment">
+/* Meniny začínajú a končia v rovnakej výške ako Audity; rozmery riadkov ostávajú. */
+#stage #namedayBox{box-sizing:border-box!important;}
+/* Rádio: zúžený ovládací riadok hlasitosti bez zmeny výberu staníc. */
+#stage #radioPanel{gap:4px!important;padding-top:8px!important;padding-bottom:6px!important;}
+#stage #radioPanel .radioControls{min-height:29px!important;height:30px!important;padding:0 2px!important;gap:7px!important;}
+#stage #radioPanel #radioPlay{width:30px!important;height:30px!important;flex-basis:30px!important;font-size:16px!important;}
+#stage #radioPanel #radioMute{width:29px!important;height:29px!important;flex-basis:29px!important;font-size:14px!important;}
+#stage #radioPanel .radioControls #radioSongRow.radioSongModern{min-height:29px!important;height:29px!important;padding:2px 7px!important;}
+#stage #radioPanel .radioRotation{padding-top:4px!important;padding-bottom:4px!important;}
+</style>
+
+<style id="namedays-font-and-birthday-highlight-final">
+/* Meniny: pismo o kus mensie a riadky kompaktnejsie, sirky stlpcov a panel ostavaju. */
+#stage #namedayBox #namedayDisplay .holidayRow{
+  padding-top:7px!important;padding-bottom:7px!important;
+  min-height:35px!important;
+}
+#stage #namedayBox #namedayDisplay .holidayDate,
+#stage #namedayBox #namedayDisplay .holidayName,
+#stage #namedayBox #namedayDisplay .holidayLabel{
+  font-size:20px!important;line-height:1.26!important;font-weight:400!important;
+}
+/* Narodeniny: rovnako svetly aktualny riadok ako Audity a Nepritomnost. */
+#stage #birthdayBox #birthdayCards .birthdayCard.isSoon,
+#stage #birthdayBox #birthdayCards .birthdayCard.isSoon:hover{
+  background:rgba(134,197,243,.26)!important;
+  border-color:rgba(195,230,255,.30)!important;
+}
+</style>
+
+<style id="nameday-row-audit-alignment-and-birthday-active-fix">
+/* Meniny: tri riadky na identickej vertikálnej mriežke ako tri riadky Auditov. */
+#stage #namedayBox #namedayDisplay{margin-top:-7px!important;}
+#stage #namedayBox #namedayDisplay .holidayRow{
+  box-sizing:border-box!important;
+  height:41px!important;min-height:41px!important;
+  margin:0!important;padding:4px 9px!important;
+  gap:7px!important;border-radius:7px!important;
+  align-items:center!important;
+}
+#stage #namedayBox #namedayDisplay .holidayDate,
+#stage #namedayBox #namedayDisplay .holidayName,
+#stage #namedayBox #namedayDisplay .holidayLabel{
+  font-size:20px!important;line-height:1.18!important;
+}
+/* Narodeniny: rovnaka farba aktivneho riadku ako Nepritomnost/Audity.
+   Aktivne od 23 hodin pred 07:00 v den narodenin a po cely den narodenin. */
+#stage #birthdayBox #birthdayCards .birthdayCard.isSoon,
+#stage #birthdayBox #birthdayCards .birthdayCard.isToday{
+  background:rgba(134,197,243,.145)!important;
+  border-color:rgba(255,255,255,.10)!important;
+  color:#fff!important;
+}
+#stage #birthdayBox #birthdayCards .birthdayCard:hover{
+  background:rgba(143,207,250,.22)!important;
+}
+#stage #birthdayBox #birthdayCards .birthdayCard .birthdayCountdown,
+#stage #birthdayBox #birthdayCards .birthdayCard .birthdayPerson,
+#stage #birthdayBox #birthdayCards .birthdayCard .birthdayDate{color:#fff!important;}
+</style>
+
+<style id="namedays-exact-audit-row-match">
+/* Rovnaké písmo ako v Auditoch, bez individuálne menených výšok či odsadení. */
+#stage #namedayBox #namedayDisplay .holidayRow{
+  box-sizing:border-box!important;margin:0!important;min-height:0!important;
+  padding:0 9px!important;border-radius:7px!important;gap:7px!important;
+  align-items:center!important;
+}
+#stage #namedayBox #namedayDisplay .holidayDate,
+#stage #namedayBox #namedayDisplay .holidayName,
+#stage #namedayBox #namedayDisplay .holidayLabel{
+  font-size:22px!important;line-height:1.26!important;font-weight:400!important;
+}
+</style>
+<style id="nameday-readonly-final">
+#stage #namedayBox #namedayAddButton,
+#stage #namedayBox #namedayForm{display:none!important;}
+#stage #namedayBox #namedayDisplay .holidayRow{cursor:default!important;}
+#stage #namedayBox #namedayDisplay .holidayRow:hover{background:rgba(143,207,250,.22)!important;transition:background .18s ease;}
+</style>
+
+<style id="holiday-readonly-and-nameday-hover-final">
+/* Sviatky sú iba na čítanie. Kalendár na nadpise zostáva klikateľný. */
+#stage #holidayBox #holidayAddRow,
+#stage #holidayBox #holidayFormRow{display:none!important;}
+#stage #holidayBox #holidayDisplay .holidayRow{cursor:default!important;}
+/* Meniny: jemné zvýraznenie pri prechode myšou, bez možnosti úprav. */
+#stage #namedayBox #namedayDisplay .holidayRow{transition:background .18s ease!important;}
+#stage #namedayBox #namedayDisplay .holidayRow:hover{
+  background:rgba(143,207,250,.22)!important;
+}
+</style>
+
+<style id="birthday-all-list-dialog-css">
+#birthdayAllToggle{cursor:pointer;user-select:none;display:inline-flex;align-items:center;gap:10px;}
+#birthdayAllToggle:hover{color:#d7f0ff!important;text-shadow:0 0 9px rgba(196,231,255,.55);}
+#birthdayAllToggle .birthdayHeaderArrow{font-size:15px;opacity:.8;}
+#birthdayAllOverlay{position:absolute;inset:0;z-index:100000;background:rgba(5,21,39,.70);display:none;align-items:center;justify-content:center;box-sizing:border-box;}
+#birthdayAllOverlay.isOpen{display:flex;}
+#birthdayAllDialog{background:linear-gradient(145deg,#3675a7,#234e77);border:1px solid rgba(220,242,255,.35);box-shadow:0 24px 70px rgba(0,0,0,.5);border-radius:22px;padding:23px 26px 26px;width:900px;max-height:920px;box-sizing:border-box;display:flex;flex-direction:column;color:#fff;}
+#birthdayAllDialogHeader{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:15px;font-size:29px;font-weight:650;}
+#birthdayAllClose{background:rgba(255,255,255,.13);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:11px;font-size:28px;width:42px;height:42px;cursor:pointer;}
+#birthdayAllList{overflow-y:auto;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px;scrollbar-color:rgba(235,245,255,.4) transparent;}
+#birthdayAllList .birthdayAllItem{display:grid;grid-template-columns:minmax(0,1fr) 85px 104px;gap:10px;align-items:center;min-height:45px;padding:8px 12px;border-radius:10px;background:rgba(12,53,94,.35);font-size:19px;box-sizing:border-box;}
+#birthdayAllList .birthdayAllItem.isSoon{background:rgba(134,197,243,.28);}
+#birthdayAllList .birthdayAllName{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#birthdayAllList .birthdayAllDate,#birthdayAllList .birthdayAllCountdown{text-align:right;white-space:nowrap;}
+#birthdayAllList .birthdayAllCountdown{font-size:16px;}
+</style>
+
+<style id="all-calendar-modals-style">
+#stage .calendarAllToggle{cursor:pointer;user-select:none;display:inline-flex;align-items:center;gap:7px;color:#fff;}
+#stage .calendarAllToggle:hover{color:#d7f0ff;text-shadow:0 0 9px rgba(196,231,255,.55);}
+#stage .calendarAllToggle span{font-size:14px;opacity:.8;}
+#stage .calendarSourceIcon{font-size:15px!important;text-decoration:none!important;margin-right:auto;margin-left:0;color:#c6e5ff!important;}
+#stage #holidayBox .holidayPanelHeader,#stage #namedayBox .namedayPanelHeader{justify-content:flex-start;gap:9px;}
+#calendarAllOverlay{position:absolute;inset:0;z-index:100001;background:rgba(5,21,39,.72);display:none;align-items:center;justify-content:center;box-sizing:border-box;}
+#calendarAllOverlay.isOpen{display:flex;}
+#calendarAllDialog{width:680px;max-height:850px;box-sizing:border-box;display:flex;flex-direction:column;padding:20px;border-radius:22px;background:linear-gradient(155deg,#386e9d,#21476e);border:1px solid rgba(255,255,255,.27);box-shadow:0 20px 80px rgba(0,0,0,.45);color:white;}
+#calendarAllHeader{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-size:26px;font-weight:700;}
+#calendarAllClose{font-size:30px;border:0;background:rgba(255,255,255,.14);border-radius:9px;color:white;cursor:pointer;padding:1px 13px;}
+#calendarAllList{overflow-y:auto;min-height:0;display:flex;flex-direction:column;gap:5px;scrollbar-color:rgba(200,225,255,.7) transparent;scrollbar-width:thin;padding-right:5px;}
+#calendarAllList .calendarAllRow{display:grid;grid-template-columns:110px minmax(0,1fr) 116px;align-items:center;gap:12px;min-height:44px;padding:8px 12px;border-radius:10px;background:rgba(12,53,94,.4);font-size:19px;box-sizing:border-box;}
+#calendarAllList .calendarAllRow.isSoon{background:rgba(134,197,243,.28);}
+#calendarAllList .calendarAllName{font-weight:600;overflow-wrap:anywhere;}
+#calendarAllList .calendarAllCountdown{text-align:right;white-space:nowrap;}
+</style>
+<style id="expired-event-archive-style">
+#stage .archiveTitleToggle{cursor:pointer;color:#fff;user-select:none;display:inline-flex;align-items:center;gap:8px}
+#stage .archiveTitleToggle:hover{color:#cceaff;text-shadow:0 0 8px rgba(170,210,245,.35)}
+#stage .archiveTitleToggle .archiveArrow{font-size:14px;font-weight:400}
+#expiredArchiveOverlay{position:absolute;inset:0;z-index:100020;background:rgba(5,21,39,.75);display:none;align-items:center;justify-content:center}
+#expiredArchiveOverlay.isOpen{display:flex}
+#expiredArchiveDialog{width:750px;max-height:830px;box-sizing:border-box;display:flex;flex-direction:column;padding:20px;border-radius:22px;background:linear-gradient(155deg,#386e9d,#21476e);border:1px solid rgba(255,255,255,.27);box-shadow:0 20px 80px rgba(0,0,0,.45);color:#fff}
+#expiredArchiveHead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;font-size:26px;font-weight:700}
+#expiredArchiveClose{background:rgba(255,255,255,.15);color:white;border:0;border-radius:9px;padding:2px 13px;cursor:pointer;font-size:28px}
+#expiredArchiveList{overflow-y:auto;min-height:0;display:flex;flex-direction:column;gap:6px;padding-right:4px}
+#expiredArchiveList .expiredArchiveRow{display:grid;grid-template-columns:180px minmax(0,1fr) 170px;align-items:center;gap:12px;border-radius:11px;background:rgba(12,53,94,.4);padding:12px 14px;font-size:19px;overflow-wrap:anywhere}
+#expiredArchiveList .expiredArchiveEmpty{padding:25px;text-align:center;color:#d8e9fa;font-size:20px}
+</style>
+
+<style id="source-right-and-radio-last-row-alignment">
+/* Odkazy na internetové zdroje na úplne pravom okraji hlavičiek. */
+#stage #namedayBox .namedayPanelHeader,
+#stage #holidayBox .holidayPanelHeader{display:flex!important;justify-content:flex-start!important;align-items:center!important;width:100%!important;}
+#stage #namedayBox .calendarSourceIcon,
+#stage #holidayBox .calendarSourceIcon{margin-left:auto!important;margin-right:0!important;flex:0 0 auto!important;order:20!important;text-align:right!important;}
+/* Výška posledného riadku rádia je daná len jeho obsahom. */
+#stage #radioPanel .radioRotation{box-sizing:border-box!important;}
+</style>
+
+<style id="news-complete-list-styling">
+/* Typ kategórie rovnako veľký ako titulok v spravodajskom paneli. */
+#stage #eventScroll .newsTopic{font-size:inherit!important;line-height:1.18!important;min-width:160px!important;max-width:230px!important;}
+#stage #newsSlideCounter{cursor:pointer!important;text-decoration:underline;text-decoration-color:rgba(255,255,255,.36);text-underline-offset:4px;z-index:3;}
+#stage #newsSlideCounter:hover,#stage #newsSlideCounter:focus-visible{color:#d6efff!important;text-decoration-color:currentColor;}
+#allNewsOverlay{display:none;position:absolute;inset:0;z-index:100006;background:rgba(5,21,39,.75);align-items:center;justify-content:center;}
+#allNewsOverlay.isOpen{display:flex;}
+#allNewsDialog{width:1080px;max-height:880px;box-sizing:border-box;padding:22px 25px 24px;display:flex;flex-direction:column;border-radius:22px;background:linear-gradient(145deg,#3675a7,#234e77);border:1px solid rgba(220,242,255,.35);box-shadow:0 24px 70px rgba(0,0,0,.5);color:#fff;}
+#allNewsHeader{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px;font-size:28px;font-weight:650;}
+#allNewsClose{background:rgba(255,255,255,.13);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:11px;font-size:28px;width:42px;height:42px;cursor:pointer;}
+#allNewsList{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:7px;padding-right:6px;scrollbar-color:rgba(235,245,255,.45) transparent;}
+#allNewsList .allNewsItem{display:grid;grid-template-columns:42px 170px minmax(0,1fr);gap:13px;align-items:center;min-height:54px;padding:10px 13px;border-radius:11px;background:rgba(12,53,94,.35);color:#fff;text-decoration:none;font-size:19px;line-height:1.25;}
+#allNewsList .allNewsItem:hover{background:rgba(143,207,250,.23);}
+#allNewsList .allNewsNumber{color:#c7e6ff;text-align:center;font-size:16px;}
+#allNewsList .allNewsTopic{color:#d7eaff;font-weight:650;overflow-wrap:anywhere;font-size:17px;}
+#allNewsList .allNewsTitle{overflow-wrap:anywhere;}
+</style>
+
+<style id="news-font-larger-wide-fix">
+/* Titulok a kategória sú rovnako veľké; plnšie využitie šírky panelu. */
+#stage #eventScroll{
+  font-size:35px!important;
+  line-height:1.15!important;
+  width:calc(100% - 190px)!important;
+  max-width:calc(100% - 190px)!important;
+  gap:16px!important;
+  padding-left:4px!important;
+  padding-right:10px!important;
+}
+#stage #eventScroll a,
+#stage #eventScroll .newsTopic{
+  font-size:35px!important;
+  line-height:1.15!important;
+  font-weight:650!important;
+}
+#stage #eventScroll a{flex:1 1 auto!important;min-width:0!important;-webkit-line-clamp:2;}
+#stage #eventScroll .newsTopic{
+  flex:0 0 auto!important;
+  min-width:0!important;
+  max-width:290px!important;
+  padding:6px 13px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+#stage #historicalEvents{min-height:77px!important;}
+</style>
+
+<style id="news-real-headline-large-43px">
+/* Úprava titulku správy, nie štítku kategórie. */
+#stage #eventScroll {width:calc(100% - 208px)!important;max-width:calc(100% - 208px)!important;gap:17px!important;align-items:center!important;}
+#stage #eventScroll a {font-size:43px!important;line-height:1.12!important;font-weight:700!important;max-height:2.24em!important;letter-spacing:-.8px!important;flex:1 1 auto!important;min-width:0!important;}
+#stage #eventScroll .newsTopic {font-size:26px!important;line-height:1.13!important;font-weight:700!important;max-width:220px!important;overflow:hidden!important;text-overflow:ellipsis!important;flex:0 0 auto!important;}
+#stage #historicalEvents{min-height:100px!important;}
+</style>
+
+<style id="news-compact-panel-tasr-final">
+/* Menej vysoký panel: titulok a prispôsobovanie jeho fontu ostávajú bez zmeny. */
+#stage #historicalEvents{height:76px!important;min-height:76px!important;max-height:76px!important;padding:7px 15px 13px!important;box-sizing:border-box!important;}
+#stage #historicalEvents #eventScroll{height:100%!important;min-height:0!important;}
+#stage #historicalEvents #newsSlideCounter{top:30%!important;}
+#stage #historicalEvents #newsUpdateStatus{bottom:3px!important;}
+</style>
 </head>
 
 <body>
@@ -2032,7 +2269,7 @@ body::after { display:none !important; content:none !important; }
 <div id="sun" class="glass"></div>
 
 <div id="auditsTable" class="glass">
-    <div class="dashboardSectionTitle auditSectionTitle panelHeader"><span>Audity a návštevy</span><button type="button" id="auditAddButton" class="panelAddButton" onclick="event.stopPropagation();showAuditForm()" aria-label="Pridať Audit" title="Pridať Audit">+</button></div>
+    <div class="dashboardSectionTitle auditSectionTitle panelHeader"><span id="auditArchiveToggle" class="archiveTitleToggle" role="button" tabindex="0" onclick="openExpiredArchive('audit')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openExpiredArchive('audit')}" title="Zobraziť ukončené audity">Audity a návštevy <span class="archiveArrow">▾</span></span><button type="button" id="auditAddButton" class="panelAddButton" onclick="event.stopPropagation();showAuditForm()" aria-label="Pridať Audit" title="Pridať Audit">+</button></div>
     <table style="width:100%;font-size:15.5px;border-collapse:collapse;table-layout:fixed;">
         <colgroup><col style="width:32%"><col style="width:28%"><col style="width:22%"><col style="width:18%"></colgroup>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
@@ -2063,7 +2300,7 @@ body::after { display:none !important; content:none !important; }
 </div>
 
 <div id="leaveBox" class="glass">
-    <div class="dashboardSectionTitle panelHeader"><span>Neprítomnosť</span><button type="button" id="leaveAddButton" class="panelAddButton" onclick="event.stopPropagation();showLeaveForm()" aria-label="Pridať Neprítomnosť" title="Pridať Neprítomnosť">+</button></div>
+    <div class="dashboardSectionTitle panelHeader"><span id="leaveArchiveToggle" class="archiveTitleToggle" role="button" tabindex="0" onclick="openExpiredArchive('leave')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openExpiredArchive('leave')}" title="Zobraziť minulé neprítomnosti">Neprítomnosť <span class="archiveArrow">▾</span></span><button type="button" id="leaveAddButton" class="panelAddButton" onclick="event.stopPropagation();showLeaveForm()" aria-label="Pridať Neprítomnosť" title="Pridať Neprítomnosť">+</button></div>
     <div id="leaveList" style="font-size:28px;"></div>
 
     <div id="leaveFormRow" class="panelEntryForm leaveEntryForm" style="display:none;">
@@ -2080,6 +2317,11 @@ body::after { display:none !important; content:none !important; }
     </div>
 </div>
 
+<div id="birthdayBox" class="glass" aria-label="Najbližšie narodeniny">
+  <div class="dashboardSectionTitle panelHeader"><span id="birthdayAllToggle" role="button" tabindex="0" title="Zobraziť všetky narodeniny" aria-label="Zobraziť všetky narodeniny" onclick="openAllBirthdays()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openAllBirthdays();}">Narodeniny <span aria-hidden="true" class="birthdayHeaderArrow">▾</span></span></div>
+  <div id="birthdayCards" class="birthdayCards"></div>
+</div>
+
 <div id="shiftBox" class="glass" style="display:none;"></div>
 
 <div id="currentWeatherBox">
@@ -2087,7 +2329,7 @@ body::after { display:none !important; content:none !important; }
 </div>
 
 <div id="holidayBox" class="glass">
-    <div class="panelHeader holidayPanelHeader"><a class="panelSourceLink" href="https://kalendar.aktuality.sk/sviatky/rok/2026/" target="_blank" rel="noopener noreferrer" title="Otvoriť kalendár sviatkov (zdroj)">Sviatky</a><button type="button" id="holidayAddRow" class="panelAddButton" onclick="showHolidayForm()" aria-label="Pridať Sviatok" title="Pridať Sviatok">+</button></div>
+    <div class="panelHeader holidayPanelHeader"><span id="holidayAllToggle" class="calendarAllToggle" role="button" tabindex="0" title="Zobraziť všetky sviatky" onclick="openAllCalendar('holiday')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openAllCalendar('holiday');}">Sviatky <span aria-hidden="true">▾</span></span><a class="panelSourceLink calendarSourceIcon" href="https://kalendar.aktuality.sk/sviatky/rok/2026/" target="_blank" rel="noopener noreferrer" title="Otvoriť zdroj sviatkov">↗</a><button type="button" id="holidayAddRow" class="panelAddButton" onclick="showHolidayForm()" aria-label="Pridať Sviatok" title="Pridať Sviatok">+</button></div>
     <div id="holidayDisplay"></div>
     <div id="holidayFormRow" style="display:none;">
       <input id="holidayCustomName" type="text" maxlength="100" placeholder="Názov sviatku" aria-label="Názov sviatku">
@@ -2099,7 +2341,7 @@ body::after { display:none !important; content:none !important; }
 </div>
 
 <div id="namedayBox" class="glass">
-  <div class="panelHeader namedayPanelHeader"><a class="panelSourceLink" href="https://kalendar.aktuality.sk/meninovy/rok/2026/" target="_blank" rel="noopener noreferrer" title="Otvoriť kalendár menín (zdroj)">Meniny</a><button type="button" id="namedayAddButton" class="panelAddButton" onclick="showNamedayForm()" aria-label="Pridať Meniny" title="Pridať Meniny">+</button></div>
+  <div class="panelHeader namedayPanelHeader"><span id="namedayAllToggle" class="calendarAllToggle" role="button" tabindex="0" title="Zobraziť všetky meniny" onclick="openAllCalendar('nameday')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openAllCalendar('nameday');}">Meniny <span aria-hidden="true">▾</span></span><a class="panelSourceLink calendarSourceIcon" href="https://kalendar.aktuality.sk/meninovy/rok/2026/" target="_blank" rel="noopener noreferrer" title="Otvoriť zdroj menín">↗</a><button type="button" id="namedayAddButton" class="panelAddButton" onclick="showNamedayForm()" aria-label="Pridať Meniny" title="Pridať Meniny">+</button></div>
   <div id="namedayDisplay"></div>
   <div id="namedayForm" class="panelEntryForm" style="display:none">
     <div class="formFields">
@@ -3658,14 +3900,30 @@ function holidayPictogram(name){
   for(const [pattern,icon] of rules){if(pattern.test(key))return icon;}
   return '📅';
 }
+function isManuallyAddedChristmasHoliday(item){
+  if(!item || typeof item!=='object')return false;
+  const date=parseCustomHolidayDate(item.date);
+  if(!date || date.getMonth()!==11 || ![24,25,26].includes(date.getDate()))return false;
+  return /vianoc|štedr|stedr|christmas/i.test(String(item.name||''));
+}
+function removeManuallyAddedChristmasHolidays(){
+  const filtered=customHolidayData.filter(item=>!isManuallyAddedChristmasHoliday(item));
+  if(filtered.length!==customHolidayData.length){
+    customHolidayData=filtered;
+    persistCustomHolidays();
+  }
+}
 function updateHolidays(){
+  // Odstrániť iba ručne pridané Vianoce, nie iné vlastné sviatky.
+  removeManuallyAddedChristmasHolidays();
   const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
   const oneDay=86400000;
   const automatic=[...holidaysForYear(today.getFullYear()),...holidaysForYear(today.getFullYear()+1)]
-    .filter(h=>!(h.date.getMonth()===11 && [24,25,26].includes(h.date.getDate())))
+    // Oficiálne vianočné sviatky sú súčasťou kalendára; neodfiltrovať ich.
     .map(h=>{
       const key=isoLocalDate(h.date);
-      const edited=holidayOverrides[key];
+      const isOfficialChristmas=h.date.getMonth()===11 && [24,25,26].includes(h.date.getDate());
+      const edited=isOfficialChristmas?null:holidayOverrides[key];
       return {date:edited?parseCustomHolidayDate(edited.date):h.date,name:edited?edited.name:h.name,automaticKey:key};
     }).filter(h=>h.date && h.date>=today);
   const own=customHolidayData.map(item=>({...item,parsedDate:parseCustomHolidayDate(item.date)}))
@@ -3682,7 +3940,7 @@ function updateHolidays(){
   const row=(item)=>{
     const date=item.date;
     const editId=item.custom?item.id:'auto:'+item.automaticKey;
-    const attrs=` onclick="showHolidayForm('${editId}')" title="Klikni a uprav sviatok" style="cursor:pointer"`;
+    const attrs=' title="Sviatok v kalendári"';
     const whenLabel=when(date);
     const isCurrent=date.getFullYear()===today.getFullYear() && date.getMonth()===today.getMonth() && date.getDate()===today.getDate();
     return `<div class="holidayRow ${isCurrent?'currentCountdownRow':''}"${attrs}><span class="holidayDate">${['Ne','Po','Ut','St','Št','Pi','So'][date.getDay()]} ${String(date.getDate()).padStart(2,'0')}.${String(date.getMonth()+1).padStart(2,'0')}.</span><span class="holidayName"><span class="holidayIcon" aria-hidden="true">${holidayPictogram(item.name)}</span><span class="holidayLabel">${escapeHolidayText(item.name)}</span></span><span class="holidayWhen ${isCurrent?'currentCountdownText':''}">${whenLabel}</span></div>`;
@@ -3722,6 +3980,7 @@ firebaseListen('dashboardCustomNamedays',data=>{
   renderNamedays();
 });
 window.showNamedayForm=function(id=null){
+  return; // Panel Meniny je iba na čítanie.
   editingNamedayAutomaticKey=(typeof id==='string' && id.startsWith('auto:'))?id.slice(5):null;
   const item=editingNamedayAutomaticKey?(namedayOverrides[editingNamedayAutomaticKey]||{name:getNameday(parseCustomHolidayDate(editingNamedayAutomaticKey)),date:editingNamedayAutomaticKey}):customNamedayData.find(x=>x.id===id);
   editingNamedayId=(!editingNamedayAutomaticKey && item)?item.id:null;
@@ -3767,8 +4026,8 @@ function renderNamedays(){
   const today=new Date();today.setHours(0,0,0,0);
   const dateLabel=d=>['Ne','Po','Ut','St','Št','Pi','So'][d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.';
   const items=[];
-  // Dva najbližšie záznamy vrátane vlastných menín.
-  for(let i=1;i<=2;i++){
+  // Tri najbližšie záznamy vrátane vlastných menín.
+  for(let i=1;i<=3;i++){
     const date=new Date(today.getFullYear(),today.getMonth(),today.getDate()+i);
     const key=isoLocalDate(date);
     const override=namedayOverrides[key];
@@ -3781,15 +4040,83 @@ function renderNamedays(){
     items.push({date:d,name:item.name,id:item.id});
   }
   items.sort((a,b)=>a.date-b.date||Number(!!a.id)-Number(!!b.id));
-  display.innerHTML=items.slice(0,2).map(x=>{
+  display.innerHTML=items.slice(0,3).map(x=>{
     const editId=x.id||'auto:'+x.automaticKey;
-    const attrs=` onclick="showNamedayForm('${editId}')" title="Klikni a uprav meniny" style="cursor:pointer"`;
+    const attrs=` title="Meniny – iba na čítanie"`;
     return `<div class="holidayRow"${attrs}><span class="holidayDate">${dateLabel(x.date)}</span><span class="holidayName"><span class="holidayLabel">${escapeHolidayText(x.name)}</span></span></div>`;
   }).join('');
   if(typeof positionLeaveBox==='function')positionLeaveBox();
 }
 
 // ===== VOĽNO V KANCELÁRII =====
+
+// Archív vytvára výhradne automatické uplynutie udalosti. Ručné mazanie sa doň neprenáša.
+const expiredArchiveKey='dashboardExpiredEventsV1';
+let expiredEventArchives=(()=>{try{const o=JSON.parse(localStorage.getItem(expiredArchiveKey)||'{}');return {audit:Array.isArray(o.audit)?o.audit:[],leave:Array.isArray(o.leave)?o.leave:[]};}catch(e){return {audit:[],leave:[]};}})();
+function uniqueArchiveEntries(items){
+ const map=new Map();
+ items.forEach(item=>{if(item&&item.id!=null)map.set(String(item.id),item);});
+ return Array.from(map.values());
+}
+function saveExpiredArchives(){
+ try{localStorage.setItem(expiredArchiveKey,JSON.stringify(expiredEventArchives));}catch(e){}
+ firebaseSave(expiredArchiveKey,expiredEventArchives);
+}
+firebaseListen(expiredArchiveKey,remote=>{
+ if(!remote || typeof remote!=='object')return;
+ const prior=JSON.stringify(expiredEventArchives);
+ for(const type of ['audit','leave']){
+   expiredEventArchives[type]=uniqueArchiveEntries([...expiredEventArchives[type],...(Array.isArray(remote[type])?remote[type]:[])]);
+ }
+ try{localStorage.setItem(expiredArchiveKey,JSON.stringify(expiredEventArchives));}catch(e){}
+ if(JSON.stringify(expiredEventArchives)!==prior && JSON.stringify(expiredEventArchives)!==JSON.stringify(remote))saveExpiredArchives();
+});
+function archiveExpiredRecords(type,items,dateField){
+ const today=new Date();today.setHours(0,0,0,0);
+ const past=[],upcoming=[];
+ items.forEach(item=>{
+   const d=parseLeaveDate(item[dateField]||item.start||item.date);
+   if(Number.isFinite(d.getTime()) && d<today)past.push(item);
+   else upcoming.push(item);
+ });
+ if(past.length){
+   expiredEventArchives[type]=uniqueArchiveEntries([...expiredEventArchives[type],...past.map(item=>({...item,archivedAt:new Date().toISOString()}))]);
+   saveExpiredArchives();
+ }
+ return upcoming;
+}
+function openExpiredArchive(type){
+ if(type!=='audit'&&type!=='leave')return;
+ let overlay=document.getElementById('expiredArchiveOverlay');
+ if(!overlay){
+   overlay=document.createElement('div');overlay.id='expiredArchiveOverlay';
+   overlay.innerHTML='<div id="expiredArchiveDialog" role="dialog" aria-modal="true" aria-labelledby="expiredArchiveTitle"><div id="expiredArchiveHead"><span id="expiredArchiveTitle"></span><button id="expiredArchiveClose" type="button" aria-label="Zavrieť archív" onclick="closeExpiredArchive()">×</button></div><div id="expiredArchiveList"></div></div>';
+   overlay.addEventListener('click',e=>{if(e.target===overlay)closeExpiredArchive();});
+   document.getElementById('stage').appendChild(overlay);
+ }
+ overlay.dataset.type=type;
+ document.getElementById('expiredArchiveTitle').textContent=type==='audit'?'Ukončené audity a návštevy':'Minulé neprítomnosti';
+ const records=expiredEventArchives[type].slice().sort((a,b)=>String(b.dateEnd||b.end||b.date||b.start).localeCompare(String(a.dateEnd||a.end||a.date||a.start)));
+ const list=document.getElementById('expiredArchiveList');
+ list.replaceChildren();
+ if(!records.length){const el=document.createElement('div');el.className='expiredArchiveEmpty';el.textContent='Zatiaľ žiadne ukončené udalosti.';list.appendChild(el);}
+ records.forEach(item=>{
+  const el=document.createElement('div');el.className='expiredArchiveRow';
+  const start=parseLeaveDate(item.start||item.date);const end=parseLeaveDate(item.end||item.dateEnd||item.start||item.date);
+  const parts=[eventDateRangeShort(start,end),type==='audit'?String(item.zak||'—'):String(item.name||'—'),type==='audit'?String(item.typ||'—'):'Ukončené'];
+  parts.forEach(value=>{const span=document.createElement('span');span.textContent=value;el.appendChild(span);});
+  list.appendChild(el);
+ });
+ overlay.classList.add('isOpen');list.scrollTop=0;
+ document.getElementById('expiredArchiveClose').focus();
+}
+function closeExpiredArchive(){
+ const o=document.getElementById('expiredArchiveOverlay');if(!o)return;
+ o.classList.remove('isOpen');
+ document.getElementById(o.dataset.type==='audit'?'auditArchiveToggle':'leaveArchiveToggle')?.focus();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('expiredArchiveOverlay')?.classList.contains('isOpen'))closeExpiredArchive();});
+
 let leaveData = loadLeave();
 function loadLeave(){
   try{ const s=localStorage.getItem('officeLeave'); if(s) return JSON.parse(s); }catch(e){}
@@ -3914,10 +4241,7 @@ function renderLeave(){
   const today=new Date(); today.setHours(0,0,0,0);
 
   const before=leaveData.length;
-  leaveData = leaveData.filter(x=>{
-    const e=parseLeaveDate(x.end||x.start); e.setHours(0,0,0,0);
-    return Math.ceil((e-today)/86400000) >= 0;
-  });
+  leaveData = archiveExpiredRecords('leave',leaveData,'end');
   if(leaveData.length!==before) saveLeave();
 
   const items = leaveData.map(x=>{
@@ -3991,10 +4315,39 @@ function positionLeaveBox(){
   audits.style.minWidth='0';audits.style.maxWidth='none';
   audits.style.boxSizing='border-box';
   nameday.style.maxHeight='';
+  // Rovnaká vonkajšia výška Menín a Auditov aj pri pridávaní auditov.
+  nameday.style.height=audits.offsetHeight+'px';
+  // Zarovnanie každého meninového riadku podľa skutočnej polohy auditových riadkov.
+  // Funguje aj pri dynamickom doplnení/zmazaní auditov, bez ručných odhadov 41/48 px.
+  const namedayRows=Array.from(nameday.querySelectorAll('#namedayDisplay .holidayRow'));
+  const auditRows=Array.from(audits.querySelectorAll('table tr')).filter(row =>
+    row.id!=='auditFormRow' && row.id!=='auditAddRow' && getComputedStyle(row).display!=='none'
+  );
+  if(namedayRows.length && auditRows.length){
+    const display=nameday.querySelector('#namedayDisplay');
+    const stage=document.getElementById('stage');
+    const scale=(stage && stage.getBoundingClientRect().width/1920)||1;
+    const auditTop=auditRows[0].getBoundingClientRect().top;
+    const meninyTop=namedayRows[0].getBoundingClientRect().top;
+    const oldMargin=parseFloat(display.style.marginTop || getComputedStyle(display).marginTop)||0;
+    const delta=(auditTop-meninyTop)/scale;
+    if(Math.abs(delta)>.15) display.style.setProperty('margin-top',(oldMargin+delta)+'px','important');
+    namedayRows.forEach((row,index)=>{
+      const target=auditRows[index]||auditRows[auditRows.length-1];
+      const h=target.getBoundingClientRect().height/scale;
+      if(Number.isFinite(h) && h>0) row.style.setProperty('height',h+'px','important');
+    });
+  }
+
   const secondTop=Math.max(audits.offsetTop+audits.offsetHeight,nameday.offsetTop+nameday.offsetHeight)+gap;
   const leftWidth=Math.floor((total-gap)/2);
   place(leave,startX,secondTop,leftWidth);
   place(holiday,startX+leftWidth+gap,secondTop,total-gap-leftWidth);
+  // Narodeniny pod Neprítomnosťou v tej istej ľavej kolónke.
+  const birthday=document.getElementById('birthdayBox');
+  if(birthday){
+    place(birthday,startX,leave.offsetTop+leave.offsetHeight+gap,leftWidth);
+  }
   if(typeof fitSwappedPanelText==='function')fitSwappedPanelText();
 }
 
@@ -4040,6 +4393,11 @@ function positionBottomBoxes(){
   const newsTop=ticker?ticker.offsetTop:1010;
   radio.style.maxHeight='none';
   radio.style.overflowY='visible';
+  // Rádiá majú iba prirodzenú výšku podľa obsahu, bez dorovnávania k Narodeninám.
+  const rotation=radio.querySelector('.radioRotation');
+  if(rotation){
+    rotation.style.setProperty('padding-bottom','4px','important');
+  }
 }
 
 // ===== AUDITY =====
@@ -4217,10 +4575,7 @@ function renderCustomAudits(){
   const today=new Date(); today.setHours(0,0,0,0);
 
   const before=auditData.length;
-  auditData=auditData.filter(a=>{
-    const e=parseLeaveDate(a.dateEnd||a.date); e.setHours(0,0,0,0);
-    return e>=today;
-  });
+  auditData=archiveExpiredRecords('audit',auditData,'dateEnd');
   if(auditData.length!==before) saveAudits();
 
   document.querySelectorAll('tr.customAuditRow').forEach(r=>r.remove());
@@ -4266,6 +4621,7 @@ setInterval(()=>{
   updateHolidays();
   renderNamedays();
   renderLeave();
+  renderCustomAudits();
   positionBottomBoxes();
   fitAllDashboardTables();
 },60000);
@@ -4327,11 +4683,17 @@ fitStage();
 // SPRÁVY TERAZ.SK – odolné načítavanie z viacerých brán a lokálna záloha.
 const NEWS_QUEUE_MAX = 50;
 const NEWS_RSS_URL = 'https://www.teraz.sk/rss/vsetky-spravy.rss';
-const NEWS_CACHE_KEY = 'dashboardTerazNewsCacheV3';
+const NEWS_FEEDS = [
+  {url:'https://www.teraz.sk/rss/vsetky-spravy.rss',category:''}
+];
+const NEWS_CACHE_KEY = 'dashboardTasrOnlyNewsCacheV1';
 let newsQueue = [];
 let newsUpdating = false;
 let lastNewsSuccess = null;
 let newsRetryTimer = null;
+let newsActiveIndex=0;
+let newsRotationTimer=null;
+const NEWS_DISPLAY_MS=10000;
 
 function setNewsStatus(message, error = false){
   const status=document.getElementById('newsUpdateStatus');
@@ -4349,14 +4711,14 @@ function normalizeNews(raw,idx){
   try{
     const link=new URL(String(raw.url||raw.link||''));
     if(['https:','http:'].includes(link.protocol) &&
-       (link.hostname==='teraz.sk' || link.hostname.endsWith('.teraz.sk'))) url=link.href;
+       (['teraz.sk','sita.sk','aktuality.sk'].some(domain=>link.hostname===domain || link.hostname.endsWith('.'+domain)))) url=link.href;
   }catch(e){}
-  return {title, url, when:Number.isFinite(parsedDate)?parsedDate:0, idx};
+  return {title, url, when:Number.isFinite(parsedDate)?parsedDate:0, idx, category:String(raw.category||raw.categories?.[0]||'').trim(), source:url.includes('sita.sk')?'SITA':url.includes('aktuality.sk')?'Aktuality.sk':'TASR / Teraz.sk'};
 }
 function sortAndValidateNews(rows){
   if(!Array.isArray(rows)) throw new Error('Neznámy formát zoznamu');
   const valid=rows.map(normalizeNews).filter(item=>item.title.length>10 && item.url);
-  if(!valid.length) throw new Error('Zdroj nevrátil platné titulky Teraz.sk');
+  if(!valid.length) throw new Error('Zdroj nevrátil platné titulky');
   valid.sort((a,b)=>b.when-a.when || a.idx-b.idx);
   return valid.slice(0,NEWS_QUEUE_MAX);
 }
@@ -4369,7 +4731,8 @@ function parseNewsXML(xmlText){
   return sortAndValidateNews(items.map(item=>({
     title:item.querySelector('title')?.textContent||'',
     link:item.querySelector('link')?.textContent||'',
-    pubDate:item.querySelector('pubDate')?.textContent||''
+    pubDate:item.querySelector('pubDate')?.textContent||'',
+    category:item.querySelector('category')?.textContent||''
   })));
 }
 async function newsFetch(url, timeoutMs=8500){
@@ -4386,75 +4749,173 @@ async function newsFromXMLProxy(base){
   // Platná HTTP odpoveď nie je ešte platné RSS: každú bránu overíme osobitne.
   return parseNewsXML(await response.text());
 }
-async function newsFromJSONConverter(){
+async function newsFromJSONConverter(feedUrl=NEWS_RSS_URL){
   const url='https://api.rss2json.com/v1/api.json?rss_url='
-    +encodeURIComponent(NEWS_RSS_URL)+'&count=50';
+    +encodeURIComponent(feedUrl)+'&count=50';
   const response=await newsFetch(url,9500);
   const data=await response.json();
   if(data.status!=='ok') throw new Error('RSS2JSON: '+String(data.message||data.status||'chyba'));
   return sortAndValidateNews(data.items||[]);
 }
-async function newsFromAllOriginsJSON(){
-  const url='https://api.allorigins.win/get?url='+encodeURIComponent(NEWS_RSS_URL);
+async function newsFromAllOriginsJSON(feedUrl=NEWS_RSS_URL){
+  const url='https://api.allorigins.win/get?url='+encodeURIComponent(feedUrl);
   const response=await newsFetch(url,8500);
   const data=await response.json();
   return parseNewsXML(data.contents);
 }
-async function fetchFreshNews(){
-  // Dve nezávislé metódy sú skúšané súbežne. Prvá úspešná musí mať reálne články.
+async function loadNewsFeed(feed){
+  const url=feed.url;
+  let rows;
   try{
-    return await Promise.any([
-      newsFromXMLProxy('https://proxy.cors.dev/'+NEWS_RSS_URL),
-      newsFromJSONConverter()
+    rows=await Promise.any([
+      newsFromXMLProxy('https://proxy.cors.dev/'+url),
+      newsFromJSONConverter(url)
     ]);
   }catch(primaryError){
-    // Záloha, ak prvé dve služby blokujú feed, CORS alebo vracajú chybové HTML.
-    console.warn('Správy: hlavné zdroje zlyhali, skúšam záložné:',primaryError);
-    return Promise.any([
-      newsFromAllOriginsJSON(),
-      newsFromXMLProxy('https://corsproxy.io/?url='+encodeURIComponent(NEWS_RSS_URL)),
-      newsFromXMLProxy('https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(NEWS_RSS_URL))
+    rows=await Promise.any([
+      newsFromAllOriginsJSON(url),
+      newsFromXMLProxy('https://corsproxy.io/?url='+encodeURIComponent(url)),
+      newsFromXMLProxy('https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(url))
     ]);
   }
+  // Pre jednotlivé RSS rubriky použiť ich explicitnú kategóriu, ak RSS kategória chýba.
+  return rows.filter(item=>/^https?:\/\/(?:[^/]+\.)?teraz\.sk\//i.test(item.url)).map(item=>({...item,category:item.category || feed.category,source:'TASR / Teraz.sk'}));
+}
+function newsPriority(item, now=Date.now()){
+  // Prednosť má dátum a čas publikovania, nie rubrika článku.
+  // Mimoriadne udalosti získajú iba obmedzené časové zvýhodnenie
+  // (max. 90 minút), ktoré počas 24 hodín postupne zanikne.
+  const published=Number(item.when)||0;
+  const ageMs=Math.max(0,now-published);
+  const title=String(item.title||'').toLocaleLowerCase('sk-SK');
+  const urgent=/mimoriadn|urgentn|výstrah|vystrah|varovan|povod[eňn]|zemetrasen|evaku|výbuch|vybuch|explóz|explozi|terorist|útok|utok|katastrof|tornád|tornad|požiar|poziar|havári|havari|tragéd|traged|smrteľn|smrteln|krízov|krizov/.test(title);
+  const urgencyFade=Math.max(0,1-ageMs/(24*3600000));
+  const urgencyBonus=urgent ? urgencyFade*90*60000 : 0;
+  return published+urgencyBonus;
+}
+function newsDedupKey(item){
+  return item.title.toLocaleLowerCase('sk-SK').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'').slice(0,115);
+}
+function selectTopNews(rows){
+  // Najnovšie články ako prvé. Mimoriadne udalosti môžu predbehnúť
+  // iba časovo blízke bežné správy; za kategórie sa body neprideľujú.
+  const now=Date.now();
+  const ordered=rows.map(normalizeNews).filter(x=>x.title.length>10&&/^https?:\/\/(?:[^/]+\.)?teraz\.sk\//i.test(x.url)&&x.when>now-72*3600000);
+  ordered.sort((a,b)=>newsPriority(b,now)-newsPriority(a,now)||b.when-a.when);
+  const unique=[],links=new Set(),titles=new Set();
+  for(const item of ordered){
+    const key=newsDedupKey(item);
+    if(links.has(item.url)||titles.has(key))continue;
+    links.add(item.url);titles.add(key);unique.push(item);
+    if(unique.length>=NEWS_QUEUE_MAX)break;
+  }
+  return unique;
+}
+async function fetchFreshNews(){
+  const results=await Promise.allSettled(NEWS_FEEDS.map(loadNewsFeed));
+  const fetched=results.filter(r=>r.status==='fulfilled').flatMap(r=>r.value);
+  if(!fetched.length)throw new Error('Nedostupné všetky RSS kanály');
+  const selected=selectTopNews(fetched);
+  if(!selected.length)throw new Error('RSS TASR neobsahuje platné aktuálne články');
+  return selected;
+}
+function classifyNews(item){
+  const direct=String(item.category||'').toLowerCase();
+  const title=String(item.title||'').toLowerCase();
+  const both=direct+' '+title;
+  if(/počas|meteorolog|výstrah|vystrah|búrk|vietor|povodeň|teplot|shmú/.test(both))return 'POČASIE';
+  if(/šport|sport|futbal|hokej|tenis|nhl|olympi|liga majstrov|f1\b|formula/.test(both))return 'ŠPORT';
+  if(/politika|vlád|vlada|parlament|minister|premiér|prezident|nrsr|voľb|volb|koalíci|opozíci|fico|pell[eé]grini/.test(both))return 'POLITIKA';
+  if(/ekonomik|financ|banka|infláci|podnik|firma|úrok|dane|rozpoč|investíci/.test(both))return 'EKONOMIKA';
+  if(/kultúr|film|divadl|hudb|koncert|festival|knih|umenie/.test(both))return 'KULTÚRA';
+  if(/svet|zahranič|usa|európsk|ukrajin|rusko|čína|nato/.test(both))return 'SVET';
+  if(/veda|technológi|umelá inteligencia|vesmír|výskum|it\b/.test(both))return 'VEDA A TECHNIKA';
+  if(/zdrav|nemocnic|lekár|chorob|liečb/.test(both))return 'ZDRAVIE';
+  if(/región|region|kraj|mesto|obec|nitra|bratislav|trnav|žilina/.test(both))return 'REGIÓNY';
+  return direct ? direct.toLocaleUpperCase('sk-SK').slice(0,27) : 'SPRÁVY';
+}
+function fullNewsList(){
+  return newsQueue;
 }
 function setNewsMarqueeSpeed(){
-  const scroll=document.getElementById('eventScroll');
-  if(!scroll)return;
-  // Zámerne svižnejší pás správ, nezávislý od dĺžky RSS titulkov.
-  const pixels=Math.max(1,scroll.scrollWidth);
-  scroll.style.animationDuration=Math.max(12,pixels/150).toFixed(2)+'s';
+  // Pôvodné vodorovné posúvanie sa už nepoužíva.
 }
-function drawNewsQueue(){
+function showNewsAt(index, animated=true){
   const scroll=document.getElementById('eventScroll');
-  if(!scroll || !newsQueue.length) return;
-  const fragment=document.createDocumentFragment();
-  newsQueue.forEach((item,index)=>{
-    if(index){
-      const sep=document.createElement('span');
-      sep.textContent='  •  ';
-      sep.setAttribute('aria-hidden','true');
-      fragment.appendChild(sep);
+  const counter=document.getElementById('newsSlideCounter');
+  const visible=fullNewsList();
+  if(!scroll || !visible.length){
+    if(counter) counter.textContent='0 / 0';
+    return;
+  }
+  newsActiveIndex=((index%visible.length)+visible.length)%visible.length;
+  const item=visible[newsActiveIndex];
+  const a=document.createElement('a');
+  a.href=item.url;
+  a.target='_blank';
+  a.rel='noopener noreferrer';
+  a.textContent=item.title;
+  a.title='Otvoriť článok ('+item.source+')';
+  const category=document.createElement('span');category.className='newsTopic';category.textContent=classifyNews(item);
+  scroll.replaceChildren(category,a);
+  requestAnimationFrame(fitCurrentNewsTitle);
+  if(counter)counter.textContent=(newsActiveIndex+1)+' / '+visible.length;
+  scroll.classList.remove('newsSlideEnter');
+  if(animated){
+    void scroll.offsetWidth; // reštartovať len krátku animáciu príchodu zdola
+    scroll.classList.add('newsSlideEnter');
+  }
+}
+function fitCurrentNewsTitle(){
+  const container=document.getElementById('eventScroll');
+  const title=container?.querySelector('a');
+  if(!container||!title)return;
+  // Pri každom novom článku vyber najväčšie písmo, ktoré sa zmestí do jedného riadka.
+  title.style.setProperty('font-size','36px','important');
+  const available=title.clientWidth;
+  if(available<=0)return;
+  const canvas=fitCurrentNewsTitle.canvas||(fitCurrentNewsTitle.canvas=document.createElement('canvas'));
+  const ctx=canvas.getContext('2d');
+  const style=getComputedStyle(title);
+  const weight=style.fontWeight;
+  const family=style.fontFamily;
+  for(let size=36;size>=12;size--){
+    ctx.font=weight+' '+size+'px '+family;
+    if(ctx.measureText(title.textContent).width <= available-5){
+      title.style.setProperty('font-size',size+'px','important');
+      return;
     }
-    const a=document.createElement('a');
-    a.href=item.url;
-    a.target='_blank';
-    a.rel='noopener noreferrer';
-    a.textContent=item.title;
-    a.title='Otvoriť článok na Teraz.sk';
-    fragment.appendChild(a);
-  });
-  scroll.replaceChildren(fragment);
-  requestAnimationFrame(setNewsMarqueeSpeed);
+  }
+  title.style.setProperty('font-size','12px','important');
+}
+window.addEventListener('resize',()=>requestAnimationFrame(fitCurrentNewsTitle));
+
+function drawNewsQueue(){
+  if(!newsQueue.length)return;
+  showNewsAt(Math.min(newsActiveIndex,fullNewsList().length-1),false);
+  if(!newsRotationTimer){
+    newsRotationTimer=setInterval(()=>{
+      if(document.hidden || !newsQueue.length)return;
+      showNewsAt(newsActiveIndex+1,true);
+    },NEWS_DISPLAY_MS);
+  }
 }
 function restoreSavedNews(){
-  try{
-    const data=JSON.parse(localStorage.getItem(NEWS_CACHE_KEY)||'null');
-    if(!data || !Array.isArray(data.items)) return;
-    newsQueue=sortAndValidateNews(data.items);
-    if(Number.isFinite(data.savedAt))lastNewsSuccess=new Date(data.savedAt);
-    drawNewsQueue();
-    setNewsStatus('Zobrazené uložené správy • overujem nové…',true);
-  }catch(e){console.info('Správy: nebola dostupná miestna záloha.');}
+  // Pri zmene vydania zachovať staršiu zálohu TASR (nikdy nepoužiť SITA).
+  const cacheKeys=[NEWS_CACHE_KEY,'dashboardTerazNewsCacheV3'];
+  for(const key of cacheKeys){
+    try{
+      const data=JSON.parse(localStorage.getItem(key)||'null');
+      if(!data || !Array.isArray(data.items))continue;
+      const cached=selectTopNews(data.items);
+      if(!cached.length)continue;
+      newsQueue=cached;
+      if(Number.isFinite(data.savedAt))lastNewsSuccess=new Date(data.savedAt);
+      drawNewsQueue();
+      setNewsStatus('Zobrazené uložené správy • overujem nové…',true);
+      return;
+    }catch(e){console.info('Správy: záloha nebola dostupná.',e);}
+  }
 }
 function saveNewsLocally(){
   try{localStorage.setItem(NEWS_CACHE_KEY,JSON.stringify({
@@ -4466,12 +4927,14 @@ async function updateNewsQueue(){
   newsUpdating=true;
   try{
     const fresh=await fetchFreshNews();
-    const unique=new Map();
-    fresh.concat(newsQueue).forEach(item=>{
-      const key=item.url||item.title;
-      if(!unique.has(key)) unique.set(key,item);
-    });
-    newsQueue=sortAndValidateNews(Array.from(unique.values()));
+    const previousUrl=fullNewsList()[newsActiveIndex]?.url;
+    const updated=selectTopNews(fresh.concat(newsQueue));
+    if(!updated.length)throw new Error('Načítali sa prázdne správy');
+    newsQueue=updated;
+    if(previousUrl){
+      const found=fullNewsList().findIndex(item=>item.url===previousUrl);
+      newsActiveIndex=found>=0?found:0;
+    }
     drawNewsQueue();
     lastNewsSuccess=new Date();
     saveNewsLocally();
@@ -4479,7 +4942,7 @@ async function updateNewsQueue(){
     setApiStatus('news',true);
     if(newsRetryTimer){clearTimeout(newsRetryTimer);newsRetryTimer=null;}
   }catch(err){
-    console.warn('Teraz.sk: načítanie cez všetky dostupné brány zlyhalo:',err);
+    console.warn('TASR / Teraz.sk: načítanie cez dostupné brány zlyhalo:',err);
     setApiStatus('news',false);
     setNewsStatus(lastNewsSuccess && newsQueue.length
       ? 'Správy: uložené z '+lastNewsSuccess.toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'})+' • zdroj nedostupný ⚠'
@@ -4488,10 +4951,12 @@ async function updateNewsQueue(){
       const scroll=document.getElementById('eventScroll');
       if(scroll){
         const a=document.createElement('a');
-        a.href='https://www.teraz.sk/spravy/';
+        a.href='https://www.teraz.sk/';
         a.target='_blank';a.rel='noopener noreferrer';
-        a.textContent='Správy sa nepodarilo načítať. Otvoriť správy na Teraz.sk ↗';
+        a.textContent='Správy sa nepodarilo načítať. Otvoriť Teraz.sk (TASR) ↗';
         scroll.replaceChildren(a);
+        const counter=document.getElementById('newsSlideCounter');
+        if(counter)counter.textContent='0 / 0';
       }
     }
     if(!newsRetryTimer){
@@ -4507,10 +4972,10 @@ function startNewsFeed(){
   restoreSavedNews();
   requestAnimationFrame(setNewsMarqueeSpeed);
   updateNewsQueue();
-  setInterval(updateNewsQueue,5*60*1000);
+  setInterval(updateNewsQueue,60*1000);
   window.addEventListener('online',updateNewsQueue);
   document.addEventListener('visibilitychange',()=>{
-    if(!document.hidden && (!lastNewsSuccess || Date.now()-lastNewsSuccess.getTime()>5*60*1000)) updateNewsQueue();
+    if(!document.hidden && (!lastNewsSuccess || Date.now()-lastNewsSuccess.getTime()>60*1000)) updateNewsQueue();
   });
 }
 if(document.readyState==='loading'){
@@ -4643,7 +5108,8 @@ document.addEventListener('click', (e)=>{
 <div id="copyrightTag" style="position:absolute;top:29px;left:355px;width:245px;text-align:center;font-family:'Caveat', cursive;font-weight:600;font-size:21px;color:rgba(255,255,255,0.5);letter-spacing:0.3px;white-space:nowrap;overflow:hidden;">© Robert Galaba</div>
 
 <div id="historicalEvents" class="glass" style="position:absolute;bottom:11px;left:40px;right:40px;width:auto;overflow:hidden;height:auto;display:flex;align-items:center;padding:15px;text-align:center;justify-content:flex-start;">
-    <div id="eventScroll" style="display:inline-block;font-size:35px;color:#fff;white-space:nowrap;animation:scrollLeft 225s linear infinite;padding-left:100%;">Načítavam správy...</div>
+    <div id="eventScroll" aria-live="off">Načítavam správy...</div>
+    <span id="newsSlideCounter" role="button" tabindex="0" title="Zobraziť všetky správy" aria-label="Otvoriť zoznam všetkých správ" onclick="openAllNews()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openAllNews();}">0 / 0</span>
     <span id="newsUpdateStatus" title="Aktualizácia správ" style="position:absolute;right:14px;bottom:3px;z-index:2;font-size:12px;color:#fff;background:transparent;border-radius:0;padding:0;pointer-events:none;">Správy: načítavam…</span>
 </div>
 
@@ -4653,11 +5119,47 @@ document.addEventListener('click', (e)=>{
 <style>
 #eventScroll a {color:#fff!important;text-decoration:none!important;cursor:pointer;}
 #eventScroll a:hover {text-decoration:underline!important;}
-#historicalEvents:hover #eventScroll {animation-play-state:paused;}
-@keyframes scrollLeft {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
+#stage #historicalEvents{justify-content:flex-start!important;position:absolute;}
+#stage #eventScroll{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:calc(100% - 118px)!important;max-width:calc(100% - 118px)!important;
+  padding:0 8px!important;box-sizing:border-box!important;
+  white-space:normal!important;overflow:hidden!important;
+  text-align:center!important;line-height:1.18!important;
+  animation:none!important;transform:none;
 }
+#stage #eventScroll a{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-height:2.36em;font-size:inherit;line-height:inherit;}
+#stage #eventScroll.newsSlideEnter{animation:newsRiseIn .45s ease-out both!important;}
+@keyframes newsRiseIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+#stage #newsSlideCounter{position:absolute;right:20px;top:50%;transform:translateY(-50%);min-width:88px;text-align:right;
+  font:600 23px/1.2 Arial,sans-serif;color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums;}
+#stage #newsUpdateStatus{left:auto!important;right:20px!important;bottom:5px!important;max-width:215px!important;text-align:right!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px!important;opacity:.8;}
+#stage #newsSlideCounter{top:35%!important;right:20px!important;}
+#stage #eventScroll{width:calc(100% - 240px)!important;max-width:calc(100% - 240px)!important;justify-content:flex-start!important;gap:18px!important;text-align:left!important;}
+#stage #eventScroll .newsTopic{flex:0 0 auto;min-width:135px;max-width:160px;color:#d5eaff;background:rgba(105,172,235,.22);border:1px solid rgba(180,223,255,.20);border-radius:9px;padding:7px 8px;box-sizing:border-box;font-size:17px!important;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;}
+#stage #eventScroll a{flex:1 1 auto;min-width:0;text-align:left;}
+
+</style>
+
+
+<style id="news-topic-match-headline-font-final">
+/* Rovnaká vizuálna veľkosť písma kategórie aj titulku – bez starého limitu 17px. */
+#stage #eventScroll .newsTopic,
+#stage #eventScroll a{
+  font-size:26px!important;
+  line-height:1.18!important;
+  font-weight:650!important;
+}
+#stage #eventScroll .newsTopic{
+  min-width:0!important;
+  max-width:none!important;
+  width:auto!important;
+  padding:5px 12px!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+#stage #eventScroll{gap:14px!important;}
 </style>
 
 <div id="miniDatePicker"></div>
@@ -4954,5 +5456,216 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(n) n.href=`https://kalendar.aktuality.sk/meninovy/rok/${y}/`;
 });
 </script>
+<script>
+
+// Narodeniny zo zošita "zoznam" v súbore "Zoznam QA.xlsx".
+// Údaje sú uložené v HTML; narodeniny sa automaticky opakujú každý rok.
+const birthdayPeople = [{"name":"Jozef Bánsky","birth":"1978-06-24"},{"name":"Peter Barstch","birth":"1983-09-15"},{"name":"Erika Belanová","birth":"1969-04-08"},{"name":"Andrea Benková","birth":"1971-03-14"},{"name":"Monika Bíňovská","birth":"1976-01-15"},{"name":"Andrea Botková","birth":"1978-03-14"},{"name":"Dávid Ďurček","birth":"2005-09-13"},{"name":"Viliam Dvorský","birth":"1999-12-27"},{"name":"Miro Eliáš","birth":"1987-11-13"},{"name":"Miro Gajdoš","birth":"1974-02-23"},{"name":"Robo Galaba","birth":"1987-03-23"},{"name":"Luboš Herc","birth":"1986-05-26"},{"name":"Mária Hoppanová","birth":"1985-04-02"},{"name":"Martin Kajanovič","birth":"1995-04-04"},{"name":"Romana Klobučníková","birth":"1995-11-25"},{"name":"Martin Kováč","birth":"1996-10-23"},{"name":"Andrej Kováč","birth":"2003-10-01"},{"name":"Ibi Križan","birth":"1996-03-29"},{"name":"Beata Križanová","birth":"1975-07-28"},{"name":"Janka Laktišová","birth":"1973-04-04"},{"name":"Milena Lavičková","birth":"1972-02-22"},{"name":"Jožko Lévay","birth":"1988-11-12"},{"name":"Rudolf Šabík","birth":"1989-04-20"},{"name":"Peto Tinák","birth":"1973-11-30"},{"name":"Jana Tináková","birth":"1977-03-01"},{"name":"Aja Verešová","birth":"1973-06-25"},{"name":"Peter Zelnický","birth":"1986-07-31"},{"name":"Natália Zimmermanová","birth":"2001-04-13"}];
+function renderBirthdays(){
+  const holder=document.getElementById('birthdayCards');
+  if(!holder)return;
+  const now=new Date();
+  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  const y=today.getFullYear();
+  const upcoming=birthdayPeople.map((p,idx)=>{
+    const parts=p.birth.split('-').map(Number);
+    let next=new Date(y,parts[1]-1,parts[2]);
+    if(next<today)next=new Date(y+1,parts[1]-1,parts[2]);
+    const days=Math.round((Date.UTC(next.getFullYear(),next.getMonth(),next.getDate())-Date.UTC(y,today.getMonth(),today.getDate()))/86400000);
+    return { ...p, next, days,idx };
+  }).sort((a,b)=>a.days-b.days||a.name.localeCompare(b.name,'sk')).slice(0,3);
+  holder.innerHTML=upcoming.map(p=>{
+    const d=p.birth.split('-');
+    const dateLabel=d[2]+'.'+d[1]+'.';
+    const partsName=p.name.trim().split(/\s+/);
+    const shortName=partsName.length>1?partsName.slice(0,-1).join(' ')+' '+partsName[partsName.length-1].charAt(0)+'.':p.name;
+    const remaining=p.days===0?'Dnes':p.days===1?'Zajtra':`o ${formatDaysSk(p.days)}`;
+    const start=new Date(p.next.getFullYear(),p.next.getMonth(),p.next.getDate(),7,0,0,0);
+    const hoursUntil=(start.getTime()-now.getTime())/3600000;
+    const soon=p.days===0 || (hoursUntil>=0 && hoursUntil<=23);
+    return `<div class="birthdayCard ${soon?'isSoon':''} ${p.days===0?'isToday':''}">`
+      + `<div class="birthdayLeft"><div class="birthdayPerson">${escapeHolidayText(shortName)}</div><div class="birthdayDate">${dateLabel}</div></div>`
+      + `<div class="birthdayCountdown">${remaining}</div>`
+      + `</div>`;
+  }).join('');
+  if(typeof positionLeaveBox==='function')positionLeaveBox();
+}
+renderBirthdays();
+setInterval(renderBirthdays,60*60000);
+
+// Celý zoznam narodenín po kliknutí na nadpis; bežný panel ukazuje tri najbližšie.
+function openAllBirthdays(){
+  let overlay=document.getElementById('birthdayAllOverlay');
+  if(!overlay){
+    overlay=document.createElement('div');
+    overlay.id='birthdayAllOverlay';
+    overlay.innerHTML='<div id="birthdayAllDialog" role="dialog" aria-modal="true" aria-labelledby="birthdayAllDialogHeader"><div id="birthdayAllDialogHeader"><span>Všetky narodeniny</span><button type="button" id="birthdayAllClose" aria-label="Zavrieť zoznam" onclick="closeAllBirthdays()">×</button></div><div id="birthdayAllList"></div></div>';
+    overlay.addEventListener('click',e=>{if(e.target===overlay)closeAllBirthdays();});
+    document.getElementById('stage').appendChild(overlay);
+  }
+  const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  const y=today.getFullYear();
+  const rows=birthdayPeople.map(p=>{
+    const parts=p.birth.split('-').map(Number);
+    let next=new Date(y,parts[1]-1,parts[2]);
+    if(next<today)next=new Date(y+1,parts[1]-1,parts[2]);
+    const days=Math.round((Date.UTC(next.getFullYear(),next.getMonth(),next.getDate())-Date.UTC(y,today.getMonth(),today.getDate()))/86400000);
+    const words=p.name.trim().split(/\s+/);
+    const name=words.length>1?words.slice(0,-1).join(' ')+' '+words[words.length-1].charAt(0)+'.':p.name;
+    const until=(new Date(next.getFullYear(),next.getMonth(),next.getDate(),7).getTime()-now.getTime())/3600000;
+    return {name,date:String(parts[2]).padStart(2,'0')+'.'+String(parts[1]).padStart(2,'0')+'.',days,soon:days===0||(until>=0&&until<=23)};
+  }).sort((a,b)=>a.days-b.days||a.name.localeCompare(b.name,'sk'));
+  document.getElementById('birthdayAllList').innerHTML=rows.map(p=>
+    '<div class="birthdayAllItem '+(p.soon?'isSoon':'')+'"><span class="birthdayAllName">'+escapeHolidayText(p.name)+'</span><span class="birthdayAllDate">'+p.date+'</span><span class="birthdayAllCountdown">'+(p.days===0?'Dnes':p.days===1?'Zajtra':'o '+formatDaysSk(p.days))+'</span></div>'
+  ).join('');
+  overlay.classList.add('isOpen');
+  document.getElementById('birthdayAllClose').focus();
+}
+function closeAllBirthdays(){
+  const overlay=document.getElementById('birthdayAllOverlay');
+  if(overlay)overlay.classList.remove('isOpen');
+  document.getElementById('birthdayAllToggle')?.focus();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape' && document.getElementById('birthdayAllOverlay')?.classList.contains('isOpen'))closeAllBirthdays();});
+
+
+</script>
+
+<script>
+/* Prehľad sviatkov a menín v rovnakom dialógu ako prehľad narodenín. */
+let calendarAllActiveType='nameday';
+function calendarAllDateLabel(date){
+ return ['Ne','Po','Ut','St','Št','Pi','So'][date.getDay()]+' '+String(date.getDate()).padStart(2,'0')+'.'+String(date.getMonth()+1).padStart(2,'0')+'.';
+}
+function calendarAllDaysUntil(date,today){
+ return Math.round((Date.UTC(date.getFullYear(),date.getMonth(),date.getDate())-Date.UTC(today.getFullYear(),today.getMonth(),today.getDate()))/86400000);
+}
+function calendarAllEntries(type,today){
+ const y=today.getFullYear();
+ if(type==='nameday'){
+  const rows=[];
+  // Všetky dni najbližších 12 mesiacov. Použitý rovnaký kalendár getNameday ako v malom paneli.
+  const end=new Date(y+1,today.getMonth(),today.getDate());
+  for(let cursor=new Date(today);cursor<end;cursor.setDate(cursor.getDate()+1)){
+   const d=new Date(cursor);
+   const key=isoLocalDate(d);
+   const override=namedayOverrides[key];
+   const name=(override&&override.name)||getNameday(d);
+   if(name)rows.push({date:d,name});
+  }
+  for(const item of customNamedayData){
+   const d=parseCustomHolidayDate(item.date);
+   if(d&&d>=today&&d<end)rows.push({date:d,name:item.name});
+  }
+  return rows.sort((a,b)=>a.date-b.date||a.name.localeCompare(b.name,'sk'));
+ }
+ const holidaySet=[...holidaysForYear(y),...holidaysForYear(y+1)]
+  .map(h=>{const key=isoLocalDate(h.date),isOfficialChristmas=h.date.getMonth()===11&&[24,25,26].includes(h.date.getDate()),edited=isOfficialChristmas?null:holidayOverrides[key];return {date:edited?parseCustomHolidayDate(edited.date):h.date,name:edited?edited.name:h.name};});
+ const own=customHolidayData.map(item=>({date:parseCustomHolidayDate(item.date),name:item.name}));
+ const end=new Date(y+1,today.getMonth(),today.getDate());
+ return [...holidaySet,...own].filter(h=>h.date&&h.date>=today&&h.date<end).sort((a,b)=>a.date-b.date||a.name.localeCompare(b.name,'sk'));
+}
+function openAllCalendar(type){
+ calendarAllActiveType=type==='holiday'?'holiday':'nameday';
+ let overlay=document.getElementById('calendarAllOverlay');
+ if(!overlay){
+  overlay=document.createElement('div');
+  overlay.id='calendarAllOverlay';
+  overlay.innerHTML='<div id="calendarAllDialog" role="dialog" aria-modal="true" aria-labelledby="calendarAllHeader"><div id="calendarAllHeader"><span id="calendarAllTitle"></span><button type="button" id="calendarAllClose" aria-label="Zavrieť zoznam" onclick="closeAllCalendar()">×</button></div><div id="calendarAllList"></div></div>';
+  overlay.addEventListener('click',e=>{if(e.target===overlay)closeAllCalendar();});
+  document.getElementById('stage').appendChild(overlay);
+ }
+ document.getElementById('calendarAllTitle').textContent=calendarAllActiveType==='holiday'?'Všetky nadchádzajúce sviatky':'Všetky nadchádzajúce meniny';
+ const today=new Date();today.setHours(0,0,0,0);
+ const items=calendarAllEntries(calendarAllActiveType,today);
+ document.getElementById('calendarAllList').innerHTML=items.map(p=>{
+  const days=calendarAllDaysUntil(p.date,today);
+  const label=days===0?'Dnes':days===1?'Zajtra':'o '+formatDaysSk(days);
+  return '<div class="calendarAllRow '+(days===0?'isSoon':'')+'"><span>'+calendarAllDateLabel(p.date)+'</span><span class="calendarAllName">'+escapeHolidayText(p.name)+'</span><span class="calendarAllCountdown">'+label+'</span></div>';
+ }).join('');
+ overlay.classList.add('isOpen');
+ document.getElementById('calendarAllList').scrollTop=0;
+ document.getElementById('calendarAllClose').focus();
+}
+function closeAllCalendar(){
+ const overlay=document.getElementById('calendarAllOverlay');
+ if(overlay)overlay.classList.remove('isOpen');
+ document.getElementById(calendarAllActiveType==='holiday'?'holidayAllToggle':'namedayAllToggle')?.focus();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('calendarAllOverlay')?.classList.contains('isOpen'))closeAllCalendar();});
+</script>
+
+<script>
+/* Zoznam všetkých aktuálne načítaných správ, bez zmeny striedania titulkov. */
+function openAllNews(){
+  let overlay=document.getElementById('allNewsOverlay');
+  if(!overlay){
+    overlay=document.createElement('div');
+    overlay.id='allNewsOverlay';
+    overlay.innerHTML='<div id="allNewsDialog" role="dialog" aria-modal="true" aria-labelledby="allNewsHeader"><div id="allNewsHeader"><span id="allNewsHeading">Všetky správy</span><button type="button" id="allNewsClose" aria-label="Zavrieť zoznam" onclick="closeAllNews()">×</button></div><div id="allNewsList"></div></div>';
+    overlay.addEventListener('click',e=>{if(e.target===overlay)closeAllNews();});
+    document.getElementById('stage').appendChild(overlay);
+  }
+  const items=fullNewsList();
+  document.getElementById('allNewsHeading').textContent='Všetky správy ('+items.length+')';
+  const list=document.getElementById('allNewsList');
+  list.replaceChildren();
+  items.forEach((item,i)=>{
+    const link=document.createElement('a');
+    link.className='allNewsItem';
+    link.href=item.url;
+    link.target='_blank';
+    link.rel='noopener noreferrer';
+    const index=document.createElement('span');index.className='allNewsNumber';index.textContent=String(i+1);
+    const topic=document.createElement('span');topic.className='allNewsTopic';topic.textContent=classifyNews(item);
+    const title=document.createElement('span');title.className='allNewsTitle';title.textContent=item.title+' · '+item.source;
+    link.append(index,topic,title);
+    list.appendChild(link);
+  });
+  if(!items.length) list.textContent='Zatiaľ nie sú načítané žiadne správy.';
+  overlay.classList.add('isOpen');
+  list.scrollTop=0;
+  document.getElementById('allNewsClose').focus();
+}
+function closeAllNews(){
+  document.getElementById('allNewsOverlay')?.classList.remove('isOpen');
+  document.getElementById('newsSlideCounter')?.focus();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('allNewsOverlay')?.classList.contains('isOpen'))closeAllNews();});
+</script>
+
+<style id="news-headline-actually-large-v2">
+/* Nasleduje až po všetkých starších pravidlách pre rotujúce správy. */
+#stage #historicalEvents #eventScroll a {
+  font-size:49px!important;
+  line-height:1.08!important;
+  font-weight:730!important;
+  letter-spacing:-.65px!important;
+  max-height:2.16em!important;
+  -webkit-line-clamp:2!important;
+}
+#stage #historicalEvents #eventScroll .newsTopic {
+  font-size:26px!important;
+  line-height:1.15!important;
+}
+#stage #historicalEvents #newsUpdateStatus {
+  font-size:16px!important;
+  line-height:1.15!important;
+  opacity:.95!important;
+  right:20px!important;bottom:5px!important;
+  max-width:230px!important;
+}
+</style>
+
+<style id="news-sita-only-one-line">
+#stage #historicalEvents #eventScroll{min-width:0!important;overflow:hidden!important;}
+#stage #historicalEvents #eventScroll a{
+ display:block!important;white-space:nowrap!important;line-height:1.14!important;
+ -webkit-line-clamp:unset!important;-webkit-box-orient:initial!important;
+ max-height:none!important;overflow:hidden!important;text-overflow:ellipsis!important;
+ font-size:36px!important;min-width:0!important;flex:1 1 auto!important;
+}
+#stage #historicalEvents #eventScroll .newsTopic{font-size:26px!important;flex:0 0 auto!important;}
+</style>
 </body>
 </html>
