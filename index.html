@@ -5367,7 +5367,7 @@ if(typeof ResizeObserver!=='undefined'){
  function stop(){resetSong();wanted=false;attempt++;nextSwitchAt=0;updateRotation();clearTimeout(timer);audio.pause();audio.removeAttribute('src');audio.load();controls();}
  function fail(message){stop();status.textContent=message;}
  function start(){
-  if(schedule.checked&&!inWindow()){stop();status.textContent='Čakám na 7:00 • pre ručné hranie vypni automatický čas.';return;}
+  if(schedule.checked&&!inWindow()){stop();status.textContent='Čakám na 6:00 • pre ručné hranie vypni automatický čas.';return;}
   if(schedule.checked)startedDay=clock().day;
   remainingStations=remainingStations.filter(s=>s!==selected);
   stop();wanted=true;const token=++attempt;controls();
@@ -5400,7 +5400,7 @@ if(typeof ResizeObserver!=='undefined'){
  // Schedule relative to playback start (not the next clock-hour).
  function updateRotation(){
   if(!rotation.checked){rotationStatus.textContent='Automatické striedanie je vypnuté.';rotationStatus.title=rotationStatus.textContent;return;}
-  if(!wanted||!nextSwitchAt){rotationStatus.textContent=schedule.checked?'Denne 7:00–17:00 • náhodne bez opakovania':'Spusti rádio • prepnutie po 60 minútach.';rotationStatus.title=rotationStatus.textContent;return;}
+  if(!wanted||!nextSwitchAt){rotationStatus.textContent=schedule.checked?'Denne 6:00–17:00 • náhodne bez opakovania':'Spusti rádio • prepnutie po 60 minútach.';rotationStatus.title=rotationStatus.textContent;return;}
   const remaining=Math.max(0,Math.ceil((nextSwitchAt-Date.now())/1000));
   const minutes=Math.floor(remaining/60),seconds=remaining%60;
   rotationStatus.textContent='Náhodné rádio o '+minutes+':'+String(seconds).padStart(2,'0');
@@ -5418,7 +5418,7 @@ if(typeof ResizeObserver!=='undefined'){
   if(!schedule.checked)return;
   const t=clock();
   if(t.minute<420||t.minute>=1020){
-   if(wanted){stop();status.textContent='Rádio vypnuté • ďalší štart o 7:00.';}
+   if(wanted){stop();status.textContent='Rádio vypnuté • ďalší štart o 6:00.';}
    return;
   }
   if(startedDay!==t.day){
