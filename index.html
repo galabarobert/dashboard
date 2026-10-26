@@ -3524,7 +3524,7 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
   <div id="radioStations" aria-label="Výber stanice"></div>
   <div class="radioDivider" aria-hidden="true"></div>
   <div class="radioControls"><button id="radioPlay" type="button" aria-label="Spustiť rádio">▶</button><button id="radioMute" type="button" aria-label="Stlmiť zvuk">🔊</button><input id="radioVolume" aria-label="Hlasitosť" type="range" min="0" max="100" value="60"><output id="radioVolumeLabel">60 %</output><div id="radioSongRow" class="radioSongModern" aria-label="Aktuálne hraná skladba"><span class="radioSongGlyph" aria-hidden="true">♫</span><span id="radioNowPlaying" aria-live="off" title="Aktuálne hraná skladba" hidden></span></div></div>
-  <div class="radioRotation"><label><input id="radioRotate" type="checkbox">Náhodne každú hodinu</label><label title="Automatické prehrávanie denne od 6:00 do 17:00 (slovenský čas)"><input id="radioSchedule" type="checkbox" checked>6:00 – 17:00</label><small id="radioRotationStatus">Automatické striedanie je vypnuté.</small></div>
+  <div class="radioRotation"><label><input id="radioRotate" type="checkbox">Náhodne každých 30 min</label><label title="Automatické prehrávanie denne od 6:00 do 17:00 (slovenský čas)"><input id="radioSchedule" type="checkbox" checked>6:00 – 17:00</label><small id="radioRotationStatus">Automatické striedanie je vypnuté.</small></div>
   <div class="radioFooter"><span id="radioStatus" role="status" aria-live="polite">Vyber stanicu a spusti prehrávanie.</span><a id="radioWebsite" target="_blank" rel="noopener noreferrer">Web rádia ↗</a></div>
   <audio id="radioAudio" preload="none"></audio>
 </section>
@@ -6463,7 +6463,7 @@ if(typeof ResizeObserver!=='undefined'){
  const $=id=>document.getElementById(id),audio=$('radioAudio'),status=$('radioStatus'),play=$('radioPlay'),vol=$('radioVolume');
  let selected=stations[0],wanted=false,attempt=0,timer,sourceIndex=0,nextSwitchAt=0;
  const schedule=$('radioSchedule');
- const rotation=$('radioRotate'),rotationStatus=$('radioRotationStatus'),hour=60*60*1000;
+ const rotation=$('radioRotate'),rotationStatus=$('radioRotationStatus'),hour=30*60*1000;
  const read=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
  const save=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
  const legacyNames={'Rádio Expres':'Expres','Rádio Melody':'Fun Dance','Fun SK/CZ':'Fun CZ/SK','Fun 80’s – 90’s':'Fun 80/90'};
@@ -6634,7 +6634,7 @@ if(typeof ResizeObserver!=='undefined'){
  // Schedule relative to playback start (not the next clock-hour).
  function updateRotation(){
   if(!rotation.checked){rotationStatus.textContent='Automatické striedanie je vypnuté.';rotationStatus.title=rotationStatus.textContent;return;}
-  if(!wanted||!nextSwitchAt){rotationStatus.textContent=schedule.checked?'Denne 6:00–17:00 • náhodne bez opakovania':'Spusti rádio • prepnutie po 60 minútach.';rotationStatus.title=rotationStatus.textContent;return;}
+  if(!wanted||!nextSwitchAt){rotationStatus.textContent=schedule.checked?'Denne 6:00–17:00 • náhodne bez opakovania':'Spusti rádio • prepnutie po 30 minútach.';rotationStatus.title=rotationStatus.textContent;return;}
   const remaining=Math.max(0,Math.ceil((nextSwitchAt-Date.now())/1000));
   const minutes=Math.floor(remaining/60),seconds=remaining%60;
   rotationStatus.textContent='Náhodné rádio o '+minutes+':'+String(seconds).padStart(2,'0');
