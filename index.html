@@ -4318,14 +4318,15 @@ function rainTwoHoursMarkup(data){
  // sú pokryté aj minúty, keď už práve začal najbližší interval.
  const d=data?.minutely_15;
  const label='<span class="rainLabel">🌧️ Dážď · 2 h</span>';
- if(!Array.isArray(d?.time)||!Array.isArray(d.precipitation))
-   return label+'<span class="rainAmount">Predpoveď nedostupná</span>';
+ if(!Array.isArray(d?.time)||!Array.isArray(d.precipitation)) return '';
  const now=Date.now();
  const slots=d.time.map((t,i)=>({time:new Date(t).getTime(),amount:Math.max(0,Number(d.precipitation[i])||0)}))
    .filter(x=>Number.isFinite(x.time)&&x.time>now-15*60000&&x.time<=now+2*3600000)
    .slice(0,8);
- if(!slots.length)return label+'<span class="rainAmount">Predpoveď nedostupná</span>';
+ if(!slots.length)return '';
  const sum=slots.reduce((a,x)=>a+x.amount,0);
+ // Nezobrazovať pásik, ak v nasledujúcich dvoch hodinách nie sú žiadne merateľné zrážky.
+ if(sum<=0)return '';
  const max=Math.max(.4,...slots.map(x=>x.amount));
  const bars=slots.map(s=>{
    const when=new Date(s.time).toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'});
@@ -4463,6 +4464,8 @@ function renderDashboardWeather(data,usingCachedData){
   const todayIcon=dashboardMainWeatherVisual(data.current.weather_code);
   const sunrise=window.dashboardSunTimes?.sunrise||'–';
   const sunset=window.dashboardSunTimes?.sunset||'–';
+  const rainMarkup=rainTwoHoursMarkup(data);
+  const rainStrip=rainMarkup ? `<div id="rainTwoHours" class="rainTwoHours" role="status" title="Modelová predpoveď zrážok na najbližšie 2 hodiny po 15 minútach">${rainMarkup}</div>` : '';
   let fHtml=`<div class="weatherToday weatherHourlyClick" role="button" tabindex="0" data-hourly-date="${d.time[0]}" onclick="event.stopPropagation();openHourlyForecast(this.dataset.hourlyDate)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();openHourlyForecast(this.dataset.hourlyDate)}" title="Otvoriť hodinovú predpoveď na dnes">`+
       `<div class="weatherTodayTop"><strong>Dnes <span class="hourlyLinkChevron" aria-hidden="true">›</span></strong></div>`+
       `<div class="weatherTodayMain">`+
@@ -4472,7 +4475,7 @@ function renderDashboardWeather(data,usingCachedData){
       `<div class="weatherTempRange">Max ${todaysMax}°<br>Min ${todaysMin}°</div>`+
       `<div class="weatherMainIcon">${todayIcon}</div></div>`+
       
-      `<div id="rainTwoHours" class="rainTwoHours" role="status" title="Modelová predpoveď zrážok na najbližšie 2 hodiny po 15 minútach">${rainTwoHoursMarkup(data)}</div>`+
+      rainStrip+
       `<div class="weatherTodayDetails">`+
         `<span class="sunriseInfo"><span class="sunHorizonIcon sunriseIcon" aria-hidden="true"><i></i></span> Východ <b data-sunrise>${sunrise}</b></span>`+
         `<span class="sunsetInfo"><span class="sunHorizonIcon sunsetIcon" aria-hidden="true"><i></i></span> Západ <b data-sunset>${sunset}</b></span>`+
@@ -6667,13 +6670,50 @@ if(typeof ResizeObserver!=='undefined'){
    if(!wanted){selected=nextRandom();save('dashboardRadioStation',selected[0]);selection();start();}
   }
  }
+ // Firebase synchronizes only the two preferences, never audio play state,
+ // volume, selected station, or the current shuffle cycle.
+ const radioSettingsPath='dashboardRadioSettings';
+ const radioSettingKeys={rotation:'dashboardRadioRotate',schedule:'dashboardRadioSchedule'};
+ function syncRadioSetting(field,checked){
+  if(!firebaseDb)return;
+  firebaseDb.ref(radioSettingsPath+'/'+field).set(!!checked)
+   .catch(e=>console.warn('Synchronizácia nastavenia rádia zlyhala:',e));
+ }
+ if(firebaseDb){
+  const defaults={rotation:rotation.checked,schedule:schedule.checked};
+  // Seed missing values without overwriting preferences already stored by another device.
+  firebaseDb.ref(radioSettingsPath).transaction(current=>{
+   if(current===null)return defaults;
+   if(typeof current!=='object')return defaults;
+   const next={...current};let changed=false;
+   for(const k of ['rotation','schedule'])if(typeof next[k]!=='boolean'){next[k]=defaults[k];changed=true;}
+   return changed?next:undefined;
+  },null,false).catch(e=>console.warn('Inicializácia nastavení rádia zlyhala:',e));
+  firebaseDb.ref(radioSettingsPath).on('value',snap=>{
+   const remote=snap.val();if(!remote||typeof remote!=='object')return;
+   if(typeof remote.rotation==='boolean' && rotation.checked!==remote.rotation){
+    rotation.checked=remote.rotation;
+    save(radioSettingKeys.rotation,String(remote.rotation));
+    nextSwitchAt=rotation.checked&&wanted&&!audio.paused&&audio.readyState>=3?Date.now()+hour:0;
+   }
+   if(typeof remote.schedule==='boolean' && schedule.checked!==remote.schedule){
+    schedule.checked=remote.schedule;
+    save(radioSettingKeys.schedule,String(remote.schedule));
+    // Remote changes never start playback on another device immediately.
+    if(remote.schedule)startedDay=clock().day;
+   }
+   updateRotation();
+  },e=>console.warn('Čítanie nastavení rádia z Firebase zlyhalo:',e));
+ }
  schedule.onchange=()=>{
   save('dashboardRadioSchedule',String(schedule.checked));
+  syncRadioSetting('schedule',schedule.checked);
   if(schedule.checked){startedDay='';checkSchedule();}
   updateRotation();
  };
  rotation.onchange=()=>{
   save('dashboardRadioRotate',String(rotation.checked));
+  syncRadioSetting('rotation',rotation.checked);
   nextSwitchAt=rotation.checked&&wanted&&!audio.paused&&audio.readyState>=3?Date.now()+hour:0;
   updateRotation();
  };
