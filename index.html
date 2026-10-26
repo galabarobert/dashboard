@@ -3586,6 +3586,79 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
 }
 @media(max-width:900px){#stage #radioPanel .radioControls #radioRotationStatus.radioInlineStatus{font-size:26px!important;line-height:34px!important;}}
 </style>
+
+<style id="smart-content-spacing-2026">
+/* Inteligentné vnútorné rozostupy iba v dátových prehľadoch.
+   NEMENIA sa vonkajšie pozície, výšky, rozmery, tab stĺpce ani práca s dátami. */
+@media(min-width:901px){
+  /* Audity a neprítomnosti – 1-2 záznamy: väčšie karty a vyvážená poloha. */
+  #stage #weekDashboard #weekEventList[data-smart-spacing="roomy"]{
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    gap:12px!important;
+    padding-top:12px!important;
+    padding-bottom:12px!important;
+    box-sizing:border-box!important;
+  }
+  #stage #weekDashboard #weekEventList[data-smart-spacing="roomy"] > .weekEventRow{
+    flex:0 0 auto!important;
+    width:100%!important;
+    min-height:70px!important;
+    border-radius:10px!important;
+    border:1px solid rgba(125,196,252,.24)!important;
+    background-color:rgba(41,118,184,.10)!important;
+  }
+  /* 3-5 položiek: jemnejšie rozostupy, nie obrovské prázdne riadky. */
+  #stage #weekDashboard #weekEventList[data-smart-spacing="balanced"]{
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    gap:8px!important;
+    padding-top:6px!important;
+    padding-bottom:6px!important;
+    box-sizing:border-box!important;
+  }
+  #stage #weekDashboard #weekEventList[data-smart-spacing="balanced"] > .weekEventRow{
+    flex:0 0 auto!important;
+    width:100%!important;
+    min-height:58px!important;
+    border-radius:8px!important;
+  }
+  /* Kalendár udalostí: dátum a príslušné karty zostávajú spolu. */
+  #stage #celebrationsDashboard #celebrateList[data-smart-spacing="roomy"]{
+    justify-content:center!important;
+    gap:16px!important;
+    padding-top:10px!important;
+    padding-bottom:10px!important;
+    box-sizing:border-box!important;
+  }
+  #stage #celebrationsDashboard #celebrateList[data-smart-spacing="balanced"]{
+    justify-content:center!important;
+    gap:9px!important;
+    padding-top:6px!important;
+    padding-bottom:6px!important;
+    box-sizing:border-box!important;
+  }
+  #stage #celebrationsDashboard #celebrateList[data-smart-spacing="roomy"] .celebrateDayGroup{
+    padding-top:9px!important;
+    padding-bottom:10px!important;
+  }
+  #stage #celebrationsDashboard #celebrateList[data-smart-spacing="balanced"] .celebrateDayGroup{
+    padding-top:6px!important;
+    padding-bottom:7px!important;
+  }
+  #stage #celebrationsDashboard #celebrateList[data-smart-spacing="roomy"] .celebrateEvent:not(.longHoliday){
+    min-height:60px!important;
+    height:60px!important;
+  }
+  #stage #celebrationsDashboard #celebrateList[data-smart-spacing="balanced"] .celebrateEvent:not(.longHoliday){
+    min-height:55px!important;
+    height:55px!important;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -7395,9 +7468,9 @@ document.addEventListener('keydown',e=>{
   function renderCelebrations(items,today,now=new Date()){
     const holder=document.getElementById('celebrateList');
     if(!holder)return;
-    // Tri najbližšie udalosti KAŽDEJ kategórie, nie najbližšie tri dni.
+    // Zobraz dve najbližšie budúce meniny, tri narodeniny a tri sviatky.
     const groups=['nameday','birthday','holiday'];
-    const selection=groups.flatMap(type=>items.filter(i=>i.type===type && !(type==='nameday' && daysDiff(i.show,today)===0)).slice(0,3));
+    const selection=groups.flatMap(type=>items.filter(i=>i.type===type && !(type==='nameday' && daysDiff(i.show,today)===0)).slice(0,type==='nameday'?2:3));
     selection.sort((a,b)=>a.show-b.show||groups.indexOf(a.type)-groups.indexOf(b.type)||a.title.localeCompare(b.title,'sk'));
     const byDate=new Map();
     selection.forEach(it=>{
@@ -7896,6 +7969,53 @@ document.addEventListener('keydown',e=>{
    },e=>console.warn('Synchronizácia v2:',e));
  }catch(err){console.warn('Firebase v2 nedostupný, ponechávam lokálne údaje',err);sync.active[kind]=false;}}
  boot('audit');boot('leave');
+})();
+</script>
+
+
+<script id="smart-content-spacing-controller-2026">
+/* Layout-only enhancement. MutationObserver sleduje obsah, nie prepisovanie dát.
+   Pri nedostatku miesta sa automaticky vráti k pôvodným kompaktným rozostupom. */
+(function(){
+  'use strict';
+  function setup(){
+    const targets=[
+      {id:'weekEventList',selector:'.weekEventRow'},
+      {id:'celebrateList',selector:'.celebrateDayGroup'}
+    ];
+    const els=targets.map(t=>({...t,el:document.getElementById(t.id)})).filter(t=>t.el);
+    if(!els.length)return;
+    let queued=false;
+    function refresh(){
+      queued=false;
+      const desktop=window.matchMedia('(min-width:901px)').matches;
+      els.forEach(({el,selector})=>{
+        if(!desktop){el.removeAttribute('data-smart-spacing');return;}
+        const count=el.querySelectorAll(selector).length;
+        // 0: pôvodné prázdne hlásenie, 1-2: vzdušné, 3-5: vyvážené,
+        // 6+: kompaktné. Vždy rešpektovať scrollovanie.
+        const mode=count>=1&&count<=2?'roomy':count<=5&&count>=3?'balanced':'compact';
+        el.dataset.smartSpacing=mode;
+        if(mode!=='compact' && el.clientHeight>0 && el.scrollHeight>el.clientHeight+3){
+          el.dataset.smartSpacing='compact';
+        }
+      });
+    }
+    function schedule(){
+      if(queued)return;
+      queued=true;
+      requestAnimationFrame(refresh);
+    }
+    els.forEach(({el})=>new MutationObserver(schedule).observe(el,{childList:true}));
+    window.addEventListener('resize',schedule,{passive:true});
+    if('ResizeObserver' in window){
+      const ro=new ResizeObserver(schedule);
+      els.forEach(({el})=>ro.observe(el));
+    }
+    schedule();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup,{once:true});
+  else setup();
 })();
 </script>
 
