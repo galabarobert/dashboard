@@ -4388,12 +4388,23 @@ function firebaseSave(path, data){
   firebaseDb.ref(path).set(data).catch(e=>console.warn('Firebase zápis zlyhal ('+path+'):', e));
 }
 
+// Uchovávame referencie na poslucháče, aby sa zastarané dali odpojiť.
+const firebaseLegacyListeners = new Map();
 function firebaseListen(path, callback){
   if(!firebaseDb) return;
-  firebaseDb.ref(path).on('value', snapshot=>{
+  const ref = firebaseDb.ref(path);
+  const handler = snapshot=>{
     const val = snapshot.val();
     if(val !== null && val !== undefined) callback(val);
-  }, e=>console.warn('Firebase počúvanie zlyhalo ('+path+'):', e));
+  };
+  ref.on('value', handler, e=>console.warn('Firebase počúvanie zlyhalo ('+path+'):', e));
+  if(!firebaseLegacyListeners.has(path)) firebaseLegacyListeners.set(path, []);
+  firebaseLegacyListeners.get(path).push({ref,handler});
+}
+function stopLegacyFirebaseListen(path){
+  const items=firebaseLegacyListeners.get(path)||[];
+  for(const {ref,handler} of items) ref.off('value',handler);
+  firebaseLegacyListeners.delete(path);
 }
 
 // ========== SPOLOČNÉ CORS PROXY ==========
@@ -7518,14 +7529,16 @@ if(typeof ResizeObserver!=='undefined'){
  }
  if(firebaseDb){
   const defaults={rotation:rotation.checked,schedule:schedule.checked};
-  // Seed missing values without overwriting preferences already stored by another device.
-  firebaseDb.ref(radioSettingsPath).transaction(current=>{
-   if(current===null)return defaults;
-   if(typeof current!=='object')return defaults;
-   const next={...current};let changed=false;
-   for(const k of ['rotation','schedule'])if(typeof next[k]!=='boolean'){next[k]=defaults[k];changed=true;}
-   return changed?next:undefined;
-  },null,false).catch(e=>console.warn('Inicializácia nastavení rádia zlyhala:',e));
+  // Nevykonávame transakciu pri každom otvorení stránky.
+  // Chýbajúce nastavenia doplníme iba raz, existujúce neprepisujeme.
+  firebaseDb.ref(radioSettingsPath).once('value').then(snap=>{
+   const current=snap.val();
+   const missing={};
+   for(const k of ['rotation','schedule']){
+    if(typeof current?.[k]!=='boolean')missing[k]=defaults[k];
+   }
+   if(Object.keys(missing).length)return firebaseDb.ref(radioSettingsPath).update(missing);
+  }).catch(e=>console.warn('Inicializácia nastavení rádia zlyhala:',e));
   firebaseDb.ref(radioSettingsPath).on('value',snap=>{
    const remote=snap.val();if(!remote||typeof remote!=='object')return;
    if(typeof remote.rotation==='boolean' && rotation.checked!==remote.rotation){
@@ -8550,6 +8563,9 @@ document.addEventListener('keydown',e=>{
       const prev=kind==='audit'?auditData:leaveData;
       if(rows.length===0&&prev.length>0&&!sync.ready[kind])return;
       sync.snapshots[kind]=makeSnapshot(rows);sync.ready[kind]=true;
+      // Nová V2 synchronizácia je aktívna: starý paralelný poslucháč
+      // tej istej kolekcie už nesmie ďalej prijímať duplicitné aktualizácie.
+      if(typeof stopLegacyFirebaseListen==='function')stopLegacyFirebaseListen(localName[kind]);
       if(kind==='audit'){auditData=rows;localStorage.setItem('customAudits',JSON.stringify(rows));renderCustomAudits();}
       else{leaveData=rows;localStorage.setItem('officeLeave',JSON.stringify(rows));renderLeave();}
    },e=>console.warn('Synchronizácia v2:',e));
