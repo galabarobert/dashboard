@@ -8186,8 +8186,8 @@ document.addEventListener('keydown',e=>{
     const minutes=Math.max(0,Math.ceil((start.getTime()-now.getTime())/60000));
     if(minutes<1)return 'o <1 min';
     if(minutes<60)return 'o '+minutes+' min';
-    const hours=Math.floor(minutes/60),rest=minutes%60;
-    return 'o '+hours+' h'+(rest?' '+rest+' min':'');
+    const hours=Math.floor(minutes/60);
+    return 'o '+hours+' h';
   }
   // Spoločný zoznam s pôvodným rozložením 5 stĺpcov a pôvodnou veľkosťou písma.
   function render(){
@@ -8203,9 +8203,14 @@ document.addEventListener('keydown',e=>{
         .map(e=>({type:'meeting',title:e.nazov,start:e.zaciatok,end:e.koniec,
           show:e.zaciatok,sortDay:localDate(e.zaciatok),sortMoment:e.zaciatok.getTime(),
           meta:'Meetingovka Q_ME'})):[];
-      const rows=[...workRows,...meetingRows].sort((a,b)=>
-        a.sortDay.localeCompare(b.sortDay)||a.sortMoment-b.sortMoment||
-        a.title.localeCompare(b.title,'sk'));
+      // Dnešné neskončené meetingy vždy pred auditmi a neprítomnosťami.
+      // Medzi meetingmi zachováme časové poradie.
+      const rows=[...meetingRows,...workRows].sort((a,b)=>{
+        const aMeeting=a.type==='meeting', bMeeting=b.type==='meeting';
+        if(aMeeting!==bMeeting)return aMeeting?-1:1;
+        return a.sortDay.localeCompare(b.sortDay)||a.sortMoment-b.sortMoment||
+          a.title.localeCompare(b.title,'sk');
+      });
       list.classList.remove('weekNearestOnly');
       list.classList.add('weekScrollable');
       const range=document.getElementById('weekDateRange');
