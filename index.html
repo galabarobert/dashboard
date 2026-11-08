@@ -6,6 +6,7 @@
 <title>Dashboard</title>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap" rel="stylesheet">
@@ -4110,9 +4111,55 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
 }
 </style>
 
+<style id="qme-meeting-rotation-styles">
+/* Tri viditeľné záložky a stály indikátor Q_ME. */
+#stage #weekDashboard #weekTabs{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;padding:3px 0 9px!important;flex:0 0 auto!important;}
+#stage #weekDashboard #weekTabs button{font-size:15px!important;min-width:0!important;height:37px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+#stage #weekDashboard #weekDashboardSubline{display:block!important;font-size:12px!important;padding:0 4px 7px!important;flex:0 0 auto!important;}
+#stage #weekDashboard .weekTopBar{gap:7px!important;min-height:36px!important;margin-bottom:4px!important;}
+#stage #weekDashboard .weekTitle{font-size:20px!important;}
+#stage #weekDashboard .weekHeaderActions{display:flex!important;gap:5px!important;align-items:center!important;flex-shrink:0!important;}
+#stage #weekDashboard .meetingRoomIndicator{display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;border-radius:999px!important;padding:7px 10px!important;font-size:13px!important;font-weight:700!important;border:1px solid rgba(255,255,255,.22)!important;background:rgba(107,123,148,.35)!important;color:#eef4fc!important;}
+#stage #weekDashboard .meetingRoomIndicator.free{background:rgba(21,132,87,.65)!important;border-color:rgba(93,241,171,.55)!important;}
+#stage #weekDashboard .meetingRoomIndicator.busy{background:rgba(175,53,52,.72)!important;border-color:rgba(255,126,126,.58)!important;}
+#stage #weekDashboard .meetingRoomIndicator.unknown{background:rgba(98,109,126,.65)!important;}
+#stage #weekDashboard #weekEventList{min-height:0!important;flex:1 1 0!important;overflow-y:auto!important;height:auto!important;max-height:none!important;}
+#stage #weekDashboard .meetingEventRow{display:grid!important;grid-template-columns:145px minmax(0,1fr) 112px!important;align-items:center!important;gap:10px!important;min-height:56px!important;padding:8px 13px!important;border-bottom:1px solid rgba(145,199,241,.22)!important;color:#fff!important;}
+#stage #weekDashboard .meetingEventRow.meetingOngoing{background:rgba(226,144,45,.21)!important;box-shadow:inset 4px 0 0 #ffc16a!important;}
+#stage #weekDashboard .meetingEventTime{font-size:17px!important;font-weight:700!important;white-space:nowrap!important;}
+#stage #weekDashboard .meetingEventName{font-size:19px!important;font-weight:600!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;}
+#stage #weekDashboard .meetingEventStatus{font-size:15px!important;text-align:right!important;color:#c2dcf2!important;white-space:nowrap!important;}
+#stage #weekDashboard .meetingOngoing .meetingEventStatus{color:#ffda9d!important;}
+@media(max-width:900px){
+ #stage #weekDashboard .weekTitle{font-size:15px!important;}
+ #stage #weekDashboard .meetingRoomIndicator{font-size:10px!important;padding:4px 5px!important;}
+ #stage #weekDashboard #weekTabs button{font-size:11px!important;height:32px!important;}
+ #stage #weekDashboard .meetingEventRow{grid-template-columns:94px minmax(0,1fr) 68px!important;gap:5px!important;padding:6px!important;}
+ #stage #weekDashboard .meetingEventTime,#stage #weekDashboard .meetingEventName{font-size:12px!important;}
+ #stage #weekDashboard .meetingEventStatus{font-size:10px!important;}
+}
+</style>
+
+<style id="qme-original-row-unified">
+/* Spoločný zoznam používa presne pôvodné triedy, rozmery a 5 stĺpcov. */
+#stage #weekDashboard #weekTabs{display:none!important;}
+#stage #weekDashboard .weekEventRow.qmeLive{background:rgba(226,144,45,.20)!important;box-shadow:inset 3px 0 0 #ffc16a!important;}
+</style>
+<style id="vrable-auth-style">
+#stage{visibility:hidden!important}
+#vrable-auth-cover{position:fixed;inset:0;z-index:2147483640;display:flex;align-items:center;justify-content:center;background:linear-gradient(140deg,#092543,#113e66 60%,#245477);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:white;padding:22px;box-sizing:border-box}
+#vrable-auth-card{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.3);box-shadow:0 18px 45px rgba(0,0,0,.25);backdrop-filter:blur(16px);border-radius:22px;padding:28px;width:min(430px,100%);box-sizing:border-box}
+#vrable-auth-card h2{margin:0 0 9px;font-size:27px}#vrable-auth-card p{font-size:14px;line-height:1.5;opacity:.85}
+#vrable-auth-card label{display:block;font-size:13px;margin:16px 0 6px}#vrable-auth-card input{display:block;width:100%;box-sizing:border-box;font-size:16px;padding:12px;border-radius:9px;border:1px solid #a5bdd7;background:#eef4fa;color:#102d45}
+#vrable-auth-card button{width:100%;padding:12px;margin-top:20px;background:#66b4f6;border:0;border-radius:9px;color:#062743;font-size:16px;font-weight:700;cursor:pointer}#vrable-auth-card button:disabled{opacity:.5;cursor:wait}
+#vrable-auth-error{min-height:1.5em;color:#ffd1d1;font-size:13px;margin-top:12px;overflow-wrap:anywhere}
+#vrable-auth-logout{position:fixed;top:9px;right:9px;z-index:99999;background:rgba(9,30,51,.8);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:5px 9px;cursor:pointer;display:none;font-size:12px}
+</style>
 </head>
 
 <body>
+<div id="vrable-auth-cover" aria-live="polite"><section id="vrable-auth-card"><h2>🔐 Dashboard Vráble</h2><p>Overenie prístupu do firemného dashboardu. Prihlasovacie údaje zostávajú v službe Firebase Authentication.</p><form id="vrable-auth-form"><label for="vrable-auth-email">E-mail</label><input id="vrable-auth-email" type="email" autocomplete="username" required><label for="vrable-auth-password">Heslo</label><input id="vrable-auth-password" type="password" autocomplete="current-password" required><button id="vrable-auth-submit" type="submit">Prihlásiť sa</button></form><div id="vrable-auth-error" role="alert"></div></section></div>
+<button id="vrable-auth-logout" type="button">Odhlásiť</button>
 
 <div id="stage">
 
@@ -4220,8 +4267,9 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
 
 <section id="weekDashboard" class="glass" aria-label="Prehľad najbližších udalostí">
  <div class="weekTopBar">
-   <div class="weekTitle"><span class="weekTitleIcon">▣</span> Audity a neprítomnosť <span id="weekDateRange" class="weekDateRange"></span></div>
+   <div class="weekTitle"><span class="weekTitleIcon">▣</span> Prehľad udalostí <span id="weekDateRange" class="weekDateRange"></span></div>
    <div class="weekHeaderActions">
+     <span id="meetingRoomIndicator" class="meetingRoomIndicator unknown" role="status" aria-live="polite">Q_ME · Čaká na údaje</span>
      <button type="button" id="weekQuickAudit" title="Pridať audit alebo návštevu">+ Audit</button>
      <button type="button" id="weekQuickLeave" title="Pridať neprítomnosť">+ Neprít.</button>
      <button type="button" id="weekArchiveButton" class="weekArchiveButton" title="Archív ukončených udalostí" hidden>◷ Archív</button>
@@ -4229,9 +4277,9 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
    </div>
  </div>
  <div id="weekTabs" class="weekTabs" role="tablist" aria-label="Filtrovanie udalostí">
-  <button type="button" role="tab" class="active" aria-selected="true" data-week-type="all">Všetko</button>
-  <button type="button" role="tab" aria-selected="false" data-week-type="audit">Audity</button>
+  <button type="button" role="tab" class="active" aria-selected="true" data-week-type="audit">Audity</button>
   <button type="button" role="tab" aria-selected="false" data-week-type="leave">Neprítomnosť</button>
+  <button type="button" role="tab" aria-selected="false" data-week-type="meeting">Meetingovka Q_ME</button>
  </div>
  <div id="weekDashboardSubline" class="weekSubline">Všetky plánované audity a neprítomnosti podľa dátumu</div>
  <div id="weekEventList" class="weekEventList" role="list" aria-live="polite"></div>
@@ -4266,7 +4314,7 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
 
 <div id="world" class="glass"></div>
 
-<script>
+<script type="application/x-dashboard-awaiting-auth">
 // Stav služieb musí existovať už pri inicializácii Firebase;
 // inak výpadok Firebase zastaví celý dashboard ešte pred správami.
 const apiStatus = {
@@ -4325,7 +4373,7 @@ const firebaseConfig = {
 };
 let firebaseDb = null;
 try{
-  firebase.initializeApp(firebaseConfig);
+  if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   firebaseDb = firebase.database();
   firebaseDb.ref('.info/connected').on('value', snap=>{
     if(typeof setApiStatus==='function') setApiStatus('firebase', snap.val()===true);
@@ -6115,14 +6163,18 @@ function refreshArchiveOpenViews(){
 firebaseListen(archiveRemovedKey,remote=>{
  if(mergeArchiveMap(archiveRemoved,remote)){
    localStorage.setItem(archiveRemovedKey,JSON.stringify(archiveRemoved));
-   if(applyArchivePolicy())saveExpiredArchives();
+   // Prijatá zmena zo servera nesmie vyvolať ďalší automatický zápis.
+   // Lokálne upravíme archív; zápis nastane až pri skutočnej úprave používateľa.
+   if(applyArchivePolicy())writeArchiveLocal();
    refreshArchiveOpenViews();
  }
 });
 firebaseListen(archiveEditsKey,remote=>{
  if(mergeArchiveMap(archiveEdits,remote)){
    localStorage.setItem(archiveEditsKey,JSON.stringify(archiveEdits));
-   if(applyArchivePolicy())saveExpiredArchives();
+   // Prijatá zmena zo servera nesmie vyvolať ďalší automatický zápis.
+   // Lokálne upravíme archív; zápis nastane až pri skutočnej úprave používateľa.
+   if(applyArchivePolicy())writeArchiveLocal();
    refreshArchiveOpenViews();
  }
 });
@@ -6136,8 +6188,9 @@ firebaseListen(expiredArchiveKey,remote=>{
  writeArchiveLocal();
  const merged=JSON.stringify(expiredEventArchives);
  if(merged!==prior)refreshArchiveOpenViews();
- // Na staršom počítači mohol zostať záznam pred úpravou; zjednoť serverovú kópiu.
- if(merged!==JSON.stringify({audit:remote.audit||[],leave:remote.leave||[]}))saveExpiredArchives();
+ // Dôležité: z prijatej Firebase udalosti automaticky neodosielame
+ // celý archív späť. Pri viacerých klientskych oknách to môže spôsobiť
+ // vzájomné opakované zápisy. Explicitné používateľské zmeny sa stále ukladajú.
 });
 function updateArchivedEntry(type,id,data){
  if(!['audit','leave'].includes(type))return false;
@@ -7167,7 +7220,7 @@ document.addEventListener('click', (e)=>{
 
 <div id="miniDatePicker"></div>
 
-<script>
+<script type="application/x-dashboard-awaiting-auth">
 // Recompute once the bottom ticker and all page elements exist.
 positionBottomBoxes();
 if(typeof ResizeObserver!=='undefined'){
@@ -7511,7 +7564,7 @@ if(typeof ResizeObserver!=='undefined'){
  checkSchedule();
 })();
 </script>
-<script>
+<script type="application/x-dashboard-awaiting-auth">
 /* Zdroje kalendára sledujú aktuálny rok. */
 document.addEventListener('DOMContentLoaded',()=>{
   const y=new Date().getFullYear();
@@ -7521,7 +7574,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(n) n.href=`https://kalendar.aktuality.sk/meninovy/rok/${y}/`;
 });
 </script>
-<script>
+<script type="application/x-dashboard-awaiting-auth">
 
 // Narodeniny zo zošita "zoznam" v súbore "Zoznam QA.xlsx".
 // Údaje sú uložené v HTML; narodeniny sa automaticky opakujú každý rok.
@@ -7596,7 +7649,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape' && document.getEleme
 
 </script>
 
-<script>
+<script type="application/x-dashboard-awaiting-auth">
 /* Prehľad sviatkov a menín v rovnakom dialógu ako prehľad narodenín. */
 let calendarAllActiveType='nameday';
 function calendarAllDateLabel(date){
@@ -7660,7 +7713,7 @@ function closeAllCalendar(){
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('calendarAllOverlay')?.classList.contains('isOpen'))closeAllCalendar();});
 </script>
 
-<script>
+<script type="application/x-dashboard-awaiting-auth">
 /* Zoznam všetkých aktuálne načítaných správ, bez zmeny striedania titulkov. */
 function openAllNews(){
   let overlay=document.getElementById('allNewsOverlay');
@@ -7703,7 +7756,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElement
 
 
 
-<script id="dashboard-hourly-weather-dialog">
+<script type="application/x-dashboard-awaiting-auth" id="dashboard-hourly-weather-dialog">
 // Pri kliknutí na Dnes alebo ľubovoľný z troch dní sa otvorí hodinový prehľad.
 const HOURLY_WEATHER_URL='https://api.open-meteo.com/v1/forecast?latitude=48.24&longitude=18.32&hourly=temperature_2m,apparent_temperature,weather_code,precipitation_probability,precipitation,wind_speed_10m,wind_direction_10m&forecast_days=7&timezone=Europe%2FBratislava';
 let hourlyForecastExtra=null;
@@ -7805,7 +7858,7 @@ document.addEventListener('keydown',e=>{
 });
 </script>
 
-<script id="week-dashboard-script">
+<script type="application/x-dashboard-awaiting-auth" id="week-dashboard-script">
 /* Jediný živý dátový zdroj: existujúce premenné auditData, leaveData,
    MENINY, holidaysForYear a birthdayPeople. Bez duplikovania dát. */
 (function(){
@@ -7813,12 +7866,83 @@ document.addEventListener('keydown',e=>{
   const list=document.getElementById('weekEventList');
   const form=document.getElementById('weekEditorForm');
   if(!panel || !list || !form)return;
-  let selected='all';
+  let selected='audit';
   let editorType='audit';
   let editorId=null;
   const kinds={audit:'Audit',leave:'Neprítomnosť',nameday:'Meniny',birthday:'Narodeniny',holiday:'Sviatok'};
   const symbols={audit:'💼',leave:'👤',nameday:'📅',birthday:'🎂',holiday:'🌼'};
   const weekTabs=Array.from(document.querySelectorAll('#weekTabs [data-week-type]'));
+  const meetingIndicator=document.getElementById('meetingRoomIndicator');
+  let meetingPayload=null;
+  let meetingReceived=false;
+  const rotationTabs=['audit','leave','meeting'];
+  let rotationTimer=null;
+  // Časy z Graph preferujeme ako ISO s explicitným offsetom/Z.
+  // Ak v dátach offset chýba, predpokladá sa UTC (Graph predvolená odpoveď).
+  function parseMeetingDate(value){
+    if(value && typeof value==='object')value=value.dateTime;
+    if(typeof value!=='string'||!value.trim())return null;
+    const raw=value.trim();
+    const iso=/([zZ]|[+\-]\d\d:\d\d)$/.test(raw)?raw:raw+'Z';
+    const d=new Date(iso);
+    return Number.isFinite(d.getTime())?d:null;
+  }
+  function meetingEvents(){
+    const raw=Array.isArray(meetingPayload)?meetingPayload:meetingPayload?.udalosti;
+    if(!Array.isArray(raw))return [];
+    const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+    const dateKey=d=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
+    return raw.map(e=>({nazov:String(e.nazov||e.subject||'Bez názvu'),zaciatok:parseMeetingDate(e.zaciatok||e.start),koniec:parseMeetingDate(e.koniec||e.end),showAs:e.showAs||e.showas||''}))
+      .filter(e=>e.zaciatok&&e.koniec&&e.koniec>e.zaciatok&&dateKey(e.zaciatok)<=today&&dateKey(new Date(e.koniec.getTime()-1))>=today)
+      .sort((a,b)=>a.zaciatok-b.zaciatok);
+  }
+  function meetingIsFresh(){
+    const stamp=meetingPayload?.aktualizovane||meetingPayload?.updatedAt;
+    const d=stamp?parseMeetingDate(stamp):null;
+    return Boolean(meetingReceived&&d&&Date.now()-d.getTime()>=0&&Date.now()-d.getTime()<20*60000);
+  }
+  const meetingClock=new Intl.DateTimeFormat('sk-SK',{timeZone:'Europe/Bratislava',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+  function refreshMeetingIndicator(){
+    if(!meetingIndicator)return;
+    const events=meetingEvents(),now=new Date();
+    const fresh=meetingIsFresh();
+    const busy=fresh&&events.some(e=>e.zaciatok<=now&&now<e.koniec&&String(e.showAs).toLowerCase()!=='free');
+    meetingIndicator.className='meetingRoomIndicator '+(!fresh?'unknown':busy?'busy':'free');
+    meetingIndicator.textContent=!fresh?'Q_ME · Údaje nedostupné':busy?'Q_ME · Obsadená':'Q_ME · Voľná';
+    meetingIndicator.title=!fresh?'Čaká sa na aktuálne údaje z Firebase':(busy?'Práve prebieha rezervácia':'Aktuálne bez rezervácie');
+  }
+  function renderMeeting(){
+    refreshMeetingIndicator();
+    const events=meetingEvents(), now=new Date();
+    document.getElementById('weekDashboardSubline').textContent='Dnešné rezervácie Q_ME · Outlook';
+    document.getElementById('weekDateRange').textContent='';
+    const counter=document.getElementById('weekEventCounter');
+    counter.textContent=events.length+' rezervácií';
+    if(!meetingReceived){list.innerHTML='<div class="weekEmpty">Rezervácie ešte nie sú pripojené k Firebase.</div>';return;}
+    if(!meetingIsFresh()){
+      list.innerHTML='<div class="weekEmpty">Údaje Q_ME nie sú aktuálne. Čaká sa na synchronizáciu.</div>';return;
+    }
+    if(!events.length){list.innerHTML='<div class="weekEmpty">Meetingovka nemá na dnes žiadne rezervácie.</div>';return;}
+    list.innerHTML=events.map(e=>{
+      const live=e.zaciatok<=now&&now<e.koniec;
+      const done=e.koniec<=now;
+      const status=done?'Ukončené':live?'Prebieha':'Nasleduje';
+      return `<div class="meetingEventRow ${live?'meetingOngoing':''}" role="listitem">`+
+        `<div class="meetingEventTime">${meetingClock.format(e.zaciatok)} – ${meetingClock.format(e.koniec)}</div>`+
+        `<div class="meetingEventName" title="${escapeText(e.nazov)}">${escapeText(e.nazov)}</div>`+
+        `<div class="meetingEventStatus">${status}</div></div>`;
+    }).join('');
+  }
+  // Iba jeden poslucháč malej vetvy meetingovky; nepridávame nové pollovanie.
+  if(typeof firebaseDb!=='undefined' && firebaseDb){
+    firebaseDb.ref('meetingovka').on('value',snapshot=>{
+      meetingReceived=snapshot.exists();
+      meetingPayload=snapshot.val();
+      refreshMeetingIndicator();
+      if(selected==='meeting')renderMeeting();
+    },()=>{meetingReceived=false;meetingPayload=null;refreshMeetingIndicator();if(selected==='meeting')renderMeeting();});
+  }
+
   function dateAtNoon(iso){
     if(typeof iso!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(iso))return null;
     const p=iso.split('-').map(Number);
@@ -8037,114 +8161,79 @@ document.addEventListener('keydown',e=>{
       (['audit','leave'].indexOf(a.type)-['audit','leave'].indexOf(b.type))||
       a.title.localeCompare(b.title,'sk'));
   }
+  // Spoločný zoznam s pôvodným rozložením 5 stĺpcov a pôvodnou veľkosťou písma.
   function render(){
     try{
-      const now=new Date();
-      const today=atMidnight(now);
-      // Meniny, narodeniny a sviatky pripravujeme na celý nasledujúci rok;
-      // audity a neprítomnosti nie sú obmedzené dátumom 7 dní ani jedným rokom.
+      refreshMeetingIndicator();
+      const now=new Date(),today=atMidnight(now);
       const all=allItems(today);
-      const workItems=all.filter(it=>it.type==='audit'||it.type==='leave');
-      const filtered=groupWorkItems(selected==='all'?workItems:workItems.filter(it=>it.type===selected),today);
-      list.classList.toggle('weekNearestOnly',false);
-      list.classList.toggle('weekScrollable',true);
-      const allTab=selected==='all';
-      // Všetko: len riadky, ktoré zaplnia viditeľnú výšku bez posúvania.
-      // Zohľadni skutočnú výšku a neskôr ešte vykonaj kontrolu scrollHeight.
-      const targetRowHeight=42;
-      const capacity=filtered.length;
-      const items=filtered;
+      const work=groupWorkItems(all.filter(it=>it.type==='audit'||it.type==='leave'),today);
+      const workRows=work.map(it=>({...it,sortDay:isoDate(it.show),sortMoment:0}));
+      const localDate=d=>{const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(d);const v=k=>parts.find(p=>p.type===k)?.value;return v('year')+'-'+v('month')+'-'+v('day');};
+      const meetingRows=meetingIsFresh()?meetingEvents()
+        .filter(e=>localDate(e.zaciatok)===localDate(today))
+        .map(e=>({type:'meeting',title:e.nazov,start:e.zaciatok,end:e.koniec,
+          show:e.zaciatok,sortDay:localDate(e.zaciatok),sortMoment:e.zaciatok.getTime(),
+          meta:'Meetingovka Q_ME'})):[];
+      const rows=[...workRows,...meetingRows].sort((a,b)=>
+        a.sortDay.localeCompare(b.sortDay)||a.sortMoment-b.sortMoment||
+        a.title.localeCompare(b.title,'sk'));
+      list.classList.remove('weekNearestOnly');
+      list.classList.add('weekScrollable');
       const range=document.getElementById('weekDateRange');
-      if(allTab){
-        range.textContent=items.length
-          ? shortDateOnly(items[0].show)+' – '+shortDateOnly(items[items.length-1].show)
-          : '';
-      }else{
-        range.textContent=filtered.length?'Od '+shortDateOnly(filtered[0].show):'';
-      }
-      const desc=allTab?'Všetky nadchádzajúce audity a neprítomnosti':
-        'Všetky nadchádzajúce '+({audit:'audity a návštevy',leave:'neprítomnosti',nameday:'meniny',birthday:'narodeniny',holiday:'sviatky'}[selected]||'udalosti');
-      document.getElementById('weekDashboardSubline').textContent=desc;
+      if(range)range.textContent=rows.length?shortDateOnly(rows[0].show)+' – '+shortDateOnly(rows[rows.length-1].show):'';
+      const sub=document.getElementById('weekDashboardSubline');
+      if(sub)sub.textContent='Audity · Neprítomnosť · Meetingovka Q_ME';
       const counter=document.getElementById('weekEventCounter');
       let html='',lastKey='';
-      items.forEach(it=>{
-        const key=isoDate(it.show),first=key!==lastKey || daysDiff(it.end,it.start)>0;
-        const onDate=it.start<=today && it.end>=today;
-        const status=workEventStatus(it,now);
-        const isRange=daysDiff(it.end,it.start)>0;
-        // V posledný deň viacdňovej neprítomnosti ukáž iba dnešný dátum
-        // (napr. 27.10.), nie „Dnes – 27.10.“. Ostatné termíny zachovaj.
-        const leaveEndsToday = it.type==='leave' && isRange &&
-          daysDiff(it.end,today)===0 && daysDiff(it.start,today)<0;
-        const dayName = leaveEndsToday
-          ? shortDate(today)
-          : (onDate?'<span class="weekDateToday">Dnes</span>':(isRange?shortDateOnly(it.start):shortDate(it.show)))+
-            (isRange?' – '+shortDateOnly(it.end):'');
-        const editable=(it.type==='audit'||it.type==='leave')&&it.id;
+      rows.forEach(it=>{
+        const isMeeting=it.type==='meeting';
+        const key=it.sortDay;
+        const first=key!==lastKey;
+        const live=isMeeting&&it.start<=now&&now<it.end;
+        const status=isMeeting?null:workEventStatus(it,now);
+        const isRange=!isMeeting&&daysDiff(it.end,it.start)>0;
+        const onDate=!isMeeting&&it.start<=today&&it.end>=today;
+        const leaveEndsToday=it.type==='leave'&&isRange&&daysDiff(it.end,today)===0&&daysDiff(it.start,today)<0;
+        const dayName=isMeeting?'<span class="weekDateToday">Dnes</span>':
+          leaveEndsToday?shortDate(today):
+          (onDate?'<span class="weekDateToday">Dnes</span>':(isRange?shortDateOnly(it.start):shortDate(it.show)))+
+          (isRange?' – '+shortDateOnly(it.end):'');
+        const editable=!isMeeting&&Boolean(it.id);
         const multiple=it.type==='leave'&&it.editEntries?.length>1;
-        const rowEditAttrs=editable
-          ? multiple
-            ? `data-edit-kind="leave" data-edit-ids="${encodeURIComponent(JSON.stringify(it.editEntries))}" title="Klikni a vyber osobu na úpravu"`
-            : `data-edit-kind="${it.type}" data-edit-id="${escapeText(it.id)}" title="Klikni na úpravu záznamu"`
-          : '';
-        const title=it.type==='leave'?'<span class="weekPalePerson" aria-hidden="true"></span>':it.type==='audit'?'<span class="weekPaleAudit" aria-hidden="true"></span>':it.type==='holiday'?holidayPictogram(it.title):symbols[it.type];
-        const rowTitle=escapeText(it.title);
-        const when=status.countdown;
-        html+=`<div class="weekEventRow ${status.highlight?'weekToday':''} ${status.comingSoon?'weekComingSoon':''} ${first?'':'weekContinuation'} ${editable?'weekEditable':''}" role="listitem" ${rowEditAttrs}>`+
-          `<div class="weekDay" title="${escapeText(shortDate(it.start)+(isRange?' – '+shortDate(it.end):''))}">${first?dayName:''}</div><div class="weekSymbol">${title}</div>`+
-          `<div class="weekEventText" title="${rowTitle}">${rowTitle}</div>`+
-          `<div class="weekKind" title="${escapeText(it.type==='audit'?it.meta:kinds[it.type])}">${formatWorkTypes(it.type==='audit'?it.meta:kinds[it.type])}</div><div class="weekWhen">${when}</div></div>`;
+        const rowEditAttrs=editable?(multiple?
+          `data-edit-kind="leave" data-edit-ids="${encodeURIComponent(JSON.stringify(it.editEntries))}" title="Klikni a vyber osobu na úpravu"`:
+          `data-edit-kind="${it.type}" data-edit-id="${escapeText(it.id)}" title="Klikni na úpravu záznamu"`):'';
+        const symbol=isMeeting?'📅':it.type==='leave'?'<span class="weekPalePerson" aria-hidden="true"></span>':'<span class="weekPaleAudit" aria-hidden="true"></span>';
+        const kind=isMeeting?meetingClock.format(it.start)+' – '+meetingClock.format(it.end):it.type==='audit'?(it.meta||'Audit'):kinds[it.type];
+        const when=isMeeting?(live?'Prebieha':it.end<=now?'Ukončené':'Q_ME'):status.countdown;
+        html+=`<div class="weekEventRow ${!isMeeting&&status.highlight?'weekToday':''} ${live?'qmeLive':''} ${!isMeeting&&status.comingSoon?'weekComingSoon':''} ${first?'':'weekContinuation'} ${editable?'weekEditable':''}" role="listitem" ${rowEditAttrs}>`+
+          `<div class="weekDay" title="${escapeText(shortDate(it.start)+(isRange?' – '+shortDate(it.end):''))}">${first?dayName:''}</div>`+
+          `<div class="weekSymbol">${symbol}</div>`+
+          `<div class="weekEventText" title="${escapeText(it.title)}">${escapeText(it.title)}</div>`+
+          `<div class="weekKind" title="${escapeText(kind)}">${isMeeting?escapeText(kind):formatWorkTypes(kind)}</div>`+
+          `<div class="weekWhen">${escapeText(when)}</div></div>`;
         lastKey=key;
       });
+      const scroll=list.scrollTop;
       list.innerHTML=html||'<div class="weekEmpty">Žiadne nadchádzajúce udalosti.</div>';
-      // Vypočítaj šírku dátumového stĺpca z najdlhšieho viditeľného dátumu.
-      // Rovnakú šírku použijú všetky riadky, aby ostali deliace čiary zarovnané.
+      list.scrollTop=scroll;
+      // Pôvodná šírka piatich stĺpcov zostáva zachovaná.
       try{
         const dates=Array.from(list.querySelectorAll('.weekDay'));
-        const canvas=document.createElement('canvas');
-        const ctx=canvas.getContext('2d');
+        const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
         if(ctx){
           let widest=0;
-          dates.forEach(cell=>{
-            const style=getComputedStyle(cell);
-            ctx.font=`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-            const dateText=cell.textContent.trim();
-            widest=Math.max(widest,ctx.measureText(dateText).width);
-          });
-          const computedWidth=Math.ceil(widest+24);
+          dates.forEach(cell=>{const style=getComputedStyle(cell);ctx.font=`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;widest=Math.max(widest,ctx.measureText(cell.textContent.trim()).width);});
           const isMobile=window.matchMedia('(max-width: 900px)').matches;
-          const columnWidth=isMobile
-            ? Math.min(92,Math.max(72,Math.ceil(widest+8)))
-            : Math.min(252,Math.max(150,computedWidth));
-          list.style.setProperty('--work-date-width',columnWidth+'px');
-          // Mobil potrebuje kompaktnejšiu mriežku: dátum, ikona, názov a odpočet.
-          // Na desktope zostáva pôvodných päť stĺpcov.
-          for(const row of list.querySelectorAll('.weekEventRow')){
-            row.style.setProperty('grid-template-columns', isMobile
-              ? `${columnWidth}px 22px minmax(0,1fr) 62px`
-              : `${columnWidth}px 28px minmax(0,1fr) 190px 94px`,'important');
-          }
+          const colWidth=isMobile?Math.min(92,Math.max(72,Math.ceil(widest+8))):Math.min(252,Math.max(150,Math.ceil(widest+24)));
+          list.style.setProperty('--work-date-width',colWidth+'px');
+          for(const row of list.querySelectorAll('.weekEventRow'))row.style.setProperty('grid-template-columns',isMobile?`${colWidth}px 22px minmax(0,1fr) 62px`:`${colWidth}px 28px minmax(0,1fr) 190px 94px`,'important');
         }
       }catch(e){console.warn('Šírka dátumu:',e);}
-
-      // Názov aj typ vždy na jeden riadok. Iba dva samostatné typy môžu byť pod sebou.
       requestAnimationFrame(()=>fitWorkRows(list));
-      if(false){
-        // Kontrola skutočných rozmerov: nedovoľ odrezať spodný riadok,
-        // aj keby používateľ neskôr upravil veľkosti písma v CSS.
-        const rows=Array.from(list.querySelectorAll('.weekEventRow'));
-        for(let i=rows.length-1;i>0&&list.scrollHeight>list.clientHeight+1;i--){
-          rows[i].remove();
-        }
-        const visible=list.querySelectorAll('.weekEventRow').length;
-        const lastVisible=filtered[visible-1];
-        if(lastVisible&&filtered[0])range.textContent=shortDateOnly(filtered[0].show)+' – '+shortDateOnly(lastVisible.show);
-        counter.textContent=visible+' z '+filtered.length+' '+countWord(filtered.length);
-      } else {
-        counter.textContent=filtered.length+' '+countWord(filtered.length);
-      }
+      if(counter)counter.textContent=rows.length+' '+countWord(rows.length);
       renderCelebrations(all,today,now);
-      // Nevracaj scroll počas priebežných aktualizácií; zmení sa až pri prepnutí karty.
     }catch(err){console.warn('Prehľad udalostí:',err);list.innerHTML='<div class="weekEmpty">Údaje sa momentálne nepodarilo zobraziť.</div>';}
   }
   function setTab(tab){
@@ -8154,7 +8243,17 @@ document.addEventListener('keydown',e=>{
     document.getElementById('weekArchiveButton').hidden=!['audit','leave'].includes(tab);
     render();list.scrollTop=0;
   }
-  weekTabs.forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.weekType)));
+  function startRotation(){
+    if(rotationTimer)clearInterval(rotationTimer);
+    rotationTimer=setInterval(()=>{
+      // Pri editácii údajov kartu neprepíname.
+      if(document.getElementById('weekEditorOverlay')?.classList.contains('isOpen'))return;
+      const next=rotationTabs[(rotationTabs.indexOf(selected)+1)%rotationTabs.length];
+      setTab(next);
+    },10000);
+  }
+  weekTabs.forEach(b=>b.addEventListener('click',()=>{setTab(b.dataset.weekType);startRotation();}));
+  // Spoločná tabuľka: automatická rotácia je vypnutá.
   document.getElementById('weekQuickAudit').addEventListener('click',()=>openEditor('audit',null));
   document.getElementById('weekQuickLeave').addEventListener('click',()=>openEditor('leave',null));
   document.getElementById('weekAddButton').addEventListener('click',()=>openEditor(selected,null));
@@ -8238,7 +8337,7 @@ document.addEventListener('keydown',e=>{
 
 
 
-<script id="dashboard-features-2026">
+<script type="application/x-dashboard-awaiting-auth" id="dashboard-features-2026">
 (function(){
  'use strict';
  const $=id=>document.getElementById(id);
@@ -8460,7 +8559,7 @@ document.addEventListener('keydown',e=>{
 </script>
 
 
-<script id="smart-content-spacing-controller-2026">
+<script type="application/x-dashboard-awaiting-auth" id="smart-content-spacing-controller-2026">
 /* Layout-only enhancement. MutationObserver sleduje obsah, nie prepisovanie dát.
    Pri nedostatku miesta sa automaticky vráti k pôvodným kompaktným rozostupom. */
 (function(){
@@ -8506,5 +8605,57 @@ document.addEventListener('keydown',e=>{
 })();
 </script>
 
+<script id="vrable-auth-bootstrap">
+(function(){
+  'use strict';
+  const cover=document.getElementById('vrable-auth-cover');
+  const form=document.getElementById('vrable-auth-form');
+  const err=document.getElementById('vrable-auth-error');
+  const send=document.getElementById('vrable-auth-submit');
+  const logout=document.getElementById('vrable-auth-logout');
+  const firebaseConfig={
+    apiKey:'AIzaSyA2uXyx3B4W9FqmhbsKl8WYT4Uo4piX_iM',
+    authDomain:'info-tabula.firebaseapp.com',
+    databaseURL:'https://info-tabula-default-rtdb.europe-west1.firebasedatabase.app',
+    projectId:'info-tabula',
+    storageBucket:'info-tabula.firebasestorage.app',
+    messagingSenderId:'580253308375',
+    appId:'1:580253308375:web:8750fe38a5710a984b2792'
+  };
+  if(typeof firebase==='undefined'||!firebase.auth){err.textContent='Nepodarilo sa načítať Firebase. Skontroluj internetové pripojenie.';return;}
+  if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+  const auth=firebase.auth();
+  let ready=false;
+  // Ak prvý test prebehne úspešne, tu sa neskôr nastavia Firebase Rules pre povolené UID.
+  async function startDashboard(){
+    if(ready)return;
+    ready=true;
+    try{
+      const blocked=Array.from(document.querySelectorAll('script[type="application/x-dashboard-awaiting-auth"]'));
+      for(const old of blocked){
+        const script=document.createElement('script');
+        for(const attr of old.attributes){if(attr.name!=='type')script.setAttribute(attr.name,attr.value)}
+        script.textContent=old.textContent;
+        old.replaceWith(script);
+      }
+      document.dispatchEvent(new Event('DOMContentLoaded',{bubbles:true}));
+      document.getElementById('stage').style.setProperty('visibility','visible','important');
+      cover.style.display='none';logout.style.display='block';
+    }catch(e){console.error('Dashboard inicializácia:',e);err.textContent='Prihlásenie bolo úspešné, no pri štarte dashboardu nastala chyba. Pozri konzolu.';ready=false;}
+  }
+  auth.onAuthStateChanged(user=>{
+    if(user){err.textContent='';startDashboard()}
+    else if(!ready){err.textContent='';cover.style.display='flex'}
+    else{document.getElementById('stage').style.setProperty('visibility','hidden','important');location.reload()}
+  },e=>{err.textContent='Overenie Firebase zlyhalo: '+e.message});
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();send.disabled=true;err.textContent='Overujem prihlásenie…';
+    try{await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);await auth.signInWithEmailAndPassword(document.getElementById('vrable-auth-email').value.trim(),document.getElementById('vrable-auth-password').value)}
+    catch(ex){err.textContent='Prihlásenie sa nepodarilo. Skontroluj údaje alebo nastavenia Authentication.';console.warn('Firebase Auth:',ex.code)}
+    finally{send.disabled=false;document.getElementById('vrable-auth-password').value=''}
+  });
+  logout.addEventListener('click',async()=>{document.getElementById('stage').style.setProperty('visibility','hidden','important');await auth.signOut();location.reload()});
+})();
+</script>
 </body>
 </html>
