@@ -8218,11 +8218,13 @@ document.addEventListener('keydown',e=>{
       const sub=document.getElementById('weekDashboardSubline');
       if(sub)sub.textContent='Audity · Neprítomnosť · Meetingovka Q_ME';
       const counter=document.getElementById('weekEventCounter');
-      let html='',lastKey='';
+      let html='',lastKey='',previousWasMeeting=false;
       rows.forEach(it=>{
         const isMeeting=it.type==='meeting';
         const key=it.sortDay;
-        const first=key!==lastKey;
+        // Po skupine meetingov zobraz dátum prvého auditu/neprítomnosti,
+        // aj keď ide o rovnaký kalendárny deň.
+        const first=key!==lastKey || (!isMeeting && previousWasMeeting);
         const live=isMeeting&&it.start<=now&&now<it.end;
         const status=isMeeting?null:workEventStatus(it,now);
         const isRange=!isMeeting&&daysDiff(it.end,it.start)>0;
@@ -8247,6 +8249,7 @@ document.addEventListener('keydown',e=>{
           `<div class="weekKind" title="${escapeText(kind)}">${isMeeting?escapeText(kind):formatWorkTypes(kind)}</div>`+
           `<div class="weekWhen">${escapeText(when)}</div></div>`;
         lastKey=key;
+        previousWasMeeting=isMeeting;
       });
       const scroll=list.scrollTop;
       list.innerHTML=html||'<div class="weekEmpty">Žiadne nadchádzajúce udalosti.</div>';
