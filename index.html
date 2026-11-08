@@ -7910,9 +7910,16 @@ document.addEventListener('keydown',e=>{
       .sort((a,b)=>a.zaciatok-b.zaciatok);
   }
   function meetingIsFresh(){
-    const stamp=meetingPayload?.aktualizovane||meetingPayload?.updatedAt;
-    const d=stamp?parseMeetingDate(stamp):null;
-    return Boolean(meetingReceived&&d&&Date.now()-d.getTime()>=0&&Date.now()-d.getTime()<20*60000);
+    // Rozpis prichádza raz denne o 6:00; počas dňa nesmie po 20 minútach expirovať.
+    // Starý dátum však nikdy nesmie označovať miestnosť ako voľnú.
+    if(!meetingReceived || !meetingPayload || !Array.isArray(meetingPayload.udalosti))return false;
+    const today=new Intl.DateTimeFormat('en-CA',{
+      timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'
+    }).format(new Date());
+    const stamp=meetingPayload.aktualizovane||meetingPayload.updatedAt;
+    const updated=stamp?parseMeetingDate(stamp):null;
+    return Boolean(meetingPayload.datum===today && updated &&
+      updated.getTime()<=Date.now()+60000 && Date.now()-updated.getTime()<36*3600000);
   }
   const meetingClock=new Intl.DateTimeFormat('sk-SK',{timeZone:'Europe/Bratislava',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
   function refreshMeetingIndicator(){
@@ -8174,6 +8181,14 @@ document.addEventListener('keydown',e=>{
       (['audit','leave'].indexOf(a.type)-['audit','leave'].indexOf(b.type))||
       a.title.localeCompare(b.title,'sk'));
   }
+  // Pri Q_ME odpočítavať lokálne, bez čítania ďalších dát z Firebase.
+  function meetingCountdown(start,now){
+    const minutes=Math.max(0,Math.ceil((start.getTime()-now.getTime())/60000));
+    if(minutes<1)return 'o <1 min';
+    if(minutes<60)return 'o '+minutes+' min';
+    const hours=Math.floor(minutes/60),rest=minutes%60;
+    return 'o '+hours+' h'+(rest?' '+rest+' min':'');
+  }
   // Spoločný zoznam s pôvodným rozložením 5 stĺpcov a pôvodnou veľkosťou písma.
   function render(){
     try{
@@ -8184,7 +8199,7 @@ document.addEventListener('keydown',e=>{
       const workRows=work.map(it=>({...it,sortDay:isoDate(it.show),sortMoment:0}));
       const localDate=d=>{const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(d);const v=k=>parts.find(p=>p.type===k)?.value;return v('year')+'-'+v('month')+'-'+v('day');};
       const meetingRows=meetingIsFresh()?meetingEvents()
-        .filter(e=>localDate(e.zaciatok)===localDate(today))
+        .filter(e=>e.koniec>now && localDate(e.zaciatok)===localDate(today))
         .map(e=>({type:'meeting',title:e.nazov,start:e.zaciatok,end:e.koniec,
           show:e.zaciatok,sortDay:localDate(e.zaciatok),sortMoment:e.zaciatok.getTime(),
           meta:'Meetingovka Q_ME'})):[];
@@ -8208,7 +8223,7 @@ document.addEventListener('keydown',e=>{
         const isRange=!isMeeting&&daysDiff(it.end,it.start)>0;
         const onDate=!isMeeting&&it.start<=today&&it.end>=today;
         const leaveEndsToday=it.type==='leave'&&isRange&&daysDiff(it.end,today)===0&&daysDiff(it.start,today)<0;
-        const dayName=isMeeting?'<span class="weekDateToday">Dnes</span>':
+        const dayName=isMeeting?escapeText(meetingClock.format(it.start)+' – '+meetingClock.format(it.end)):
           leaveEndsToday?shortDate(today):
           (onDate?'<span class="weekDateToday">Dnes</span>':(isRange?shortDateOnly(it.start):shortDate(it.show)))+
           (isRange?' – '+shortDateOnly(it.end):'');
@@ -8218,10 +8233,10 @@ document.addEventListener('keydown',e=>{
           `data-edit-kind="leave" data-edit-ids="${encodeURIComponent(JSON.stringify(it.editEntries))}" title="Klikni a vyber osobu na úpravu"`:
           `data-edit-kind="${it.type}" data-edit-id="${escapeText(it.id)}" title="Klikni na úpravu záznamu"`):'';
         const symbol=isMeeting?'📅':it.type==='leave'?'<span class="weekPalePerson" aria-hidden="true"></span>':'<span class="weekPaleAudit" aria-hidden="true"></span>';
-        const kind=isMeeting?meetingClock.format(it.start)+' – '+meetingClock.format(it.end):it.type==='audit'?(it.meta||'Audit'):kinds[it.type];
-        const when=isMeeting?(live?'Prebieha':it.end<=now?'Ukončené':'Q_ME'):status.countdown;
-        html+=`<div class="weekEventRow ${!isMeeting&&status.highlight?'weekToday':''} ${live?'qmeLive':''} ${!isMeeting&&status.comingSoon?'weekComingSoon':''} ${first?'':'weekContinuation'} ${editable?'weekEditable':''}" role="listitem" ${rowEditAttrs}>`+
-          `<div class="weekDay" title="${escapeText(shortDate(it.start)+(isRange?' – '+shortDate(it.end):''))}">${first?dayName:''}</div>`+
+        const kind=isMeeting?'Q_ME':it.type==='audit'?(it.meta||'Audit'):kinds[it.type];
+        const when=isMeeting?(live?'Prebieha':meetingCountdown(it.start,now)):status.countdown;
+        html+=`<div class="weekEventRow ${!isMeeting&&status.highlight?'weekToday':''} ${live?'qmeLive':''} ${!isMeeting&&status.comingSoon?'weekComingSoon':''} ${first||isMeeting?'':'weekContinuation'} ${editable?'weekEditable':''}" role="listitem" ${rowEditAttrs}>`+
+          `<div class="weekDay" title="${escapeText(isMeeting?kind+' '+meetingClock.format(it.start)+' – '+meetingClock.format(it.end):shortDate(it.start)+(isRange?' – '+shortDate(it.end):''))}">${isMeeting?dayName:(first?dayName:'')}</div>`+
           `<div class="weekSymbol">${symbol}</div>`+
           `<div class="weekEventText" title="${escapeText(it.title)}">${escapeText(it.title)}</div>`+
           `<div class="weekKind" title="${escapeText(kind)}">${isMeeting?escapeText(kind):formatWorkTypes(kind)}</div>`+
