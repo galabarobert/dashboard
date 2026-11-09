@@ -8224,7 +8224,7 @@ document.addEventListener('keydown',e=>{
         const key=it.sortDay;
         // Po skupine meetingov zobraz dátum prvého auditu/neprítomnosti,
         // aj keď ide o rovnaký kalendárny deň.
-        const first=key!==lastKey || (!isMeeting && previousWasMeeting);
+        const first=!isMeeting || key!==lastKey; // Pri auditoch a neprítomnostiach vždy zobraz dátum; Q_ME ostáva časový údaj.
         const live=isMeeting&&it.start<=now&&now<it.end;
         const status=isMeeting?null:workEventStatus(it,now);
         const isRange=!isMeeting&&daysDiff(it.end,it.start)>0;
