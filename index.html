@@ -4323,6 +4323,8 @@ const apiStatus = {
   weather: null,
   worldWeather: null,
   firebase: null,
+  firebaseQme: null,
+  appsScript: null,
   radio: null,
   news: null
 };
@@ -4963,7 +4965,9 @@ function updateApiStatusIndicator(){
     weather:'Počasie Vráble (aktuálne + predpoveď)',
     sun:'Východ a západ slnka',
     worldWeather:'Svetové počasie',
-    firebase:'Zdieľaná databáza Firebase',
+    firebase:'Firebase – pripojenie',
+    firebaseQme:'Firebase – údaje Q_ME',
+    appsScript:'Apps Script – synchronizácia Q_ME',
     news:'Správy Teraz.sk (RSS)',
     radio:'Online rádiá (spolu 10)'
   };
@@ -4986,6 +4990,14 @@ function updateApiStatusIndicator(){
     line.append(symbol,document.createTextNode(names[key]));
     panel.appendChild(line);
   });
+  // Skutočná diagnostika automatického Apps Scriptu, nie odhad podľa porád.
+  if(window.vrableQmeSyncDetail){
+    const d=window.vrableQmeSyncDetail;
+    const detail=document.createElement('div');
+    detail.style.cssText='margin:4px 0 8px 0;padding:5px 7px;border-left:2px solid rgba(255,255,255,.35);white-space:normal;max-width:340px;line-height:1.45;font-size:12px';
+    detail.textContent=d;
+    panel.appendChild(detail);
+  }
   // Rádiá sú jeden spoločný stav; nesypeme sem zoznam staníc.
   if(radioHealth.length){
     const summary=document.createElement('div');
@@ -7891,6 +7903,22 @@ document.addEventListener('keydown',e=>{
   let meetingReceived=false;
   // Prvé vykreslenie spoločného zoznamu čaká na prvú odpoveď Firebase.
   let meetingInitialLoadDone=false;
+  // Prvý spoločný prehľad zobrazíme až po prvom načítaní
+  // všetkých troch zdrojov: Q_ME, auditov aj neprítomností.
+  // Pri výpadku siete sa po 10 sekundách použijú lokálne údaje.
+  const initialDataReady={audit:false,leave:false};
+  let initialDataWaitExpired=false;
+  const initialDataWaitTimer=setTimeout(()=>{
+    initialDataWaitExpired=true;
+    render();
+  },10000);
+  function markInitialDataReady(kind){
+    if(!Object.prototype.hasOwnProperty.call(initialDataReady,kind))return;
+    initialDataReady[kind]=true;
+    if(initialDataReady.audit&&initialDataReady.leave)clearTimeout(initialDataWaitTimer);
+    render();
+  }
+  window.dashboardWeekMarkDataReady=markInitialDataReady;
   const rotationTabs=['audit','leave','meeting'];
   let rotationTimer=null;
   // Časy z Graph preferujeme ako ISO s explicitným offsetom/Z.
@@ -7956,12 +7984,41 @@ document.addEventListener('keydown',e=>{
         `<div class="meetingEventStatus">${status}</div></div>`;
     }).join('');
   }
+  // Kontrola reálneho behu Apps Scriptu. Stav dodáva Apps Script do
+  // meetingovka/syncStatus, takže sa používa existujúci Firebase poslucháč.
+  let lastSyncMeta=null;
+  function updateSyncHealth(){
+    if(typeof setApiStatus!=='function')return;
+    const meta=meetingPayload&&typeof meetingPayload==='object'?meetingPayload.syncStatus:null;
+    lastSyncMeta=meta;
+    if(!meta || !meta.checkedAt){
+      setApiStatus('appsScript','unknown');
+      window.vrableQmeSyncDetail='Apps Script: chýba záznam posledného behu. Po nahratí priloženého Apps Scriptu sa stav začne overovať.';
+      updateApiStatusIndicator();
+      return;
+    }
+    const when=new Date(meta.checkedAt);
+    const age=Date.now()-when.getTime();
+    const valid=Number.isFinite(age)&&age>=-60000;
+    const fresh=valid&&age<=15*60000; // Spúšťač beží každých 5 minút.
+    const status=String(meta.state||'unknown');
+    const textTime=valid?when.toLocaleString('sk-SK',{timeZone:'Europe/Bratislava'}):'neznámy čas';
+    if(status==='error')setApiStatus('appsScript',false);
+    else if(!fresh)setApiStatus('appsScript',false);
+    else if(status==='ok')setApiStatus('appsScript',true);
+    else setApiStatus('appsScript','unknown');
+    window.vrableQmeSyncDetail='Apps Script · '+textTime+' · '+(meta.message||status)+(!fresh?' · Posledná kontrola je staršia než 15 minút.':'');
+    updateApiStatusIndicator();
+  }
+  setInterval(()=>{if(lastSyncMeta)updateSyncHealth();},60000);
   // Iba jeden poslucháč malej vetvy meetingovky; nepridávame nové pollovanie.
   if(typeof firebaseDb!=='undefined' && firebaseDb){
     firebaseDb.ref('meetingovka').on('value',snapshot=>{
       meetingReceived=snapshot.exists();
       meetingPayload=snapshot.val();
       meetingInitialLoadDone=true;
+      if(typeof setApiStatus==='function')setApiStatus('firebaseQme',true);
+      updateSyncHealth();
       // Po prijatí údajov okamžite prekreslíme spoločný prehľad,
       // nielen samotnú záložku Q_ME.
       render();
@@ -7970,11 +8027,18 @@ document.addEventListener('keydown',e=>{
       meetingReceived=false;
       meetingPayload=null;
       meetingInitialLoadDone=true;
+      if(typeof setApiStatus==='function'){
+        setApiStatus('firebaseQme',false);
+        setApiStatus('appsScript','unknown');
+      }
+      window.vrableQmeSyncDetail='Nepodarilo sa načítať údaje Q_ME: '+(error?.message||'neznáma chyba');
+      updateApiStatusIndicator();
       // Pri chybe nenechať panel čakať donekonečna.
       render();
     });
   } else {
     meetingInitialLoadDone=true;
+    if(typeof setApiStatus==='function'){setApiStatus('firebaseQme',false);setApiStatus('appsScript','unknown');}
     console.warn('Q_ME: Firebase databáza nie je dostupná.');
   }
 
@@ -8208,8 +8272,9 @@ document.addEventListener('keydown',e=>{
   function render(){
     try{
       refreshMeetingIndicator();
-      if(!meetingInitialLoadDone){
-        list.innerHTML='<div class="weekEmpty">Načítavam dnešné porady Q_ME…</div>';
+      if(!initialDataWaitExpired &&
+         (!meetingInitialLoadDone || !initialDataReady.audit || !initialDataReady.leave)){
+        list.innerHTML='<div class="weekEmpty">Načítavam aktuálne údaje udalostí…</div>';
         return;
       }
       const now=new Date(),today=atMidnight(now);
@@ -8591,7 +8656,7 @@ document.addEventListener('keydown',e=>{
    if(Object.keys(update).length)ref(kind).update(update).catch(e=>{console.warn('Individuálna synchronizácia zlyhala, skúšam starší spôsob:',e);firebaseSave(localName[kind],arr);});
  };
  window.dashboardRecordSync=sync;
- async function boot(kind){if(!firebaseDb)return;try{
+ async function boot(kind){if(!firebaseDb){if(typeof window.dashboardWeekMarkDataReady==='function')window.dashboardWeekMarkDataReady(kind);return;}try{
    const root=ref(kind);const snap=await root.once('value');const val=snap.val();
    const local=kind==='audit'?auditData:leaveData;
    if(!val||Object.keys(val).length===0){
@@ -8603,15 +8668,27 @@ document.addEventListener('keydown',e=>{
       const raw=snapshot.val()||{};const rows=Object.values(raw).filter(x=>x&&typeof x==='object'&&x.id!=null);
       // preserve locals if remote is unexpectedly empty while editing/offline
       const prev=kind==='audit'?auditData:leaveData;
-      if(rows.length===0&&prev.length>0&&!sync.ready[kind])return;
+      if(rows.length===0&&prev.length>0&&!sync.ready[kind]){
+        if(typeof window.dashboardWeekMarkDataReady==='function')window.dashboardWeekMarkDataReady(kind);
+        return;
+      }
       sync.snapshots[kind]=makeSnapshot(rows);sync.ready[kind]=true;
       // Nová V2 synchronizácia je aktívna: starý paralelný poslucháč
       // tej istej kolekcie už nesmie ďalej prijímať duplicitné aktualizácie.
       if(typeof stopLegacyFirebaseListen==='function')stopLegacyFirebaseListen(localName[kind]);
       if(kind==='audit'){auditData=rows;localStorage.setItem('customAudits',JSON.stringify(rows));renderCustomAudits();}
       else{leaveData=rows;localStorage.setItem('officeLeave',JSON.stringify(rows));renderLeave();}
-   },e=>console.warn('Synchronizácia v2:',e));
- }catch(err){console.warn('Firebase v2 nedostupný, ponechávam lokálne údaje',err);sync.active[kind]=false;}}
+      // Až teraz môže spoločný prehľad bezpečne zobraziť tento zdroj.
+      if(typeof window.dashboardWeekMarkDataReady==='function')window.dashboardWeekMarkDataReady(kind);
+   },e=>{
+      console.warn('Synchronizácia v2:',e);
+      if(typeof window.dashboardWeekMarkDataReady==='function')window.dashboardWeekMarkDataReady(kind);
+   });
+ }catch(err){
+   console.warn('Firebase v2 nedostupný, ponechávam lokálne údaje',err);
+   sync.active[kind]=false;
+   if(typeof window.dashboardWeekMarkDataReady==='function')window.dashboardWeekMarkDataReady(kind);
+ }}
  boot('audit');boot('leave');
 })();
 </script>
