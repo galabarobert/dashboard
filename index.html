@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="sk">
 <head>
 <meta charset="UTF-8">
@@ -2489,7 +2488,8 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
 #weekDashboard .weekEventRow.weekToday{background:rgba(77,168,254,.16);box-shadow:inset 3px 0 0 #51beff;}
 #weekDashboard .weekEventRow.weekEditable{cursor:pointer;}
 #weekDashboard .weekDay{font-weight:650;color:#d4eaff;font-size:19px;white-space:nowrap;}
-#weekDashboard .weekEventRow.weekContinuation .weekDay{visibility:hidden;}
+/* Dátum zobrazovať v každom riadku; Q_ME má namiesto dátumu čas. */
+#weekDashboard .weekEventRow.weekContinuation .weekDay{visibility:visible;}
 #weekDashboard .weekDateToday{display:inline-block;padding:5px 10px;border-radius:6px;color:#fff;background:linear-gradient(130deg,#3296f7,#176dcd);font-size:16px;}
 #weekDashboard .weekSymbol{text-align:center;font-size:23px;line-height:1;}
 #weekDashboard .weekEventText{font-weight:650;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -8224,7 +8224,7 @@ document.addEventListener('keydown',e=>{
         const key=it.sortDay;
         // Po skupine meetingov zobraz dátum prvého auditu/neprítomnosti,
         // aj keď ide o rovnaký kalendárny deň.
-        const first=!isMeeting || key!==lastKey; // Pri auditoch a neprítomnostiach vždy zobraz dátum; Q_ME ostáva časový údaj.
+        const first=true; // Každý riadok má vlastný dátum, Q_ME vlastný čas.
         const live=isMeeting&&it.start<=now&&now<it.end;
         const status=isMeeting?null:workEventStatus(it,now);
         const isRange=!isMeeting&&daysDiff(it.end,it.start)>0;
@@ -8242,8 +8242,8 @@ document.addEventListener('keydown',e=>{
         const symbol=isMeeting?'📅':it.type==='leave'?'<span class="weekPalePerson" aria-hidden="true"></span>':'<span class="weekPaleAudit" aria-hidden="true"></span>';
         const kind=isMeeting?'Q_ME':it.type==='audit'?(it.meta||'Audit'):kinds[it.type];
         const when=isMeeting?(live?'Prebieha':meetingCountdown(it.start,now)):status.countdown;
-        html+=`<div class="weekEventRow ${!isMeeting&&status.highlight?'weekToday':''} ${live?'qmeLive':''} ${!isMeeting&&status.comingSoon?'weekComingSoon':''} ${first||isMeeting?'':'weekContinuation'} ${editable?'weekEditable':''}" role="listitem" ${rowEditAttrs}>`+
-          `<div class="weekDay" title="${escapeText(isMeeting?kind+' '+meetingClock.format(it.start)+' – '+meetingClock.format(it.end):shortDate(it.start)+(isRange?' – '+shortDate(it.end):''))}">${isMeeting?dayName:(first?dayName:'')}</div>`+
+        html+=`<div class="weekEventRow ${!isMeeting&&status.highlight?'weekToday':''} ${live?'qmeLive':''} ${!isMeeting&&status.comingSoon?'weekComingSoon':''} ${editable?'weekEditable':''}" role="listitem" ${rowEditAttrs}>`+
+          `<div class="weekDay" title="${escapeText(isMeeting?kind+' '+meetingClock.format(it.start)+' – '+meetingClock.format(it.end):shortDate(it.start)+(isRange?' – '+shortDate(it.end):''))}">${dayName}</div>`+
           `<div class="weekSymbol">${symbol}</div>`+
           `<div class="weekEventText" title="${escapeText(it.title)}">${escapeText(it.title)}</div>`+
           `<div class="weekKind" title="${escapeText(kind)}">${isMeeting?escapeText(kind):formatWorkTypes(kind)}</div>`+
