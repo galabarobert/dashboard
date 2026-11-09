@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="sk">
 <head>
 <meta charset="UTF-8">
@@ -7888,6 +7889,8 @@ document.addEventListener('keydown',e=>{
   const meetingIndicator=document.getElementById('meetingRoomIndicator');
   let meetingPayload=null;
   let meetingReceived=false;
+  // Prvé vykreslenie spoločného zoznamu čaká na prvú odpoveď Firebase.
+  let meetingInitialLoadDone=false;
   const rotationTabs=['audit','leave','meeting'];
   let rotationTimer=null;
   // Časy z Graph preferujeme ako ISO s explicitným offsetom/Z.
@@ -7958,9 +7961,21 @@ document.addEventListener('keydown',e=>{
     firebaseDb.ref('meetingovka').on('value',snapshot=>{
       meetingReceived=snapshot.exists();
       meetingPayload=snapshot.val();
-      refreshMeetingIndicator();
-      if(selected==='meeting')renderMeeting();
-    },()=>{meetingReceived=false;meetingPayload=null;refreshMeetingIndicator();if(selected==='meeting')renderMeeting();});
+      meetingInitialLoadDone=true;
+      // Po prijatí údajov okamžite prekreslíme spoločný prehľad,
+      // nielen samotnú záložku Q_ME.
+      render();
+    },error=>{
+      console.warn('Q_ME Firebase načítanie:',error);
+      meetingReceived=false;
+      meetingPayload=null;
+      meetingInitialLoadDone=true;
+      // Pri chybe nenechať panel čakať donekonečna.
+      render();
+    });
+  } else {
+    meetingInitialLoadDone=true;
+    console.warn('Q_ME: Firebase databáza nie je dostupná.');
   }
 
   function dateAtNoon(iso){
@@ -8193,6 +8208,10 @@ document.addEventListener('keydown',e=>{
   function render(){
     try{
       refreshMeetingIndicator();
+      if(!meetingInitialLoadDone){
+        list.innerHTML='<div class="weekEmpty">Načítavam dnešné porady Q_ME…</div>';
+        return;
+      }
       const now=new Date(),today=atMidnight(now);
       const all=allItems(today);
       const work=groupWorkItems(all.filter(it=>it.type==='audit'||it.type==='leave'),today);
