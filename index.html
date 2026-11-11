@@ -8973,16 +8973,37 @@ document.addEventListener('keydown',e=>{
       .sort((a,b)=>a.zaciatok-b.zaciatok);
   }
   function meetingIsFresh(){
-    // Rozpis prichádza raz denne o 6:00; počas dňa nesmie po 20 minútach expirovať.
-    // Starý dátum však nikdy nesmie označovať miestnosť ako voľnú.
+    // Denný e-mail obsahuje dnešok aj zajtrajšok. Po polnoci sa deň
+    // zmení skôr, ako príde nový ranný e-mail: včerajšie rezervácie
+    // na nový dnešný deň preto nesmú z rozpisu zmiznúť.
     if(!meetingReceived || !meetingPayload || !Array.isArray(meetingPayload.udalosti))return false;
+    const now=new Date();
     const today=new Intl.DateTimeFormat('en-CA',{
       timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'
-    }).format(new Date());
+    }).format(now);
     const stamp=meetingPayload.aktualizovane||meetingPayload.updatedAt;
     const updated=stamp?parseMeetingDate(stamp):null;
-    return Boolean(meetingPayload.datum===today && updated &&
-      updated.getTime()<=Date.now()+60000 && Date.now()-updated.getTime()<36*3600000);
+    if(!updated || updated.getTime()>now.getTime()+60000 || now.getTime()-updated.getTime()>=36*3600000)return false;
+    if(meetingPayload.datum===today)return true;
+
+    // Povolíme iba rozpis z PREDCHÁDZAJÚCEHO dňa, v ktorom sú
+    // preukázateľne rezervácie zasahujúce do nového dnešného dňa.
+    // Nepovoľujeme starý prázdny rozpis (ten by falošne hlásil voľnú Q_ME).
+    const yesterday=new Date(now);
+    yesterday.setDate(yesterday.getDate()-1);
+    const yesterdayKey=new Intl.DateTimeFormat('en-CA',{
+      timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'
+    }).format(yesterday);
+    if(meetingPayload.datum!==yesterdayKey)return false;
+    const raw=meetingPayload.udalosti;
+    return raw.some(e=>{
+      const start=parseMeetingDate(e.zaciatok||e.start);
+      const end=parseMeetingDate(e.koniec||e.end);
+      if(!start||!end||end<=start)return false;
+      // Všetky porovnania vykonať v časovej zóne Europe/Bratislava.
+      // Koniec je exkluzívny, preto odpočítame 1 ms.
+      return localDateSk(start)<=today && localDateSk(new Date(end.getTime()-1))>=today;
+    });
   }
   const meetingClock=new Intl.DateTimeFormat('sk-SK',{timeZone:'Europe/Bratislava',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
   function localDateSk(d){
