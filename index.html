@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="sk">
 <head>
 <meta charset="UTF-8">
@@ -4156,6 +4155,40 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
 #vrable-auth-error{min-height:1.5em;color:#ffd1d1;font-size:13px;margin-top:12px;overflow-wrap:anywhere}
 #vrable-auth-logout{position:fixed;top:9px;right:9px;z-index:99999;background:rgba(9,30,51,.8);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:5px 9px;cursor:pointer;display:none;font-size:12px}
 </style>
+<style id="qme-status-day-divider-2026">
+/* Väčší pôvodný zelený/červený status; zachovanie jedného riadku. */
+#stage #weekDashboard .meetingRoomIndicator{
+  font-size:15px!important;font-weight:750!important;padding:9px 13px!important;
+  min-height:38px!important;box-sizing:border-box!important;
+}
+/* Približne polovica výšky existujúceho 47px riadku. */
+#stage #weekDashboard .weekTodayFutureGap{
+  display:block!important;height:24px!important;min-height:24px!important;
+  border-top:1px solid rgba(124,196,251,.26)!important;
+  box-sizing:border-box!important;background:transparent!important;
+}
+@media(max-width:900px){
+  #stage #weekDashboard .meetingRoomIndicator{font-size:11px!important;padding:6px 8px!important;min-height:30px!important;}
+  #stage #weekDashboard .weekTodayFutureGap{height:20px!important;min-height:20px!important;}
+}
+</style>
+<style id="qme-header-and-three-day-groups-2026">
+/* Väčší názov spoločnej tabuľky bez zmeny existujúceho statusu Q_ME. */
+#stage #weekDashboard .weekTitle{
+  font-size:27px!important;font-weight:800!important;line-height:1.16!important;
+  white-space:nowrap!important;
+}
+/* Drobné vysvetlenie pod titulkom sa už nezobrazuje. */
+#stage #weekDashboard #weekDashboardSubline{display:none!important;}
+/* Jednotná polriadková medzera dnes/zajtra a zajtra/neskoršie dni. */
+#stage #weekDashboard .weekTodayFutureGap{
+  height:24px!important;min-height:24px!important;
+}
+@media(max-width:900px){
+  #stage #weekDashboard .weekTitle{font-size:19px!important;}
+  #stage #weekDashboard .weekTodayFutureGap{height:20px!important;min-height:20px!important;}
+}
+</style>
 </head>
 
 <body>
@@ -7934,10 +7967,13 @@ document.addEventListener('keydown',e=>{
   function meetingEvents(){
     const raw=Array.isArray(meetingPayload)?meetingPayload:meetingPayload?.udalosti;
     if(!Array.isArray(raw))return [];
-    const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+    // Po 16:00 zobrazíme aj zajtrajšie rezervácie, ak ich Firebase poskytuje.
+    const now=new Date(), tomorrow=new Date(now);
+    tomorrow.setDate(tomorrow.getDate()+1);
     const dateKey=d=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
+    const today=dateKey(now),lastVisibleDay=now.getHours()>=16?dateKey(tomorrow):today;
     return raw.map(e=>({nazov:String(e.nazov||e.subject||'Bez názvu'),zaciatok:parseMeetingDate(e.zaciatok||e.start),koniec:parseMeetingDate(e.koniec||e.end),showAs:e.showAs||e.showas||''}))
-      .filter(e=>e.zaciatok&&e.koniec&&e.koniec>e.zaciatok&&dateKey(e.zaciatok)<=today&&dateKey(new Date(e.koniec.getTime()-1))>=today)
+      .filter(e=>e.zaciatok&&e.koniec&&e.koniec>e.zaciatok&&dateKey(e.zaciatok)<=lastVisibleDay&&dateKey(new Date(e.koniec.getTime()-1))>=today)
       .sort((a,b)=>a.zaciatok-b.zaciatok);
   }
   function meetingIsFresh(){
@@ -7957,15 +7993,38 @@ document.addEventListener('keydown',e=>{
     if(!meetingIndicator)return;
     const events=meetingEvents(),now=new Date();
     const fresh=meetingIsFresh();
-    const busy=fresh&&events.some(e=>e.zaciatok<=now&&now<e.koniec&&String(e.showAs).toLowerCase()!=='free');
+    // Intervaly obsadenia zlučujeme: nadväzujúce či prekrývajúce sa meetingy
+    // nevyvolajú falošné oznámenie, že je miestnosť medzi nimi voľná.
+    const reservations=events.filter(e=>String(e.showAs).toLowerCase()!=='free'&&e.koniec>now)
+      .sort((a,b)=>a.zaciatok-b.zaciatok);
+    const current=reservations.find(e=>e.zaciatok<=now&&now<e.koniec);
+    let occupiedUntil=current?.koniec?new Date(current.koniec):null;
+    if(occupiedUntil){
+      for(const e of reservations){
+        if(e.zaciatok<=occupiedUntil&&e.koniec>occupiedUntil)occupiedUntil=new Date(e.koniec);
+      }
+    }
+    const next=reservations.find(e=>e.zaciatok>now);
+    const busy=Boolean(current);
+    const remaining=until=>{
+      const mins=Math.max(0,Math.ceil((until-now)/60000));
+      if(mins<60)return mins+' min';
+      const h=Math.floor(mins/60),m=mins%60;
+      return h+' h'+(m?' '+m+' min':'');
+    };
     meetingIndicator.className='meetingRoomIndicator '+(!fresh?'unknown':busy?'busy':'free');
-    meetingIndicator.textContent=!fresh?'Q_ME · Údaje nedostupné':busy?'Q_ME · Obsadená':'Q_ME · Voľná';
-    meetingIndicator.title=!fresh?'Čaká sa na aktuálne údaje z Firebase':(busy?'Práve prebieha rezervácia':'Aktuálne bez rezervácie');
+    meetingIndicator.textContent=!fresh?'Q_ME · Údaje nedostupné':
+      busy?'Q_ME · Obsadená ešte '+remaining(occupiedUntil):
+      next?'Q_ME · Voľná ešte '+remaining(next.zaciatok):'Q_ME · Voľná · bez ďalšej rezervácie';
+    meetingIndicator.title=!fresh?'Čaká sa na aktuálne údaje z Firebase':
+      busy?'Obsadená do '+meetingClock.format(occupiedUntil):
+      next?'Najbližšia rezervácia o '+meetingClock.format(next.zaciatok):
+      'V dostupnom rozpise nie je ďalšia rezervácia';
   }
   function renderMeeting(){
     refreshMeetingIndicator();
     const events=meetingEvents(), now=new Date();
-    document.getElementById('weekDashboardSubline').textContent='Dnešné rezervácie Q_ME · Outlook';
+    document.getElementById('weekDashboardSubline').textContent='Rezervácie Q_ME · Outlook';
     document.getElementById('weekDateRange').textContent='';
     const counter=document.getElementById('weekEventCounter');
     counter.textContent=events.length+' rezervácií';
@@ -7973,15 +8032,16 @@ document.addEventListener('keydown',e=>{
     if(!meetingIsFresh()){
       list.innerHTML='<div class="weekEmpty">Údaje Q_ME nie sú aktuálne. Čaká sa na synchronizáciu.</div>';return;
     }
-    if(!events.length){list.innerHTML='<div class="weekEmpty">Meetingovka nemá na dnes žiadne rezervácie.</div>';return;}
+    if(!events.length){list.innerHTML='<div class="weekEmpty">Meetingovka nemá v zobrazovanom období žiadne rezervácie.</div>';return;}
     list.innerHTML=events.map(e=>{
       const live=e.zaciatok<=now&&now<e.koniec;
       const done=e.koniec<=now;
       const status=done?'Ukončené':live?'Prebieha':'Nasleduje';
+      const isTomorrow=e.zaciatok.toLocaleDateString('sv-SE',{timeZone:'Europe/Bratislava'})!==now.toLocaleDateString('sv-SE',{timeZone:'Europe/Bratislava'});
       return `<div class="meetingEventRow ${live?'meetingOngoing':''}" role="listitem">`+
         `<div class="meetingEventTime">${meetingClock.format(e.zaciatok)} – ${meetingClock.format(e.koniec)}</div>`+
         `<div class="meetingEventName" title="${escapeText(e.nazov)}">${escapeText(e.nazov)}</div>`+
-        `<div class="meetingEventStatus">${status}</div></div>`;
+        `<div class="meetingEventStatus">${isTomorrow?'Zajtra':status}</div></div>`;
     }).join('');
   }
   // Kontrola reálneho behu Apps Scriptu. Stav dodáva Apps Script do
@@ -8282,15 +8342,35 @@ document.addEventListener('keydown',e=>{
       const work=groupWorkItems(all.filter(it=>it.type==='audit'||it.type==='leave'),today);
       const workRows=work.map(it=>({...it,sortDay:isoDate(it.show),sortMoment:0}));
       const localDate=d=>{const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(d);const v=k=>parts.find(p=>p.type===k)?.value;return v('year')+'-'+v('month')+'-'+v('day');};
+      const tomorrow=new Date(today);tomorrow.setDate(tomorrow.getDate()+1);
+      const visibleEnd=now.getHours()>=16?localDate(tomorrow):localDate(today);
       const meetingRows=meetingIsFresh()?meetingEvents()
-        .filter(e=>e.koniec>now && localDate(e.zaciatok)===localDate(today))
+        .filter(e=>e.koniec>now && localDate(e.zaciatok)<=visibleEnd && localDate(e.koniec)>=''+localDate(today))
         .map(e=>({type:'meeting',title:e.nazov,start:e.zaciatok,end:e.koniec,
           show:e.zaciatok,sortDay:localDate(e.zaciatok),sortMoment:e.zaciatok.getTime(),
           meta:'Meetingovka Q_ME'})):[];
-      // Dnešné neskončené meetingy vždy pred auditmi a neprítomnosťami.
-      // Medzi meetingmi zachováme časové poradie.
+      // Najskôr všetky dnešné udalosti (Q_ME, audity, neprítomnosti),
+      // potom medzera približne na pol riadku a ostatné dni.
+      const todayKey=localDate(today);
+      // Porovnávať kalendárne dni, nie polnoc s dátumami uloženými na 12:00.
+      // Vďaka tomu aj neprítomnosť/audit, ktorý začína dnes, patrí hore.
+      const tomorrowKey=localDate(tomorrow);
+      // Tri prehľadné skupiny: dnes, zajtra a všetky ďalšie dni.
+      // Viacdňová neprítomnosť, ktorá prebieha už dnes, zostáva v skupine DNES.
+      const dayGroup=it=>{
+        if(it.type==='meeting'){
+          const day=localDate(it.start);
+          return day===todayKey?0:day===tomorrowKey?1:2;
+        }
+        const start=isoDate(it.start),end=isoDate(it.end);
+        if(start<=todayKey&&end>=todayKey)return 0;
+        if(start<=tomorrowKey&&end>=tomorrowKey)return 1;
+        return 2;
+      };
       const rows=[...meetingRows,...workRows].sort((a,b)=>{
-        const aMeeting=a.type==='meeting', bMeeting=b.type==='meeting';
+        const groupDifference=dayGroup(a)-dayGroup(b);
+        if(groupDifference!==0)return groupDifference;
+        const aMeeting=a.type==='meeting',bMeeting=b.type==='meeting';
         if(aMeeting!==bMeeting)return aMeeting?-1:1;
         return a.sortDay.localeCompare(b.sortDay)||a.sortMoment-b.sortMoment||
           a.title.localeCompare(b.title,'sk');
@@ -8302,8 +8382,14 @@ document.addEventListener('keydown',e=>{
       const sub=document.getElementById('weekDashboardSubline');
       if(sub)sub.textContent='Audity · Neprítomnosť · Meetingovka Q_ME';
       const counter=document.getElementById('weekEventCounter');
-      let html='',lastKey='',previousWasMeeting=false;
+      let html='',lastKey='',previousWasMeeting=false,previousGroup=null;
       rows.forEach(it=>{
+        const group=dayGroup(it);
+        if(previousGroup!==null&&group!==previousGroup){
+          const label=group===1?'Oddelenie dnešných a zajtrajších udalostí':'Oddelenie zajtrajších a ďalších udalostí';
+          html+='<div class="weekTodayFutureGap" role="separator" aria-label="'+label+'"></div>';
+        }
+        previousGroup=group;
         const isMeeting=it.type==='meeting';
         const key=it.sortDay;
         // Po skupine meetingov zobraz dátum prvého auditu/neprítomnosti,
