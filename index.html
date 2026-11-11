@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="sk">
 <head>
 <meta charset="UTF-8">
@@ -4789,252 +4788,312 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
 }
 </style>
 
-<style id="vrable-countdown-giant-two-clocks-2026">
-@media(min-width:901px){
-  #stage #shiftBox{padding:7px!important;display:block!important;}
-  #stage #shiftBox .workdayGrid{
-    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
-    gap:7px!important;width:100%!important;height:100%!important;
-  }
-  #stage #shiftBox .workCard{
-    display:flex!important;flex-direction:column!important;align-items:center!important;
-    justify-content:center!important;min-width:0!important;width:100%!important;
-    height:114px!important;min-height:114px!important;
-    padding:7px 3px!important;box-sizing:border-box!important;
-    border-radius:14px!important;overflow:hidden!important;
-  }
-  #stage #shiftBox .workLabel{
-    width:100%!important;text-align:center!important;font-size:13px!important;
-    font-weight:750!important;line-height:1.12!important;min-height:14px!important;
-    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
-  }
-  #stage #shiftBox .workMain{
-    display:flex!important;justify-content:center!important;align-items:center!important;
-    gap:0!important;width:100%!important;min-height:46px!important;margin:2px 0!important;
-  }
-  #stage #shiftBox .workIcon{display:none!important;}
-  #stage #shiftBox .workValue,
-  #stage #shiftBox .workCard.done .workValue{
-    font-family:inherit!important;font-size:43px!important;font-weight:850!important;
-    line-height:1.03!important;letter-spacing:-1.6px!important;
-    font-variant-numeric:tabular-nums!important;text-align:center!important;
-    white-space:nowrap!important;max-width:100%!important;min-width:0!important;
-    text-shadow:0 0 10px rgba(164,212,255,.22)!important;
-  }
-  #stage #shiftBox .workHint{
-    width:100%!important;font-size:10px!important;line-height:1.15!important;
-    text-align:center!important;margin:2px 0 0!important;min-height:12px!important;
-    overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;
-  }
-  #stage #shiftBox .workBar{display:none!important;}
+<style id="vrable-qme-timeline-week-panel-2026">
+@media (min-width:901px){
+  #stage #weekDashboard{position:absolute!important;padding-bottom:62px!important;}
+  #stage #weekDashboard .weekTopBar{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;gap:10px!important;margin-bottom:10px!important;}
+  #stage #weekDashboard .weekTitleRow{display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;align-items:start!important;gap:12px!important;min-width:0!important;}
+  #stage #weekDashboard .weekTitle{flex:none!important;white-space:nowrap!important;min-width:0!important;}
+  #stage #weekDashboard .weekTitleIcon{display:none!important;}
+  #stage #weekDashboard .weekQmeTimeline{display:flex!important;align-items:flex-start!important;min-width:0!important;padding-top:1px!important;}
+  #stage #weekDashboard .qmeTimelineTrackWrap{position:relative!important;min-width:0!important;width:100%!important;max-width:360px!important;}
+  #stage #weekDashboard .qmeTimelineTrack{position:relative!important;height:16px!important;border-radius:999px!important;overflow:hidden!important;background:linear-gradient(180deg,rgba(28,146,97,.80),rgba(12,112,70,.85))!important;border:1px solid rgba(103,235,170,.35)!important;box-shadow:inset 0 1px 2px rgba(255,255,255,.10), 0 0 0 1px rgba(0,0,0,.06)!important;}
+  #stage #weekDashboard .qmeTimelineBusyLayer{position:absolute!important;inset:0!important;pointer-events:none!important;}
+  #stage #weekDashboard .qmeTimelineBusy{position:absolute!important;top:0!important;bottom:0!important;border-radius:999px!important;background:linear-gradient(180deg,rgba(227,82,82,.95),rgba(182,43,43,.95))!important;box-shadow:0 0 8px rgba(227,82,82,.35)!important;}
+  #stage #weekDashboard .qmeTimelineNow{position:absolute!important;top:-3px!important;bottom:-3px!important;width:3px!important;border-radius:2px!important;background:#ffffff!important;box-shadow:0 0 8px rgba(255,255,255,.85)!important;transform:translateX(-50%)!important;z-index:3!important;}
+  #stage #weekDashboard .qmeTimelineNowDot{position:absolute!important;top:-5px!important;width:10px!important;height:10px!important;border-radius:50%!important;background:#ffffff!important;box-shadow:0 0 8px rgba(255,255,255,.85)!important;transform:translateX(-50%)!important;z-index:4!important;}
+  #stage #weekDashboard .qmeTimelineTicks{display:flex!important;justify-content:space-between!important;gap:6px!important;padding:2px 2px 0!important;color:#a8d3f5!important;font-size:10px!important;font-weight:700!important;line-height:1!important;letter-spacing:.2px!important;}
+  #stage #weekDashboard #meetingRoomIndicator{justify-self:end!important;align-self:start!important;margin-top:0!important;}
+  #stage #weekDashboard #weekBottomActions{position:absolute!important;right:16px!important;bottom:14px!important;display:flex!important;align-items:center!important;gap:7px!important;z-index:4!important;}
+  #stage #weekDashboard #weekBottomActions button{background:rgba(38,116,197,.43)!important;border:1px solid rgba(116,193,255,.4)!important;border-radius:11px!important;color:#eaf7ff!important;font:650 14px inherit!important;padding:7px 11px!important;white-space:nowrap!important;cursor:pointer!important;min-height:36px!important;}
+  #stage #weekDashboard #weekBottomActions button:hover{background:rgba(40,143,246,.65)!important;}
+  #stage #weekDashboard #weekBottomActions [hidden]{display:none!important;}
+  #stage #weekDashboard .weekFooter{padding-top:12px!important;padding-right:210px!important;}
 }
 </style>
 
-<style id="vrable-iphone14pro-readable-layout-2026">
-/* iPhone 14 Pro (393 CSS px), other phones, and narrow tablets.
-   Desktop layout and application data logic are unchanged. */
-@media (max-width:900px){
-  html,body{width:100%!important;max-width:100%!important;min-height:100%!important;
-    overflow-x:hidden!important;overflow-y:auto!important;-webkit-text-size-adjust:100%!important;}
-  body{height:auto!important;position:relative!important;}
-  #stage{
-    position:relative!important;inset:auto!important;left:auto!important;top:auto!important;
-    display:flex!important;flex-direction:column!important;align-items:stretch!important;
-    transform:none!important;transform-origin:initial!important;
-    width:100%!important;min-width:0!important;max-width:100%!important;
-    height:auto!important;min-height:100dvh!important;
-    padding:calc(env(safe-area-inset-top) + 12px) 12px calc(env(safe-area-inset-bottom) + 24px)!important;
-    gap:12px!important;box-sizing:border-box!important;overflow:visible!important;
-  }
-  #stage > #location,
-  #stage > #clock-box,
-  #stage > #shiftBox,
-  #stage > #forecast3days,
-  #stage > #world,
-  #stage > #weekDashboard,
-  #stage > #celebrationsDashboard,
-  #stage > #radioPanel,
-  #stage > #historicalEvents,
-  #stage > #dashboardQuickBar{
-    position:relative!important;inset:auto!important;top:auto!important;left:auto!important;
-    right:auto!important;bottom:auto!important;transform:none!important;
-    width:100%!important;min-width:0!important;max-width:100%!important;
-    height:auto!important;min-height:0!important;max-height:none!important;
-    margin:0!important;box-sizing:border-box!important;overflow:visible!important;
-  }
-  #stage #vrableWeatherUnifiedFrame{display:none!important;}
-  #stage #namedayTopHeader{display:none!important;}
-  #stage > #location{
-    order:1!important;display:block!important;min-height:0!important;
-    padding:4px 5px 0!important;font-size:clamp(37px,11vw,54px)!important;
-    line-height:1.06!important;text-align:center!important;
-    background:transparent!important;border:0!important;box-shadow:none!important;
-  }
-  #stage > #clock-box{
-    order:2!important;display:flex!important;flex-direction:column!important;
-    align-items:center!important;justify-content:center!important;
-    padding:12px 8px 13px!important;gap:5px!important;
-    border-radius:18px!important;
-    border:1px solid rgba(115,192,253,.34)!important;
-    background:linear-gradient(140deg,rgba(16,87,150,.9),rgba(7,53,105,.96))!important;
-    box-shadow:0 9px 22px rgba(0,17,40,.24)!important;
-  }
-  #stage #clock-box #time{
-    position:relative!important;inset:auto!important;top:auto!important;left:auto!important;
-    right:auto!important;bottom:auto!important;
-    display:block!important;width:100%!important;height:auto!important;
-    margin:0!important;padding:0!important;
-    font-size:clamp(57px,18vw,88px)!important;line-height:1.05!important;
-    letter-spacing:-2.8px!important;font-weight:850!important;
-    text-align:center!important;white-space:nowrap!important;overflow:visible!important;
-    border:0!important;background:none!important;box-shadow:none!important;
-  }
-  #stage #clock-box #dateWeek{
-    position:relative!important;inset:auto!important;top:auto!important;left:auto!important;
-    right:auto!important;bottom:auto!important;display:block!important;
-    width:100%!important;max-width:100%!important;height:auto!important;min-height:0!important;
-    padding:0!important;margin:0!important;overflow:visible!important;
-    text-align:center!important;white-space:normal!important;
-    border:0!important;background:transparent!important;box-shadow:none!important;
-  }
-  #stage #dateWeek .dateWeekFixed{
-    display:block!important;max-width:100%!important;font-size:clamp(14px,3.8vw,19px)!important;
-    font-weight:700!important;line-height:1.3!important;
-    overflow-wrap:normal!important;white-space:normal!important;
-  }
-  #stage #dateWeek .dateWeekNameday{display:none!important;}
-  #stage > #shiftBox{
-    order:3!important;display:block!important;
-    padding:10px!important;border-radius:18px!important;
-  }
-  #stage #shiftBox .workdayGrid{
-    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
-    gap:8px!important;width:100%!important;
-  }
-  #stage #shiftBox .workCard{
-    min-width:0!important;height:auto!important;min-height:100px!important;
-    padding:10px 5px!important;display:flex!important;flex-direction:column!important;
-    align-items:center!important;justify-content:center!important;border-radius:12px!important;
-  }
-  #stage #shiftBox .workdayHeader{margin-bottom:7px!important;}
-  #stage #shiftBox .workdayTitle{font-size:14px!important;}
-  #stage #shiftBox .workdayHours{font-size:12px!important;}
-  #stage #shiftBox .workLabel{font-size:13px!important;line-height:1.15!important;
-    text-align:center!important;white-space:normal!important;}
-  #stage #shiftBox .workMain{min-height:38px!important;margin:3px 0!important;}
-  #stage #shiftBox .workIcon{display:none!important;}
-  #stage #shiftBox .workValue,#stage #shiftBox .workCard.done .workValue{
-    font-size:clamp(27px,8vw,38px)!important;font-weight:850!important;
-    line-height:1.05!important;white-space:nowrap!important;letter-spacing:-1px!important;
-  }
-  #stage #shiftBox .workHint{font-size:11px!important;min-height:0!important;
-    line-height:1.15!important;white-space:normal!important;margin:2px 0!important;}
-  #stage #shiftBox .workBar{display:none!important;}
-  #stage #shiftBox .workdayFooter{font-size:11px!important;white-space:normal!important;}
-  #stage > #forecast3days{order:4!important;padding:10px!important;border-radius:18px!important;}
-  #stage #forecast3days .weatherToday{padding:13px 11px!important;border-radius:14px!important;}
-  #stage #forecast3days .weatherTodayMain{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) 52px!important;
-    gap:6px!important;}
-  #stage #forecast3days .weatherMainTemp{font-size:clamp(53px,16vw,75px)!important;}
-  #stage #forecast3days .weatherTodayMain>.weatherTempRange{font-size:clamp(16px,4.5vw,22px)!important;}
-  #stage #forecast3days .weatherMainIcon{font-size:43px!important;}
-  #stage #forecast3days .weatherTodayDetails{grid-template-columns:repeat(2,minmax(0,1fr))!important;
-    grid-template-rows:auto!important;gap:8px!important;font-size:12px!important;}
-  #stage #forecast3days .moonInfo{display:none!important;}
-  #stage #forecast3days .weatherNextDays{min-height:0!important;height:auto!important;
-    grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;}
-  #stage #forecast3days .weatherDayCard{min-height:155px!important;padding:8px 3px!important;}
-  #stage #forecast3days .weatherDayName{font-size:13px!important;}
-  #stage #forecast3days .weatherDayTemp{font-size:18px!important;}
-  #stage #forecast3days .weatherDayRain,#stage #forecast3days .weatherDayMm,#stage #forecast3days .weatherDayWind{
-    font-size:11px!important;line-height:1.2!important;white-space:normal!important;}
-  #stage > #weekDashboard{order:5!important;padding:12px!important;border-radius:18px!important;}
-  #stage #weekDashboard .weekTopBar{display:flex!important;flex-wrap:wrap!important;
-    align-items:center!important;gap:9px!important;min-height:0!important;}
-  #stage #weekDashboard .weekTitle{font-size:23px!important;line-height:1.2!important;}
-  #stage #weekDashboard .weekHeaderActions{display:flex!important;flex:1 1 100%!important;
-    justify-content:space-between!important;gap:6px!important;flex-wrap:wrap!important;}
-  #stage #weekDashboard .meetingRoomIndicator{font-size:13px!important;min-height:40px!important;
-    flex:1 1 100%!important;box-sizing:border-box!important;text-align:center!important;
-    white-space:normal!important;padding:8px!important;}
-  #stage #weekDashboard .weekHeaderActions #weekQuickAudit,
-  #stage #weekDashboard .weekHeaderActions #weekQuickLeave{
-    flex:1 1 0!important;min-height:44px!important;font-size:14px!important;
-    padding:9px 10px!important;}
-  #stage #weekDashboard #weekTabs{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important;}
-  #stage #weekDashboard #weekTabs button{height:43px!important;min-height:43px!important;
-    font-size:13px!important;padding:5px!important;}
-  #stage #weekDashboard #weekDashboardSubline{font-size:12px!important;line-height:1.3!important;}
-  #stage #weekDashboard #weekEventList,#stage #weekDashboard .weekEventList{
-    height:auto!important;max-height:none!important;overflow:visible!important;min-width:0!important;}
-  #stage #weekDashboard .weekEventRow{
-    display:grid!important;grid-template-columns:75px 23px minmax(0,1fr) 55px!important;
-    min-width:0!important;min-height:58px!important;gap:4px!important;padding:7px 3px!important;}
-  #stage #weekDashboard .weekDay{font-size:13px!important;line-height:1.2!important;
-    overflow-wrap:anywhere!important;white-space:normal!important;}
-  #stage #weekDashboard .weekEventText{font-size:17px!important;font-weight:700!important;
-    line-height:1.15!important;white-space:normal!important;overflow-wrap:anywhere!important;
-    overflow:visible!important;}
-  #stage #weekDashboard .weekWhen{font-size:12px!important;line-height:1.2!important;
-    text-align:right!important;white-space:normal!important;}
-  #stage #weekDashboard .weekKind{display:none!important;}
-  #stage #weekDashboard .meetingEventRow{
-    grid-template-columns:88px minmax(0,1fr)!important;
-    padding:10px 4px!important;gap:6px!important;min-height:54px!important;}
-  #stage #weekDashboard .meetingEventTime{font-size:14px!important;white-space:normal!important;}
-  #stage #weekDashboard .meetingEventName{font-size:16px!important;
-    white-space:normal!important;overflow-wrap:anywhere!important;overflow:visible!important;}
-  #stage #weekDashboard .meetingEventStatus{grid-column:2!important;font-size:13px!important;
-    text-align:left!important;white-space:normal!important;}
-  #stage > #celebrationsDashboard{order:6!important;padding:12px!important;border-radius:18px!important;}
-  #stage #celebrationsDashboard .celebrateTitle{font-size:22px!important;line-height:1.2!important;}
-  #stage #celebrationsDashboard .celebrateList{height:auto!important;max-height:none!important;
-    overflow:visible!important;}
-  #stage #celebrationsDashboard .celebrateDayGroup{
-    grid-template-columns:64px minmax(0,1fr)!important;gap:7px!important;align-items:start!important;}
-  #stage #celebrationsDashboard .celebrateWeekday{font-size:14px!important;}
-  #stage #celebrationsDashboard .celebrateDateNumber{font-size:17px!important;}
-  #stage #celebrationsDashboard .celebrateName{font-size:17px!important;line-height:1.18!important;}
-  #stage #celebrationsDashboard .celebrateType{font-size:12px!important;}
-  #stage #celebrationsDashboard .celebrateCountdown{font-size:13px!important;}
-  #stage > #world{order:7!important;padding:12px!important;border-radius:18px!important;}
-  #stage #world .worldTiles{gap:8px!important;}
-  #stage #world .worldTile{min-height:94px!important;}
-  #stage > #radioPanel{order:8!important;padding:12px!important;border-radius:18px!important;}
-  #stage #radioStations{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;}
-  #stage #radioStations button{min-height:47px!important;padding:9px 5px!important;
-    font-size:14px!important;line-height:1.15!important;white-space:normal!important;overflow-wrap:anywhere!important;}
-  #stage #radioPanel .radioControls{display:flex!important;gap:8px!important;
-    align-items:center!important;flex-wrap:wrap!important;}
-  #stage #radioPanel #radioPlay,#stage #radioPanel #radioMute{
-    min-width:44px!important;min-height:44px!important;}
-  #stage #radioPanel #radioVolume{flex:1 1 85px!important;min-width:70px!important;width:auto!important;max-width:none!important;}
-  #stage #radioPanel #radioNowPlaying{font-size:14px!important;white-space:normal!important;}
-  #stage > #historicalEvents{order:9!important;padding:12px!important;border-radius:18px!important;
-    min-height:100px!important;}
-  #stage #dashboardQuickBar{order:10!important;display:flex!important;flex-wrap:wrap!important;
-    gap:8px!important;}
-  #stage #dashboardQuickBar button{min-height:44px!important;font-size:13px!important;}
-  #stage #dashboardModal{position:fixed!important;inset:0!important;z-index:120000!important;}
-  #stage .dbDialog{width:calc(100vw - 20px)!important;max-width:calc(100vw - 20px)!important;
-    max-height:calc(100dvh - 20px)!important;overflow-y:auto!important;
-    padding:12px!important;}
-  #stage .dbTabs button,#stage .dbAction,#stage .dbTop button{min-height:44px!important;}
-  #stage .dbListRow{grid-template-columns:75px minmax(0,1fr) 65px!important;
-    font-size:14px!important;gap:5px!important;}
-  #stage input:not([type=range]):not([type=checkbox]),
-  #stage select,#stage textarea{font-size:16px!important;min-height:40px!important;}
-  #stage .panelEntryForm .formFields{grid-template-columns:1fr!important;}
-  #stage .panelEntryForm input{font-size:16px!important;}
-  #stage .panelEntryForm .formActions button{min-height:44px!important;font-size:15px!important;}
+<style id="qme-accurate-timeline-fix-2026">
+@media(min-width:901px){
+ #stage #weekDashboard .weekTopBar{display:flex!important;align-items:center!important;justify-content:flex-start!important;}
+ #stage #weekDashboard .weekTitleRow{display:flex!important;align-items:center!important;gap:16px!important;flex:1 1 auto!important;}
+ #stage #weekDashboard .weekQmeTimeline{display:flex!important;align-items:center!important;gap:8px!important;flex:1 1 auto!important;min-width:0!important;max-width:none!important;padding:0!important;}
+ #stage #weekDashboard .qmeTimelineTrackWrap{flex:1 1 auto!important;max-width:none!important;min-width:120px!important;}
+ #stage #weekDashboard #meetingRoomIndicator{display:none!important;}
 }
-@media(max-width:380px){
-  #stage{padding-left:9px!important;padding-right:9px!important;}
-  #stage #weekDashboard .weekEventRow{grid-template-columns:66px 20px minmax(0,1fr) 48px!important;}
-  #stage #weekDashboard .weekEventText{font-size:15px!important;}
+#stage #weekDashboard .qmeTimelineHead{display:flex;flex:0 0 auto;align-items:center;gap:5px;}
+#stage #weekDashboard .qmeTimelineDay{font-weight:750;font-size:12px;white-space:nowrap;color:#ebf7ff;}
+#stage #weekDashboard .qmeTimelineSwitch{font-size:11px;min-height:25px;border:1px solid rgba(131,205,255,.40);border-radius:8px;background:rgba(29,108,177,.5);color:#fff;padding:3px 7px;cursor:pointer;}
+#stage #weekDashboard .qmeTimelineSwitch:hover{background:rgba(37,139,221,.75);}
+#stage #weekDashboard .qmeTimelineTrack{overflow:visible!important;}
+#stage #weekDashboard .qmeTimelineBusyLayer{pointer-events:auto!important;overflow:hidden!important;border-radius:999px!important;}
+#stage #weekDashboard .qmeTimelineBusy{cursor:help!important;pointer-events:auto!important;z-index:2!important;}
+#stage #weekDashboard .qmeTimelineBusy:focus-visible{outline:2px solid white!important;outline-offset:-2px!important;}
+#stage #weekDashboard .qmeTimelineNow{pointer-events:none!important;}
+#stage #weekDashboard .qmeTimelineNowDot{pointer-events:none!important;}
+#stage #weekDashboard .qmeTimelineTooltip{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);width:max-content;max-width:min(330px,85vw);white-space:normal;box-sizing:border-box;padding:8px 11px;border-radius:10px;background:#062945;border:1px solid #69b7ef;box-shadow:0 8px 22px rgba(0,0,0,.4);font-size:13px;font-weight:650;line-height:1.35;color:#fff;z-index:999!important;pointer-events:none;}
+#stage #weekDashboard .qmeTimelineTooltip[hidden]{display:none!important;}
+@media(max-width:900px){
+ #stage #weekDashboard .weekQmeTimeline{display:flex!important;flex-wrap:wrap!important;gap:7px!important;min-width:0!important;}
+ #stage #weekDashboard .qmeTimelineTrackWrap{min-width:0!important;flex:1 1 100%!important;max-width:none!important;}
+ #stage #weekDashboard #meetingRoomIndicator{display:none!important;}
+ #stage #weekDashboard #weekBottomActions{display:flex!important;justify-content:flex-end!important;gap:8px!important;position:relative!important;inset:auto!important;margin-top:10px!important;}
 }
 </style>
-</head>
+
+<style id="qme-timeline-auto-day-tooltip-below-2026">
+/* Dnes do 15:59, zajtra od 16:00; tooltip sa zobrazuje pod osou. */
+#stage #weekDashboard .qmeTimelineSwitch{display:none!important;}
+#stage #weekDashboard .weekQmeTimeline{position:relative!important;z-index:30!important;overflow:visible!important;}
+#stage #weekDashboard .qmeTimelineTrackWrap{position:relative!important;overflow:visible!important;}
+#stage #weekDashboard .qmeTimelineTooltip{
+  position:absolute!important;top:36px!important;bottom:auto!important;left:50%!important;
+  transform:translateX(-50%)!important;z-index:100!important;
+  width:max-content!important;max-width:min(360px,90vw)!important;
+  min-height:30px!important;padding:8px 12px!important;
+  box-sizing:border-box!important;white-space:normal!important;
+  border-radius:10px!important;background:#062945!important;
+  border:1px solid #69b7ef!important;box-shadow:0 8px 22px rgba(0,0,0,.4)!important;
+  color:#fff!important;font-size:13px!important;font-weight:650!important;line-height:1.35!important;
+  text-align:center!important;pointer-events:none!important;
+}
+#stage #weekDashboard .qmeTimelineTooltip[hidden]{display:none!important;}
+@media(min-width:901px){
+  #stage #weekDashboard .weekTopBar{min-height:64px!important;align-items:flex-start!important;}
+  #stage #weekDashboard .weekTitleRow{align-items:flex-start!important;}
+  #stage #weekDashboard .qmeTimelineTooltip{top:34px!important;}
+}
+@media(max-width:900px){
+  #stage #weekDashboard .qmeTimelineTooltip{top:34px!important;}
+  #stage #weekDashboard .weekTopBar{padding-bottom:22px!important;}
+}
+</style>
+
+<style id="vrable-qme-axis-and-countdown-refine-2026">
+@media (min-width:901px){
+  #stage #weekDashboard .weekTitleRow{align-items:center!important;}
+  #stage #weekDashboard .weekQmeTimeline{gap:10px!important;align-items:center!important;min-width:280px!important;}
+  #stage #weekDashboard .qmeTimelineTrackWrap{position:relative!important;max-width:none!important;min-width:380px!important;flex:1 1 auto!important;padding-bottom:30px!important;overflow:visible!important;}
+  #stage #weekDashboard .qmeTimelineTrack{height:26px!important;border-radius:999px!important;overflow:hidden!important;position:relative!important;background:linear-gradient(180deg,rgba(31,155,100,.92),rgba(15,114,73,.95))!important;border:1px solid rgba(110,239,173,.42)!important;box-shadow:inset 0 1px 2px rgba(255,255,255,.12), 0 2px 10px rgba(0,0,0,.18)!important;}
+  #stage #weekDashboard .qmeTimelineBusyLayer{pointer-events:auto!important;overflow:hidden!important;border-radius:999px!important;z-index:2!important;}
+  #stage #weekDashboard .qmeTimelineBusy{top:0!important;bottom:0!important;border-radius:999px!important;background:linear-gradient(180deg,rgba(233,84,84,.98),rgba(190,49,49,.98))!important;box-shadow:0 0 8px rgba(227,82,82,.3)!important;}
+  #stage #weekDashboard .qmeTimelineTicks{position:absolute!important;inset:0!important;display:flex!important;justify-content:space-between!important;align-items:center!important;padding:0 8px!important;pointer-events:none!important;z-index:5!important;color:#eaf8ff!important;font-size:10px!important;font-weight:800!important;line-height:1!important;letter-spacing:.15px!important;text-shadow:0 1px 1px rgba(0,0,0,.45)!important;}
+  #stage #weekDashboard .qmeTimelineTicks span{display:block!important;min-width:16px!important;text-align:center!important;}
+  #stage #weekDashboard .qmeTimelineNow{top:-4px!important;bottom:-4px!important;width:3px!important;z-index:6!important;}
+  #stage #weekDashboard .qmeTimelineNowDot{top:-6px!important;width:10px!important;height:10px!important;z-index:7!important;}
+  #stage #weekDashboard .qmeTimelineTooltip{position:absolute!important;left:50%!important;top:34px!important;bottom:auto!important;transform:translateX(-50%)!important;width:max-content!important;max-width:340px!important;padding:7px 10px!important;border-radius:10px!important;background:#072944!important;border:1px solid #6dbdf1!important;box-shadow:0 8px 20px rgba(0,0,0,.35)!important;font-size:13px!important;font-weight:700!important;line-height:1.3!important;color:#fff!important;z-index:20!important;pointer-events:none!important;white-space:normal!important;}
+  #stage #weekDashboard .qmeTimelineTooltip::before{content:'';position:absolute;left:50%;top:-6px;transform:translateX(-50%);border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:6px solid #6dbdf1;}
+  #stage #weekDashboard .qmeTimelineTooltip::after{content:'';position:absolute;left:50%;top:-5px;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:5px solid #072944;}
+  #stage #weekDashboard .qmeTimelineDay{font-size:12px!important;font-weight:800!important;min-width:34px!important;}
+
+  #stage #shiftBox{padding:8px 10px!important;border-radius:18px!important;min-height:0!important;}
+  #stage #shiftBox .workdayGrid.countdownStyle{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important;}
+  #stage #shiftBox .countdownCard{position:relative!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:center!important;min-height:95px!important;padding:10px 10px 9px!important;border-radius:14px!important;background:linear-gradient(145deg,rgba(39,125,201,.52),rgba(10,65,129,.54))!important;border:1px solid rgba(114,190,250,.28)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.10)!important;}
+  #stage #shiftBox .countdownCard .workdayHeader{margin:0 0 3px!important;display:block!important;text-align:center!important;}
+  #stage #shiftBox .countdownCard .workdayTitle{font-size:13px!important;font-weight:800!important;color:#fff!important;line-height:1.05!important;white-space:nowrap!important;}
+  #stage #shiftBox .countdownCard .workMain{min-height:0!important;display:block!important;width:100%!important;margin:0!important;}
+  #stage #shiftBox .countdownCard .workValue{display:block!important;width:100%!important;text-align:center!important;font-size:28px!important;font-weight:850!important;line-height:1!important;letter-spacing:-1px!important;color:#f5fbff!important;white-space:nowrap!important;margin:1px 0 2px!important;}
+  #stage #shiftBox .countdownCard .workHint{font-size:10px!important;font-weight:650!important;line-height:1.18!important;color:#dceeff!important;text-align:center!important;white-space:normal!important;min-height:0!important;margin:0!important;opacity:.98!important;}
+  #stage #shiftBox .countdownCard .workIcon,
+  #stage #shiftBox .countdownCard .workBar,
+  #stage #shiftBox .countdownCard .workdayFooter,
+  #stage #shiftBox .countdownCard .workLabel{display:none!important;}
+}
+</style>
+
+<style id="vrable-qme-final-axis-and-countdowns-2026">
+@media (min-width:901px){
+  #stage #weekDashboard .weekTopBar{display:flex!important;align-items:center!important;justify-content:flex-start!important;min-height:56px!important;margin-bottom:6px!important;overflow:visible!important;}
+  #stage #weekDashboard .weekTitleRow{display:flex!important;align-items:center!important;gap:10px!important;flex:1 1 auto!important;min-width:0!important;overflow:visible!important;}
+  #stage #weekDashboard .weekTitle{font-size:24px!important;flex:0 0 auto!important;}
+  #stage #weekDashboard .weekQmeTimeline{display:flex!important;flex:1 1 auto!important;min-width:0!important;align-items:center!important;gap:7px!important;overflow:visible!important;padding:0!important;}
+  #stage #weekDashboard .qmeTimelineTrackWrap{position:relative!important;min-width:0!important;max-width:none!important;flex:1 1 auto!important;padding:0 0 37px!important;overflow:visible!important;}
+  #stage #weekDashboard .qmeTimelineTrack{display:block!important;position:relative!important;height:31px!important;min-height:31px!important;overflow:hidden!important;border-radius:999px!important;background:linear-gradient(180deg,#299c6a,#0f754f)!important;border:1px solid rgba(166,245,202,.43)!important;}
+  #stage #weekDashboard .qmeTimelineBusyLayer{position:absolute!important;inset:0!important;z-index:2!important;pointer-events:auto!important;}
+  #stage #weekDashboard .qmeTimelineBusy{position:absolute!important;top:0!important;bottom:0!important;z-index:2!important;border-radius:999px!important;pointer-events:auto!important;cursor:help!important;}
+  #stage #weekDashboard .qmeTimelineTicks{position:absolute!important;inset:0!important;display:flex!important;align-items:center!important;justify-content:space-between!important;padding:0 8px!important;pointer-events:none!important;z-index:8!important;line-height:1!important;font-size:12px!important;font-weight:800!important;color:#fff!important;text-shadow:0 1px 3px #123750!important;box-sizing:border-box!important;}
+  #stage #weekDashboard .qmeTimelineTicks span{min-width:15px!important;flex:0 0 auto!important;text-align:center!important;}
+  #stage #weekDashboard .qmeTimelineNow{z-index:6!important;pointer-events:none!important;}
+  #stage #weekDashboard .qmeTimelineNowDot{z-index:7!important;pointer-events:none!important;}
+  #stage #weekDashboard .qmeTimelineHead{flex:0 0 auto!important;display:flex!important;align-items:center!important;justify-content:center!important;min-width:41px!important;align-self:flex-start!important;margin-top:7px!important;}
+  #stage #weekDashboard .qmeTimelineDay{font-size:13px!important;font-weight:800!important;color:#e8f8ff!important;}
+  #stage #weekDashboard .qmeTimelineTooltip{top:38px!important;bottom:auto!important;max-width:380px!important;}
+  #stage #weekDashboard .weekAddMenuAnchor{position:relative!important;flex:0 0 41px!important;align-self:flex-start!important;z-index:50!important;}
+  #stage #weekDashboard #weekUnifiedAdd{display:flex!important;align-items:center!important;justify-content:center!important;width:39px!important;height:39px!important;min-width:39px!important;padding:0!important;border-radius:12px!important;font:800 27px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important;color:#fff!important;background:rgba(48,129,208,.67)!important;border:1px solid rgba(150,212,255,.5)!important;cursor:pointer!important;}
+  #stage #weekDashboard .weekAddMenu{position:absolute!important;top:45px!important;right:0!important;display:flex!important;flex-direction:column!important;gap:5px!important;min-width:176px!important;padding:8px!important;background:#0b416f!important;border:1px solid rgba(155,209,249,.65)!important;border-radius:12px!important;box-shadow:0 12px 25px rgba(0,0,0,.4)!important;z-index:90!important;}
+  #stage #weekDashboard .weekAddMenu[hidden]{display:none!important;}
+  #stage #weekDashboard .weekAddMenu button{min-height:38px!important;padding:8px 12px!important;border-radius:9px!important;border:1px solid rgba(111,184,248,.5)!important;background:#175b99!important;color:#fff!important;font:700 14px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important;text-align:left!important;cursor:pointer!important;}
+  #stage #weekDashboard .weekAddMenu button:hover{background:#2279c5!important;}
+  #stage #weekDashboard #weekBottomActions{display:none!important;}
+  #stage #weekDashboard{padding-bottom:15px!important;}
+  #stage #weekDashboard .weekFooter{padding-right:0!important;}
+
+  /* Karty odpočtov vypĺňajú celú šírku a výšku spoločného panela. */
+  #stage #shiftBox{height:130px!important;min-height:130px!important;padding:5px!important;overflow:hidden!important;display:flex!important;align-items:stretch!important;}
+  #stage #shiftBox .workdayGrid.countdownStyle{width:100%!important;height:100%!important;min-height:0!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px!important;}
+  #stage #shiftBox .countdownCard{height:100%!important;min-height:0!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;padding:7px 3px!important;margin:0!important;box-sizing:border-box!important;border-radius:13px!important;}
+  #stage #shiftBox .countdownCard .workdayHeader{margin:0 0 5px!important;width:100%!important;}
+  #stage #shiftBox .countdownCard .workdayTitle{font-size:15px!important;line-height:1.06!important;white-space:nowrap!important;font-weight:800!important;}
+  #stage #shiftBox .countdownCard .workMain{display:flex!important;justify-content:center!important;align-items:center!important;width:100%!important;height:auto!important;min-height:0!important;}
+  #stage #shiftBox .countdownCard .workValue{font-size:clamp(30px,2.4vw,39px)!important;line-height:1.02!important;letter-spacing:-1.4px!important;font-weight:850!important;margin:0!important;white-space:nowrap!important;}
+  #stage #shiftBox .countdownCard .workHint{font-size:11px!important;line-height:1.18!important;margin:5px 0 0!important;max-width:100%!important;}
+}
+@media(max-width:900px){
+  #stage #weekDashboard .weekAddMenuAnchor{position:relative!important;z-index:70!important;}
+  #stage #weekDashboard #weekUnifiedAdd{min-width:46px!important;min-height:46px!important;font-size:27px!important;}
+  #stage #weekDashboard .weekAddMenu{position:absolute!important;right:0!important;top:50px!important;display:flex!important;flex-direction:column!important;padding:8px!important;gap:6px!important;min-width:170px!important;background:#0b416f!important;border:1px solid #68ade2!important;border-radius:12px!important;z-index:80!important;}
+  #stage #weekDashboard .weekAddMenu[hidden]{display:none!important;}
+  #stage #weekDashboard .weekAddMenu button{min-height:44px!important;color:white!important;background:#175b99!important;border-radius:8px!important;border:1px solid #4c93c9!important;}
+  #stage #weekDashboard #weekBottomActions{display:none!important;}
+  #stage #weekDashboard .weekQmeTimeline{display:flex!important;flex-wrap:wrap!important;}
+  #stage #weekDashboard .qmeTimelineHead{order:2!important;margin-left:auto!important;}
+  #stage #weekDashboard .qmeTimelineTrackWrap{order:1!important;min-width:0!important;}
+  #stage #weekDashboard .qmeTimelineTrack{height:30px!important;position:relative!important;overflow:hidden!important;border-radius:999px!important;}
+  #stage #weekDashboard .qmeTimelineTicks{position:absolute!important;inset:0!important;display:flex!important;justify-content:space-between!important;align-items:center!important;padding:0 7px!important;pointer-events:none!important;font-size:11px!important;z-index:8!important;}
+}
+</style>
+
+<style id="vrable-qme-rectangular-axis-2026">
+@media(min-width:901px){
+  /* Odstup od titulku a o niečo kratšia os. */
+  #stage #weekDashboard .weekTitleRow{gap:18px!important;}
+  #stage #weekDashboard .weekQmeTimeline{flex:0 1 515px!important;width:515px!important;max-width:515px!important;gap:0!important;}
+  #stage #weekDashboard .qmeTimelineTrackWrap{width:100%!important;max-width:515px!important;}
+  /* Hranatý pás vrátane jednotlivých rezervácií. */
+  #stage #weekDashboard .qmeTimelineTrack,
+  #stage #weekDashboard .qmeTimelineBusyLayer,
+  #stage #weekDashboard .qmeTimelineBusy{border-radius:3px!important;}
+  #stage #weekDashboard .qmeTimelineHead,
+  #stage #weekDashboard .qmeTimelineDay{display:none!important;}
+}
+@media(max-width:900px){
+  #stage #weekDashboard .qmeTimelineHead,
+  #stage #weekDashboard .qmeTimelineDay{display:none!important;}
+  #stage #weekDashboard .qmeTimelineTrack,
+  #stage #weekDashboard .qmeTimelineBusyLayer,
+  #stage #weekDashboard .qmeTimelineBusy{border-radius:3px!important;}
+}
+</style>
+
+<style id="vrable-centered-event-header-and-celebrations-2026">
+/* Desktop: nadpis, casova os a tlacidlo + v jednom vycentrovanom riadku. */
+@media (min-width:901px){
+  #stage #weekDashboard .weekTopBar{
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    min-height:58px!important;margin-bottom:7px!important;padding:0!important;
+  }
+  #stage #weekDashboard .weekTitleRow{
+    width:100%!important;min-width:0!important;display:flex!important;
+    justify-content:flex-start!important;align-items:center!important;
+    gap:17px!important;min-height:49px!important;
+  }
+  #stage #weekDashboard .weekTitle{
+    flex:0 0 auto!important;align-self:center!important;
+    font-size:30px!important;font-weight:850!important;line-height:1.12!important;
+    margin:0!important;white-space:nowrap!important;
+  }
+  #stage #weekDashboard .weekQmeTimeline{
+    flex:1 1 auto!important;width:auto!important;max-width:none!important;
+    min-width:0!important;align-self:center!important;display:flex!important;
+    align-items:center!important;margin:0!important;padding:0!important;
+  }
+  #stage #weekDashboard .qmeTimelineTrackWrap{
+    flex:1 1 auto!important;width:100%!important;max-width:none!important;
+    min-width:0!important;padding:0!important;margin:0!important;
+    position:relative!important;overflow:visible!important;
+  }
+  #stage #weekDashboard .qmeTimelineTrack{
+    height:31px!important;min-height:31px!important;box-sizing:border-box!important;
+  }
+  #stage #weekDashboard .qmeTimelineTooltip{
+    top:39px!important;bottom:auto!important;
+  }
+  #stage #weekDashboard .weekAddMenuAnchor{
+    position:relative!important;flex:0 0 42px!important;width:42px!important;
+    align-self:center!important;margin-left:auto!important;margin-right:0!important;
+    z-index:70!important;
+  }
+  #stage #weekDashboard #weekUnifiedAdd{
+    width:42px!important;height:42px!important;min-width:42px!important;
+    min-height:42px!important;margin:0!important;
+  }
+  /* Pravý panel: väčší nadpis, vycentrovaný vodorovne aj zvislo. */
+  #stage #celebrationsDashboard .celebrateTitle{
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    width:100%!important;box-sizing:border-box!important;
+    min-height:49px!important;margin:0 0 7px!important;padding:0 2px!important;
+    font-size:25px!important;font-weight:850!important;letter-spacing:-.45px!important;
+    line-height:1.12!important;text-align:center!important;white-space:nowrap!important;
+  }
+}
+</style>
+
+<style id="vrable-desktop-wide-and-celebrations-legible">
+@media (min-width:901px) {
+ #stage #celebrationsDashboard .celebrateTitle {
+   font-size:31px!important;
+   font-weight:850!important;
+   letter-spacing:-.65px!important;
+   line-height:1.08!important;
+   white-space:nowrap!important;
+   overflow:hidden!important;
+   text-overflow:clip!important;
+ }
+ #stage #celebrationsDashboard .celebrateName {
+   font-size:23px!important;
+   font-weight:780!important;
+   line-height:1.15!important;
+ }
+ #stage #celebrationsDashboard .celebrateType {
+   font-size:15px!important;
+ }
+}
+</style>
+
+<style id="vrable-larger-countdowns-direct-editor-2026">
+@media (min-width:901px){
+  /* Maximálne využitie hornej pravej karty bez orezania číslic. */
+  #stage #shiftBox{padding:3px!important;}
+  #stage #shiftBox .workdayGrid.countdownStyle{gap:4px!important;}
+  #stage #shiftBox .countdownCard{
+    padding:4px 2px 5px!important;
+    justify-content:center!important;
+  }
+  #stage #shiftBox .countdownCard .workdayHeader{margin:0 0 5px!important;}
+  #stage #shiftBox .countdownCard .workdayTitle{
+    font-size:16px!important;line-height:1.05!important;
+    font-weight:800!important;
+  }
+  #stage #shiftBox .countdownCard .workValue{
+    font-size:51px!important;
+    font-weight:900!important;
+    line-height:1.0!important;
+    letter-spacing:-1.9px!important;
+    white-space:nowrap!important;
+  }
+  #stage #shiftBox .countdownCard .workHint{
+    font-size:11.5px!important;
+    line-height:1.15!important;
+    font-weight:650!important;
+    margin:6px 0 0!important;
+  }
+}
+#weekEditorOverlay .weekEditorChoice{
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:0 0 16px;
+}
+#weekEditorOverlay .weekEditorChoice[hidden]{display:none!important;}
+#weekEditorOverlay .weekEditorChoice button{
+  min-height:46px;border:1px solid rgba(140,207,255,.5);
+  border-radius:10px;background:rgba(21,94,170,.55);
+  color:#eef8ff;font:750 17px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  cursor:pointer;
+}
+#weekEditorOverlay .weekEditorChoice button.selected{
+  background:#187ede;border-color:#9bd9ff;box-shadow:inset 0 1px 0 rgba(255,255,255,.25);
+}
+@media(max-width:900px){
+ #weekEditorOverlay .weekEditorChoice button{min-height:48px;font-size:15px;}
+}
+</style></head>
 
 <body>
 <div id="vrable-auth-cover" aria-live="polite"><section id="vrable-auth-card"><h2>🔐 Dashboard Vráble</h2><p>Overenie prístupu do firemného dashboardu. Prihlasovacie údaje zostávajú v službe Firebase Authentication.</p><form id="vrable-auth-form"><label for="vrable-auth-email">E-mail</label><input id="vrable-auth-email" type="email" autocomplete="username" required><label for="vrable-auth-password">Heslo</label><input id="vrable-auth-password" type="password" autocomplete="current-password" required><button id="vrable-auth-submit" type="submit">Prihlásiť sa</button></form><div id="vrable-auth-error" role="alert"></div></section></div>
@@ -5147,14 +5206,24 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
 
 <section id="weekDashboard" class="glass" aria-label="Prehľad najbližších udalostí">
  <div class="weekTopBar">
-   <div class="weekTitle"><span class="weekTitleIcon">▣</span> Prehľad udalostí <span id="weekDateRange" class="weekDateRange"></span></div>
-   <div class="weekHeaderActions">
-     <span id="meetingRoomIndicator" class="meetingRoomIndicator unknown" role="status" aria-live="polite">Q_ME · Čaká na údaje</span>
-     <button type="button" id="weekQuickAudit" title="Pridať audit alebo návštevu">+ Audit</button>
-     <button type="button" id="weekQuickLeave" title="Pridať neprítomnosť">+ Neprít.</button>
-     <button type="button" id="weekArchiveButton" class="weekArchiveButton" title="Archív ukončených udalostí" hidden>◷ Archív</button>
-     <button type="button" id="weekAddButton" class="weekAddButton" title="Pridať udalosť" hidden>＋ Pridať</button>
+   <div class="weekTitleRow">
+     <div class="weekTitle"><span class="weekTitleIcon">▣</span> Prehľad udalostí <span id="weekDateRange" class="weekDateRange"></span></div>
+     <div id="weekQmeTimeline" class="weekQmeTimeline" aria-label="Časová os obsadenosti Q_ME">
+       <div class="qmeTimelineTrackWrap">
+         <div class="qmeTimelineTrack">
+           <div id="qmeTimelineBusyLayer" class="qmeTimelineBusyLayer"></div>
+           <div id="qmeTimelineNow" class="qmeTimelineNow" aria-hidden="true"></div>
+           <div id="qmeTimelineNowDot" class="qmeTimelineNowDot" aria-hidden="true"></div>
+           <div class="qmeTimelineTicks" aria-hidden="true"><span>07</span><span>09</span><span>11</span><span>13</span><span>15</span><span>17</span></div>
+         </div>
+         <div id="qmeTimelineTooltip" class="qmeTimelineTooltip" role="tooltip" hidden></div>
+       </div>
+     </div>
+     <div class="weekAddMenuAnchor">
+       <button type="button" id="weekUnifiedAdd" aria-label="Pridať audit alebo neprítomnosť" title="Pridať udalosť">+</button>
+     </div>
    </div>
+   <span id="meetingRoomIndicator" class="meetingRoomIndicator unknown" role="status" aria-live="polite" hidden>Q_ME · Čaká na údaje</span>
  </div>
  <div id="weekTabs" class="weekTabs" role="tablist" aria-label="Filtrovanie udalostí">
   <button type="button" role="tab" class="active" aria-selected="true" data-week-type="audit">Audity</button>
@@ -5163,6 +5232,12 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
  </div>
  <div id="weekDashboardSubline" class="weekSubline">Všetky plánované audity a neprítomnosti podľa dátumu</div>
  <div id="weekEventList" class="weekEventList" role="list" aria-live="polite"></div>
+ <div id="weekBottomActions" class="weekBottomActions">
+   <button type="button" id="weekQuickAudit" title="Pridať audit alebo návštevu">+ Audit</button>
+   <button type="button" id="weekQuickLeave" title="Pridať neprítomnosť">+ Neprít.</button>
+   <button type="button" id="weekArchiveButton" class="weekArchiveButton" title="Archív ukončených udalostí" hidden>◷ Archív</button>
+   <button type="button" id="weekAddButton" class="weekAddButton" title="Pridať udalosť" hidden>＋ Pridať</button>
+ </div>
  <div class="weekFooter"><span><span class="weekFooterDot"></span>Údaje sa aktualizujú automaticky</span><span id="weekEventCounter">0 udalostí</span></div>
 </section>
 <section id="celebrationsDashboard" class="glass" aria-label="Meniny narodeniny a sviatky">
@@ -5174,6 +5249,10 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
 <div id="weekEditorOverlay" aria-hidden="true">
  <div class="weekEditorDialog" role="dialog" aria-modal="true" aria-labelledby="weekEditorTitle">
   <div class="weekEditorTitleRow"><span id="weekEditorTitle">Udalosť</span><button type="button" id="weekEditorClose" title="Zavrieť">×</button></div>
+  <div id="weekEditorChoice" class="weekEditorChoice" role="group" aria-label="Druh pridávanej udalosti">
+    <button type="button" id="weekChooseAudit" class="selected" aria-pressed="true">Audit / návšteva</button>
+    <button type="button" id="weekChooseLeave" aria-pressed="false">Neprítomnosť</button>
+  </div>
   <form id="weekEditorForm" autocomplete="off">
    <label id="weekEditorMainLabel"><span id="weekEditorMainText">Zákazník</span><input id="weekEditorMain" maxlength="120" required></label>
    <label id="weekEditorTypeLabel"><span>Typ udalosti (napr. audit, návšteva, interný)</span><input id="weekEditorKind" maxlength="100"></label>
@@ -6534,153 +6613,70 @@ function updateVacation(){
 
   const shiftBox=document.getElementById('shiftBox');
   if(shiftBox){
-    let shiftTitle='Do začiatku zmeny';
-    let shiftValue=formatClock((nextShift-n)/1000);
-    let shiftHint='Najbližšia zmena';
-    let shiftProgress=0;
-    let shiftWarn=false;
-    let shiftDone=false;
+    const skShortDay=d=>d.toLocaleDateString('sk-SK',{weekday:'short'}).replace('.','');
+    const skDate=d=>d.toLocaleDateString('sk-SK',{day:'2-digit',month:'2-digit'});
+    const formatSub=(date,text)=>`${skShortDay(date)} ${skDate(date)}. - ${text}`;
 
-    let lunchTitle='Do obeda';
-    let lunchValue=formatClock((nextLunch-n)/1000);
-    let lunchHint='Najbližší obed';
-    let lunchProgress=0;
-    let lunchWarn=false;
-    let lunchDone=false;
-
-    let workedSec=0;
-    let workedPct=0;
+    let shiftCardTitle='Najbližšia zmena';
+    let shiftValue='00:00';
+    let shiftHint='';
+    let lunchCardTitle='Najbližší obed';
+    let lunchValue='00:00';
+    let lunchHint='';
 
     if(isWeekday && n < shiftStart){
-      shiftTitle='Do začiatku zmeny';
-      const sec=(shiftStart-n)/1000;
-      shiftValue=formatClock(sec);
-      shiftHint='Začiatok dnes o 07:00';
-      shiftProgress=clamp01(1 - sec/(7*3600));
-      shiftWarn=sec<=15*60;
-
-      const secLunch=(lunchStart-n)/1000;
-      lunchTitle='Do obeda';
-      lunchValue=formatClock(secLunch);
-      lunchHint='Dnešná obedná prestávka';
-      lunchProgress=clamp01(1 - secLunch/(10.5*3600));
-      lunchWarn=secLunch<=15*60;
-    } else if(isWeekday && n >= shiftStart && n < lunchStart){
-      const shiftSec=(shiftEnd-n)/1000;
-      shiftTitle='Koniec zmeny';
-      shiftValue=formatClock(shiftSec);
-      shiftHint='Zmena prebieha';
-      shiftProgress=clamp01((n-shiftStart)/1000 / shiftDuration);
-      shiftWarn=shiftSec<=15*60;
-
-      const lunchSec=(lunchStart-n)/1000;
-      lunchTitle='Do obeda';
-      lunchValue=formatClock(lunchSec);
-      lunchHint='Obed začne o 10:30';
-      lunchProgress=clamp01((n-shiftStart)/1000 / (3.5*3600));
-      lunchWarn=lunchSec<=15*60;
-
-      workedSec=(n-shiftStart)/1000;
-      workedPct=clamp01(workedSec/shiftDuration);
-    } else if(isWeekday && n >= lunchStart && n < lunchEnd){
-      const shiftSec=(shiftEnd-n)/1000;
-      shiftTitle='Koniec zmeny';
-      shiftValue=formatClock(shiftSec);
-      shiftHint='Zmena prebieha';
-      shiftProgress=clamp01((n-shiftStart)/1000 / shiftDuration);
-      shiftWarn=shiftSec<=15*60;
-
-      const lunchSec=(lunchEnd-n)/1000;
-      lunchTitle='Obedná prestávka';
-      lunchValue=formatClock(lunchSec);
-      lunchHint='Obed prebieha';
-      lunchProgress=clamp01((n-lunchStart)/1000 / lunchDuration);
-      lunchWarn=lunchSec<=15*60;
-
-      workedSec=(n-shiftStart)/1000;
-      workedPct=clamp01(workedSec/shiftDuration);
-    } else if(isWeekday && n >= lunchEnd && n < shiftEnd){
-      const shiftSec=(shiftEnd-n)/1000;
-      shiftTitle='Koniec zmeny';
-      shiftValue=formatClock(shiftSec);
-      shiftHint='Zmena prebieha';
-      shiftProgress=clamp01((n-shiftStart)/1000 / shiftDuration);
-      shiftWarn=shiftSec<=15*60;
-
-      lunchTitle='Do ďalšieho obeda';
-      lunchValue=formatClock((nextLunch-n)/1000);
-      lunchHint='Nasledujúci pracovný deň';
-      lunchProgress=1;
-      lunchDone=false;
-
-      workedSec=(n-shiftStart)/1000;
-      workedPct=clamp01(workedSec/shiftDuration);
+      shiftValue=formatClock((shiftStart-n)/1000);
+      shiftHint=formatSub(shiftStart,'začiatok o 7:00');
+    } else if(isWeekday && n >= shiftStart && n < shiftEnd){
+      shiftValue=formatClock((shiftEnd-n)/1000);
+      shiftHint=formatSub(shiftEnd,'koniec o 15:00');
     } else {
-      // Po skončení zmeny (a cez víkend) ukáž najbližší pracovný deň.
-      // Obe karty už nezostávajú na všeobecnom texte „Hotovo“.
-      const workDate=nextShift.toLocaleDateString('sk-SK',{weekday:'short',day:'2-digit',month:'2-digit'}).replace(/\s+/g,' ');
-      shiftTitle='Najbližšia zmena';
       shiftValue=formatClock((nextShift-n)/1000);
-      shiftHint=workDate+' · začiatok o 07:00';
-      shiftProgress=0;
-      shiftDone=false;
-
-      lunchTitle='Najbližší obed';
-      lunchValue=formatClock((nextLunch-n)/1000);
-      lunchHint=workDate+' · obed o 10:30';
-      lunchProgress=0;
-      lunchDone=false;
-
-      workedSec=0;
-      workedPct=0;
+      shiftHint=formatSub(nextShift,'začiatok o 7:00');
     }
 
-    const leftClass = lunchDone ? 'workCard done' : 'workCard';
-    const rightClass = shiftDone ? 'workCard done' : 'workCard';
+    if(isWeekday && n < lunchStart){
+      lunchValue=formatClock((lunchStart-n)/1000);
+      lunchHint=formatSub(lunchStart,'obed o 10:30');
+    } else if(isWeekday && n >= lunchStart && n < lunchEnd){
+      lunchValue=formatClock((lunchEnd-n)/1000);
+      lunchHint=formatSub(lunchEnd,'koniec obeda 11:30');
+    } else {
+      lunchValue=formatClock((nextLunch-n)/1000);
+      lunchHint=formatSub(nextLunch,'obed o 10:30');
+    }
+
     const workdayMarkup = `
-      <div class="workdayGrid">
-        <div class="${leftClass}">
-          <div class="workLabel">${lunchTitle}</div>
-          <div class="workMain"><div class="workIcon">🍽️</div><div class="workValue ${lunchWarn ? 'warn' : ''}">${lunchValue}</div></div>
+      <div class="workdayGrid countdownStyle">
+        <div class="workCard countdownCard lunchCard">
+          <div class="workdayHeader"><div class="workdayTitle">${lunchCardTitle}</div></div>
+          <div class="workMain"><div class="workValue">${lunchValue}</div></div>
           <div class="workHint">${lunchHint}</div>
-          <div class="workBar"><span class="workBarFill lunch ${lunchWarn ? 'warn' : ''}" style="height:${Math.round(lunchProgress*100)}%"></span></div>
         </div>
-        <div class="${rightClass}">
-          <div class="workLabel">${shiftTitle}</div>
-          <div class="workMain"><div class="workIcon">💼</div><div class="workValue ${shiftWarn ? 'warn' : ''}">${shiftValue}</div></div>
+        <div class="workCard countdownCard shiftCard">
+          <div class="workdayHeader"><div class="workdayTitle">${shiftCardTitle}</div></div>
+          <div class="workMain"><div class="workValue">${shiftValue}</div></div>
           <div class="workHint">${shiftHint}</div>
-          <div class="workBar"><span class="workBarFill ${shiftWarn ? 'warn' : ''}" style="height:${Math.round(shiftProgress*100)}%"></span></div>
         </div>
-      </div>
-`;
-    // Pri každej aktualizácii nevytvárať panel odznova: to spôsobovalo
-    // prebliknutie priehľadného skla aj animácie výplne odspodu.
+      </div>`;
+
     if(!shiftBox.querySelector('.workdayGrid')){
       shiftBox.innerHTML=workdayMarkup;
     } else {
       const holder=document.createElement('div');
       holder.innerHTML=workdayMarkup;
-      const oldCards=shiftBox.querySelectorAll('.workCard');
-      const newCards=holder.querySelectorAll('.workCard');
+      const oldCards=shiftBox.querySelectorAll('.countdownCard');
+      const newCards=holder.querySelectorAll('.countdownCard');
       oldCards.forEach((card,i)=>{
         const next=newCards[i];
         if(!next) return;
-        if(card.className!==next.className) card.className=next.className;
-        for(const selector of ['.workLabel','.workValue','.workHint']){
+        for(const selector of ['.workdayTitle','.workValue','.workHint']){
           const oldEl=card.querySelector(selector);
           const nextEl=next.querySelector(selector);
-          if(oldEl && nextEl){
-            if(oldEl.textContent!==nextEl.textContent) oldEl.textContent=nextEl.textContent;
-            if(oldEl.className!==nextEl.className) oldEl.className=nextEl.className;
-          }
-        }
-        const bar=card.querySelector('.workBarFill');
-        const nextBar=next.querySelector('.workBarFill');
-        if(bar && nextBar){
-          if(bar.className!==nextBar.className) bar.className=nextBar.className;
-          if(bar.style.height!==nextBar.style.height) bar.style.height=nextBar.style.height;
+          if(oldEl && nextEl && oldEl.textContent!==nextEl.textContent) oldEl.textContent=nextEl.textContent;
         }
       });
+      if(!oldCards.length) shiftBox.innerHTML=workdayMarkup;
     }
     shiftBox.style.display='block';
   }
@@ -7717,10 +7713,14 @@ function fitStage(){
   if(!stage)return;
   if(window.innerWidth<=900){stage.style.transform='none';return;}
   const sw=1920, sh=1080;
+  // Výška ostáva presne prispôsobená obrazovke.
   const scale=Math.min(window.innerWidth/sw, window.innerHeight/sh);
-  const x=Math.round((window.innerWidth  - sw*scale)/2);
-  const y=Math.round((window.innerHeight - sh*scale)/2);
-  stage.style.transform=`translate(${x}px, ${y}px) scale(${scale})`;
+  // Rozšírenie desktopového plátna vodorovne: využijeme prázdne okraje,
+  // pričom kraje samotných panelov ostanú aspoň približne 10 px od obrazovky.
+  const sx=Math.min(window.innerWidth/1870, scale*1.035);
+  const x=Math.round((window.innerWidth-sw*sx)/2);
+  const y=Math.round((window.innerHeight-sh*scale)/2);
+  stage.style.transform=`translate(${x}px, ${y}px) scale(${sx}, ${scale})`;
   if(typeof positionLeaveBox==='function') positionLeaveBox();
   if(typeof positionBottomBoxes==='function') positionBottomBoxes();
 }
@@ -8886,7 +8886,98 @@ document.addEventListener('keydown',e=>{
       updated.getTime()<=Date.now()+60000 && Date.now()-updated.getTime()<36*3600000);
   }
   const meetingClock=new Intl.DateTimeFormat('sk-SK',{timeZone:'Europe/Bratislava',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+  function localDateSk(d){
+    return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
+  }
+  // Časová os vždy počíta so slovenským časom, nie s časovou zónou počítača.
+  const qmeTimelineZone='Europe/Bratislava';
+  const qmeTimelineParts=new Intl.DateTimeFormat('en-GB',{timeZone:qmeTimelineZone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+  function qmeLocalMinute(date){
+    const pieces=qmeTimelineParts.formatToParts(date);
+    const get=k=>Number(pieces.find(part=>part.type===k)?.value||0);
+    return get('hour')*60+get('minute');
+  }
+  function qmeDatePlusDay(date,n){
+    // Calendar addition in local TZ for day selection; date key derived from a noon-like safe time.
+    const d=new Date(date);d.setDate(d.getDate()+n);return localDateSk(d);
+  }
+  function qmeDefaultDay(){
+    const now=new Date();
+    return qmeLocalMinute(now)>=16*60?'tomorrow':'today';
+  }
+  function timelineMeetingEvents(dayKey){
+    const raw=Array.isArray(meetingPayload)?meetingPayload:meetingPayload?.udalosti;
+    if(!Array.isArray(raw))return [];
+    return raw.map(e=>({nazov:String(e.nazov||e.subject||'Bez názvu'),zaciatok:parseMeetingDate(e.zaciatok||e.start),koniec:parseMeetingDate(e.koniec||e.end),showAs:e.showAs||e.showas||''}))
+      .filter(e=>e.zaciatok&&e.koniec&&e.koniec>e.zaciatok&&String(e.showAs).toLowerCase()!=='free'&&localDateSk(e.zaciatok)<=dayKey&&localDateSk(new Date(e.koniec.getTime()-1))>=dayKey)
+      .sort((a,b)=>a.zaciatok-b.zaciatok);
+  }
+  function updateMeetingTimeline(){
+    const root=document.getElementById('weekQmeTimeline');
+    const busyLayer=document.getElementById('qmeTimelineBusyLayer');
+    const nowLine=document.getElementById('qmeTimelineNow');
+    const nowDot=document.getElementById('qmeTimelineNowDot');
+    const tooltip=document.getElementById('qmeTimelineTooltip');
+    const dayLabel=document.getElementById('qmeTimelineDay');
+    if(!root||!busyLayer||!nowLine||!nowDot)return;
+    const now=new Date();
+    const selectedDay=qmeDefaultDay();
+    const dayKey=selectedDay==='today'?localDateSk(now):qmeDatePlusDay(now,1);
+    const startMin=420,endMin=1020,total=endMin-startMin;
+    if(dayLabel)dayLabel.textContent=selectedDay==='today'?'Dnes':'Zajtra';
+    const events=meetingIsFresh()?timelineMeetingEvents(dayKey):[];
+    const segments=[];
+    for(const e of events){
+      // Začiatky a konce môžu zasahovať do iného kalendárneho dňa.
+      // Vtedy ich orežeme na hranice vybraného dňa, nie na čas pôvodného dňa.
+      const fromDay=localDateSk(e.zaciatok);
+      const toDay=localDateSk(e.koniec);
+      const startOnDay=fromDay<dayKey?0:qmeLocalMinute(e.zaciatok);
+      const endOnDay=toDay>dayKey?1440:qmeLocalMinute(e.koniec);
+      const left=Math.max(startMin,startOnDay);
+      const right=Math.min(endMin,endOnDay);
+      if(right<=left)continue;
+      const label=meetingClock.format(e.zaciatok)+' – '+meetingClock.format(e.koniec)+' · '+e.nazov;
+      segments.push({left,right,label});
+    }
+    busyLayer.replaceChildren();
+    segments.forEach(segment=>{
+      const el=document.createElement('span');
+      el.className='qmeTimelineBusy';
+      el.style.left=((segment.left-startMin)/total*100)+'%';
+      el.style.width=((segment.right-segment.left)/total*100)+'%';
+      el.dataset.label=segment.label;
+      el.setAttribute('role','img');
+      el.setAttribute('aria-label',segment.label);
+      el.tabIndex=0;
+      // Interaktívny názov sa zobrazuje okamžite, bez oneskorenia systémového title.
+      busyLayer.appendChild(el);
+    });
+    if(tooltip)tooltip.hidden=true;
+    // Pohyblivý ukazovateľ platí len pre dnešnú os. Na zajtrajšej ho skryjeme.
+    const showNow=selectedDay==='today';
+    nowLine.style.display=showNow?'block':'none';
+    nowDot.style.display=showNow?'block':'none';
+    if(showNow){
+      const pct=Math.max(0,Math.min(100,(qmeLocalMinute(now)-startMin)/total*100));
+      nowLine.style.left=pct+'%';nowDot.style.left=pct+'%';
+    }
+    root.style.opacity=meetingIsFresh()?'1':'.65';
+    root.removeAttribute('title');
+    root.setAttribute('aria-label',meetingIsFresh()?'Q_ME – '+(selectedDay==='today'?'dnes':'zajtra')+' 07:00 až 17:00':'Rozpis Q_ME nie je aktuálny');
+  }
+  const qmeTooltip=document.getElementById('qmeTimelineTooltip');
+  const qmeBusyLayer=document.getElementById('qmeTimelineBusyLayer');
+  if(qmeTooltip&&qmeBusyLayer){
+    const show=e=>{const el=e.target.closest?.('.qmeTimelineBusy');if(!el)return;qmeTooltip.textContent=el.dataset.label||'';qmeTooltip.hidden=false;};
+    const hide=()=>{qmeTooltip.hidden=true;};
+    qmeBusyLayer.addEventListener('mouseover',show);
+    qmeBusyLayer.addEventListener('mouseout',e=>{if(!e.relatedTarget?.closest?.('.qmeTimelineBusy'))hide();});
+    qmeBusyLayer.addEventListener('focusin',show);
+    qmeBusyLayer.addEventListener('focusout',hide);
+  }
   function refreshMeetingIndicator(){
+    updateMeetingTimeline();
     if(!meetingIndicator)return;
     const events=meetingEvents(),now=new Date();
     const fresh=meetingIsFresh();
@@ -8968,6 +9059,7 @@ document.addEventListener('keydown',e=>{
     updateApiStatusIndicator();
   }
   setInterval(()=>{if(lastSyncMeta)updateSyncHealth();},60000);
+  setInterval(updateMeetingTimeline,60000);
   // Iba jeden poslucháč malej vetvy meetingovky; nepridávame nové pollovanie.
   if(typeof firebaseDb!=='undefined' && firebaseDb){
     firebaseDb.ref('meetingovka').on('value',snapshot=>{
@@ -9870,6 +9962,100 @@ document.addEventListener('keydown',e=>{
     setInterval(()=>{const key=weather.offsetTop+':'+weather.offsetHeight;if(key!==prev){prev=key;schedule();}},1500);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
+<script id="vrable-qme-axis-tooltip-fix-2026">
+(function(){
+  function cleanupTitles(){
+    const root=document.getElementById('weekQmeTimeline');
+    const track=root?.querySelector('.qmeTimelineTrack');
+    if(root) root.removeAttribute('title');
+    if(track) track.removeAttribute('title');
+  }
+  const origUpdateMeetingTimeline = window.updateMeetingTimeline;
+  if(typeof origUpdateMeetingTimeline==='function'){
+    window.updateMeetingTimeline=function(){
+      origUpdateMeetingTimeline();
+      cleanupTitles();
+    };
+  }
+  document.addEventListener('DOMContentLoaded',()=>{
+    cleanupTitles();
+    const busyLayer=document.getElementById('qmeTimelineBusyLayer');
+    const tooltip=document.getElementById('qmeTimelineTooltip');
+    const wrap=document.querySelector('#weekQmeTimeline .qmeTimelineTrackWrap');
+    if(!busyLayer || !tooltip || !wrap) return;
+    const show=e=>{
+      const el=e.target.closest?.('.qmeTimelineBusy');
+      if(!el) return;
+      tooltip.textContent=el.dataset.label||'';
+      const left=parseFloat(el.style.left||'0');
+      const width=parseFloat(el.style.width||'0');
+      const pct=Math.max(8,Math.min(92,left+width/2));
+      tooltip.style.left=pct+'%';
+      tooltip.hidden=false;
+    };
+    const hide=()=>{tooltip.hidden=true;};
+    busyLayer.addEventListener('mouseover',show,true);
+    busyLayer.addEventListener('mousemove',show,true);
+    busyLayer.addEventListener('focusin',show,true);
+    busyLayer.addEventListener('mouseleave',hide,true);
+    busyLayer.addEventListener('focusout',hide,true);
+  });
+})();
+</script>
+
+<script id="vrable-unified-week-add-direct-editor-2026">
+(function(){
+ function init(){
+   const add=document.getElementById('weekUnifiedAdd');
+   const audit=document.getElementById('weekChooseAudit');
+   const leave=document.getElementById('weekChooseLeave');
+   const choice=document.getElementById('weekEditorChoice');
+   const editorTitle=document.getElementById('weekEditorTitle');
+   if(!add||!audit||!leave||!choice||!editorTitle)return;
+   function syncChoice(){
+     const isEditing=editorTitle.textContent.trim().startsWith('Upraviť');
+     choice.hidden=isEditing;
+     const isLeave=editorTitle.textContent.includes('neprítomnosť');
+     audit.classList.toggle('selected',!isLeave);
+     leave.classList.toggle('selected',isLeave);
+     audit.setAttribute('aria-pressed',String(!isLeave));
+     leave.setAttribute('aria-pressed',String(isLeave));
+   }
+   // Existujúce funkcie spracovania a uloženia zostávajú nezmenené.
+   add.addEventListener('click',()=>document.getElementById('weekQuickAudit')?.click());
+   audit.addEventListener('click',()=>document.getElementById('weekQuickAudit')?.click());
+   leave.addEventListener('click',()=>document.getElementById('weekQuickLeave')?.click());
+   new MutationObserver(syncChoice).observe(editorTitle,{childList:true,characterData:true,subtree:true});
+   syncChoice();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
+<script id="vrable-celebrations-heading-autofit">
+(function() {
+ function fitHeading(){
+   if(window.innerWidth<=900)return;
+   const e=document.querySelector('#celebrationsDashboard .celebrateTitle');
+   if(!e || !e.clientWidth)return;
+   const ctx=document.createElement('canvas').getContext('2d');
+   if(!ctx)return;
+   const style=getComputedStyle(e);
+   const available=e.clientWidth - 8;
+   let size=31;
+   while(size>22){
+     ctx.font=`850 ${size}px ${style.fontFamily}`;
+     const width=ctx.measureText(e.textContent.trim()).width + (e.textContent.trim().length-1)*(-.65);
+     if(width<=available)break;
+     size-=.5;
+   }
+   e.style.setProperty('font-size',size+'px','important');
+ }
+ window.addEventListener('resize',fitHeading);
+ document.addEventListener('DOMContentLoaded',()=>{fitHeading();setTimeout(fitHeading,400);});
 })();
 </script>
 </body>
