@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="sk">
 <head>
 <meta charset="UTF-8">
@@ -5224,6 +5225,51 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
   }
 }
 </style>
+
+<style id="vrable-countdown-text-mode-2026">
+@media (min-width:901px){
+  #stage #shiftBox .countdownCard.textMode{justify-content:center!important;padding-top:10px!important;padding-bottom:10px!important;}
+  #stage #shiftBox .countdownCard.textMode .workMain{display:flex!important;align-items:center!important;justify-content:center!important;flex:1 1 auto!important;width:100%!important;}
+  #stage #shiftBox .countdownCard.textMode .workValue{font-size:18px!important;line-height:1.18!important;letter-spacing:-.2px!important;white-space:normal!important;overflow-wrap:anywhere!important;text-align:center!important;max-width:100%!important;}
+  #stage #shiftBox .countdownCard.textMode .workHint{display:none!important;}
+}
+@media (max-width:900px){
+  #stage #shiftBox .countdownCard.textMode .workValue{font-size:14px!important;line-height:1.18!important;white-space:normal!important;overflow-wrap:anywhere!important;text-align:center!important;}
+  #stage #shiftBox .countdownCard.textMode .workHint{display:none!important;}
+}
+</style>
+
+<style id="vrable-compact-countdown-card-headings-2026">
+@media(min-width:901px){
+ #stage #shiftBox .countdownCard .workdayHeader{flex:0 0 auto!important;margin:0 0 3px!important;line-height:1!important;}
+ #stage #shiftBox .countdownCard .workdayTitle{font-size:18px!important;line-height:1.1!important;}
+ #stage #shiftBox .countdownCard.textMode{padding:7px 7px 6px!important;justify-content:flex-start!important;}
+ #stage #shiftBox .countdownCard.textMode .workMain{flex:1 1 auto!important;min-height:0!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;}
+ #stage #shiftBox .countdownCard.textMode .workValue{
+   font-size:19px!important;line-height:1.12!important;letter-spacing:0!important;
+   font-weight:800!important;white-space:normal!important;overflow-wrap:normal!important;
+   word-break:normal!important;hyphens:none!important;text-align:center!important;
+   padding:0!important;margin:0!important;width:100%!important;
+ }
+ #stage #shiftBox .countdownCard.textMode .workHint{display:none!important;}
+}
+@media(max-width:900px){
+ #stage #shiftBox .countdownCard.textMode .workValue{font-size:14px!important;line-height:1.15!important;letter-spacing:0!important;white-space:normal!important;text-align:center!important;}
+ #stage #shiftBox .countdownCard.textMode .workHint{display:none!important;}
+}
+</style>
+
+<style id="vrable-obed-zmena-big-headings-2026">
+@media (min-width:901px){
+  #stage #shiftBox .countdownCard .workdayHeader{margin:0 0 3px!important;min-height:31px!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+  #stage #shiftBox .countdownCard .workdayTitle{font-size:31px!important;line-height:1.02!important;font-weight:850!important;letter-spacing:-.5px!important;}
+  #stage #shiftBox .countdownCard.textMode .workMain{flex:1!important;min-height:0!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:visible!important;}
+  #stage #shiftBox .countdownCard.textMode .workValue{font-size:31px!important;line-height:1.05!important;font-weight:850!important;white-space:nowrap!important;overflow-wrap:normal!important;word-break:normal!important;letter-spacing:-.7px!important;max-width:100%!important;}
+}
+@media (max-width:900px){
+  #stage #shiftBox .countdownCard .workdayTitle{font-size:clamp(20px,5vw,27px)!important;font-weight:850!important;}
+}
+</style>
 </head>
 
 <body>
@@ -6749,46 +6795,49 @@ function updateVacation(){
     const skDate=d=>d.toLocaleDateString('sk-SK',{day:'2-digit',month:'2-digit'});
     const formatSub=(date,text)=>`${skShortDay(date)} ${skDate(date)}. - ${text}`;
 
-    let shiftCardTitle='Najbližšia zmena';
+    let shiftCardTitle='Zmena';
     let shiftValue='00:00';
     let shiftHint='';
-    let lunchCardTitle='Najbližší obed';
+    let lunchCardTitle='Obed';
     let lunchValue='00:00';
     let lunchHint='';
+    let shiftTextMode=false;
+    let lunchTextMode=false;
 
-    if(isWeekday && n < shiftStart){
-      shiftValue=formatClock((shiftStart-n)/1000);
-      shiftHint=formatSub(shiftStart,'začiatok o 7:00');
-    } else if(isWeekday && n >= shiftStart && n < shiftEnd){
+    if(isWeekday && n >= shiftStart && n < shiftEnd){
       shiftValue=formatClock((shiftEnd-n)/1000);
       shiftHint=formatSub(shiftEnd,'koniec o 15:00');
     } else {
-      shiftValue=formatClock((nextShift-n)/1000);
       shiftHint=formatSub(nextShift,'začiatok o 7:00');
+      shiftValue='o 7:00';
+      shiftTextMode=true;
     }
 
-    if(isWeekday && n < lunchStart){
-      lunchValue=formatClock((lunchStart-n)/1000);
-      lunchHint=formatSub(lunchStart,'obed o 10:30');
-    } else if(isWeekday && n >= lunchStart && n < lunchEnd){
-      lunchValue=formatClock((lunchEnd-n)/1000);
-      lunchHint=formatSub(lunchEnd,'koniec obeda 11:30');
+    if(isWeekday && n >= shiftStart && n < lunchEnd){
+      if(n < lunchStart){
+        lunchValue=formatClock((lunchStart-n)/1000);
+        lunchHint=formatSub(lunchStart,'obed o 10:30');
+      } else {
+        lunchValue=formatClock((lunchEnd-n)/1000);
+        lunchHint=formatSub(lunchEnd,'koniec obeda 11:30');
+      }
     } else {
-      lunchValue=formatClock((nextLunch-n)/1000);
       lunchHint=formatSub(nextLunch,'obed o 10:30');
+      lunchValue='o 10:30';
+      lunchTextMode=true;
     }
 
     const workdayMarkup = `
       <div class="workdayGrid countdownStyle">
-        <div class="workCard countdownCard lunchCard">
+        <div class="workCard countdownCard lunchCard ${lunchTextMode?'textMode':''}">
           <div class="workdayHeader"><div class="workdayTitle">${lunchCardTitle}</div></div>
           <div class="workMain"><div class="workValue">${lunchValue}</div></div>
-          <div class="workHint">${lunchHint}</div>
+          <div class="workHint">${lunchTextMode?'':lunchHint}</div>
         </div>
-        <div class="workCard countdownCard shiftCard">
+        <div class="workCard countdownCard shiftCard ${shiftTextMode?'textMode':''}">
           <div class="workdayHeader"><div class="workdayTitle">${shiftCardTitle}</div></div>
           <div class="workMain"><div class="workValue">${shiftValue}</div></div>
-          <div class="workHint">${shiftHint}</div>
+          <div class="workHint">${shiftTextMode?'':shiftHint}</div>
         </div>
       </div>`;
 
@@ -6802,6 +6851,11 @@ function updateVacation(){
       oldCards.forEach((card,i)=>{
         const next=newCards[i];
         if(!next) return;
+        const isText=next.classList.contains('textMode');
+        if(card.classList.contains('textMode')!==isText){
+          card.classList.toggle('textMode',isText);
+          card.querySelector('.workValue')?.style.removeProperty('font-size');
+        }
         for(const selector of ['.workdayTitle','.workValue','.workHint']){
           const oldEl=card.querySelector(selector);
           const nextEl=next.querySelector(selector);
@@ -10238,6 +10292,10 @@ document.addEventListener('keydown',e=>{
       const card=el.closest('.countdownCard');
       const main=el.closest('.workMain');
       if(!card||!main)return;
+      if(card.classList.contains('textMode')){
+        if(el.style.fontSize) el.style.removeProperty('font-size');
+        return;
+      }
       const style=getComputedStyle(el);
       const font=style.fontFamily||'Arial, sans-serif';
       const available=Math.max(80,main.clientWidth-6);
