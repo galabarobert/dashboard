@@ -5270,6 +5270,185 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
   #stage #shiftBox .countdownCard .workdayTitle{font-size:clamp(20px,5vw,27px)!important;font-weight:850!important;}
 }
 </style>
+
+<style id="midnight-blue-glass-2026-final-skin">
+:root{--mbg-bg:#03172b;--mbg-panel:rgba(7,55,105,.86);--mbg-panel2:rgba(9,72,132,.82);--mbg-border:rgba(105,190,255,.32);--mbg-accent:#45b7ff;--mbg-text:#f5fbff;--mbg-muted:#a9d3ef;--mbg-green:#35d39a;--mbg-red:#ff6570;--mbg-shadow:0 12px 34px rgba(0,12,34,.34)}
+html,body{background:#03172b!important;color:var(--mbg-text)!important}
+body{background-image:radial-gradient(ellipse 72% 62% at 21% 12%,rgba(22,117,190,.30),transparent 72%),radial-gradient(ellipse 68% 58% at 88% 82%,rgba(12,84,151,.22),transparent 74%),linear-gradient(145deg,#021425 0%,#062745 48%,#03182f 100%)!important}
+#stage .glass,#stage #weekDashboard,#stage #celebrationsDashboard,#stage #shiftBox,#stage #historicalEvents,#stage #radioPanel{background:linear-gradient(145deg,rgba(12,82,143,.88),rgba(5,48,96,.91))!important;border:1px solid var(--mbg-border)!important;border-radius:18px!important;box-shadow:var(--mbg-shadow),inset 0 1px 0 rgba(220,244,255,.10)!important;backdrop-filter:blur(16px) saturate(125%)!important;-webkit-backdrop-filter:blur(16px) saturate(125%)!important}
+#stage #vrableWeatherUnifiedFrame,#stage #clock-box{background:linear-gradient(145deg,rgba(12,82,143,.90),rgba(5,48,96,.93))!important;border-color:var(--mbg-border)!important;box-shadow:var(--mbg-shadow),inset 0 1px 0 rgba(220,244,255,.10)!important}
+#stage #forecast3days .weatherToday{background:linear-gradient(135deg,rgba(31,137,214,.62),rgba(8,83,154,.58))!important;border-color:rgba(134,211,255,.30)!important}
+#stage #forecast3days .weatherDayCard,#stage .worldTile{background:linear-gradient(155deg,rgba(3,45,91,.88),rgba(2,28,61,.91))!important;border-color:rgba(107,184,241,.25)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.055)!important}
+#stage .dashboardSectionTitle,#stage .weekTitle,#stage .celebrateTitle,#stage .radioHeading strong{color:var(--mbg-text)!important;text-shadow:none!important}
+#stage #location{color:#fff!important;text-shadow:0 0 18px rgba(69,183,255,.18)!important}
+#stage #time{color:#fff!important;text-shadow:0 0 22px rgba(69,183,255,.22)!important}
+#stage #dateWeek,#stage .weekKind,#stage .celebrateType,#stage .qmeTimelineDay,#stage #newsUpdateStatus{color:var(--mbg-muted)!important}
+#stage #weekDashboard .weekEventRow{border-bottom-color:rgba(155,214,255,.10)!important}
+#stage #weekDashboard .weekEventRow>div:not(:last-child){border-right-color:rgba(155,214,255,.09)!important}
+#stage #weekDashboard .weekEventRow:hover,#stage #celebrationsDashboard .celebrateEvent:hover{background:rgba(69,183,255,.13)!important}
+#stage #weekDashboard .weekEventRow.weekToday,#stage #celebrationsDashboard .celebrateAlert{background:linear-gradient(90deg,rgba(69,183,255,.20),rgba(69,183,255,.08))!important;box-shadow:inset 4px 0 0 var(--mbg-accent)!important}
+#stage #weekUnifiedAdd,#stage #dashboardQuickBar button,#stage #weekDashboard .weekHeaderActions button{background:linear-gradient(145deg,rgba(50,146,229,.76),rgba(18,93,167,.78))!important;border-color:rgba(139,211,255,.40)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.16)!important}
+#stage #radioStations button{background:linear-gradient(160deg,rgba(42,121,193,.46),rgba(16,70,133,.56))!important;border-color:rgba(128,198,250,.23)!important;box-shadow:none!important}
+#stage #radioStations button:hover{background:rgba(69,183,255,.30)!important}
+#stage #radioPanel.radioIsPlaying #radioStations button[aria-pressed="true"]{background:linear-gradient(145deg,rgba(52,157,239,.48),rgba(18,102,184,.56))!important;border-color:rgba(133,215,255,.70)!important;box-shadow:0 0 16px rgba(69,183,255,.20),inset 0 1px 0 rgba(255,255,255,.16)!important}
+#stage #radioPanel .radioControls #radioPlay{background:linear-gradient(145deg,#249eea,#1268b6)!important;border-color:rgba(174,226,255,.55)!important}
+#stage #shiftBox .countdownCard{background:linear-gradient(145deg,rgba(33,125,201,.48),rgba(9,63,124,.62))!important;border-color:rgba(120,194,250,.24)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important}
+#stage #weekDashboard .qmeTimelineTrack{border-color:rgba(118,238,182,.38)!important;box-shadow:inset 0 1px 2px rgba(255,255,255,.10)!important}
+#stage #weekDashboard .qmeTimelineBusy{box-shadow:0 0 7px rgba(255,101,112,.24)!important}
+#stage #historicalEvents{background:linear-gradient(120deg,rgba(10,75,134,.94),rgba(5,50,101,.96))!important}
+#stage #eventScroll .newsTopic{background:rgba(69,183,255,.14)!important;border-color:rgba(150,217,255,.18)!important;color:#d9efff!important}
+#stage #apiStatusPanel,#stage .dbDialog,#stage #hourlyForecastDialog,#weekEditorOverlay .weekEditorDialog{background:linear-gradient(145deg,#0b4d83,#052c56)!important;border-color:rgba(130,205,255,.34)!important}
+#stage button,#stage input,#stage select{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+#stage *{scrollbar-color:rgba(88,177,245,.55) rgba(2,31,65,.18)}
+@media(max-width:900px){#stage .glass,#stage #weekDashboard,#stage #celebrationsDashboard,#stage #shiftBox,#stage #historicalEvents,#stage #radioPanel{border-radius:15px!important}.hourlyForecastTitle{font-size:24px!important}}
+</style>
+
+<style id="midnight-blue-glass-safe-fix">
+/* Safe visual pass: no display, position, sizing, overflow, grid or flex overrides. */
+#stage #weekDashboard .weekEventRow:nth-child(even){background-color:rgba(3,30,62,.10)!important}
+#stage #weekDashboard .weekEventRow.weekToday{background:linear-gradient(90deg,rgba(69,183,255,.19),rgba(69,183,255,.06))!important;box-shadow:inset 4px 0 0 #49bdff!important}
+#stage #weekDashboard .qmeTimelineTrack{background:rgba(2,25,53,.58)!important;border-radius:999px!important}
+#stage #weekDashboard .qmeTimelineBusy{background:linear-gradient(90deg,#fa5d69,#ff8c72)!important;border-radius:999px!important}
+#stage #weekDashboard .qmeTimelineFree{background:linear-gradient(90deg,#2bcf96,#65e2b5)!important;border-radius:999px!important}
+#stage #celebrationsDashboard .celebrateEvent{border-bottom-color:rgba(126,204,255,.14)!important}
+#stage #celebrationsDashboard .celebrateDate{color:#8bddff!important;font-weight:700!important}
+#stage #celebrationsDashboard .celebrateName{color:#fff!important;font-weight:700!important}
+#stage #celebrationsDashboard .celebrateType{color:#a8cfe8!important}
+#stage #forecast3days .weatherToday{background:linear-gradient(145deg,rgba(35,143,220,.48),rgba(7,73,138,.35))!important}
+#stage #forecast3days .weatherDayCard{border-color:rgba(127,210,255,.22)!important}
+#stage #radioPanel{background:linear-gradient(145deg,rgba(8,65,119,.80),rgba(4,41,82,.88))!important}
+#stage #radioStations button{box-shadow:none!important;border-color:rgba(128,198,250,.23)!important}
+#stage #radioPanel .radioControls button{box-shadow:none!important}
+#stage #shiftBox .countdownCard{background:linear-gradient(145deg,rgba(33,125,201,.48),rgba(9,63,124,.62))!important;border-color:rgba(120,194,250,.24)!important}
+#stage #historicalEvents{background:linear-gradient(120deg,rgba(10,75,134,.94),rgba(5,50,101,.96))!important}
+#stage #eventScroll .newsTopic{background:rgba(69,183,255,.14)!important;border-color:rgba(150,217,255,.18)!important;color:#d9efff!important}
+</style>
+
+<style id="qme-timeline-color-fix">
+/* Q_ME timeline: calmer colors matching Midnight Blue Glass */
+#stage #weekDashboard .qmeTimelineTrack{
+  background:rgba(2,31,65,.72)!important;
+  border:1px solid rgba(105,190,255,.22)!important;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.28)!important;
+}
+#stage #weekDashboard .qmeTimelineBusy{
+  background:#ff6570!important;
+  box-shadow:none!important;
+}
+#stage #weekDashboard .qmeTimelineFree{
+  background:#35d39a!important;
+  box-shadow:none!important;
+}
+#stage #weekDashboard .qmeTimelineDay{
+  color:#a9d3ef!important;
+}
+</style>
+
+<style id="qme-timeline-final-colors">
+#stage #weekDashboard .qmeTimelineTrack{background:#082a4b!important;border:1px solid rgba(127,195,235,.28)!important;box-shadow:inset 0 1px 3px rgba(0,0,0,.30)!important}
+#stage #weekDashboard .qmeTimelineBusy{background:#e96b72!important;box-shadow:none!important}
+#stage #weekDashboard .qmeTimelineFree{background:#44bfa3!important;box-shadow:none!important}
+#stage #weekDashboard .qmeTimelineDay{color:#b6d6e9!important}
+</style>
+
+<style id="radio-wide-song-final">
+/* Viac priestoru pre interpreta a názov skladby, logika 30-min. prepínania ostáva nezmenená. */
+#stage #radioPanel .radioControls #radioSongRow.radioSongModern{
+  flex:1 1 360px!important;
+  min-width:260px!important;
+  max-width:none!important;
+}
+#stage #radioPanel .radioInlineSettings{
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+  gap:7px!important;
+}
+#stage #radioPanel .radioInlineSettings label{
+  white-space:nowrap!important;
+}
+#stage #radioPanel .radioControls #radioSongRow #radioNowPlaying{
+  width:100%!important;
+  max-width:none!important;
+}
+</style>
+
+<style id="weather-layout-user-fix">
+/* Bigger Max / Min on the main Today card. */
+#stage #forecast3days .weatherTodayMain>.weatherTempRange{
+  font-size:34px!important;
+  line-height:1.12!important;
+  font-weight:850!important;
+  letter-spacing:-1px!important;
+  text-align:center!important;
+}
+/* Put the 2-hour rain strip visually under the wind, aligned to the left. */
+#stage #forecast3days .weatherToday>.rainTwoHours{
+  width:58%!important;
+  max-width:245px!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+  transform:translateY(-2px)!important;
+  text-align:left!important;
+}
+#stage #forecast3days .weatherToday>.rainTwoHours .rainTwoHoursLabel{
+  justify-content:flex-start!important;
+  text-align:left!important;
+}
+@media(max-width:900px){
+ #stage #forecast3days .weatherTodayMain>.weatherTempRange{font-size:29px!important;}
+ #stage #forecast3days .weatherToday>.rainTwoHours{width:62%!important;max-width:none!important;}
+}
+</style>
+
+<style id="weather-maxmin-rain-wide-v2">
+/* Requested: clearly larger Max/Min and a wider 2-hour precipitation strip. */
+#stage #forecast3days .weatherTodayMain>.weatherTempRange{
+  font-size:40px!important;
+  line-height:1.06!important;
+  font-weight:900!important;
+  letter-spacing:-1.25px!important;
+  text-align:center!important;
+}
+#stage #forecast3days .weatherToday>.rainTwoHours{
+  width:78%!important;
+  max-width:330px!important;
+  min-width:285px!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+  text-align:left!important;
+}
+#stage #forecast3days .weatherToday>.rainTwoHours .rainTwoHoursLabel{
+  justify-content:flex-start!important;
+  text-align:left!important;
+}
+@media(max-width:900px){
+ #stage #forecast3days .weatherTodayMain>.weatherTempRange{font-size:34px!important;}
+ #stage #forecast3days .weatherToday>.rainTwoHours{width:78%!important;min-width:0!important;max-width:none!important;}
+}
+</style>
+
+<style id="qme-timeline-green-red-final">
+/* Q_ME časová os: voľné = zelená, obsadené = červená */
+#stage #weekDashboard .qmeTimelineTrack{background:linear-gradient(180deg,#2fbf71,#1e9a57)!important;border:1px solid rgba(150,245,190,.45)!important;box-shadow:inset 0 1px 2px rgba(255,255,255,.18)!important}
+#stage #weekDashboard .qmeTimelineFree{background:linear-gradient(180deg,#2fbf71,#1e9a57)!important;box-shadow:none!important}
+#stage #weekDashboard .qmeTimelineBusy{background:linear-gradient(180deg,#f04848,#c92a2a)!important;box-shadow:none!important}
+#stage #weekDashboard .qmeTimelineDay{color:#cfe6f5!important}
+</style>
+
+<style id="celebrations-row-alignment">
+/* Zarovnanie riadkov: deň/dátum v ľavom stĺpci sedí na úrovni mena a typu prvej karty. */
+#stage #celebrationsDashboard .celebrateDayGroup{display:grid!important;grid-template-columns:62px minmax(0,1fr)!important;column-gap:8px!important;align-items:start!important}
+#stage #celebrationsDashboard .celebrateDate{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:flex-start!important;gap:2px!important;padding:8px 0 0 2px!important;margin:0!important;transform:none!important}
+#stage #celebrationsDashboard .celebrateWeekday{display:block!important;font-size:15px!important;line-height:22px!important;margin:0!important}
+#stage #celebrationsDashboard .celebrateDateNumber{display:block!important;font-size:16px!important;line-height:18px!important;margin:0!important}
+#stage #celebrationsDashboard .celebrateEvent{display:grid!important;grid-template-columns:28px minmax(0,1fr)!important;column-gap:8px!important;align-items:center!important;padding:8px 12px 8px 10px!important;text-align:left!important}
+#stage #celebrationsDashboard .celebrateEvent>.celebrateIcon,#stage #celebrationsDashboard .celebrateEvent>span:first-child{justify-self:center!important;align-self:center!important;margin:0!important}
+#stage #celebrationsDashboard .celebrateInfo{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:2px!important;min-width:0!important;text-align:left!important}
+#stage #celebrationsDashboard .celebrateName{display:block!important;line-height:22px!important;text-align:left!important;margin:0!important}
+#stage #celebrationsDashboard .celebrateMeta{display:flex!important;justify-content:space-between!important;align-items:baseline!important;gap:8px!important;line-height:18px!important;margin:0!important}
+#stage #celebrationsDashboard .celebrateType{line-height:18px!important;margin:0!important}
+#stage #celebrationsDashboard .celebrateCountdown{margin-left:auto!important;line-height:18px!important;white-space:nowrap!important}
+</style>
 </head>
 
 <body>
@@ -5443,7 +5622,7 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
   <div class="radioHeading"><strong>Rádiá</strong><span>ONLINE</span></div>
   <div id="radioStations" aria-label="Výber stanice"></div>
   <div class="radioDivider" aria-hidden="true"></div>
-  <div class="radioControls"><button id="radioPlay" type="button" aria-label="Spustiť rádio">▶</button><button id="radioMute" type="button" aria-label="Stlmiť zvuk">🔊</button><input id="radioVolume" aria-label="Hlasitosť" type="range" min="0" max="100" value="60"><output id="radioVolumeLabel">60 %</output><div id="radioSongRow" class="radioSongModern" aria-label="Aktuálne hraná skladba"><span class="radioSongGlyph" aria-hidden="true">♫</span><span id="radioNowPlaying" aria-live="off" title="Aktuálne hraná skladba" hidden></span></div><div class="radioInlineSettings"><label><input id="radioRotate" type="checkbox"> Náhodne každých 30 min</label><label title="Automatické prehrávanie denne od 7:00 do 17:00"><input id="radioSchedule" type="checkbox" checked> 7:00 – 17:00</label></div><small id="radioRotationStatus" class="radioInlineStatus">Automatické striedanie je vypnuté.</small></div>
+  <div class="radioControls"><button id="radioPlay" type="button" aria-label="Spustiť rádio">▶</button><button id="radioMute" type="button" aria-label="Stlmiť zvuk">🔊</button><input id="radioVolume" aria-label="Hlasitosť" type="range" min="0" max="100" value="60"><output id="radioVolumeLabel">60 %</output><div id="radioSongRow" class="radioSongModern" aria-label="Aktuálne hraná skladba"><span class="radioSongGlyph" aria-hidden="true">♫</span><span id="radioNowPlaying" aria-live="off" title="Aktuálne hraná skladba" hidden></span></div><div class="radioInlineSettings"><label><input id="radioRotate" type="checkbox"> Náhodné prehrávanie</label><label title="Automatické prehrávanie denne od 7:00 do 17:00"><input id="radioSchedule" type="checkbox" checked> 7:00 – 17:00</label></div><small id="radioRotationStatus" class="radioInlineStatus">Automatické striedanie je vypnuté.</small></div>
   <div class="radioFooter"><span id="radioStatus" role="status" aria-live="polite">Vyber stanicu a spusti prehrávanie.</span><a id="radioWebsite" target="_blank" rel="noopener noreferrer">Web rádia ↗</a></div>
   <audio id="radioAudio" preload="none"></audio>
 </section>
@@ -8478,7 +8657,7 @@ if(typeof ResizeObserver!=='undefined'){
   nowPlaying.textContent=song;
   nowPlaying.title=song?('Aktuálna skladba: '+song):'Údaje o skladbe nie sú dostupné';
  }
- function resetSong(){metadataToken++;metadataRequest++;metadataMisses=0;showSong('');}
+ function resetSong(){metadataToken++;metadataRequest++;metadataMisses=0;showSong('');try{metadataBusy=false;}catch(e){}}
  function getMountSong(data,mount){
   const source=data?.icestats?.source;
   const sources=Array.isArray(source)?source:[source].filter(Boolean);
@@ -8492,8 +8671,18 @@ if(typeof ResizeObserver!=='undefined'){
  }
  // Europa 2 a Expres publikujú playlist na vlastných stránkach.
  // Úvodné audio reklamy však pridáva samotný poskytovateľ streamu (Bauer Media).
- const officialPlaylistPages={'Europa 2':'https://www.europa2.sk/stream/','Expres':'https://www.expres.sk/stream/'};
+ const officialPlaylistPages={'Europa 2':'https://www.europa2.sk/stream/','Expres':'https://www.expres.sk/stream/','Rádio Melody':'https://www.radiomelody.sk/stream/'};
  const icecastMetadata={'Rádio Vlna':['https://stream.radiovlna.sk/status-json.xsl','vlna-hi.mp3']};
+ // Záložné playlisty pre stanice, ktorých stream neposiela čitateľné ICY metadáta do prehliadača.
+ const playlistFallbackPages={
+  'Europa 2':'https://www.radia.sk/radia/europa2/playlist',
+  'Expres':'https://www.radia.sk/radia/expres/playlist',
+  'Rádio Vlna':'https://www.radia.sk/radia/vlna/playlist',
+  'Rádio Melody':'https://www.radia.sk/radia/melody/playlist',
+  'Fun Rádio':'https://onlineradiobox.com/sk/fun/playlist/',
+  'Fun Dance':'https://onlineradiobox.com/sk/funradiodance/playlist/',
+  'Fun Milenialky':'https://onlineradiobox.com/sk/funradiomilenialky/playlist/'
+ };
  function extractOfficialSong(html,station){
   if(!html||typeof html!=='string')return '';
   const doc=new DOMParser().parseFromString(html,'text/html');
@@ -8509,7 +8698,7 @@ if(typeof ResizeObserver!=='undefined'){
   const marker=station==='Expres'?nodes.findIndex(t=>/posledn[eé] hran[eé]/i.test(t)):-1;
   const start=Math.max(0,marker);
   const slice=nodes.slice(start);
-  const skip=/^(?:64|128|kbps|kvalita|poč[uú]vať|posledn[eé] hran[eé]|live|naživo|playlist|play|pause|rádio expres|europa 2|zobraziť všetky|viac|[•-])$/i;
+  const skip=/^(?:64|128|kbps|kvalita|poč[uú]vať|posledn[eé] hran[eé]|live|naživo|playlist|play|pause|rádio expres|europa 2|rádio melody|hity vášho života|zobraziť všetky|viac|[•-])$/i;
   for(let i=0;i<slice.length-2;i++){
    if(!/^(?:dnes\s*)?\d{1,2}:\d{2}$/.test(slice[i]))continue;
    const parts=[];
@@ -8539,13 +8728,82 @@ if(typeof ResizeObserver!=='undefined'){
   if(!html){try{html=await fetchTextViaCorsProxy(url,3500);}catch(e){}}
   return extractOfficialSong(html,station);
  }
+
+
+ function extractRadiaSkSong(html){
+  if(!html||typeof html!=='string')return '';
+  const doc=new DOMParser().parseFromString(html,'text/html');
+  doc.querySelectorAll('script,style,noscript,svg,nav,footer,header').forEach(el=>el.remove());
+  // DOMParser dokument sa nevykresľuje, preto innerText spája texty bez medzier.
+  // Čítame jednotlivé textové uzly, rovnako ako pri oficiálnych stránkach.
+  const nodes=[];const walk=doc.createTreeWalker(doc.body,NodeFilter.SHOW_TEXT);
+  while(walk.nextNode()){const v=(walk.currentNode.nodeValue||'').replace(/\s+/g,' ').trim();if(v&&v.length<200)nodes.push(v);}
+  const isTime=v=>/^(?:dnes|teraz|naživo)?\s*\d{1,2}:\d{2}$/i.test(v);
+  const skip=/^(?:dnes|včera|teraz|naživo|videoklip|audio|playlist|zoznam odohraní.*|top skladby.*|[•\-–|])$/i;
+  for(let i=0;i<nodes.length-1;i++){
+   if(!isTime(nodes[i]))continue;
+   const parts=[];
+   for(let j=i+1;j<Math.min(i+6,nodes.length);j++){
+    const v=nodes[j];if(isTime(v))break;if(skip.test(v))continue;
+    if(v.length>1&&v.length<120)parts.push(v);if(parts.length===2)break;
+   }
+   if(parts.length===2)return cleanSong(parts[0]+' – '+parts[1]);
+   if(parts.length===1&&/\s[-–]\s/.test(parts[0]))return cleanSong(parts[0]);
+  }
+  return '';
+ }
+ const orbAliases={'Europa 2':'sk.europa2','Expres':'sk.expres','Rádio Melody':'sk.melody'};
+ async function fetchOrbMetadata(station){
+  const alias=orbAliases[station];if(!alias)return '';
+  const url='https://scraper2.onlineradiobox.com/'+alias+'?l=0&_='+Date.now();
+  let raw='';
+  try{const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(4000)});if(r.ok)raw=await r.text();}catch(e){}
+  if(!raw){try{raw=await fetchTextViaCorsProxy(url,4000)||'';}catch(e){}}
+  try{const d=JSON.parse(raw);const t=cleanSong(d?.title||'');return /^(europa 2|expres|rádio melody|melody)$/i.test(t)?'':t;}catch(e){return '';}
+ }
+ async function firstSong(tasks){
+  return new Promise(resolve=>{
+   let left=tasks.length;if(!left)return resolve('');
+   tasks.forEach(p=>Promise.resolve(p).then(v=>{if(v){resolve(v);}else if(--left===0)resolve('');},()=>{if(--left===0)resolve('');}));
+  });
+ }
+ function extractFallbackSong(html){
+  if(!html||typeof html!=='string')return '';
+  const doc=new DOMParser().parseFromString(html,'text/html');
+  const selectors=['.current-song','.current_playing','.playing','.playlist .active','[class*="current"] [class*="song"]','[class*="now-playing"]'];
+  for(const selector of selectors){
+   const el=doc.querySelector(selector);const value=cleanSong(el?.textContent||'');
+   if(value&&value.length>3&&!/playlist|naživo|live|práve hrá/i.test(value))return value;
+  }
+  const text=(doc.body?.innerText||'').replace(/\s+/g,' ').trim();
+  const patterns=[/Naživo\s+(.{3,150}?)(?=\s+\d{1,2}:\d{2}|$)/i,/Práve hrá\s*[:\-]?\s*(.{3,150}?)(?=\s+\d{1,2}:\d{2}|$)/i,/On Air\s*[:\-]?\s*(.{3,150}?)(?=\s+\d{1,2}:\d{2}|$)/i];
+  for(const re of patterns){const m=text.match(re);if(m){const value=cleanSong(m[1]);if(value)return value;}}
+  const timed=text.match(/(?:dnes\s+)?\d{1,2}:\d{2}\s+(.{3,150}?)(?=\s+(?:dnes\s+)?\d{1,2}:\d{2}|$)/i);
+  return timed?cleanSong(timed[1]):'';
+ }
+ async function fetchFallbackMetadata(station){
+  const page=playlistFallbackPages[station];if(!page)return '';
+  const url=page+(page.includes('?')?'&':'?')+'_='+Date.now();
+  let html='';
+  try{const res=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(4500)});if(res.ok)html=await res.text();}catch(e){}
+  if(!html){try{html=await fetchTextViaCorsProxy(url,5000)||'';}catch(e){}}
+  if(/radia\.sk\/radia\//i.test(page)){const value=extractRadiaSkSong(html);if(value)return value;}
+  return extractFallbackSong(html);
+ }
+ let metadataBusy=false;
  async function fetchSongMetadata(){
+  if(metadataBusy)return;metadataBusy=true;
+  try{await fetchSongMetadataInner();}finally{metadataBusy=false;}
+ }
+ async function fetchSongMetadataInner(){
   if(!wanted||audio.paused||document.hidden)return;
   const station=selected[0],mount=funMounts[station];
-  if(!mount&&!officialPlaylistPages[station]&&!icecastMetadata[station]){showSong('');return;}
+  if(!mount&&!officialPlaylistPages[station]&&!icecastMetadata[station]&&!playlistFallbackPages[station]){showSong('');return;}
   const token=metadataToken,request=++metadataRequest;
   let song='';
-  if(officialPlaylistPages[station]){
+  if(orbAliases[station]){
+   song=await firstSong([fetchOfficialMetadata(station),fetchFallbackMetadata(station),fetchOrbMetadata(station)]);
+  }else if(officialPlaylistPages[station]){
    song=await fetchOfficialMetadata(station);
   }else if(icecastMetadata[station]){
    const [base,mountName]=icecastMetadata[station];
@@ -8565,12 +8823,13 @@ if(typeof ResizeObserver!=='undefined'){
    if(!data){try{const raw=await fetchTextViaCorsProxy(url,4500);if(raw)data=JSON.parse(raw);}catch(e){}}
    song=data?getMountSong(data,mount):'';
   }
+  if(!song&&!orbAliases[station]) song=await fetchFallbackMetadata(station);
   if(token!==metadataToken||request!==metadataRequest||!wanted||audio.paused||selected[0]!==station)return;
   if(song){metadataMisses=0;showSong(song);}
-  else if(++metadataMisses>=2){showSong('');}
+  else if(++metadataMisses>=4){showSong('');}
  }
- // Aktualizácia každých 5 sekúnd; obnova aj po návrate na kartu.
- setInterval(fetchSongMetadata,5000);
+ // Aktualizácia každých 10 sekúnd; obnova aj po návrate na kartu.
+ setInterval(fetchSongMetadata,10000);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)fetchSongMetadata();});
  const stored=read('dashboardRadioVolume');vol.value=stored!==null&&Number.isFinite(+stored)?Math.max(0,Math.min(100,+stored)):60;
  function volume(){audio.volume=+vol.value/100;$('radioVolumeLabel').textContent=vol.value+' %';save('dashboardRadioVolume',vol.value)}volume();
@@ -9411,7 +9670,8 @@ document.addEventListener('keydown',e=>{
         ? 'o '+Math.max(1,Math.ceil(msToStart/60000))+' min'
         : 'o '+Math.ceil(msToStart/3600000)+' h';
     }
-    return {highlight:currentDay||comingSoon,comingSoon,countdown};
+    // Zvýrazniť iba udalosti, ktoré prebiehajú dnes. Zajtrajšie majú len hodinový odpočet.
+    return {highlight:currentDay,comingSoon,countdown};
   }
   function countWord(n){
     return n===1?'udalosť':n>=2&&n<=4?'udalosti':'udalostí';
