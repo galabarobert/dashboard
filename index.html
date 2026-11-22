@@ -1028,7 +1028,7 @@ body::after { display:none !important; content:none !important; }
 #stage #namedayBox .holidayName{font-size:15px;}
 #stage #radioPanel{display:flex!important;flex-direction:column!important;gap:8px!important;padding:12px 15px!important;overflow:auto;}
 #stage #radioStations{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;}
-#stage #radioStations button{font-size:15px!important;padding:7px 4px!important;line-height:20px!important;}
+#stage #radioStations button{font-size:16px!important;padding:8px 4px!important;line-height:21px!important;font-weight:700!important;}
 #stage #radioPanel .radioDivider{height:1px;flex:none;background:rgba(255,255,255,.28);margin:3px 0;}
 #stage #radioPanel .radioControls{width:100%;flex:0 0 auto;}
 #stage #radioPanel #radioNowPlaying{font-size:15px!important;}
@@ -1039,7 +1039,7 @@ body::after { display:none !important; content:none !important; }
 /* Úzka tretia kolónka: Meniny nad rádiami; zvyšné dve kolónky sú širšie. */
 #stage #radioPanel{padding:10px 8px!important;gap:7px!important;overflow-y:auto;overflow-x:hidden;align-items:stretch;}
 #stage #radioStations{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;}
-#stage #radioStations button{min-width:0;font-size:11px!important;padding:7px 2px!important;white-space:normal!important;overflow-wrap:anywhere;line-height:15px!important;min-height:37px;}
+#stage #radioStations button{min-width:0;font-size:13px!important;padding:7px 3px!important;white-space:normal!important;overflow-wrap:anywhere;line-height:16px!important;min-height:42px;font-weight:700!important;}
 #stage #radioPanel .radioHeading{font-size:18px!important;}
 #stage #radioPanel .radioControls{display:flex!important;flex-wrap:wrap!important;gap:5px!important;min-width:0;}
 #stage #radioPanel #radioPlay{height:32px!important;width:32px!important;font-size:16px!important;}
@@ -6305,29 +6305,32 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
 }
 #stage #weekDashboard .weekTitleRow{width:100%!important;min-height:50px!important;}
 #stage #weekDashboard .qmeAxisDate{
-  display:block;color:#cde6ff;font-size:15px;font-weight:720;line-height:1.3;
+  display:none!important;color:#cde6ff;font-size:15px;font-weight:720;line-height:1.3;
   margin:0 0 4px 2px;text-align:left;letter-spacing:.1px;
+}
+#stage #weekDashboard #meetingRoomIndicator.qmeTopIndicator{
+  display:inline-flex!important;position:relative!important;
+  top:auto!important;right:auto!important;bottom:auto!important;left:50%!important;
+  transform:translateX(-50%)!important;
+  align-items:center!important;justify-content:center!important;gap:8px!important;
+  width:max-content!important;max-width:calc(100% - 8px)!important;min-height:36px!important;height:auto!important;
+  margin:0 0 6px 0!important;padding:6px 15px!important;border-radius:8px!important;
+  font-size:22px!important;line-height:1.1!important;font-weight:800!important;
+  text-align:center!important;white-space:nowrap!important;box-sizing:border-box!important;
 }
 #stage #weekDashboard .weekQmeTimeline.qmeUnknown .qmeTimelineTrack{
   background:repeating-linear-gradient(135deg,#344f65 0 7px,#415d72 7px 14px)!important;
 }
 #stage #weekDashboard .qmeSummary{
   display:flex;align-items:center;gap:10px;min-width:0;
-  margin:7px 0 3px;padding:5px 0 7px;border-bottom:1px solid rgba(164,212,255,.25);
-}
-#stage #weekDashboard .qmeSummary #meetingRoomIndicator{
-  display:inline-flex!important;position:static!important;inset:auto!important;
-  flex:0 0 auto!important;align-items:center!important;gap:8px!important;
-  width:auto!important;min-height:28px!important;height:auto!important;margin:0!important;
-  padding:4px 10px!important;border-radius:7px!important;font-size:18px!important;line-height:1.1!important;
-  white-space:nowrap!important;
+  margin:2px 0 3px;padding:2px 0 7px;border-bottom:1px solid rgba(164,212,255,.25);
 }
 #stage #weekDashboard .qmeCurrentSubject{
   min-width:0;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
   color:#ecf6ff;font-size:20px;font-weight:650;text-align:left;
 }
 #stage #weekDashboard .qmeImportStamp{
-  flex:none;margin-left:auto;color:#c1def7;font-size:16px;font-variant-numeric:tabular-nums;white-space:nowrap;
+  display:none!important;
 }
 #stage #weekDashboard .qmeGroupHeading{
   display:flex;align-items:center;gap:9px;flex:none;color:#aad7fa;
@@ -6352,10 +6355,9 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
   #stage #weekDashboard #weekQmeTimeline{display:block!important;order:2;flex:0 0 100%!important;width:100%!important;margin:0!important;padding:0!important;}
   #stage #weekDashboard .qmeTimelineTrackWrap{width:100%!important;min-width:0!important;}
   #stage #weekDashboard .qmeAxisDate{font-size:12px;}
-  #stage #weekDashboard .qmeSummary{flex-wrap:wrap;column-gap:6px;row-gap:4px;margin:4px 0;padding:3px 0 5px;}
-  #stage #weekDashboard .qmeSummary #meetingRoomIndicator{font-size:14px!important;min-height:24px!important;padding:3px 7px!important;}
+  #stage #weekDashboard #meetingRoomIndicator.qmeTopIndicator{font-size:16px!important;min-height:29px!important;padding:4px 9px!important;margin:0 0 5px 0!important;}
+  #stage #weekDashboard .qmeSummary{flex-wrap:wrap;column-gap:6px;row-gap:4px;margin:2px 0;padding:2px 0 5px;}
   #stage #weekDashboard .qmeCurrentSubject{font-size:14px;}
-  #stage #weekDashboard .qmeImportStamp{font-size:12px;}
   #stage #weekDashboard .qmeGroupHeading{font-size:13px;margin-top:6px;}
   #weekEditorOverlay.isOpen{position:fixed!important;inset:0!important;align-items:center;overflow-y:auto;}
   #weekEditorOverlay .weekEditorDialog{max-width:calc(100vw - 20px);max-height:calc(100dvh - 16px);overflow-y:auto;}
@@ -6367,7 +6369,7 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
 #stage #weekDashboard #weekQmeTimeline{order:0!important;flex:1 1 0%!important;width:auto!important;min-width:0!important;max-width:none!important;}
 #stage #weekDashboard #weekQmeTimeline .qmeTimelineTrackWrap{width:100%!important;max-width:none!important;}
 #stage #weekDashboard .weekAddMenuAnchor{order:1!important;flex-shrink:0!important;}
-#stage #weekDashboard #qmeAxisDate{cursor:pointer;}
+#stage #weekDashboard #qmeAxisDate{cursor:default;display:none!important;}
 </style>
 <style id="timeline-large-hour-labels">
 #stage #weekDashboard #weekQmeTimeline .qmeTimelineTrack{height:38px!important;min-height:38px!important;}
@@ -6389,7 +6391,164 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
 #stage #shiftBox .workdayGrid .countdownCard{display:grid!important;grid-template-rows:minmax(0,.92fr) minmax(0,1.08fr) auto!important;padding:2px 3px!important;gap:1px!important;align-items:stretch!important;justify-content:stretch!important;}
 #stage #shiftBox .workdayGrid .countdownCard :is(.workdayHeader,.workMain){width:100%!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;}
 #stage #shiftBox .workdayGrid .countdownCard :is(.workdayTitle,.workValue){margin:0!important;padding:0!important;line-height:1.04!important;white-space:nowrap!important;letter-spacing:0!important;text-align:center!important;}
-</style></head>
+</style><style id="vrable-max-safe-fonts-2026-11-22">
+/* TV (desktop) – maximum font size within actual cells; no change to data, calendars or controls. */
+@media(min-width:901px){
+  #stage #weekDashboard .weekEventRow>.weekDay,
+  #stage #weekDashboard .weekEventRow>.weekEventText,
+  #stage #weekDashboard .weekEventRow>.weekKind,
+  #stage #weekDashboard .weekEventRow>.weekWhen{
+    min-width:0!important;max-width:100%!important;
+    white-space:nowrap!important;overflow:hidden!important;
+    text-overflow:ellipsis!important;box-sizing:border-box!important;
+    line-height:1.06!important;
+  }
+  #stage #weekDashboard .weekEventRow>.weekKind .workKindLine{display:block!important;white-space:nowrap!important;line-height:1.03!important;}
+  #stage #weekDashboard .qmeGroupHeading{font-size:18px!important;line-height:1.12!important;min-height:18px!important;}
+  #stage #weekDashboard #qmeAxisDate{font-size:18px!important;line-height:1.12!important;}
+  #stage #weekDashboard .qmeCurrentSubject{font-size:21px!important;}
+  #stage #forecast3days .weatherDayName{font-size:24px!important;line-height:1.09!important;}
+  #stage #forecast3days .weatherDayTemp{font-size:33px!important;line-height:1.1!important;white-space:nowrap!important;}
+  #stage #forecast3days .weatherDayTemp span{font-size:20px!important;}
+  #stage #forecast3days .weatherDayRain,
+  #stage #forecast3days .weatherDayMm,
+  #stage #forecast3days .weatherDayWind{font-size:19px!important;line-height:1.14!important;white-space:nowrap!important;}
+  #stage #forecast3days .weatherFeels,
+  #stage #forecast3days .weatherWindRow{font-size:18px!important;line-height:1.12!important;}
+  #stage #forecast3days .weatherTodayDetails{font-size:18px!important;}
+  #stage #forecast3days .weatherTodayLabel,
+  #stage #forecast3days .weatherTodayTop{font-size:20px!important;}
+  #stage #forecast3days .moonPhaseName{font-size:13px!important;}
+  #stage #world .worldSectionTitle{font-size:20px!important;}
+  #stage #world .worldCity{font-size:20px!important;}
+  #stage #world .worldCountry{font-size:16px!important;}
+  #stage #world .worldClock{font-size:28px!important;}
+  #stage #world .worldTemperature{font-size:25px!important;}
+  #stage #radioPanel .radioHeading strong{font-size:20px!important;}
+  #stage #radioPanel #radioStations button .radioStationName{font-size:18px!important;line-height:1.08!important;}
+  #stage #radioPanel #radioVolumeLabel,
+  #stage #radioPanel .radioInlineSettings label{font-size:17px!important;line-height:1.09!important;white-space:nowrap!important;}
+  #stage #celebrationsDashboard .celebrateTitle{font-size:30px!important;}
+  #stage #celebrationsDashboard .celebrateName{font-size:24px!important;line-height:1.1!important;}
+  #stage #celebrationsDashboard .celebrateCountdown{font-size:22px!important;line-height:1.1!important;}
+  #stage #celebrationsDashboard .celebrateType{font-size:17px!important;line-height:1.08!important;}
+  #stage #celebrationsDashboard .celebrateWeekday{font-size:19px!important;}
+  #stage #celebrationsDashboard .celebrateDateNumber{font-size:21px!important;}
+  #stage #dateWeek .dateWeekFixed,
+  #stage #namedayTopHeader .namedayTopText{font-size:38px!important;line-height:1.08!important;white-space:nowrap!important;}
+  #stage #historicalEvents #eventScroll a{font-size:38px!important;line-height:1.11!important;}
+  #stage #historicalEvents #eventScroll .newsTopic{font-size:29px!important;}
+}
+</style>
+
+<style id="vrable-agenda-unified-fonts-date-and-no-blink-2026-11-22">
+/* Koniec vzájomne si odporujúcich úprav: spoločné výšky aj písmo poradám a neprítomnostiam. */
+@media(min-width:901px){
+  #stage #weekDashboard #weekEventList.weekScrollable{
+    display:flex!important; flex-direction:column!important; min-height:0!important;
+    gap:1px!important; justify-content:stretch!important;
+  }
+  #stage #weekDashboard #weekEventList.weekScrollable > .weekEventRow,
+  #stage #weekDashboard #weekEventList.weekScrollable[data-smart-spacing] > .weekEventRow,
+  #stage #weekDashboard #weekEventList.weekScrollable.qmeDense > .weekEventRow{
+    flex:1 1 0!important; min-height:40px!important; height:auto!important;
+    max-height:none!important; padding:3px 4px!important;
+    margin:0!important; border-radius:0!important;
+    box-sizing:border-box!important; line-height:1.06!important;
+  }
+  #stage #weekDashboard #weekEventList.weekScrollable > .weekEventRow > div{
+    min-height:0!important; height:100%!important; align-items:center!important;
+    overflow:hidden!important; white-space:nowrap!important;
+    text-overflow:ellipsis!important; line-height:1.07!important;
+  }
+  #stage #weekDashboard #weekEventList .qmeGroupHeading{flex:0 0 auto!important;}
+  #stage #weekDashboard #weekEventList .reservationRow + .qmeGroupHeading{margin-top:17px!important;}
+  #stage #weekDashboard #weekEventList .weekEventRow > .weekEventText{
+    font-weight:720!important; letter-spacing:-.25px!important;
+  }
+  #stage #weekDashboard #weekEventList .weekEventRow > .weekDay{
+    font-weight:750!important; letter-spacing:-.15px!important;
+  }
+  #stage #weekDashboard #weekEventList .weekEventRow > .weekKind{
+    font-weight:650!important; letter-spacing:-.45px!important;
+  }
+  #stage #weekDashboard #weekEventList .weekEventRow > .weekKind .workKindLine{
+    font-size:inherit!important; line-height:1.03!important;
+  }
+  /* Dátum pod hlavnými hodinami: vyšší pruh a výrazná oddelená plocha. */
+  #stage #clock-box #dateWeek{
+    bottom:2px!important; height:51px!important; min-height:51px!important;
+    padding:3px 12px 2px!important; overflow:hidden!important;
+    align-items:center!important; justify-content:center!important;
+  }
+  #stage #clock-box #dateWeek .dateWeekFixed{
+    line-height:1.19!important; padding-top:1px!important;
+    max-height:100%!important; text-align:center!important;
+  }
+  #stage #clock-box #time{
+    top:-12px!important; bottom:65px!important;
+  }
+  /* Ikony nepotrebujú bočné paddingy; celý symbol musí byť viditeľný. */
+  #stage #weekDashboard #weekEventList .weekEventRow > .weekSymbol{
+    padding-left:0!important; padding-right:0!important; font-size:24px!important;
+    justify-content:center!important; text-align:center!important;
+  }
+  /* Deväť položiek: zmenšíme len výšku riadkov, nie počet záznamov. */
+  #stage #weekDashboard #weekEventList.weekScrollable.qmeDense > .weekEventRow{
+    min-height:34px!important; padding-top:2px!important; padding-bottom:2px!important;
+  }
+  #stage #weekDashboard #weekEventList.weekScrollable.qmeDense .qmeGroupHeading{
+    margin-top:3px!important; margin-bottom:1px!important;
+  }
+  #stage #weekDashboard #weekEventList.weekScrollable.qmeDense .reservationRow + .qmeGroupHeading{
+    margin-top:5px!important;
+  }
+}
+</style>
+
+<style id="qme-indicator-centered-and-radio-heading-fix-2026-11-22">
+/* Meetingovka: indikátor ostáva viditeľný aj po aktualizovaní triedy JS.
+   Jeho pozícia je samostatný stredový riadok priamo nad hodinovou osou. */
+#stage #weekDashboard #qmeAxisDate { display:none!important; }
+#stage #weekDashboard #weekQmeTimeline .qmeTimelineTrackWrap {
+  display:block!important; width:100%!important; min-width:0!important;
+  box-sizing:border-box!important; overflow:visible!important;
+}
+#stage #weekDashboard #meetingRoomIndicator {
+  display:flex!important; position:relative!important;
+  align-items:center!important; justify-content:center!important;
+  width:max-content!important; max-width:calc(100% - 8px)!important;
+  min-height:36px!important; height:auto!important;
+  box-sizing:border-box!important; border-radius:8px!important;
+  font-size:22px!important; line-height:1.1!important; font-weight:800!important;
+  text-align:center!important; white-space:nowrap!important;
+  z-index:4!important;
+}
+#stage #weekDashboard .qmeImportStamp { display:none!important; }
+#stage #weekDashboard .qmeSummary:has(.qmeCurrentSubject:empty) {display:none!important;}
+@media(min-width:901px) {
+  #stage #weekDashboard .weekTitleRow {min-height:77px!important; height:auto!important;}
+  #stage #weekDashboard #weekQmeTimeline .qmeTimelineTrack {height:38px!important;min-height:38px!important;}
+  /* Rádiá: pevný nadpis bez samovoľného zmenšovania. */
+  #stage #radioPanel {padding:4px 12px!important;gap:3px!important;}
+  #stage #radioPanel .radioHeading {
+    display:flex!important;flex:0 0 28px!important;min-height:28px!important;height:28px!important;
+    align-items:center!important;justify-content:space-between!important;
+    line-height:28px!important;margin:0!important;padding:0!important;overflow:visible!important;
+  }
+  #stage #radioPanel .radioHeading strong {
+    display:block!important;width:auto!important;min-width:82px!important;
+    flex:0 0 auto!important;font-size:26px!important;line-height:28px!important;
+    font-weight:850!important;white-space:nowrap!important;text-align:left!important;
+  }
+  #stage #radioPanel #radioStations button{min-height:32px!important;height:32px!important;}
+}
+@media(max-width:900px) {
+  #stage #weekDashboard #meetingRoomIndicator {font-size:14px!important;min-height:26px!important;padding:3px 8px!important;}
+  #stage #radioPanel .radioHeading strong {font-size:23px!important;line-height:1.1!important;}
+}
+</style>
+</head>
 
 <body>
 <div id="vrable-auth-cover" aria-live="polite"><section id="vrable-auth-card"><h2>🔐 Dashboard Vráble</h2><p>Overenie prístupu do firemného dashboardu. Prihlasovacie údaje zostávajú v službe Firebase Authentication.</p><form id="vrable-auth-form"><label for="vrable-auth-email">E-mail</label><input id="vrable-auth-email" type="email" autocomplete="username" required><label for="vrable-auth-password">Heslo</label><input id="vrable-auth-password" type="password" autocomplete="current-password" required><button id="vrable-auth-submit" type="submit">Prihlásiť sa</button></form><div id="vrable-auth-error" role="alert"></div></section></div>
@@ -6507,7 +6666,8 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
      <span id="weekDateRange" hidden></span>
      <div id="weekQmeTimeline" class="weekQmeTimeline" aria-label="Časová os obsadenosti Q_ME">
        <div class="qmeTimelineTrackWrap">
-         <span id="qmeAxisDate" class="qmeAxisDate"></span>
+         <span id="qmeAxisDate" class="qmeAxisDate" hidden></span>
+         <span id="meetingRoomIndicator" class="meetingRoomIndicator unknown qmeTopIndicator" role="status">Načítavam rozpis</span>
          <div class="qmeTimelineTrack">
            <div id="qmeTimelineBusyLayer" class="qmeTimelineBusyLayer"></div>
            <div id="qmeTimelineNow" class="qmeTimelineNow" aria-hidden="true"></div>
@@ -6522,9 +6682,8 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
      </div>
    </div>
    <div class="qmeSummary">
-     <span id="meetingRoomIndicator" class="meetingRoomIndicator unknown" role="status">Načítavam rozpis</span>
      <span id="qmeCurrentSubject" class="qmeCurrentSubject"></span>
-     <span id="qmeImportStamp" class="qmeImportStamp">Čas importu neznámy</span>
+     <span id="qmeImportStamp" class="qmeImportStamp" hidden aria-hidden="true"></span>
    </div>
  </div>
  <div id="weekTabs" class="weekTabs" role="tablist" aria-label="Filtrovanie udalostí">
@@ -10336,17 +10495,21 @@ document.addEventListener('keydown',e=>{
     const busy=Boolean(current);
     const today=localDateSk(now), tomorrow=qmeDatePlusDay(now,1);
     const timeLabel=d=>meetingClock.format(d)+(localDateSk(d)===today?'':localDateSk(d)===tomorrow?' zajtra':' · '+importDateLabel.format(d));
-    meetingIndicator.className='meetingRoomIndicator '+(!fresh?'unknown':busy?'busy':'free');
-    meetingIndicator.textContent=!fresh?(meetingInitialLoadDone?'Stav neznámy':'Načítavam rozpis'):
+    const stateClass='meetingRoomIndicator qmeTopIndicator '+(!fresh?'unknown':busy?'busy':'free');
+    if(meetingIndicator.className!==stateClass)meetingIndicator.className=stateClass;
+    const roomStatus=!fresh?(meetingInitialLoadDone?'Stav neznámy':'Načítavam rozpis'):
       busy?'Rezervovaná do '+timeLabel(occupiedUntil):
       next?'Voľná do '+timeLabel(next.zaciatok):'Teraz bez rezervácie';
+    if(meetingIndicator.textContent!==roomStatus)meetingIndicator.textContent=roomStatus;
     const detail=document.getElementById('qmeCurrentSubject');
-    detail.textContent=!fresh?'Čaká sa na aktuálny rozpis':busy?current.nazov:'';
-    detail.title=detail.textContent;
+    const subject=!fresh?'Čaká sa na aktuálny rozpis':busy?current.nazov:'';
+    if(detail.textContent!==subject)detail.textContent=subject;
+    if(detail.title!==subject)detail.title=subject;
     const stamp=parseMeetingDate(meetingPayload?.aktualizovane||meetingPayload?.updatedAt);
     const importLabel=document.getElementById('qmeImportStamp');
-    importLabel.textContent=stamp?'Import '+(localDateSk(stamp)===today?'dnes':importDateLabel.format(stamp))+' '+meetingClock.format(stamp):'Čas importu neznámy';
-    importLabel.title='Posledná aktualizácia údajov kalendára Q_ME';
+    const importText=stamp?'Import '+(localDateSk(stamp)===today?'dnes':importDateLabel.format(stamp))+' '+meetingClock.format(stamp):'Čas importu neznámy';
+    if(importLabel.textContent!==importText)importLabel.textContent=importText;
+    if(importLabel.title!=='Posledná aktualizácia údajov kalendára Q_ME')importLabel.title='Posledná aktualizácia údajov kalendára Q_ME';
   }
   function renderMeeting(){
     refreshMeetingIndicator();
@@ -10551,56 +10714,56 @@ document.addEventListener('keydown',e=>{
     }
     return '<span class="workKindLine">'+escapeText(value)+'</span>';
   }
+  // Jednotná typografia pre porady, audity a neprítomnosti.
+  // Všetky riadky majú v rovnakom stĺpci ROVNAKÚ veľkosť písma.
+  // Rozmer sa odvodí od dostupnej výšky riadku, dĺžky všetkých názvov
+  // a reálnej šírky buniek (nie od jednej náhodnej položky).
   function fitWorkRows(holder){
-    if(!holder || !holder.isConnected)return;
-    const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
+    if(!holder || !holder.isConnected || window.innerWidth<=900)return;
+    const rows=Array.from(holder.querySelectorAll('.weekEventRow'));
+    if(!rows.length)return;
+    const ctx=fitWorkRows.ctx||(fitWorkRows.ctx=document.createElement('canvas').getContext('2d'));
     if(!ctx)return;
-    // Mená môžu mať vlastnú veľkosť podľa dĺžky, ale typy udalostí
-    // MUSIA byť vždy rovnako veľké (aj dlhšia „Neprítomnosť“).
-    holder.querySelectorAll('.weekEventText').forEach(el=>{
-      const cell=el,computed=getComputedStyle(el);
-      const width=cell.clientWidth-(parseFloat(computed.paddingLeft)||0)-(parseFloat(computed.paddingRight)||0)-3;
-      if(width<=0)return;
-      let size=cell.closest('.workScheduleRow')&&window.innerWidth>900?Math.min(50,Math.max(32,Math.floor(cell.parentElement.clientHeight*0.73))):32;
-      while(size>16){
-        ctx.font=(computed.fontWeight||'700')+' '+size+'px '+(computed.fontFamily||'sans-serif');
-        if(ctx.measureText(el.textContent.trim()).width<=width)break;
-        size-=.5;
-      }
-      el.style.setProperty('font-size',size+'px','important');
-    });
-    // Typy udalostí majú jednotnú najväčšiu veľkosť, ktorá sa zmestí
-    // aj pri dlhom texte (napr. Neprítomnosť). Bez orezania písmen.
-    const kinds=Array.from(holder.querySelectorAll('.weekKind'));
-    let kindSize=27;
-    while(kindSize>18){
-      const fits=kinds.every(cell=>{
-        const style=getComputedStyle(cell);
-        const available=cell.clientWidth-(parseFloat(style.paddingLeft)||0)-(parseFloat(style.paddingRight)||0)-4;
-        ctx.font='650 '+kindSize+'px '+(style.fontFamily||'sans-serif');
-        const lines=Array.from(cell.querySelectorAll('.workKindLine'));
-        const labels=lines.length?lines.map(x=>x.textContent.trim()):[cell.textContent.trim()];
-        return labels.every(label=>ctx.measureText(label).width<=available);
+    const rowHeight=Math.min(...rows.map(row=>{
+      const css=getComputedStyle(row);
+      return row.clientHeight-(parseFloat(css.paddingTop)||0)-(parseFloat(css.paddingBottom)||0);
+    }));
+    // Rezerva pre diakritiku a reálny line-height, bez dotyku so susednými riadkami.
+    const cap=Math.max(16,Math.floor((rowHeight-5)/1.09));
+    const specs=[
+      {selector:'.weekDay', max:Math.min(35,cap),min:15},
+      {selector:'.weekEventText',max:Math.min(46,cap),min:17},
+      {selector:'.weekKind',max:Math.min(34,cap),min:15},
+      {selector:'.weekWhen',max:Math.min(34,cap),min:15}
+    ];
+    for(const spec of specs){
+      const cells=rows.map(row=>row.querySelector(spec.selector)).filter(Boolean);
+      const fits=size=>cells.every(cell=>{
+        const css=getComputedStyle(cell);
+        const available=cell.clientWidth-(parseFloat(css.paddingLeft)||0)-(parseFloat(css.paddingRight)||0)-5;
+        if(available<5)return false;
+        const labels=cell.classList.contains('weekKind')
+          ? (Array.from(cell.querySelectorAll('.workKindLine')).map(el=>el.textContent.trim()))
+          : [cell.textContent.trim()];
+        if(!labels.length)labels.push(cell.textContent.trim());
+        const weight=css.fontWeight||'700',family=css.fontFamily||'Arial, sans-serif';
+        const spacing=parseFloat(css.letterSpacing)||0;
+        ctx.font=weight+' '+size+'px '+family;
+        return labels.every(label=>ctx.measureText(label).width+Math.max(0,label.length-1)*spacing<=available);
       });
-      if(fits)break;
-      kindSize-=.5;
+      // Hľadáme spoločné najväčšie písmo v krokoch po 0,5 px.
+      let font=spec.max;
+      while(font>spec.min && !fits(font))font-=0.5;
+      font=Math.max(spec.min,font);
+      cells.forEach(cell=>{
+        if(Math.abs((parseFloat(cell.style.fontSize)||0)-font)>0.1)
+          cell.style.setProperty('font-size',font+'px','important');
+        if(spec.selector==='.weekKind')cell.querySelectorAll('.workKindLine').forEach(label=>{
+          if(Math.abs((parseFloat(label.style.fontSize)||0)-font)>0.1)
+            label.style.setProperty('font-size',font+'px','important');
+        });
+      });
     }
-    holder.querySelectorAll('.weekKind, .workKindLine').forEach(el=>{
-      el.style.setProperty('font-size',kindSize+'px','important');
-      el.style.setProperty('font-weight','650','important');
-    });
-    // Časy / dátumy a odpočty zväčšiť len po hranicu bunky.
-    holder.querySelectorAll('.weekDay, .weekWhen').forEach(el=>{
-      const style=getComputedStyle(el);
-      const available=el.clientWidth-(parseFloat(style.paddingLeft)||0)-(parseFloat(style.paddingRight)||0)-4;
-      let size=el.closest('.workScheduleRow')&&window.innerWidth>900?Math.min(34,Math.max(25,Math.floor(el.parentElement.clientHeight*0.57))):25;
-      while(size>17){
-        ctx.font=(style.fontWeight||'700')+' '+size+'px '+(style.fontFamily||'sans-serif');
-        if(ctx.measureText(el.textContent.trim()).width<=available)break;
-        size-=.5;
-      }
-      el.style.setProperty('font-size',size+'px','important');
-    });
   }
   function renderCelebrations(items,today,now=new Date()){
     const holder=document.getElementById('celebrateList');
@@ -10644,8 +10807,21 @@ document.addEventListener('keydown',e=>{
       });
       html+='</div></div>';
     });
-    holder.innerHTML=html||'<div class="weekEmpty">Žiadne nadchádzajúce udalosti.</div>';
-    // Písmo osláv je jednotné; pri dlhom názve text zalomí CSS, nie JavaScript.
+    const nextHtml=html||'<div class="weekEmpty">Žiadne nadchádzajúce udalosti.</div>';
+    const structure=nextHtml.replace(/(<span class="celebrateCountdown">)[^<]*(<\/span>)/g,'$1$2');
+    if(holder.dataset.renderStructure===structure){
+      const targets=Array.from(holder.querySelectorAll('.celebrateCountdown'));
+      const sample=document.createElement('template');sample.innerHTML=nextHtml;
+      const updates=Array.from(sample.content.querySelectorAll('.celebrateCountdown'));
+      if(targets.length===updates.length){
+        targets.forEach((el,i)=>{if(el.textContent!==updates[i].textContent)el.textContent=updates[i].textContent;});
+      }else{
+        holder.innerHTML=nextHtml;holder.dataset.renderStructure=structure;
+      }
+    }else{
+      holder.innerHTML=nextHtml;holder.dataset.renderStructure=structure;
+    }
+    // Ak sa mení iba odpočet, karty neblikajú (bez ďalšieho innerHTML).
   }
   // Jedna neprítomnosť = jeden súvislý interval od–do. Nikdy ju nerozdeľovať
   // podľa toho, či počas intervalu inému kolegovi začína alebo končí voľno.
@@ -10710,11 +10886,12 @@ document.addEventListener('keydown',e=>{
       list.classList.remove('weekNearestOnly');
       list.classList.add('weekScrollable');
       const range=document.getElementById('weekDateRange');
-      if(range)range.textContent=visibleRows.length?shortDateOnly(visibleRows[0].show)+' – '+shortDateOnly(visibleRows[visibleRows.length-1].show):'';
+      if(range){const nextRange=visibleRows.length?shortDateOnly(visibleRows[0].show)+' – '+shortDateOnly(visibleRows[visibleRows.length-1].show):'';if(range.textContent!==nextRange)range.textContent=nextRange;}
       const sub=document.getElementById('weekDashboardSubline');
-      if(sub)sub.textContent='Audity · Neprítomnosť · Meetingovka Q_ME';
+      if(sub&&sub.textContent!=='Audity · Neprítomnosť · Meetingovka Q_ME')sub.textContent='Audity · Neprítomnosť · Meetingovka Q_ME';
       const counter=document.getElementById('weekEventCounter');
       let html='',previousGroup='';
+      const liveCountdowns=[];
       visibleRows.forEach(it=>{
         const isMeeting=it.type==='meeting';
         const group=isMeeting?(localDateSk(it.start)>todayKey?'Rezervácie · zajtra':'Rezervácie · dnes'):'Audity a neprítomnosti';
@@ -10735,6 +10912,7 @@ document.addEventListener('keydown',e=>{
         const symbol=isMeeting?'📅':it.type==='leave'?'<span class="weekPalePerson" aria-hidden="true"></span>':'<span class="weekPaleAudit" aria-hidden="true"></span>';
         const kind=isMeeting?'Porada':it.type==='audit'?(it.meta||'Audit'):kinds[it.type];
         const when=isMeeting?(live?'Prebieha':meetingCountdown(it.start,now)):status.countdown;
+        liveCountdowns.push(when);
         html+=`<div class="weekEventRow ${isMeeting?"reservationRow":"workScheduleRow"} ${!isMeeting&&status.highlight?'weekToday':''} ${live?'qmeLive':''} ${!isMeeting&&status.comingSoon?'weekComingSoon':''} ${editable?'weekEditable':''}" role="listitem" ${rowEditAttrs}>`+
           `<div class="weekDay" title="${escapeText(isMeeting?kind+' '+meetingClock.format(it.start)+' – '+meetingClock.format(it.end):shortDate(it.start)+(isRange?' – '+shortDate(it.end):''))}">${dayName}</div>`+
           `<div class="weekSymbol">${symbol}</div>`+
@@ -10742,25 +10920,45 @@ document.addEventListener('keydown',e=>{
           `<div class="weekKind" title="${escapeText(kind)}">${isMeeting?escapeText(kind):formatWorkTypes(kind)}</div>`+
           `<div class="weekWhen">${escapeText(when)}</div></div>`;
       });
-      const scroll=list.scrollTop;
-      list.innerHTML=html||'<div class="weekEmpty">Žiadne nadchádzajúce udalosti.</div>';
-      list.scrollTop=scroll;
-      // Pôvodná šírka piatich stĺpcov zostáva zachovaná.
-      try{
-        const dates=Array.from(list.querySelectorAll('.weekDay'));
-        const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
-        if(ctx){
-          let widest=0;
-          dates.forEach(cell=>{const style=getComputedStyle(cell);ctx.font=`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;widest=Math.max(widest,ctx.measureText(cell.textContent.trim()).width);});
-          const isMobile=window.matchMedia('(max-width: 900px)').matches;
-          const colWidth=isMobile?Math.min(92,Math.max(72,Math.ceil(widest+8))):Math.min(252,Math.max(150,Math.ceil(widest+24)));
-          list.style.setProperty('--work-date-width',colWidth+'px');
-          for(const row of list.querySelectorAll('.weekEventRow'))row.style.setProperty('grid-template-columns',isMobile?`${colWidth}px 22px minmax(0,1fr) 62px`:`${colWidth}px 28px minmax(0,1fr) 190px 94px`,'important');
-        }
-      }catch(e){console.warn('Šírka dátumu:',e);}
-      requestAnimationFrame(()=>fitWorkRows(list));
+      // Odpočty sa menia často. NEMENIŤ pri nich celé innerHTML:
+      // opätovné vloženie všetkých uzlov každých 15 s spôsobovalo blikanie.
+      // Dátum, názov, typ, poradie aj CSS triedy patria do podpisu štruktúry.
+      const structure=html.replace(/(<div class="weekWhen">)[^<]*(<\/div>)/g,'$1$2');
+      const currentCountdowns=Array.from(list.querySelectorAll('.weekEventRow>.weekWhen'));
+      const stable=Boolean(html) && list.dataset.renderStructure===structure &&
+        currentCountdowns.length===liveCountdowns.length;
+      if(stable){
+        currentCountdowns.forEach((el,i)=>{
+          const value=liveCountdowns[i];
+          if(el.textContent!==value)el.textContent=value;
+        });
+      }else{
+        const scroll=list.scrollTop;
+        list.innerHTML=html||'<div class="weekEmpty">Žiadne nadchádzajúce udalosti.</div>';
+        list.dataset.renderStructure=structure;
+        list.scrollTop=scroll;
+        // Zjednotená dátumová šírka, aj keď pribudne dlhý interval.
+        try{
+          const dates=Array.from(list.querySelectorAll('.weekDay'));
+          const ctx=document.createElement('canvas').getContext('2d');
+          if(ctx && dates.length){
+            const css=getComputedStyle(dates[0]);
+            ctx.font='750 25px '+(css.fontFamily||'Arial, sans-serif');
+            const widest=Math.max(...dates.map(cell=>ctx.measureText(cell.textContent.trim()).width));
+            const isMobile=window.matchMedia('(max-width:900px)').matches;
+            const colWidth=isMobile?Math.min(92,Math.max(72,Math.ceil(widest+8))):
+              Math.min(245,Math.max(165,Math.ceil(widest+15)));
+            list.style.setProperty('--work-date-width',colWidth+'px');
+            for(const row of list.querySelectorAll('.weekEventRow'))
+              row.style.setProperty('grid-template-columns',isMobile?
+                `${colWidth}px 22px minmax(0,1fr) 62px`:
+                `${colWidth}px 28px minmax(0,1fr) 178px 94px`,'important');
+          }
+        }catch(e){console.warn('Šírka dátumu:',e);}
+        requestAnimationFrame(()=>fitWorkRows(list));
+      }
       const total=meetingRows.length+work.length;
-      if(counter)counter.textContent=visibleRows.length+' z '+total+' '+countWord(total);
+      if(counter){const nextCounter=visibleRows.length+' z '+total+' '+countWord(total);if(counter.textContent!==nextCounter)counter.textContent=nextCounter;}
       renderCelebrations(all,today,now);
     }catch(err){console.warn('Prehľad udalostí:',err);list.innerHTML='<div class="weekEmpty">Údaje sa momentálne nepodarilo zobraziť.</div>';}
   }
@@ -10851,7 +11049,17 @@ document.addEventListener('keydown',e=>{
   // Externé Firebase synchronizácie a staré pravidelné vykresľovanie
   // zanechávame bežať; nový pohľad číta vždy aktuálne dáta.
   render();
+  // Funkcia render() je teraz idempotentná: bežný 15s interval neprepisuje DOM.
   setInterval(render,15000);
+  window.addEventListener('resize',()=>requestAnimationFrame(()=>fitWorkRows(list)),{passive:true});
+  if(window.ResizeObserver){
+    let scheduled=false;
+    new ResizeObserver(()=>{
+      if(scheduled)return;
+      scheduled=true;
+      requestAnimationFrame(()=>{scheduled=false;fitWorkRows(list);});
+    }).observe(list);
+  }
   window.dashboardWeekRender=render;
   window.dashboardWeekSelectTab=setTab;
 })();
@@ -11408,5 +11616,125 @@ document.addEventListener('keydown',e=>{
 
 
 
+<script id="vrable-automatic-max-font-fit-2026-11-22">
+/* Auto-fit ONLY: adapts all visible TV labels to the existing layout, never changes the data. */
+(function(){
+  'use strict';
+  let queued=false, delayed=0;
+  const ctx=document.createElement('canvas').getContext('2d');
+  if(!ctx)return;
+  const rules=[
+    // Agenda has one shared, column-wise font fit (fitWorkRows below).
+    ['#weekDashboard .qmeGroupHeading',21,14,'self',.95],
+    ['#weekDashboard #qmeAxisDate',22,13,'self',.95],
+    
+    ['#weekDashboard .qmeCurrentSubject',24,13,'self',1],
+    // Forecast: use the three cards' full text width, without pushing icons out.
+    ['#forecast3days .weatherDayName',28,12,'parent',1],
+    ['#forecast3days .weatherDayTemp',34,16,'parent',1],
+    ['#forecast3days .weatherDayRain',22,11,'parent',1],
+    ['#forecast3days .weatherDayMm',22,11,'parent',1],
+    ['#forecast3days .weatherDayWind',22,11,'parent',1],
+    ['#forecast3days .weatherFeels',20,11,'parent',1],
+    ['#forecast3days .weatherWindRow',20,11,'parent',1],
+    ['#forecast3days .moonPhaseName',16,10,'parent',1],
+    ['#forecast3days .weatherTodayLabel',23,12,'parent',1],
+    ['#forecast3days .weatherTodayTop',23,12,'self',1],
+    // World clocks and radio: the labels are often very small on a TV.
+    ['#world .worldSectionTitle',23,13,'self',1],
+    // Nadpis Rádiá má pevnú, dobre čitateľnú veľkosť.
+    ['#radioStations button .radioStationName',20,11,'parent',.93],
+    
+    
+    // Celebrations: size is calculated independently for each name and countdown.
+    ['#celebrationsDashboard .celebrateTitle',33,18,'self',1],
+    ['#celebrationsDashboard .celebrateWeekday',21,12,'parent',.48],
+    ['#celebrationsDashboard .celebrateDateNumber',24,12,'parent',.49],
+    // Upper center / right header strips.
+    ['#dateWeek .dateWeekFixed',40,18,'parent',.84],
+    ['#namedayTopHeader .namedayTopText',43,18,'parent',.84]
+  ];
+  function innerWidth(node){
+    const css=getComputedStyle(node);
+    return Math.max(0,node.clientWidth-(parseFloat(css.paddingLeft)||0)-(parseFloat(css.paddingRight)||0)-6);
+  }
+  function measure(text,size,css){
+    ctx.font=(css.fontStyle||'normal')+' '+(css.fontWeight||'700')+' '+size+'px '+css.fontFamily;
+    const spacing=parseFloat(css.letterSpacing);
+    return ctx.measureText(text).width+(Number.isFinite(spacing)?Math.max(0,text.length-1)*spacing:0);
+  }
+  function adapt(el,max,min,mode,ratio){
+    if(!el.isConnected || !el.getClientRects().length)return;
+    const text=(el.textContent||'').replace(/\s+/g,' ').trim();
+    if(!text)return;
+    const parent=el.parentElement;
+    const row=el.closest('.weekEventRow');
+    const widthHost=(mode==='parent'?parent:el);
+    const css=getComputedStyle(el);
+    if(css.display==='none'||css.visibility==='hidden')return;
+    let width=innerWidth(widthHost);
+    if(mode.startsWith('world')&&parent){
+      const grid=getComputedStyle(parent).gridTemplateColumns.split(/\s+/).map(x=>parseFloat(x));
+      const index=mode==='world1'?0:mode==='world2'?1:2;
+      width=Number.isFinite(grid[index])?grid[index]-5:innerWidth(parent)*[.48,.29,.18][index];
+    }
+    if(mode==='metaType'&&parent)width=innerWidth(parent)*.59;
+    if(mode==='metaCountdown'&&parent)width=innerWidth(parent)*.40;
+    if(!width && parent)width=innerWidth(parent);
+    if(width<=8)return;
+    let height=0;
+    if(mode==='row' && row)height=Math.max(0,row.clientHeight-5);
+    else if(mode==='parent'&&parent)height=Math.max(0,parent.clientHeight-4);
+    // Do not derive available height from the current font's own text-height:
+    // it creates a shrinking feedback loop. Use a fixed cell for row/parent only.
+    const heightCap=height>0?Math.floor(height*ratio):max;
+    let cap=Math.max(8,Math.min(max,heightCap));
+    let lo=7,hi=cap;
+    for(let n=0;n<11;n++){
+      const mid=(lo+hi)/2;
+      if(measure(text,mid,css)<=width-2)lo=mid;else hi=mid;
+    }
+    let chosen=Math.floor(Math.max(8,Math.min(cap,lo))*2)/2;
+    // If the cell is exceptionally narrow, prioritize no collision over a minimum size.
+    if(measure(text,chosen,css)>width-1){while(chosen>7&&measure(text,chosen,css)>width-1)chosen-=.5;}
+    const previous=parseFloat(el.style.fontSize);
+    if(!Number.isFinite(previous)||Math.abs(previous-chosen)>.2)
+      el.style.setProperty('font-size',chosen+'px','important');
+  }
+  function apply(){
+    queued=false;
+    if(!window.matchMedia('(min-width:901px)').matches)return;
+    const stage=document.getElementById('stage');
+    if(!stage || getComputedStyle(stage).visibility==='hidden')return;
+    for(const [selector,max,min,mode,ratio] of rules){
+      stage.querySelectorAll(selector).forEach(el=>adapt(el,max,min,mode,ratio));
+    }
+  }
+  function schedule(){
+    if(queued)return;
+    queued=true;
+    requestAnimationFrame(()=>{clearTimeout(delayed);delayed=setTimeout(apply,35);});
+  }
+  function boot(){
+    const stage=document.getElementById('stage');
+    if(!stage)return;
+    // Observe content, not inline style attributes (prevents resize loops).
+    new MutationObserver(schedule).observe(stage,{childList:true,characterData:true,subtree:true});
+    if(window.ResizeObserver){
+      const ro=new ResizeObserver(schedule);
+      ['weekDashboard','celebrationsDashboard','forecast3days','world','radioPanel','shiftBox','clock-box','dateWeek','namedayTopHeader']
+        .forEach(id=>{const el=document.getElementById(id);if(el)ro.observe(el);});
+    }
+    window.addEventListener('resize',schedule,{passive:true});
+    window.addEventListener('pageshow',schedule,{passive:true});
+    if(document.fonts?.ready)document.fonts.ready.then(schedule);
+    // Existing dashboard renders the Q_ME rows after Firebase updates; refit again.
+    setInterval(schedule,10000);
+    schedule();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});
+  else boot();
+})();
+</script>
 </body>
 </html>
