@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="sk">
 <head>
 <meta charset="UTF-8">
@@ -5270,200 +5271,1125 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
 }
 </style>
 
-<style id="midnight-blue-glass-2026-final-skin">
-:root{--mbg-bg:#03172b;--mbg-panel:rgba(7,55,105,.86);--mbg-panel2:rgba(9,72,132,.82);--mbg-border:rgba(105,190,255,.32);--mbg-accent:#45b7ff;--mbg-text:#f5fbff;--mbg-muted:#a9d3ef;--mbg-green:#35d39a;--mbg-red:#ff6570;--mbg-shadow:0 12px 34px rgba(0,12,34,.34)}
-html,body{background:#03172b!important;color:var(--mbg-text)!important}
-body{background-image:radial-gradient(ellipse 72% 62% at 21% 12%,rgba(22,117,190,.30),transparent 72%),radial-gradient(ellipse 68% 58% at 88% 82%,rgba(12,84,151,.22),transparent 74%),linear-gradient(145deg,#021425 0%,#062745 48%,#03182f 100%)!important}
-#stage .glass,#stage #weekDashboard,#stage #celebrationsDashboard,#stage #shiftBox,#stage #historicalEvents,#stage #radioPanel{background:linear-gradient(145deg,rgba(12,82,143,.88),rgba(5,48,96,.91))!important;border:1px solid var(--mbg-border)!important;border-radius:18px!important;box-shadow:var(--mbg-shadow),inset 0 1px 0 rgba(220,244,255,.10)!important;backdrop-filter:blur(16px) saturate(125%)!important;-webkit-backdrop-filter:blur(16px) saturate(125%)!important}
-#stage #vrableWeatherUnifiedFrame,#stage #clock-box{background:linear-gradient(145deg,rgba(12,82,143,.90),rgba(5,48,96,.93))!important;border-color:var(--mbg-border)!important;box-shadow:var(--mbg-shadow),inset 0 1px 0 rgba(220,244,255,.10)!important}
-#stage #forecast3days .weatherToday{background:linear-gradient(135deg,rgba(31,137,214,.62),rgba(8,83,154,.58))!important;border-color:rgba(134,211,255,.30)!important}
-#stage #forecast3days .weatherDayCard,#stage .worldTile{background:linear-gradient(155deg,rgba(3,45,91,.88),rgba(2,28,61,.91))!important;border-color:rgba(107,184,241,.25)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.055)!important}
-#stage .dashboardSectionTitle,#stage .weekTitle,#stage .celebrateTitle,#stage .radioHeading strong{color:var(--mbg-text)!important;text-shadow:none!important}
-#stage #location{color:#fff!important;text-shadow:0 0 18px rgba(69,183,255,.18)!important}
-#stage #time{color:#fff!important;text-shadow:0 0 22px rgba(69,183,255,.22)!important}
-#stage #dateWeek,#stage .weekKind,#stage .celebrateType,#stage .qmeTimelineDay,#stage #newsUpdateStatus{color:var(--mbg-muted)!important}
-#stage #weekDashboard .weekEventRow{border-bottom-color:rgba(155,214,255,.10)!important}
-#stage #weekDashboard .weekEventRow>div:not(:last-child){border-right-color:rgba(155,214,255,.09)!important}
-#stage #weekDashboard .weekEventRow:hover,#stage #celebrationsDashboard .celebrateEvent:hover{background:rgba(69,183,255,.13)!important}
-#stage #weekDashboard .weekEventRow.weekToday,#stage #celebrationsDashboard .celebrateAlert{background:linear-gradient(90deg,rgba(69,183,255,.20),rgba(69,183,255,.08))!important;box-shadow:inset 4px 0 0 var(--mbg-accent)!important}
-#stage #weekUnifiedAdd,#stage #dashboardQuickBar button,#stage #weekDashboard .weekHeaderActions button{background:linear-gradient(145deg,rgba(50,146,229,.76),rgba(18,93,167,.78))!important;border-color:rgba(139,211,255,.40)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.16)!important}
-#stage #radioStations button{background:linear-gradient(160deg,rgba(42,121,193,.46),rgba(16,70,133,.56))!important;border-color:rgba(128,198,250,.23)!important;box-shadow:none!important}
-#stage #radioStations button:hover{background:rgba(69,183,255,.30)!important}
-#stage #radioPanel.radioIsPlaying #radioStations button[aria-pressed="true"]{background:linear-gradient(145deg,rgba(52,157,239,.48),rgba(18,102,184,.56))!important;border-color:rgba(133,215,255,.70)!important;box-shadow:0 0 16px rgba(69,183,255,.20),inset 0 1px 0 rgba(255,255,255,.16)!important}
-#stage #radioPanel .radioControls #radioPlay{background:linear-gradient(145deg,#249eea,#1268b6)!important;border-color:rgba(174,226,255,.55)!important}
-#stage #shiftBox .countdownCard{background:linear-gradient(145deg,rgba(33,125,201,.48),rgba(9,63,124,.62))!important;border-color:rgba(120,194,250,.24)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important}
-#stage #weekDashboard .qmeTimelineTrack{border-color:rgba(118,238,182,.38)!important;box-shadow:inset 0 1px 2px rgba(255,255,255,.10)!important}
-#stage #weekDashboard .qmeTimelineBusy{box-shadow:0 0 7px rgba(255,101,112,.24)!important}
-#stage #historicalEvents{background:linear-gradient(120deg,rgba(10,75,134,.94),rgba(5,50,101,.96))!important}
-#stage #eventScroll .newsTopic{background:rgba(69,183,255,.14)!important;border-color:rgba(150,217,255,.18)!important;color:#d9efff!important}
-#stage #apiStatusPanel,#stage .dbDialog,#stage #hourlyForecastDialog,#weekEditorOverlay .weekEditorDialog{background:linear-gradient(145deg,#0b4d83,#052c56)!important;border-color:rgba(130,205,255,.34)!important}
-#stage button,#stage input,#stage select{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
-#stage *{scrollbar-color:rgba(88,177,245,.55) rgba(2,31,65,.18)}
-@media(max-width:900px){#stage .glass,#stage #weekDashboard,#stage #celebrationsDashboard,#stage #shiftBox,#stage #historicalEvents,#stage #radioPanel{border-radius:15px!important}.hourlyForecastTitle{font-size:24px!important}}
-</style>
-
-<style id="midnight-blue-glass-safe-fix">
-/* Safe visual pass: no display, position, sizing, overflow, grid or flex overrides. */
-#stage #weekDashboard .weekEventRow:nth-child(even){background-color:rgba(3,30,62,.10)!important}
-#stage #weekDashboard .weekEventRow.weekToday{background:linear-gradient(90deg,rgba(69,183,255,.19),rgba(69,183,255,.06))!important;box-shadow:inset 4px 0 0 #49bdff!important}
-#stage #weekDashboard .qmeTimelineTrack{background:rgba(2,25,53,.58)!important;border-radius:999px!important}
-#stage #weekDashboard .qmeTimelineBusy{background:linear-gradient(90deg,#fa5d69,#ff8c72)!important;border-radius:999px!important}
-#stage #weekDashboard .qmeTimelineFree{background:linear-gradient(90deg,#2bcf96,#65e2b5)!important;border-radius:999px!important}
-#stage #celebrationsDashboard .celebrateEvent{border-bottom-color:rgba(126,204,255,.14)!important}
-#stage #celebrationsDashboard .celebrateDate{color:#8bddff!important;font-weight:700!important}
-#stage #celebrationsDashboard .celebrateName{color:#fff!important;font-weight:700!important}
-#stage #celebrationsDashboard .celebrateType{color:#a8cfe8!important}
-#stage #forecast3days .weatherToday{background:linear-gradient(145deg,rgba(35,143,220,.48),rgba(7,73,138,.35))!important}
-#stage #forecast3days .weatherDayCard{border-color:rgba(127,210,255,.22)!important}
-#stage #radioPanel{background:linear-gradient(145deg,rgba(8,65,119,.80),rgba(4,41,82,.88))!important}
-#stage #radioStations button{box-shadow:none!important;border-color:rgba(128,198,250,.23)!important}
-#stage #radioPanel .radioControls button{box-shadow:none!important}
-#stage #shiftBox .countdownCard{background:linear-gradient(145deg,rgba(33,125,201,.48),rgba(9,63,124,.62))!important;border-color:rgba(120,194,250,.24)!important}
-#stage #historicalEvents{background:linear-gradient(120deg,rgba(10,75,134,.94),rgba(5,50,101,.96))!important}
-#stage #eventScroll .newsTopic{background:rgba(69,183,255,.14)!important;border-color:rgba(150,217,255,.18)!important;color:#d9efff!important}
-</style>
-
-<style id="qme-timeline-color-fix">
-/* Q_ME timeline: calmer colors matching Midnight Blue Glass */
-#stage #weekDashboard .qmeTimelineTrack{
-  background:rgba(2,31,65,.72)!important;
-  border:1px solid rgba(105,190,255,.22)!important;
-  box-shadow:inset 0 1px 3px rgba(0,0,0,.28)!important;
+<style id="vrable-two-slides-style-2026">
+/* Slide 1 je pôvodný #stage. Neodpájame ho ani neskryjeme cez display:none,
+   aby ďalej fungovali rádiá, odpočty, Firebase a všetky interné časovače. */
+#vrableSlide2{
+  position:fixed;inset:0;width:100vw;height:100dvh;
+  z-index:50;box-sizing:border-box;
+  background:radial-gradient(ellipse 75% 60% at 22% 18%,rgba(30,114,186,.30),transparent 75%),
+             radial-gradient(ellipse 70% 75% at 87% 80%,rgba(5,92,167,.28),transparent 75%),
+             linear-gradient(145deg,#052544,#092d52 46%,#041a34);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .55s ease, visibility 0s linear .55s;
+  overflow:hidden;
 }
-#stage #weekDashboard .qmeTimelineBusy{
-  background:#ff6570!important;
-  box-shadow:none!important;
+#vrableSlide2.slide-visible{
+  opacity:1;visibility:visible;pointer-events:auto;
+  transition:opacity .55s ease, visibility 0s;
 }
-#stage #weekDashboard .qmeTimelineFree{
-  background:#35d39a!important;
-  box-shadow:none!important;
+/* Jemná modrá linka zodpovedajúca rámom prvého slidu, bez prvkov a textu. */
+#vrableSlide2::before{
+  content:"";position:absolute;inset:7px;
+  border-radius:20px;border:1px solid rgba(102,185,250,.12);
+  pointer-events:none;
 }
-#stage #weekDashboard .qmeTimelineDay{
-  color:#a9d3ef!important;
+@media(prefers-reduced-motion:reduce){
+  #vrableSlide2,#vrableSlide2.slide-visible{transition:none!important;}
 }
 </style>
-
-<style id="qme-timeline-final-colors">
-#stage #weekDashboard .qmeTimelineTrack{background:#082a4b!important;border:1px solid rgba(127,195,235,.28)!important;box-shadow:inset 0 1px 3px rgba(0,0,0,.30)!important}
-#stage #weekDashboard .qmeTimelineBusy{background:#e96b72!important;box-shadow:none!important}
-#stage #weekDashboard .qmeTimelineFree{background:#44bfa3!important;box-shadow:none!important}
-#stage #weekDashboard .qmeTimelineDay{color:#b6d6e9!important}
-</style>
-
-<style id="radio-wide-song-final">
-/* Viac priestoru pre interpreta a názov skladby, logika 30-min. prepínania ostáva nezmenená. */
-#stage #radioPanel .radioControls #radioSongRow.radioSongModern{
-  flex:1 1 360px!important;
-  min-width:260px!important;
-  max-width:none!important;
-}
-#stage #radioPanel .radioInlineSettings{
-  flex:0 0 auto!important;
-  white-space:nowrap!important;
-  gap:7px!important;
-}
-#stage #radioPanel .radioInlineSettings label{
-  white-space:nowrap!important;
-}
-#stage #radioPanel .radioControls #radioSongRow #radioNowPlaying{
-  width:100%!important;
-  max-width:none!important;
+<style id="vrable-slide2-full-weather-2026">
+#vrableSlide2{color:#fff;font-family:inherit;}
+#vrableSlide2 .slide2Shell{box-sizing:border-box;display:flex;flex-direction:column;gap:clamp(10px,1.4vh,18px);height:100%;width:100%;padding:clamp(13px,1.8vh,24px) clamp(18px,2vw,34px);overflow:hidden;}
+#vrableSlide2 .glass{background:linear-gradient(125deg,rgba(35,111,177,.82),rgba(12,61,118,.86));border:1px solid rgba(110,194,255,.45);box-shadow:inset 0 1px 1px rgba(255,255,255,.16),0 6px 20px rgba(0,0,0,.11);border-radius:20px;}
+#vrableSlide2 .slide2Clock{flex:0 0 22%;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0;padding:0 12px;}
+#vrableSlide2 .slide2Time{font-size:clamp(65px,9.4vh,137px);line-height:1;font-weight:900;letter-spacing:-.035em;color:#e3f1ff;text-shadow:0 0 20px rgba(127,206,255,.2);font-variant-numeric:tabular-nums;white-space:nowrap;}
+#vrableSlide2 .slide2Date{font-size:clamp(16px,2.9vh,34px);font-weight:800;line-height:1.32;text-align:center;white-space:normal;color:#fff;}
+#vrableSlide2 .slide2Weather{flex:1;min-height:0;display:flex;flex-direction:column;gap:clamp(10px,1.2vh,16px);}
+#vrableSlide2 .slide2CityRow{flex:0 0 auto;display:flex;align-items:baseline;justify-content:space-between;padding:0 10px;gap:20px;}
+#vrableSlide2 .slide2City{font-size:clamp(32px,5vh,58px);font-weight:900;line-height:1;color:#e8f6ff;}
+#vrableSlide2 .slide2WeatherTag{font-size:clamp(15px,2vw,25px);font-weight:750;letter-spacing:.06em;color:#b8dafa;}
+#vrableSlide2 .slide2Today{flex:0 0 42%;min-height:0;padding:clamp(14px,2vh,23px) clamp(18px,2vw,32px);box-sizing:border-box;display:flex;flex-direction:column;gap:10px;overflow:hidden;}
+#vrableSlide2 .slide2TodayHeader{font-weight:800;font-size:clamp(18px,2.4vh,30px);}
+#vrableSlide2 .slide2TodayBody{display:grid;grid-template-columns:1.1fr .9fr 1fr;align-items:center;min-height:0;flex:1;gap:clamp(15px,2vw,30px);}
+#vrableSlide2 .slide2TodayTemperature{display:flex;align-items:center;gap:15px;min-width:0;}
+#vrableSlide2 .slide2BigTemp{font-size:clamp(66px,11vh,145px);font-weight:900;line-height:.95;letter-spacing:-.05em;white-space:nowrap;}
+#vrableSlide2 .slide2BigIcon{font-size:clamp(55px,9vh,120px);line-height:1;white-space:nowrap;}
+#vrableSlide2 .slide2Aux{font-size:clamp(18px,2.7vh,32px);line-height:1.4;font-weight:650;text-align:center;}
+#vrableSlide2 .slide2Facts{display:grid;grid-template-columns:1fr 1fr;gap:clamp(9px,1.1vh,17px);align-content:center;}
+#vrableSlide2 .slide2Fact{font-size:clamp(15px,2vh,25px);font-weight:650;background:rgba(12,47,89,.4);border-radius:12px;padding:10px 12px;min-width:0;white-space:normal;}
+#vrableSlide2 .slide2Days{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,1.4vw,22px);}
+#vrableSlide2 .slide2Day{min-height:0;display:flex;flex-direction:column;justify-content:space-around;align-items:center;text-align:center;padding:10px 12px;box-sizing:border-box;}
+#vrableSlide2 .slide2DayName{font-size:clamp(20px,3vh,35px);font-weight:850;}
+#vrableSlide2 .slide2DayIcon{font-size:clamp(40px,6vh,82px);line-height:1;}
+#vrableSlide2 .slide2DayTemps{font-size:clamp(23px,3.8vh,46px);font-weight:900;}
+#vrableSlide2 .slide2DayInfo{font-size:clamp(14px,2vh,24px);font-weight:650;line-height:1.3;}
+#vrableSlide2 .slide2Loading{font-size:28px;margin:auto;}
+@media(max-width:800px){
+ #vrableSlide2 .slide2Shell{padding:12px;gap:8px;}
+ #vrableSlide2 .slide2Clock{flex-basis:18%;}
+ #vrableSlide2 .slide2Time{font-size:clamp(40px,10vw,72px);}
+ #vrableSlide2 .slide2Date{font-size:clamp(12px,3vw,20px);}
+ #vrableSlide2 .slide2Today{flex-basis:44%;padding:12px;}
+ #vrableSlide2 .slide2TodayBody{grid-template-columns:1fr 1fr;gap:6px;}
+ #vrableSlide2 .slide2TodayTemperature{grid-column:1/3;justify-content:center;}
+ #vrableSlide2 .slide2BigTemp{font-size:clamp(48px,11vw,80px);}
+ #vrableSlide2 .slide2BigIcon{font-size:clamp(42px,9vw,60px);}
+ #vrableSlide2 .slide2Aux{font-size:clamp(11px,2.5vw,17px);}
+ #vrableSlide2 .slide2Facts{gap:4px;}
+ #vrableSlide2 .slide2Fact{font-size:clamp(10px,2.1vw,15px);padding:4px;}
+ #vrableSlide2 .slide2Day{padding:6px 3px;}
+ #vrableSlide2 .slide2DayName{font-size:clamp(12px,2.6vw,22px);}
+ #vrableSlide2 .slide2DayIcon{font-size:clamp(26px,6vw,45px);}
+ #vrableSlide2 .slide2DayTemps{font-size:clamp(14px,3vw,26px);}
+ #vrableSlide2 .slide2DayInfo{font-size:clamp(10px,2vw,15px);}
+ #vrableSlide2 .slide2WeatherTag{font-size:12px;}
 }
 </style>
 
-<style id="weather-layout-user-fix">
-/* Bigger Max / Min on the main Today card. */
-#stage #forecast3days .weatherTodayMain>.weatherTempRange{
-  font-size:34px!important;
-  line-height:1.12!important;
-  font-weight:850!important;
-  letter-spacing:-1px!important;
-  text-align:center!important;
+<style id="vrable-slide2-weather-left-right-2026">
+/* Iba druhý slide: aktuálne počasie vľavo, tri nasledujúce dni vpravo. */
+@media (min-width: 801px) {
+  #vrableSlide2 .slide2Clock { flex: 0 0 22%; }
+  #vrableSlide2 .slide2Weather {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    column-gap: clamp(12px, 1vw, 22px);
+    row-gap: clamp(10px, 1.2vh, 16px);
+    min-height: 0;
+  }
+  #vrableSlide2 .slide2CityRow { grid-column: 1 / -1; grid-row: 1; }
+  #vrableSlide2 .slide2Today {
+    grid-column: 1; grid-row: 2;
+    min-width: 0; min-height: 0;
+    padding: clamp(12px, 1.6vw, 28px);
+    display: flex; flex-direction: column;
+    gap: clamp(9px, 1.2vh, 18px);
+    overflow: hidden;
+  }
+  #vrableSlide2 .slide2TodayBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: stretch;
+    flex: 1; min-height: 0;
+    gap: clamp(8px, 1.2vh, 18px);
+  }
+  #vrableSlide2 .slide2TodayTemperature {
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: clamp(8px, 1vw, 18px);
+  }
+  #vrableSlide2 .slide2BigTemp { font-size: clamp(70px, 9vh, 130px); }
+  #vrableSlide2 .slide2BigIcon { font-size: clamp(58px, 8vh, 116px); }
+  #vrableSlide2 .slide2Aux {
+    font-size: clamp(19px, 2.4vh, 31px);
+    line-height: 1.32;
+    text-align: center;
+  }
+  #vrableSlide2 .slide2Facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(7px, .9vh, 12px);
+  }
+  #vrableSlide2 .slide2Fact {
+    font-size: clamp(15px, 1.8vh, 23px);
+    text-align: center;
+    padding: clamp(7px, 1vh, 12px);
+  }
+  #vrableSlide2 .slide2Days {
+    grid-column: 2; grid-row: 2;
+    min-height: 0; min-width: 0;
+    flex: initial;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(7px, .8vw, 17px);
+  }
+  #vrableSlide2 .slide2Day {
+    min-width: 0; min-height: 0;
+    justify-content: space-evenly;
+    gap: 6px;
+    padding: clamp(10px, 1.2vw, 20px) 6px;
+  }
+  #vrableSlide2 .slide2DayName { font-size: clamp(22px, 2.6vh, 37px); }
+  #vrableSlide2 .slide2DayIcon { font-size: clamp(45px, 6vh, 88px); }
+  #vrableSlide2 .slide2DayTemps { font-size: clamp(27px, 3.1vh, 43px); }
+  #vrableSlide2 .slide2DayInfo { font-size: clamp(15px, 1.9vh, 24px); }
 }
-/* Put the 2-hour rain strip visually under the wind, aligned to the left. */
-#stage #forecast3days .weatherToday>.rainTwoHours{
-  width:58%!important;
-  max-width:245px!important;
-  margin-left:0!important;
-  margin-right:auto!important;
-  transform:translateY(-2px)!important;
-  text-align:left!important;
-}
-#stage #forecast3days .weatherToday>.rainTwoHours .rainTwoHoursLabel{
-  justify-content:flex-start!important;
-  text-align:left!important;
-}
-@media(max-width:900px){
- #stage #forecast3days .weatherTodayMain>.weatherTempRange{font-size:29px!important;}
- #stage #forecast3days .weatherToday>.rainTwoHours{width:62%!important;max-width:none!important;}
+@media (min-width: 801px) and (max-width: 1200px) {
+  #vrableSlide2 .slide2Weather { grid-template-columns: minmax(0, 1fr) minmax(0, 1.18fr); }
+  #vrableSlide2 .slide2Today { padding: 10px; }
+  #vrableSlide2 .slide2TodayHeader { font-size: 20px; }
+  #vrableSlide2 .slide2BigTemp { font-size: clamp(51px, 8vh, 90px); }
+  #vrableSlide2 .slide2BigIcon { font-size: clamp(46px, 7vh, 80px); }
+  #vrableSlide2 .slide2Aux { font-size: 17px; }
+  #vrableSlide2 .slide2Fact { font-size: 13px; padding: 6px; }
+  #vrableSlide2 .slide2DayName { font-size: 19px; }
+  #vrableSlide2 .slide2DayTemps { font-size: 23px; }
+  #vrableSlide2 .slide2DayInfo { font-size: 13px; }
 }
 </style>
 
-<style id="weather-maxmin-rain-wide-v2">
-/* Requested: clearly larger Max/Min and a wider 2-hour precipitation strip. */
-#stage #forecast3days .weatherTodayMain>.weatherTempRange{
-  font-size:40px!important;
+<style id="vrable-slide2-1to1-original-weather-2026">
+/* Druhý slide používa priamo pôvodné HTML komponenty s pôvodnými CSS štýlmi. */
+#vrableSlide2 #slide2Forecast {position:absolute;top:147px;left:40px;width:501px;box-sizing:border-box;}
+#vrableSlide2 #slide2Forecast, #sun, #nameday, #holidayBox, #world, #radioPanel, #leaveBox, #auditsTable, #shiftBox, #vacationBox{
+    overflow:hidden;
+}
+#tempNow, #dateWeek, #holidayDisplay, #vacationTime, #currentWeatherDisplay,
+#world td, #vrableSlide2 #slide2Forecast td, #nameday, #sun, #leaveList, #radioStatus, #radioVolumeLabel{
+    color:var(--soft-text) !important;
+}
+#radioPanel .radioHeading span,
+#radioRotationStatus,
+.radioFooter,
+#world td:last-child,
+#vrableSlide2 #slide2Forecast td:last-child,
+#dateWeek,
+#auditsTable th,
+#auditsTable td,
+#leaveAddRow,
+#auditAddRow,
+#vacationTime span,
+#holidayDisplay span,
+#nameday hr + *{
+    color: var(--muted-text) !important;
+}
+#auditsTable table,
+#world table,
+#vrableSlide2 #slide2Forecast table{
+    color:var(--soft-text);
+}
+#auditsTable tr,
+#world tr,
+#vrableSlide2 #slide2Forecast tr,
+#nameday hr,
+#sun hr{
+    border-color: rgba(255,255,255,0.12) !important;
+}
+#vrableSlide2 #slide2Forecast table,#world table,#auditsTable table,#leaveList table {width:100%;table-layout:fixed;}
+#vrableSlide2 #slide2Forecast td,#world td,#auditsTable td,#leaveList td {min-width:0;white-space:nowrap;overflow:hidden;text-overflow:clip;box-sizing:border-box;}
+#vrableSlide2 #slide2Forecast{padding:15px!important;overflow:hidden;}
+#vrableSlide2 #slide2Forecast .weatherToday,#vrableSlide2 #slide2Forecast .weatherDayCard{color:white;box-sizing:border-box;min-width:0;}
+#vrableSlide2 #slide2Forecast .weatherToday{border-radius:21px;padding:16px 18px;background:linear-gradient(135deg,rgba(99,164,218,.48),rgba(85,146,199,.26));border:1px solid rgba(255,255,255,.20);}
+#vrableSlide2 #slide2Forecast{top:147px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayMain{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.18fr) minmax(0,1.28fr);gap:7px;align-items:center;justify-content:initial;}
+#vrableSlide2 #slide2Forecast .weatherMainIcon{font-size:60px;text-align:center;white-space:nowrap;min-width:0;}
+#vrableSlide2 #slide2Forecast .weatherTodayMain>.weatherTempRange{font-size:27px!important;font-weight:740!important;line-height:1.24!important;letter-spacing:-.7px;white-space:nowrap;text-align:center;min-width:0;}
+#vrableSlide2 #slide2Forecast .weatherCurrentBlock{min-width:0;text-align:right;}
+#vrableSlide2 #slide2Forecast .weatherMainTemp{font-size:74px;letter-spacing:-3px;white-space:nowrap;}
+#vrableSlide2 #slide2Forecast .weatherFeels{font-size:13px;font-weight:400;white-space:nowrap;}
+#vrableSlide2 #slide2Forecast .weatherTodayMain{
+    display:grid;
+    grid-template-columns:minmax(0,1.3fr) minmax(0,1.2fr) minmax(0,.9fr);
+    align-items:center;
+    column-gap:7px;
+}
+#vrableSlide2 #slide2Forecast .weatherCurrentBlock{text-align:left;grid-column:1;grid-row:1;}
+#vrableSlide2 #slide2Forecast .weatherTodayMain>.weatherTempRange{grid-column:2;grid-row:1;font-size:26px!important;}
+#vrableSlide2 #slide2Forecast .weatherMainIcon{grid-column:3;grid-row:1;font-size:59px;text-align:center;}
+#vrableSlide2 #slide2Forecast .weatherTodayMain>.weatherTempRange{font-size:31px!important;line-height:1.2!important;letter-spacing:-.6px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 83px;
+  grid-template-rows:23px 23px;column-gap:7px;row-gap:6px;
+  align-items:center;padding-top:10px;font-size:13px;
+}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .sunriseInfo{grid-column:1;grid-row:1;}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .sunsetInfo{grid-column:2;grid-row:1;}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .rainPercentInfo{grid-column:1;grid-row:2;}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .rainMmInfo{grid-column:2;grid-row:2;}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .sunriseInfo,
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .sunsetInfo,
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .rainPercentInfo,
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .rainMmInfo{
+  min-width:0;white-space:nowrap;letter-spacing:-.25px;
+}
+#vrableSlide2 #slide2Forecast .moonInfo{
+  grid-column:3;grid-row:1 / 3;display:flex;flex-direction:column;
+  align-items:flex-end;justify-content:center;gap:1px;min-width:0;
+}
+#vrableSlide2 #slide2Forecast .moonPhaseIcon{
+  display:block;width:43px;height:43px;border-radius:50%;
+  filter:drop-shadow(0 0 8px rgba(207,227,255,.30));
+  animation:moonGlow 7s ease-in-out infinite;
+}
+#vrableSlide2 #slide2Forecast .moonPhaseName{
+  width:83px;font-size:10px;line-height:1.15;text-align:right;
+  white-space:normal;overflow-wrap:normal;color:rgba(255,255,255,.9);
+}
+@media (prefers-reduced-motion:reduce){#vrableSlide2 #slide2Forecast .moonPhaseIcon{animation:none;}}
+#vrableSlide2 #slide2Forecast .weatherTodayTop{justify-content:flex-start;}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) 100px;
+  grid-template-rows:28px 28px;column-gap:5px;row-gap:4px;
+  font-size:15.5px;padding-top:10px;
+}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .sunriseInfo,
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .sunsetInfo,
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .rainPercentInfo,
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .rainMmInfo{display:flex;align-items:center;gap:3px;letter-spacing:-.45px;}
+#vrableSlide2 #slide2Forecast .moonPhaseName{width:100px;font-size:13px;font-weight:600;line-height:1.12;text-align:center;}
+#vrableSlide2 #slide2Forecast .moonInfo{align-items:center;gap:2px;}
+#vrableSlide2 #slide2Forecast .moonPhaseIcon{width:48px;height:48px;}
+#vrableSlide2 #slide2Forecast .sunHorizonIcon{position:relative;display:inline-block;vertical-align:middle;flex:0 0 25px;width:25px;height:21px;overflow:hidden;}
+#vrableSlide2 #slide2Forecast .sunHorizonIcon i{position:absolute;left:5px;top:2px;width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6b4 0%,#ffe056 33%,#ffb020 77%,#fa7d16 100%);box-shadow:0 0 5px #ffd45a,0 0 11px rgba(255,187,42,.52);}
+#vrableSlide2 #slide2Forecast .sunHorizonIcon:before{content:"";position:absolute;left:0;top:15px;width:25px;height:1.6px;background:linear-gradient(90deg,transparent,#ffe19a 20%,#ffcc69 80%,transparent);z-index:2;}
+#vrableSlide2 #slide2Forecast .sunHorizonIcon:after{content:"";position:absolute;top:17px;left:3px;width:19px;height:2px;border-radius:50%;background:rgba(255,194,77,.4);}
+#vrableSlide2 #slide2Forecast .sunriseIcon i{top:8px;}
+#vrableSlide2 #slide2Forecast .sunsetIcon i{top:4px;}
+#vrableSlide2 #slide2Forecast .weatherTodayMain{align-items:start!important;margin-top:0!important;margin-bottom:7px!important;}
+#vrableSlide2 #slide2Forecast .weatherCurrentBlock,#vrableSlide2 #slide2Forecast .weatherTodayMain>.weatherTempRange,#vrableSlide2 #slide2Forecast .weatherMainIcon{transform:translateY(-7px);}
+#vrableSlide2 #slide2Forecast .weatherFeels{font-size:13px;line-height:1.22;white-space:nowrap;letter-spacing:-.25px;width:395px;max-width:none;position:relative;z-index:2;}
+#vrableSlide2 #slide2Forecast .windInline{margin-left:8px;}
+#vrableSlide2 #slide2Forecast{height:515px!important;min-height:515px!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important;padding:17px 16px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayMain{margin-top:12px!important;margin-bottom:14px!important;}
+#vrableSlide2 #slide2Forecast .weatherMainTemp{font-size:93px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayMain>.weatherTempRange{font-size:34px!important;}
+#vrableSlide2 #slide2Forecast .weatherMainIcon{font-size:75px!important;}
+#vrableSlide2 #slide2Forecast .weatherFeels{font-size:16px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails{font-size:16px!important;grid-template-rows:29px 29px!important;}
+#vrableSlide2 #slide2Forecast .moonPhaseName{font-size:14px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayName{font-size:20px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayIcon{font-size:44px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayTemp{font-size:27px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayRain,#vrableSlide2 #slide2Forecast .weatherDayWind,#vrableSlide2 #slide2Forecast .weatherDayMm{font-size:17px!important;}
+#vrableSlide2 #slide2Forecast .weatherNextDays{margin-top:auto!important;gap:10px!important;}
+#vrableSlide2 #slide2Forecast{height:515px!important;min-height:515px!important;max-height:515px!important;box-sizing:border-box!important;justify-content:flex-start!important;gap:8px!important;padding:12px 13px!important;overflow:hidden!important;}
+#vrableSlide2 #slide2Forecast>.dashboardSectionTitle{flex:0 0 auto!important;margin-bottom:0!important;}
+#vrableSlide2 #slide2Forecast .weatherToday{flex:0 0 auto!important;padding:12px 15px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayMain{margin:3px 0 8px!important;}
+#vrableSlide2 #slide2Forecast .weatherMainTemp{font-size:77px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayMain>.weatherTempRange{font-size:28px!important;}
+#vrableSlide2 #slide2Forecast .weatherMainIcon{font-size:60px!important;}
+#vrableSlide2 #slide2Forecast .weatherFeels{font-size:13px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails{font-size:14px!important;grid-template-rows:24px 24px!important;gap:5px 10px!important;padding-top:7px!important;}
+#vrableSlide2 #slide2Forecast .moonPhaseName{font-size:12px!important;}
+#vrableSlide2 #slide2Forecast .weatherNextDays{flex:1 1 auto!important;min-height:0!important;margin-top:0!important;gap:8px!important;align-items:stretch!important;}
+#vrableSlide2 #slide2Forecast .weatherDayCard{min-height:0!important;height:100%!important;gap:5px!important;padding:9px 3px!important;justify-content:space-between!important;}
+#vrableSlide2 #slide2Forecast .weatherDayName{font-size:17px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayIcon{font-size:36px!important;line-height:1!important;}
+#vrableSlide2 #slide2Forecast .weatherDayTemp{font-size:23px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayTemp span{font-size:14px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayRain,#vrableSlide2 #slide2Forecast .weatherDayWind,#vrableSlide2 #slide2Forecast .weatherDayMm{font-size:14px!important;}
+#vrableSlide2 #slide2Forecast{height:625px!important;min-height:625px!important;max-height:625px!important;padding:15px 15px!important;gap:12px!important;}
+#vrableSlide2 #slide2Forecast .weatherToday{padding:17px 16px!important;}
+#vrableSlide2 #slide2Forecast .weatherMainTemp{font-size:91px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayMain>.weatherTempRange{font-size:34px!important;}
+#vrableSlide2 #slide2Forecast .weatherMainIcon{font-size:74px!important;}
+#vrableSlide2 #slide2Forecast .weatherFeels{font-size:15px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails{font-size:16px!important;grid-template-rows:29px 29px!important;}
+#vrableSlide2 #slide2Forecast .moonPhaseName{font-size:14px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayName{font-size:21px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayIcon{font-size:45px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayTemp{font-size:29px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayTemp span{font-size:18px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayRain,#vrableSlide2 #slide2Forecast .weatherDayWind,#vrableSlide2 #slide2Forecast .weatherDayMm{font-size:17px!important;}
+#vrableSlide2 #slide2Forecast .weatherNextDays{gap:10px!important;margin-top:12px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayCard{
+  padding:10px 6px 12px!important;
+  gap:6px!important;
+  border-radius:18px!important;
+}
+#vrableSlide2 #slide2Forecast .weatherDayName{
+  font-size:18px!important;
+  font-weight:750!important;
+  line-height:1.1!important;
+}
+#vrableSlide2 #slide2Forecast .weatherDayIcon{
+  font-size:44px!important;
+  line-height:1.02!important;
+}
+#vrableSlide2 #slide2Forecast .weatherDayTemp{
+  font-size:28px!important;
   line-height:1.06!important;
-  font-weight:900!important;
-  letter-spacing:-1.25px!important;
+  font-weight:760!important;
+}
+#vrableSlide2 #slide2Forecast .weatherDayTemp span{
+  font-size:18px!important;
+  font-weight:500!important;
+}
+#vrableSlide2 #slide2Forecast .weatherDayRain,
+#vrableSlide2 #slide2Forecast .weatherDayWind,
+#vrableSlide2 #slide2Forecast .weatherDayMm{
+  font-size:18px!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+}
+#vrableSlide2 #slide2Forecast .weatherMainIcon{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:96px!important;
+  font-size:unset!important;
+  line-height:1!important;
+}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon{
+  position:relative;
+  width:88px;
+  height:88px;
+  flex:none;
+}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .sunDisk{
+  position:absolute;
+  width:42px;height:42px;left:22px;top:18px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #fff3a2 0 18%, #ffd764 30%, #ffbe38 60%, #f69418 100%);
+  box-shadow:0 0 16px rgba(255,197,74,.40),0 0 34px rgba(255,186,38,.20);
+  animation:sunPulse 4.8s ease-in-out infinite;
+}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .sunRays{
+  position:absolute;inset:8px;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg, rgba(255,187,52,.95) 0deg 10deg, transparent 10deg 45deg);
+  filter:blur(.25px) drop-shadow(0 0 6px rgba(255,175,41,.45));
+  animation:sunSpin 18s linear infinite;
+  -webkit-mask:radial-gradient(circle, transparent 0 26px, #000 28px 34px, transparent 36px);
+          mask:radial-gradient(circle, transparent 0 26px, #000 28px 34px, transparent 36px);
+}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .cloudBase,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .cloudPuff,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .cloudPuff2{
+  position:absolute;background:linear-gradient(180deg,#f4f2ff 0%,#dad7f2 60%,#c3c3ea 100%);
+  box-shadow:inset -2px -4px 8px rgba(126,119,185,.20), 0 6px 12px rgba(22,32,52,.12);
+}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .cloudBase{left:19px;top:39px;width:47px;height:21px;border-radius:16px;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .cloudPuff{left:16px;top:31px;width:24px;height:24px;border-radius:50%;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .cloudPuff2{left:35px;top:27px;width:29px;height:29px;border-radius:50%;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .drop{
+  position:absolute;width:4px;height:14px;border-radius:3px 3px 7px 7px;
+  background:linear-gradient(180deg,#9be3ff,#4ba0ff);
+  opacity:0;transform:translateY(-2px);
+  animation:rainFall 1.5s ease-in infinite;
+}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .drop.d1{left:34px;top:58px;animation-delay:0s;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .drop.d2{left:46px;top:60px;animation-delay:.35s;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .drop.d3{left:57px;top:58px;animation-delay:.7s;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .bolt{
+  position:absolute;left:41px;top:54px;width:14px;height:24px;
+  clip-path:polygon(40% 0,100% 0,62% 42%,100% 42%,20% 100%,43% 55%,0 55%);
+  background:linear-gradient(180deg,#fff7a8,#ffd236 55%,#ffba18 100%);
+  filter:drop-shadow(0 0 5px rgba(255,217,89,.55));
+  animation:boltFlicker 3s ease-in-out infinite;
+  opacity:0;
+}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .mist{
+  position:absolute;left:16px;width:48px;height:4px;border-radius:99px;background:rgba(230,242,255,.78);
+  box-shadow:0 0 4px rgba(230,242,255,.15);
+  animation:mistMove 3.6s ease-in-out infinite;
+}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .mist.m1{top:50px;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .mist.m2{top:58px;animation-delay:.7s;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .mist.m3{top:66px;animation-delay:1.2s;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.sunny .cloudBase,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.sunny .cloudPuff,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.sunny .cloudPuff2,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.sunny .drop,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.sunny .bolt,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.sunny .mist{display:none;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.partly-cloudy .sunDisk{left:30px;top:14px;width:36px;height:36px;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.partly-cloudy .sunRays{inset:12px;transform:translateX(6px) translateY(-3px);}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.partly-cloudy .drop,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.partly-cloudy .bolt,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.partly-cloudy .mist{display:none;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.cloudy .sunDisk,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.cloudy .sunRays,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.cloudy .drop,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.cloudy .bolt,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.cloudy .mist{display:none;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.cloudy .cloudBase{left:15px;top:36px;width:55px;height:23px;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.cloudy .cloudPuff{left:12px;top:28px;width:28px;height:28px;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.cloudy .cloudPuff2{left:35px;top:22px;width:34px;height:34px;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.rainy .sunDisk,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.rainy .sunRays,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.rainy .bolt,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.rainy .mist{display:none;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.rainy .cloudBase{left:15px;top:32px;width:54px;height:23px;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.rainy .cloudPuff{left:12px;top:24px;width:28px;height:28px;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.rainy .cloudPuff2{left:35px;top:18px;width:34px;height:34px;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.stormy .sunDisk,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.stormy .sunRays,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.stormy .mist{display:none;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.stormy .cloudBase{left:15px;top:32px;width:54px;height:23px;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.stormy .cloudPuff{left:12px;top:24px;width:28px;height:28px;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.stormy .cloudPuff2{left:35px;top:18px;width:34px;height:34px;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.stormy .drop{opacity:.95;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.stormy .bolt{opacity:1;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.foggy .sunDisk,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.foggy .sunRays,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.foggy .drop,
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.foggy .bolt{display:none;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.foggy .cloudBase{left:18px;top:26px;width:44px;height:18px;opacity:.88;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.foggy .cloudPuff{left:18px;top:18px;width:22px;height:22px;opacity:.88;}
+#vrableSlide2 #slide2Forecast .weatherAnimatedIcon.foggy .cloudPuff2{left:38px;top:15px;width:26px;height:26px;opacity:.88;}
+@media (prefers-reduced-motion:reduce){#vrableSlide2 #slide2Forecast .weatherAnimatedIcon .sunDisk,
+  #vrableSlide2 #slide2Forecast .weatherAnimatedIcon .sunRays,
+  #vrableSlide2 #slide2Forecast .weatherAnimatedIcon .drop,
+  #vrableSlide2 #slide2Forecast .weatherAnimatedIcon .bolt,
+  #vrableSlide2 #slide2Forecast .weatherAnimatedIcon .mist{animation:none!important;}}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails{
+  position:relative!important;
+  border-top:none!important;
+  padding-top:14px!important;
+  column-gap:8px!important;
+  row-gap:6px!important;
+}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails::before{
+  content:"";
+  position:absolute;
+  left:0;
+  right:102px;
+  top:0;
+  height:1px;
+  background:rgba(255,255,255,.22);
+}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .sunriseInfo,
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .sunsetInfo{
+  font-size:17.5px!important;
+  line-height:1.15!important;
+}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .rainPercentInfo,
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .rainMmInfo{
+  font-size:19px!important;
+  line-height:1.15!important;
+  font-weight:600!important;
+}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .rainPercentInfo b,
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .rainMmInfo b{font-weight:750!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .rainPercentInfo,
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .rainMmInfo,
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .sunriseInfo,
+#vrableSlide2 #slide2Forecast .weatherTodayDetails .sunsetInfo{gap:5px!important;}
+#vrableSlide2 #slide2Forecast .moonInfo{
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+}
+#vrableSlide2 #slide2Forecast .moonPhaseIcon{
+  width:46px!important;
+  height:46px!important;
+  animation:moonGlow 7s ease-in-out infinite, moonFloat 5.4s ease-in-out infinite!important;
+  transform-origin:center center;
+}
+#vrableSlide2 #slide2Forecast .moonPhaseName{
+  width:86px!important;
+  font-size:11.5px!important;
+  line-height:1.12!important;
   text-align:center!important;
 }
-#stage #forecast3days .weatherToday>.rainTwoHours{
-  width:78%!important;
-  max-width:330px!important;
-  min-width:285px!important;
-  margin-left:0!important;
-  margin-right:auto!important;
-  text-align:left!important;
+#vrableSlide2 #slide2Forecast .weatherNextDays{
+  gap:9px!important;
+  margin-top:11px!important;
 }
-#stage #forecast3days .weatherToday>.rainTwoHours .rainTwoHoursLabel{
+#vrableSlide2 #slide2Forecast .weatherDayCard{
+  padding:11px 5px 12px!important;
+  gap:6px!important;
+}
+#vrableSlide2 #slide2Forecast .weatherDayName{
+  font-size:20px!important;
+  line-height:1.08!important;
+  font-weight:760!important;
+}
+#vrableSlide2 #slide2Forecast .weatherDayIcon{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:47px!important;
+  line-height:1!important;
+  min-height:46px!important;
+  animation:dayIconFloat 4.4s ease-in-out infinite;
+  transform-origin:center center;
+}
+#vrableSlide2 #slide2Forecast .weatherDayCard:nth-child(2) .weatherDayIcon{animation-delay:.35s;}
+#vrableSlide2 #slide2Forecast .weatherDayCard:nth-child(3) .weatherDayIcon{animation-delay:.7s;}
+#vrableSlide2 #slide2Forecast .weatherDayTemp{
+  font-size:31px!important;
+  line-height:1.04!important;
+  font-weight:760!important;
+}
+#vrableSlide2 #slide2Forecast .weatherDayTemp span{
+  font-size:18px!important;
+  font-weight:520!important;
+}
+#vrableSlide2 #slide2Forecast .weatherDayRain,
+#vrableSlide2 #slide2Forecast .weatherDayWind,
+#vrableSlide2 #slide2Forecast .weatherDayMm{
+  font-size:19px!important;
+  line-height:1.1!important;
+  white-space:nowrap!important;
+}
+@media (prefers-reduced-motion:reduce){#vrableSlide2 #slide2Forecast .moonPhaseIcon,
+  #vrableSlide2 #slide2Forecast .weatherDayIcon{animation:none!important;}}
+#vrableSlide2 #slide2Forecast .weatherDayCard {padding:10px 4px 13px!important; gap:6px!important; justify-content:space-between!important;}
+#vrableSlide2 #slide2Forecast .weatherDayRain,
+#vrableSlide2 #slide2Forecast .weatherDayWind,
+#vrableSlide2 #slide2Forecast .weatherDayMm {font-size:20px!important;line-height:1.12!important;font-weight:650!important;letter-spacing:-.35px!important;white-space:nowrap!important;}
+#vrableSlide2 #slide2Forecast .weatherDayIcon {position:relative;overflow:visible!important;}
+#vrableSlide2 #slide2Forecast .forecastRainGraphic {width:78px;height:59px;position:relative;display:block;}
+#vrableSlide2 #slide2Forecast .forecastRainGraphic .rainCloudBody,
+#vrableSlide2 #slide2Forecast .forecastRainGraphic .rainCloudPuff,
+#vrableSlide2 #slide2Forecast .forecastRainGraphic .rainCloudPuffTwo {
+  position:absolute;background:linear-gradient(155deg,#f8f7ff 0%,#e0dcf3 42%,#b6b9de 100%);
+  box-shadow:inset -4px -5px 9px rgba(92,105,152,.18),0 5px 9px rgba(17,30,56,.12);
+}
+#vrableSlide2 #slide2Forecast .forecastRainGraphic .rainCloudBody {left:12px;top:23px;width:53px;height:24px;border-radius:22px;}
+#vrableSlide2 #slide2Forecast .forecastRainGraphic .rainCloudPuff {left:14px;top:13px;width:31px;height:31px;border-radius:50%;}
+#vrableSlide2 #slide2Forecast .forecastRainGraphic .rainCloudPuffTwo {left:32px;top:9px;width:31px;height:34px;border-radius:50%;}
+#vrableSlide2 #slide2Forecast .forecastRainGraphic .rainStreak {position:absolute;top:37px;width:4px;height:15px;border-radius:60% 60% 75% 75%;background:linear-gradient(180deg,#b4f2ff,#42a5ff);box-shadow:0 0 4px rgba(88,178,255,.6);opacity:0;animation:forecastRaindrop 1.35s ease-in infinite;}
+#vrableSlide2 #slide2Forecast .forecastRainGraphic .rainStreak:nth-last-child(3){left:29px;animation-delay:0s;}
+#vrableSlide2 #slide2Forecast .forecastRainGraphic .rainStreak:nth-last-child(2){left:41px;animation-delay:.43s;}
+#vrableSlide2 #slide2Forecast .forecastRainGraphic .rainStreak:nth-last-child(1){left:52px;animation-delay:.87s;}
+@media (prefers-reduced-motion:reduce){#vrableSlide2 #slide2Forecast .forecastRainGraphic .rainStreak{animation:none!important;opacity:1!important;transform:translate(-4px,5px)!important;}}
+#vrableSlide2 #slide2Forecast .weatherDayIcon{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:54px!important;
+}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated{
+  position:relative;
+  width:64px;
+  height:52px;
+  display:block;
+}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .sunRays{
+  position:absolute;inset:3px 7px 7px 16px;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg, rgba(255,187,52,.95) 0deg 10deg, transparent 10deg 45deg);
+  filter:blur(.2px) drop-shadow(0 0 4px rgba(255,175,41,.45));
+  animation:sunSpin 18s linear infinite;
+  -webkit-mask:radial-gradient(circle, transparent 0 14px, #000 15px 20px, transparent 21px);
+          mask:radial-gradient(circle, transparent 0 14px, #000 15px 20px, transparent 21px);
+}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .sunDisk{
+  position:absolute;left:24px;top:9px;width:24px;height:24px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #fff3a2 0 18%, #ffd764 30%, #ffbe38 60%, #f69418 100%);
+  box-shadow:0 0 10px rgba(255,197,74,.35),0 0 18px rgba(255,186,38,.18);
+  animation:sunPulse 4.8s ease-in-out infinite;
+}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .cloudBase,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .cloudPuff,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .cloudPuff2{
+  position:absolute;background:linear-gradient(180deg,#f4f2ff 0%,#dad7f2 60%,#c3c3ea 100%);
+  box-shadow:inset -2px -4px 8px rgba(126,119,185,.16), 0 4px 9px rgba(22,32,52,.10);
+}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .cloudBase{left:11px;top:26px;width:34px;height:15px;border-radius:14px;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .cloudPuff{left:9px;top:19px;width:17px;height:17px;border-radius:50%;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .cloudPuff2{left:22px;top:16px;width:20px;height:20px;border-radius:50%;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .drop{
+  position:absolute;width:3px;height:10px;border-radius:3px 3px 7px 7px;
+  background:linear-gradient(180deg,#9be3ff,#4ba0ff);
+  opacity:0;transform:translateY(-2px);
+  animation:rainFall 1.5s ease-in infinite;
+}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .drop.d1{left:20px;top:38px;animation-delay:0s;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .drop.d2{left:29px;top:40px;animation-delay:.35s;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .drop.d3{left:37px;top:38px;animation-delay:.7s;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .bolt{
+  position:absolute;left:27px;top:34px;width:10px;height:18px;
+  clip-path:polygon(40% 0,100% 0,62% 42%,100% 42%,20% 100%,43% 55%,0 55%);
+  background:linear-gradient(180deg,#fff7a8,#ffd236 55%,#ffba18 100%);
+  filter:drop-shadow(0 0 5px rgba(255,217,89,.55));
+  animation:boltFlicker 3s ease-in-out infinite;
+  opacity:0;
+}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .mist{
+  position:absolute;left:10px;width:36px;height:3px;border-radius:99px;background:rgba(230,242,255,.78);
+  animation:mistMove 3.6s ease-in-out infinite;
+}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .mist.m1{top:31px;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .mist.m2{top:37px;animation-delay:.7s;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated .mist.m3{top:43px;animation-delay:1.2s;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.sunny .cloudBase,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.sunny .cloudPuff,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.sunny .cloudPuff2,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.sunny .drop,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.sunny .bolt,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.sunny .mist{display:none;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.partly-cloudy .sunDisk{left:28px;top:7px;width:22px;height:22px;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.partly-cloudy .sunRays{inset:4px 5px 6px 18px;transform:translateX(5px) translateY(-2px);}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.partly-cloudy .drop,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.partly-cloudy .bolt,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.partly-cloudy .mist{display:none;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.cloudy .sunDisk,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.cloudy .sunRays,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.cloudy .drop,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.cloudy .bolt,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.cloudy .mist{display:none;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.cloudy .cloudBase{left:8px;top:24px;width:39px;height:16px;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.cloudy .cloudPuff{left:7px;top:16px;width:19px;height:19px;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.cloudy .cloudPuff2{left:22px;top:12px;width:24px;height:24px;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.rainy .sunDisk,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.rainy .sunRays,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.rainy .bolt,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.rainy .mist{display:none;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.rainy .cloudBase{left:8px;top:22px;width:39px;height:16px;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.rainy .cloudPuff{left:7px;top:14px;width:19px;height:19px;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.rainy .cloudPuff2{left:22px;top:10px;width:24px;height:24px;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.stormy .sunDisk,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.stormy .sunRays,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.stormy .mist{display:none;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.stormy .cloudBase{left:8px;top:22px;width:39px;height:16px;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.stormy .cloudPuff{left:7px;top:14px;width:19px;height:19px;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.stormy .cloudPuff2{left:22px;top:10px;width:24px;height:24px;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.stormy .drop{opacity:.95;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.stormy .bolt{opacity:1;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.foggy .sunDisk,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.foggy .sunRays,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.foggy .drop,
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.foggy .bolt{display:none;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.foggy .cloudBase{left:12px;top:17px;width:28px;height:12px;opacity:.88;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.foggy .cloudPuff{left:11px;top:11px;width:14px;height:14px;opacity:.88;}
+#vrableSlide2 #slide2Forecast .forecastMiniAnimated.foggy .cloudPuff2{left:23px;top:9px;width:17px;height:17px;opacity:.88;}
+@media (prefers-reduced-motion:reduce){#vrableSlide2 #slide2Forecast .forecastMiniAnimated .sunDisk,
+  #vrableSlide2 #slide2Forecast .forecastMiniAnimated .sunRays,
+  #vrableSlide2 #slide2Forecast .forecastMiniAnimated .drop,
+  #vrableSlide2 #slide2Forecast .forecastMiniAnimated .bolt,
+  #vrableSlide2 #slide2Forecast .forecastMiniAnimated .mist{animation:none!important;}}
+#vrableSlide2 #slide2Forecast .weatherDayRain,
+#vrableSlide2 #slide2Forecast .weatherDayMm,
+#vrableSlide2 #slide2Forecast .weatherDayWind{
+  font-size:17px!important;
+  line-height:1.06!important;
+  letter-spacing:-.25px!important;
+  font-weight:550!important;
+  margin:0!important;
+}
+#vrableSlide2 #slide2Forecast .weatherDayCard{gap:5px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayCard{
   justify-content:flex-start!important;
-  text-align:left!important;
+  gap:4px!important;
+}
+#vrableSlide2 #slide2Forecast .weatherDayRain{
+  margin-top:auto!important;
+  margin-bottom:0!important;
+}
+#vrableSlide2 #slide2Forecast .weatherDayMm,
+#vrableSlide2 #slide2Forecast .weatherDayWind{
+  margin-top:0!important;
+  margin-bottom:0!important;
+}
+#vrableSlide2 #slide2Forecast > .dashboardSectionTitle{display:none!important;}
+#vrableSlide2 #slide2Forecast{gap:9px!important;}
+#vrableSlide2 #slide2Forecast .weatherToday{padding-top:20px!important;padding-bottom:19px!important;flex-shrink:0!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayMain{margin-bottom:12px!important;}
+#vrableSlide2 #slide2Forecast .weatherCurrentBlock{min-width:0;}
+#vrableSlide2 #slide2Forecast .weatherFeels{width:auto!important;max-width:100%!important;white-space:nowrap!important;margin-top:2px!important;font-size:15px!important;line-height:1.25!important;}
+#vrableSlide2 #slide2Forecast .weatherWindRow{display:block;max-width:100%;font-size:15px;line-height:1.32;margin-top:5px;color:#fff;white-space:nowrap;}
+#vrableSlide2 #slide2Forecast > .dashboardSectionTitle{display:none!important;}
+#vrableSlide2 #slide2Forecast .weatherToday{padding-top:12px!important;padding-bottom:18px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayTop{justify-content:flex-start!important;align-items:flex-start!important;margin-top:-4px!important;margin-bottom:2px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayTop .weatherTodayLabel,
+#vrableSlide2 #slide2Forecast .weatherTodayTop strong,
+#vrableSlide2 #slide2Forecast .weatherTodayTop span:first-child{position:relative;top:-2px;}
+#vrableSlide2 #slide2Forecast .weatherTodayMain{margin-top:2px!important;margin-bottom:10px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails{padding-top:12px!important;row-gap:5px!important;column-gap:8px!important;}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails::before{right:0!important;top:-2px!important;}
+#vrableSlide2 #slide2Forecast .moonInfo{justify-content:flex-start!important;padding-top:2px!important;}
+#vrableSlide2 #slide2Forecast .weatherNextDays{margin-top:10px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayCard{padding:16px 5px 11px!important;gap:4px!important;justify-content:flex-start!important;}
+#vrableSlide2 #slide2Forecast .weatherDayName{margin-top:1px!important;margin-bottom:6px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayIcon{margin-top:5px!important;margin-bottom:4px!important;min-height:40px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayTemp{margin-top:1px!important;margin-bottom:8px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayRain{margin-top:auto!important;}
+#vrableSlide2 #slide2Forecast .weatherDayCard{
+  display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:flex-start!important;
+  padding:13px 5px 13px!important;gap:0!important;
+}
+#vrableSlide2 #slide2Forecast .weatherDayName{margin:0 0 18px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayIcon{margin:0 0 18px!important;min-height:44px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayTemp{margin:0 0 12px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayRain{margin-top:auto!important;margin-bottom:8px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayMm{margin:0 0 8px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayWind{margin:0!important;}
+#vrableSlide2 #slide2Forecast .weatherDayCard{padding-top:13px!important;padding-bottom:11px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayName{margin-bottom:24px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayIcon{margin-bottom:24px!important;min-height:44px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayTemp{margin-bottom:18px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayRain{margin-top:auto!important;margin-bottom:8px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayMm{margin-bottom:8px!important;}
+#vrableSlide2 #slide2Forecast .weatherDayWind{margin-bottom:0!important;}
+#vrableSlide2 #slide2Forecast .weatherDayCard{padding-bottom:20px!important;}
+#vrableSlide2 #slide2Forecast .weatherToday.weatherHourlyClick{
+  cursor:pointer!important;
+  transition:background .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+#vrableSlide2 #slide2Forecast .weatherTodayTop .hourlyLinkChevron{font-size:17px;opacity:.75;}
+#vrableSlide2 #slide2Forecast .weatherDayCard.weatherHourlyClick{cursor:pointer!important;transition:background .2s ease,border-color .2s ease,box-shadow .2s ease;}
+#vrableSlide2 #slide2Forecast .weatherToday{background:linear-gradient(135deg,rgba(24,125,199,.74),rgba(7,82,157,.73))!important;border:1px solid rgba(129,203,255,.35)!important;}
+#vrableSlide2 #slide2Forecast .weatherDayCard{background:linear-gradient(160deg,rgba(5,55,107,.88),rgba(1,32,72,.90))!important;border:1px solid rgba(91,159,214,.34)!important;}
+#stage #weekDashboard,#stage #celebrationsDashboard,#stage #radioPanel,#vrableSlide2 #slide2Forecast,#stage #world,#stage #shiftBox,#stage #historicalEvents{
+ border-color:var(--v-panel-border)!important;box-shadow:var(--v-panel-shadow),inset 0 1px 0 rgba(215,244,255,.10)!important;border-radius:19px!important;
+}
+#vrableSlide2 #slide2Forecast .weatherTodayMain{margin-bottom:0!important}
+#vrableSlide2 #slide2Forecast .rainTwoHours{height:43px;box-sizing:border-box;margin:1px 0 5px;padding:1px 4px;color:#e9f6ff;font-size:12px;display:flex;align-items:center;gap:9px;border-radius:7px;background:rgba(8,45,90,.22)}
+#vrableSlide2 #slide2Forecast .weatherToday{padding-bottom:10px!important}
+#vrableSlide2 #slide2Forecast .weatherTodayDetails{padding-top:7px!important}
+#vrableSlide2 #slide2Forecast .weatherNextDays{margin-top:8px!important}
+@media (max-width:900px){#stage #location,#stage #clock-box,#stage #shiftBox,#vrableSlide2 #slide2Forecast,#stage #world,#stage #weekDashboard,#stage #celebrationsDashboard,#stage #radioPanel,#stage #historicalEvents,#stage #dashboardQuickBar{
+   position:relative!important;top:auto!important;bottom:auto!important;left:auto!important;right:auto!important;transform:none!important;width:100%!important;max-width:100%!important;height:auto!important;min-height:0!important;margin:0!important;box-sizing:border-box!important;
+ }#vrableSlide2 #slide2Forecast{order:5;padding:9px!important;overflow:visible!important;min-height:0!important;max-height:none!important;height:auto!important;justify-content:flex-start!important}#vrableSlide2 #slide2Forecast .weatherToday{width:100%!important;padding:12px 11px!important}#vrableSlide2 #slide2Forecast .weatherTodayMain{gap:3px!important}#vrableSlide2 #slide2Forecast .weatherMainTemp{font-size:clamp(55px,17vw,91px)!important}#vrableSlide2 #slide2Forecast .weatherTempRange{font-size:clamp(16px,5vw,28px)!important}#vrableSlide2 #slide2Forecast .weatherTodayDetails{font-size:clamp(11px,3.1vw,15px)!important;gap:2px!important}#vrableSlide2 #slide2Forecast .moonInfo{transform:scale(.83);transform-origin:right center}#vrableSlide2 #slide2Forecast .weatherNextDays{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;flex:none!important;height:auto!important;min-height:185px!important}#vrableSlide2 #slide2Forecast .weatherDayCard{width:auto!important;min-width:0!important;padding:7px 3px!important;height:auto!important;min-height:175px!important}#vrableSlide2 #slide2Forecast .weatherDayName{font-size:clamp(11px,3vw,15px)!important}#vrableSlide2 #slide2Forecast .weatherDayTemp{font-size:clamp(17px,5vw,24px)!important}#vrableSlide2 #slide2Forecast .weatherDayRain,#vrableSlide2 #slide2Forecast .weatherDayMm,#vrableSlide2 #slide2Forecast .weatherDayWind{font-size:clamp(10px,2.9vw,14px)!important}}
+#vrableSlide2 #slide2Forecast .rainTwoHours{
+  width:100%!important;
+  max-width:390px!important;
+  min-width:0!important;
+  margin-left:auto!important;
+  margin-right:0!important;
+  padding:3px 8px!important;
+  gap:8px!important;
+  height:50px!important;
+  justify-content:flex-end!important;
+}
+#vrableSlide2 #slide2Forecast .rainTwoHours .rainLabel{
+  flex:0 0 106px!important;
+  font-size:15px!important;
+  line-height:1.15!important;
+}
+#vrableSlide2 #slide2Forecast .rainTwoHours .rainBars{
+  gap:3px!important;
+  height:29px!important;
+}
+#vrableSlide2 #slide2Forecast .rainTwoHours .rainAmount{
+  font-size:15px!important;
+  min-width:62px!important;
+  font-weight:750!important;
+}
+@media (max-width:900px){#vrableSlide2 #slide2Forecast .rainTwoHours{max-width:none!important;width:100%!important;}#vrableSlide2 #slide2Forecast .rainTwoHours .rainLabel{flex:0 0 98px!important;font-size:14px!important;}#vrableSlide2 #slide2Forecast .rainTwoHours .rainAmount{font-size:14px!important;}}
+#vrableSlide2 #slide2Forecast,
+#stage #world,
+#stage #weekDashboard,
+#stage #celebrationsDashboard,
+#stage #radioPanel,
+#stage #historicalEvents,
+#stage #shiftBox {
+  border-color:rgba(169,220,255,.49)!important;
+  box-shadow:0 8px 26px rgba(1,16,40,.23),0 0 20px rgba(91,177,255,.075),inset 0 1px 0 rgba(255,255,255,.19)!important;
+  backdrop-filter:blur(9px) saturate(118%);
+  -webkit-backdrop-filter:blur(9px) saturate(118%);
+}
+#vrableSlide2 #slide2Forecast .weatherMainIcon{min-height:96px!important;overflow:visible!important;}
+#vrableSlide2 #slide2Forecast .wxRealisticIcon{display:block;overflow:visible;flex:none;filter:drop-shadow(0 5px 7px rgba(10,31,62,.20));}
+#vrableSlide2 #slide2Forecast .wxRealisticMain{width:106px;height:94px;max-width:100%;}
+#vrableSlide2 #slide2Forecast .weatherDayIcon{overflow:visible!important;}
+#vrableSlide2 #slide2Forecast .wxRealisticMini{width:89px;height:77px;max-width:100%;}
+#vrableSlide2 #slide2Forecast .wxCloudCluster{transform-origin:65px 65px;animation:wxCloudBreath 6s ease-in-out infinite;filter:drop-shadow(0 4px 4px rgba(31,54,80,.23));}
+#vrableSlide2 #slide2Forecast .wxSunRays{animation:wxRayTurn 65s linear infinite;}
+#vrableSlide2 #slide2Forecast .wxRain{animation:wxDropDown 1.6s ease-in-out infinite;}
+#vrableSlide2 #slide2Forecast .wxRainB{animation-delay:.38s;}
+#vrableSlide2 #slide2Forecast .wxRainC{animation-delay:.75s;}
+#vrableSlide2 #slide2Forecast .wxSnow{animation:wxSnowDrift 3s ease-in-out infinite;}
+#vrableSlide2 #slide2Forecast .wxSnow1{animation-delay:-.8s;}
+#vrableSlide2 #slide2Forecast .wxSnow2{animation-delay:-1.6s;}
+#vrableSlide2 #slide2Forecast .wxThunder{animation:wxLightningFlicker 3.8s ease-in-out infinite;filter:drop-shadow(0 0 4px rgba(255,212,91,.62));}
+#vrableSlide2 #slide2Forecast .wxFogLine{animation:wxFogSlide 4.5s ease-in-out infinite;}
+#vrableSlide2 #slide2Forecast .moonPhaseIcon{
+  width:54px!important;height:54px!important;border-radius:50%;
+  filter:drop-shadow(0 0 8px rgba(188,218,255,.36))!important;
+}
+#vrableSlide2 #slide2Forecast .moonInfo{overflow:visible!important;}
+@media (max-width:900px){#vrableSlide2 #slide2Forecast .wxRealisticMain{width:92px;height:85px;}#vrableSlide2 #slide2Forecast .wxRealisticMini{width:76px;height:66px;}#vrableSlide2 #slide2Forecast .moonPhaseIcon{width:49px!important;height:49px!important;}}
+@media (prefers-reduced-motion:reduce){#vrableSlide2 #slide2Forecast .wxRealisticIcon *,
+  #vrableSlide2 #slide2Forecast .wxRealisticIcon{animation:none!important;}}
+#vrableSlide2 #slide2Forecast .moonInfo{
+  align-self:start!important;
+  justify-content:flex-start!important;
+  padding-top:5px!important;
+  gap:1px!important;
+}
+#vrableSlide2 #slide2Forecast .moonPhaseIcon{
+  width:42px!important;
+  height:42px!important;
+  flex:0 0 42px!important;
+  filter:drop-shadow(0 0 5px rgba(188,218,255,.25))!important;
+}
+#vrableSlide2 #slide2Forecast .moonPhaseName{
+  font-size:11px!important;
+  line-height:1.07!important;
+}
+@media (max-width:900px){#vrableSlide2 #slide2Forecast .moonPhaseIcon{
+    width:42px!important;height:42px!important;flex-basis:42px!important;
+  }}
+#vrableSlide2 #slide2Forecast .moonInfo{
+  padding-top:1px!important;
+  transform:translateY(-3px)!important;
+  transform-origin:center top!important;
+}
+#vrableSlide2 #slide2Forecast .moonPhaseIcon{
+  width:41px!important;
+  height:41px!important;
+  flex:0 0 41px!important;
+}
+#vrableSlide2 #slide2Forecast .moonPhaseName{
+  margin-top:1px!important;
+}
+@media  (max-width: 600px){#vrableSlide2 #slide2Forecast{padding:8px!important;border-radius:15px!important;}#vrableSlide2 #slide2Forecast .weatherToday{padding:10px 9px!important;border-radius:14px!important;}#vrableSlide2 #slide2Forecast .weatherTodayMain{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 48px!important;gap:4px!important;}#vrableSlide2 #slide2Forecast .weatherCurrentBlock{min-width:0!important;}#vrableSlide2 #slide2Forecast .weatherMainTemp{font-size:clamp(48px,14vw,58px)!important;letter-spacing:-2px!important;}#vrableSlide2 #slide2Forecast .weatherFeels{font-size:11px!important;white-space:normal!important;}#vrableSlide2 #slide2Forecast .weatherTodayMain>.weatherTempRange{font-size:clamp(15px,4.5vw,19px)!important;white-space:normal!important;letter-spacing:-.2px!important;}#vrableSlide2 #slide2Forecast .weatherMainIcon{font-size:38px!important;white-space:normal!important;}#vrableSlide2 #slide2Forecast .weatherTodayDetails{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;font-size:11px!important;}#vrableSlide2 #slide2Forecast .moonInfo{transform:scale(.76)!important;transform-origin:right top!important;}#vrableSlide2 #slide2Forecast .weatherNextDays{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important;min-height:0!important;}#vrableSlide2 #slide2Forecast .weatherDayCard{min-height:148px!important;padding:7px 3px!important;border-radius:10px!important;}#vrableSlide2 #slide2Forecast .weatherDayName{font-size:11px!important;}#vrableSlide2 #slide2Forecast .weatherDayTemp{font-size:16px!important;letter-spacing:-.3px!important;}#vrableSlide2 #slide2Forecast .weatherDayRain,#vrableSlide2 #slide2Forecast .weatherDayMm,#vrableSlide2 #slide2Forecast .weatherDayWind{font-size:10px!important;white-space:normal!important;}#vrableSlide2 #slide2Forecast .rainTwoHours{gap:5px!important;padding:3px 2px!important;}#vrableSlide2 #slide2Forecast .rainTwoHours .rainLabel{flex-basis:84px!important;font-size:12px!important;}#vrableSlide2 #slide2Forecast .rainTwoHours .rainAmount{font-size:12px!important;min-width:44px!important;}}
+@media  (max-width: 390px){#vrableSlide2 #slide2Forecast .weatherNextDays{gap:4px!important;}#vrableSlide2 #slide2Forecast .weatherDayCard{padding-left:2px!important;padding-right:2px!important;}}
+@media  (min-width:901px) {#vrableSlide2 #slide2Forecast {
+    z-index:1!important;
+    background:transparent!important;background-image:none!important;
+    border-color:transparent!important;
+    box-shadow:none!important;
+  }}
+#vrableSlide2 .slide2Weather{display:block!important;flex:1 1 0!important;min-height:0!important;}
+#vrableSlide2 #slide2Forecast{
+  position:relative!important;inset:auto!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+  display:grid!important;grid-template-columns:1fr 1fr!important;
+  gap:clamp(14px,1.8vw,28px)!important;
+  width:100%!important;height:100%!important;min-height:0!important;
+  box-sizing:border-box!important;padding:0!important;overflow:visible!important;
+  background:transparent!important;border:none!important;box-shadow:none!important;
+}
+#vrableSlide2 .slide2WeatherPanel{
+  min-width:0!important;min-height:0!important;max-width:100%!important;
+  box-sizing:border-box!important;overflow:hidden!important;
+  border-radius:20px!important;padding:clamp(12px,1.5vw,23px)!important;
+  background:linear-gradient(125deg,rgba(35,111,177,.82),rgba(12,61,118,.86))!important;
+  border:1px solid rgba(110,194,255,.45)!important;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.16),0 6px 20px rgba(0,0,0,.11)!important;
+}
+#vrableSlide2 #slide2Today{display:flex!important;flex-direction:column!important;justify-content:center!important;}
+#vrableSlide2 #slide2Days{display:flex!important;flex-direction:column!important;justify-content:center!important;}
+#vrableSlide2 #slide2Today>.weatherToday{width:100%!important;min-height:0!important;flex:1 1 auto!important;display:flex!important;flex-direction:column!important;justify-content:space-evenly!important;}
+#vrableSlide2 #slide2Days>.weatherNextDays{
+  width:100%!important;min-height:0!important;flex:1 1 auto!important;
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:clamp(9px,.8vw,16px)!important;margin:0!important;align-items:stretch!important;
+}
+#vrableSlide2 #slide2Days .weatherDayCard{height:100%!important;justify-content:space-around!important;min-width:0!important;}
+#vrableSlide2 #slide2Today .weatherMainTemp{font-size:clamp(76px,9.3vh,126px)!important;}
+#vrableSlide2 #slide2Today .weatherTodayMain>.weatherTempRange{font-size:clamp(25px,3vh,42px)!important;}
+#vrableSlide2 #slide2Today .weatherMainIcon{font-size:clamp(50px,7.2vh,90px)!important;}
+#vrableSlide2 #slide2Today .weatherTodayDetails{font-size:clamp(14px,1.9vh,23px)!important;}
+#vrableSlide2 #slide2Days .weatherDayName{font-size:clamp(17px,2.4vh,28px)!important;}
+#vrableSlide2 #slide2Days .weatherDayIcon{font-size:clamp(40px,5.5vh,68px)!important;}
+#vrableSlide2 #slide2Days .weatherDayTemp{font-size:clamp(24px,3.1vh,38px)!important;}
+#vrableSlide2 #slide2Days .weatherDayRain,#vrableSlide2 #slide2Days .weatherDayMm,#vrableSlide2 #slide2Days .weatherDayWind{font-size:clamp(13px,1.8vh,21px)!important;}
+@media(max-width:900px){
+  #vrableSlide2 #slide2Forecast{grid-template-columns:1fr!important;grid-template-rows:1fr 1fr!important;gap:8px!important;}
+  #vrableSlide2 .slide2WeatherPanel{padding:7px!important;}
+  #vrableSlide2 #slide2Today .weatherMainTemp{font-size:48px!important;}
+  #vrableSlide2 #slide2Today .weatherTodayDetails{font-size:10px!important;}
+  #vrableSlide2 #slide2Days .weatherDayName{font-size:13px!important;}
+  #vrableSlide2 #slide2Days .weatherDayTemp{font-size:17px!important;}
+  #vrableSlide2 #slide2Days .weatherDayRain,#vrableSlide2 #slide2Days .weatherDayMm,#vrableSlide2 #slide2Days .weatherDayWind{font-size:10px!important;}
+}
+</style>
+
+<style id="vrable-slide2-big-weather-and-rainbars-fix">
+/* IBA DRUHÝ SLIDE. Prvý slide, jeho dáta aj interval prepínania ostávajú nezmenené. */
+@media (min-width:901px) {
+  #vrableSlide2 #slide2Today > .weatherToday {
+    box-sizing:border-box!important;
+    padding:clamp(17px,2.1vw,36px)!important;
+    justify-content:space-between!important;
+    gap:clamp(10px,2.2vh,24px)!important;
+  }
+  #vrableSlide2 #slide2Today .weatherTodayTop,
+  #vrableSlide2 #slide2Today .weatherTodayLabel,
+  #vrableSlide2 #slide2Today .weatherTodayTop span{
+    font-size:clamp(21px,2.5vh,31px)!important;
+    font-weight:750!important;line-height:1.25!important;
+  }
+  #vrableSlide2 #slide2Today .weatherTodayMain {
+    width:100%!important;min-width:0!important;display:grid!important;
+    grid-template-columns:minmax(0,1.10fr) minmax(0,0.90fr) minmax(0,0.7fr)!important;
+    align-items:center!important;gap:clamp(10px,1.8vw,30px)!important;
+    margin:0!important;
+  }
+  #vrableSlide2 #slide2Today .weatherCurrentBlock{min-width:0!important;}
+  #vrableSlide2 #slide2Today .weatherMainTemp{
+    font-size:clamp(98px,12vh,155px)!important;line-height:.94!important;
+    letter-spacing:-4px!important;
+  }
+  #vrableSlide2 #slide2Today .weatherTodayMain>.weatherTempRange{
+    font-size:clamp(31px,3.5vh,49px)!important;line-height:1.18!important;
+    min-width:0!important;white-space:nowrap!important;
+  }
+  #vrableSlide2 #slide2Today .weatherFeels,
+  #vrableSlide2 #slide2Today .weatherWindRow{
+    font-size:clamp(20px,2.35vh,29px)!important;
+    line-height:1.23!important;white-space:normal!important;
+  }
+  #vrableSlide2 #slide2Today .weatherMainIcon{min-width:0!important;max-width:100%!important;}
+  #vrableSlide2 #slide2Today .wxRealisticMain{
+    width:clamp(100px,8.4vw,158px)!important;height:auto!important;
+  }
+  #vrableSlide2 #slide2Today .rainTwoHours{
+    box-sizing:border-box!important;width:100%!important;max-width:none!important;
+    min-height:72px!important;height:auto!important;
+    padding:12px 14px!important;display:flex!important;align-items:center!important;
+    gap:clamp(9px,1.1vw,20px)!important;justify-content:space-between!important;
+    margin:0!important;
+  }
+  #vrableSlide2 #slide2Today .rainTwoHours .rainLabel{
+    flex:0 1 205px!important;min-width:0!important;
+    font-size:clamp(18px,2.2vh,28px)!important;white-space:normal!important;
+    line-height:1.15!important;
+  }
+  #vrableSlide2 #slide2Today .rainTwoHours .rainBars{
+    display:flex!important;flex:1 1 0!important;min-width:65px!important;
+    align-items:flex-end!important;gap:4px!important;
+    height:43px!important;
+  }
+  #vrableSlide2 #slide2Today .rainTwoHours .rainBar{
+    display:block!important;flex:1 1 0!important;min-width:2px!important;
+    min-height:4px!important;box-sizing:border-box!important;
+    border-radius:3px 3px 0 0!important;
+    background:#76c9ff!important;box-shadow:0 0 6px rgba(86,189,255,.3)!important;
+  }
+  #vrableSlide2 #slide2Today .rainTwoHours .rainAmount{
+    font-size:clamp(18px,2.15vh,27px)!important;
+    flex:0 0 auto!important;min-width:0!important;
+    white-space:nowrap!important;
+  }
+  #vrableSlide2 #slide2Today .weatherTodayDetails{
+    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:clamp(8px,1.4vh,16px) clamp(12px,1.7vw,25px)!important;
+    font-size:clamp(19px,2.4vh,30px)!important;
+    padding-top:clamp(12px,1.8vh,21px)!important;
+    min-width:0!important;
+  }
+  #vrableSlide2 #slide2Today .weatherTodayDetails .sunriseInfo,
+  #vrableSlide2 #slide2Today .weatherTodayDetails .sunsetInfo,
+  #vrableSlide2 #slide2Today .weatherTodayDetails .rainPercentInfo,
+  #vrableSlide2 #slide2Today .weatherTodayDetails .rainMmInfo{
+    font-size:clamp(19px,2.35vh,29px)!important;
+    line-height:1.2!important;white-space:normal!important;min-width:0!important;
+  }
+  #vrableSlide2 #slide2Today .weatherTodayDetails::before{
+    content:""!important;position:absolute!important;top:0!important;left:0!important;
+    right:0!important;height:1px!important;background:rgba(255,255,255,.25)!important;
+  }
+  #vrableSlide2 #slide2Today .moonInfo{transform:none!important;min-width:0!important;}
+  #vrableSlide2 #slide2Today .moonPhaseName{font-size:clamp(13px,1.65vh,19px)!important;}
+  #vrableSlide2 #slide2Days .weatherNextDays{
+    gap:clamp(10px,.9vw,18px)!important;
+  }
+  #vrableSlide2 #slide2Days .weatherDayCard{
+    padding:clamp(14px,1.8vh,27px) clamp(6px,.7vw,15px)!important;
+    gap:clamp(6px,1.4vh,17px)!important;min-width:0!important;
+  }
+  #vrableSlide2 #slide2Days .weatherDayName{
+    font-size:clamp(25px,3.3vh,42px)!important;
+    line-height:1.12!important;white-space:nowrap!important;
+  }
+  #vrableSlide2 #slide2Days .weatherDayIcon{
+    font-size:clamp(57px,7vh,98px)!important;max-width:100%!important;
+  }
+  #vrableSlide2 #slide2Days .wxRealisticMini{
+    width:clamp(80px,6.8vw,135px)!important;height:auto!important;
+  }
+  #vrableSlide2 #slide2Days .weatherDayTemp{
+    font-size:clamp(35px,4.7vh,60px)!important;line-height:1.12!important;
+  }
+  #vrableSlide2 #slide2Days .weatherDayTemp span{
+    font-size:.68em!important;white-space:nowrap!important;
+  }
+  #vrableSlide2 #slide2Days .weatherDayRain,
+  #vrableSlide2 #slide2Days .weatherDayMm,
+  #vrableSlide2 #slide2Days .weatherDayWind{
+    font-size:clamp(19px,2.6vh,30px)!important;
+    line-height:1.16!important;letter-spacing:-.25px!important;
+    white-space:nowrap!important;
+  }
+  #vrableSlide2 #slide2Days .weatherDayRain{margin-top:auto!important;}
+}
+/* Tieto pravidlá vykresľujú zrážkové stĺpiky aj mimo pôvodného #stage. */
+#vrableSlide2 #slide2Today .rainTwoHours .rainBar{
+  background:#76c9ff;min-height:3px;display:block;flex:1;
+}
+</style>
+<style id="qme-room-overview">
+
+#stage #weekDashboard .weekTopBar{
+  display:block!important;height:auto!important;min-height:0!important;flex:0 0 auto!important;
+  margin:0 0 5px!important;padding:0!important;
+}
+#stage #weekDashboard .weekTitleRow{width:100%!important;min-height:50px!important;}
+#stage #weekDashboard .qmeAxisDate{
+  display:block;color:#cde6ff;font-size:15px;font-weight:720;line-height:1.3;
+  margin:0 0 4px 2px;text-align:left;letter-spacing:.1px;
+}
+#stage #weekDashboard .weekQmeTimeline.qmeUnknown .qmeTimelineTrack{
+  background:repeating-linear-gradient(135deg,#344f65 0 7px,#415d72 7px 14px)!important;
+}
+#stage #weekDashboard .qmeSummary{
+  display:flex;align-items:center;gap:10px;min-width:0;
+  margin:7px 0 3px;padding:5px 0 7px;border-bottom:1px solid rgba(164,212,255,.25);
+}
+#stage #weekDashboard .qmeSummary #meetingRoomIndicator{
+  display:inline-flex!important;position:static!important;inset:auto!important;
+  flex:0 0 auto!important;align-items:center!important;gap:8px!important;
+  width:auto!important;min-height:28px!important;height:auto!important;margin:0!important;
+  padding:4px 10px!important;border-radius:7px!important;font-size:18px!important;line-height:1.1!important;
+  white-space:nowrap!important;
+}
+#stage #weekDashboard .qmeCurrentSubject{
+  min-width:0;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  color:#ecf6ff;font-size:20px;font-weight:650;text-align:left;
+}
+#stage #weekDashboard .qmeImportStamp{
+  flex:none;margin-left:auto;color:#c1def7;font-size:16px;font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+#stage #weekDashboard .qmeGroupHeading{
+  display:flex;align-items:center;gap:9px;flex:none;color:#aad7fa;
+  font-size:15px;font-weight:750;line-height:1.15;text-align:left;
+  margin:8px 0 3px;padding:0 4px;
+}
+#stage #weekDashboard .qmeGroupHeading:first-child{margin-top:3px;}
+#stage #weekDashboard .qmeGroupHeading::after{content:"";height:1px;flex:1;background:rgba(142,202,245,.23);}
+#stage #weekDashboard #weekEventList[data-smart-spacing]{justify-content:flex-start!important;padding-top:0!important;gap:1px!important;}
+@media(min-width:901px){
+
+  #stage #weekDashboard #weekEventList.qmeDense .weekEventRow{min-height:41px!important;padding-block:2px!important;}
+  #stage #weekDashboard #weekEventList.qmeDense .weekEventRow > div{min-height:32px!important;}
+  #stage #weekDashboard #weekEventList.qmeDense .qmeGroupHeading{margin-block:4px 2px;}
 }
 @media(max-width:900px){
- #stage #forecast3days .weatherTodayMain>.weatherTempRange{font-size:34px!important;}
- #stage #forecast3days .weatherToday>.rainTwoHours{width:78%!important;min-width:0!important;max-width:none!important;}
+
+
+  #stage #weekDashboard .weekTitleRow{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:6px!important;padding:0!important;}
+  #stage #weekDashboard .weekTitle{order:0;flex:1;min-width:0!important;}
+  #stage #weekDashboard .weekAddMenuAnchor{order:1;margin-left:auto!important;}
+  #stage #weekDashboard #weekQmeTimeline{display:block!important;order:2;flex:0 0 100%!important;width:100%!important;margin:0!important;padding:0!important;}
+  #stage #weekDashboard .qmeTimelineTrackWrap{width:100%!important;min-width:0!important;}
+  #stage #weekDashboard .qmeAxisDate{font-size:12px;}
+  #stage #weekDashboard .qmeSummary{flex-wrap:wrap;column-gap:6px;row-gap:4px;margin:4px 0;padding:3px 0 5px;}
+  #stage #weekDashboard .qmeSummary #meetingRoomIndicator{font-size:14px!important;min-height:24px!important;padding:3px 7px!important;}
+  #stage #weekDashboard .qmeCurrentSubject{font-size:14px;}
+  #stage #weekDashboard .qmeImportStamp{font-size:12px;}
+  #stage #weekDashboard .qmeGroupHeading{font-size:13px;margin-top:6px;}
+  #weekEditorOverlay.isOpen{position:fixed!important;inset:0!important;align-items:center;overflow-y:auto;}
+  #weekEditorOverlay .weekEditorDialog{max-width:calc(100vw - 20px);max-height:calc(100dvh - 16px);overflow-y:auto;}
+}
+
+</style>
+<style>
+#stage #weekDashboard .weekTitleRow{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;}
+#stage #weekDashboard #weekQmeTimeline{order:0!important;flex:1 1 0%!important;width:auto!important;min-width:0!important;max-width:none!important;}
+#stage #weekDashboard #weekQmeTimeline .qmeTimelineTrackWrap{width:100%!important;max-width:none!important;}
+#stage #weekDashboard .weekAddMenuAnchor{order:1!important;flex-shrink:0!important;}
+#stage #weekDashboard #qmeAxisDate{cursor:pointer;}
+</style>
+<style id="timeline-large-hour-labels">
+#stage #weekDashboard #weekQmeTimeline .qmeTimelineTrack{height:38px!important;min-height:38px!important;}
+#stage #weekDashboard #weekQmeTimeline .qmeTimelineTicks{inset:0!important;padding:0!important;}
+#stage #weekDashboard #weekQmeTimeline .qmeTimelineTicks span{font-size:29px!important;line-height:1!important;font-weight:850!important;color:white!important;text-shadow:0 1px 3px #102e42!important;width:40px!important;box-sizing:border-box;}
+@media(max-width:900px){
+#stage #weekDashboard #weekQmeTimeline .qmeTimelineTicks{display:flex!important;align-items:center!important;justify-content:space-between!important;}
+#stage #weekDashboard #weekQmeTimeline .qmeTimelineTicks span{position:static!important;transform:none!important;min-width:0!important;width:auto!important;font-size:clamp(15px,4.7vw,23px)!important;}
 }
 </style>
-
-<style id="qme-timeline-green-red-final">
-/* Q_ME časová os: voľné = zelená, obsadené = červená */
-#stage #weekDashboard .qmeTimelineTrack{background:linear-gradient(180deg,#2fbf71,#1e9a57)!important;border:1px solid rgba(150,245,190,.45)!important;box-shadow:inset 0 1px 2px rgba(255,255,255,.18)!important}
-#stage #weekDashboard .qmeTimelineFree{background:linear-gradient(180deg,#2fbf71,#1e9a57)!important;box-shadow:none!important}
-#stage #weekDashboard .qmeTimelineBusy{background:linear-gradient(180deg,#f04848,#c92a2a)!important;box-shadow:none!important}
-#stage #weekDashboard .qmeTimelineDay{color:#cfe6f5!important}
-</style>
-
-<style id="celebrations-row-alignment">
-/* Zarovnanie riadkov: deň/dátum v ľavom stĺpci sedí na úrovni mena a typu prvej karty. */
-#stage #celebrationsDashboard .celebrateDayGroup{display:grid!important;grid-template-columns:62px minmax(0,1fr)!important;column-gap:8px!important;align-items:start!important}
-#stage #celebrationsDashboard .celebrateDate{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:flex-start!important;gap:2px!important;padding:8px 0 0 2px!important;margin:0!important;transform:none!important}
-#stage #celebrationsDashboard .celebrateWeekday{display:block!important;font-size:15px!important;line-height:22px!important;margin:0!important}
-#stage #celebrationsDashboard .celebrateDateNumber{display:block!important;font-size:16px!important;line-height:18px!important;margin:0!important}
-#stage #celebrationsDashboard .celebrateEvent{display:grid!important;grid-template-columns:28px minmax(0,1fr)!important;column-gap:8px!important;align-items:center!important;padding:8px 12px 8px 10px!important;text-align:left!important}
-#stage #celebrationsDashboard .celebrateEvent>.celebrateIcon,#stage #celebrationsDashboard .celebrateEvent>span:first-child{justify-self:center!important;align-self:center!important;margin:0!important}
-#stage #celebrationsDashboard .celebrateInfo{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:2px!important;min-width:0!important;text-align:left!important}
-#stage #celebrationsDashboard .celebrateName{display:block!important;line-height:22px!important;text-align:left!important;margin:0!important}
-#stage #celebrationsDashboard .celebrateMeta{display:flex!important;justify-content:space-between!important;align-items:baseline!important;gap:8px!important;line-height:18px!important;margin:0!important}
-#stage #celebrationsDashboard .celebrateType{line-height:18px!important;margin:0!important}
-#stage #celebrationsDashboard .celebrateCountdown{margin-left:auto!important;line-height:18px!important;white-space:nowrap!important}
-</style>
-
-<style id="qme-timeline-readable-hours">
-/* Čitateľné hodiny na Q_ME osi */
-#stage #weekDashboard .qmeTimelineTrack{height:30px!important;min-height:30px!important}
-#stage #weekDashboard .qmeTimelineTicks{font-size:15px!important}
-#stage #weekDashboard .qmeTimelineTicks span{
-  font-size:15px!important;font-weight:900!important;color:#ffffff!important;
-  width:28px!important;letter-spacing:0!important;
-  text-shadow:0 0 3px rgba(0,0,0,.85),0 1px 2px rgba(0,0,0,.9)!important;
+<style>
+#stage #weekDashboard #weekEventList .reservationRow + .qmeGroupHeading{margin-top:24px!important;}
+@media(min-width:901px){
+#stage #weekDashboard #weekEventList.weekScrollable{display:flex!important;flex-direction:column!important;padding-bottom:0!important;}
+#stage #weekDashboard #weekEventList.weekScrollable > .reservationRow{flex:0 0 auto!important;}
+#stage #weekDashboard #weekEventList.weekScrollable > .workScheduleRow{flex:1 0 41px!important;box-sizing:border-box!important;align-items:center!important;}
 }
-#stage #weekDashboard .qmeTimelineTicks span::before{height:5px!important;background:rgba(255,255,255,.55)!important}
-/* Palička aktuálneho času nad číslami, nech je stále viditeľná */
-#stage #weekDashboard .qmeTimelineNow{z-index:12!important;width:4px!important;background:#fff!important;box-shadow:0 0 0 1px rgba(0,40,80,.6),0 0 8px rgba(255,255,255,.9)!important}
-#stage #weekDashboard .qmeTimelineNowDot{z-index:13!important}
-</style>
-</head>
+</style><style>
+#stage #shiftBox .workdayGrid .countdownCard{display:grid!important;grid-template-rows:minmax(0,.92fr) minmax(0,1.08fr) auto!important;padding:2px 3px!important;gap:1px!important;align-items:stretch!important;justify-content:stretch!important;}
+#stage #shiftBox .workdayGrid .countdownCard :is(.workdayHeader,.workMain){width:100%!important;height:auto!important;min-height:0!important;margin:0!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+#stage #shiftBox .workdayGrid .countdownCard :is(.workdayTitle,.workValue){margin:0!important;padding:0!important;line-height:1.04!important;white-space:nowrap!important;letter-spacing:0!important;text-align:center!important;}
+</style></head>
 
 <body>
 <div id="vrable-auth-cover" aria-live="polite"><section id="vrable-auth-card"><h2>🔐 Dashboard Vráble</h2><p>Overenie prístupu do firemného dashboardu. Prihlasovacie údaje zostávajú v službe Firebase Authentication.</p><form id="vrable-auth-form"><label for="vrable-auth-email">E-mail</label><input id="vrable-auth-email" type="email" autocomplete="username" required><label for="vrable-auth-password">Heslo</label><input id="vrable-auth-password" type="password" autocomplete="current-password" required><button id="vrable-auth-submit" type="submit">Prihlásiť sa</button></form><div id="vrable-auth-error" role="alert"></div></section></div>
@@ -5481,6 +6407,7 @@ body{background-image:radial-gradient(ellipse 72% 62% at 21% 12%,rgba(22,117,190
 
 <div id="clock-box">
     <div id="time" class="glow"></div>
+
     <div id="dateWeek"></div>
     
 </div>
@@ -5577,9 +6504,10 @@ body{background-image:radial-gradient(ellipse 72% 62% at 21% 12%,rgba(22,117,190
 <section id="weekDashboard" class="glass" aria-label="Prehľad najbližších udalostí">
  <div class="weekTopBar">
    <div class="weekTitleRow">
-     <div class="weekTitle"><span class="weekTitleIcon">▣</span> Prehľad udalostí <span id="weekDateRange" class="weekDateRange"></span></div>
+     <span id="weekDateRange" hidden></span>
      <div id="weekQmeTimeline" class="weekQmeTimeline" aria-label="Časová os obsadenosti Q_ME">
        <div class="qmeTimelineTrackWrap">
+         <span id="qmeAxisDate" class="qmeAxisDate"></span>
          <div class="qmeTimelineTrack">
            <div id="qmeTimelineBusyLayer" class="qmeTimelineBusyLayer"></div>
            <div id="qmeTimelineNow" class="qmeTimelineNow" aria-hidden="true"></div>
@@ -5593,7 +6521,11 @@ body{background-image:radial-gradient(ellipse 72% 62% at 21% 12%,rgba(22,117,190
        <button type="button" id="weekUnifiedAdd" aria-label="Pridať audit alebo neprítomnosť" title="Pridať udalosť">+</button>
      </div>
    </div>
-   <span id="meetingRoomIndicator" class="meetingRoomIndicator unknown" role="status" aria-live="polite" hidden>Q_ME · Čaká na údaje</span>
+   <div class="qmeSummary">
+     <span id="meetingRoomIndicator" class="meetingRoomIndicator unknown" role="status">Načítavam rozpis</span>
+     <span id="qmeCurrentSubject" class="qmeCurrentSubject"></span>
+     <span id="qmeImportStamp" class="qmeImportStamp">Čas importu neznámy</span>
+   </div>
  </div>
  <div id="weekTabs" class="weekTabs" role="tablist" aria-label="Filtrovanie udalostí">
   <button type="button" role="tab" class="active" aria-selected="true" data-week-type="audit">Audity</button>
@@ -5636,7 +6568,7 @@ body{background-image:radial-gradient(ellipse 72% 62% at 21% 12%,rgba(22,117,190
   <div class="radioHeading"><strong>Rádiá</strong><span>ONLINE</span></div>
   <div id="radioStations" aria-label="Výber stanice"></div>
   <div class="radioDivider" aria-hidden="true"></div>
-  <div class="radioControls"><button id="radioPlay" type="button" aria-label="Spustiť rádio">▶</button><button id="radioMute" type="button" aria-label="Stlmiť zvuk">🔊</button><input id="radioVolume" aria-label="Hlasitosť" type="range" min="0" max="100" value="60"><output id="radioVolumeLabel">60 %</output><div id="radioSongRow" class="radioSongModern" aria-label="Aktuálne hraná skladba"><span class="radioSongGlyph" aria-hidden="true">♫</span><span id="radioNowPlaying" aria-live="off" title="Aktuálne hraná skladba" hidden></span></div><div class="radioInlineSettings"><label><input id="radioRotate" type="checkbox"> Náhodné prehrávanie</label><label title="Automatické prehrávanie denne od 7:00 do 17:00"><input id="radioSchedule" type="checkbox" checked> 7:00 – 17:00</label></div><small id="radioRotationStatus" class="radioInlineStatus">Automatické striedanie je vypnuté.</small></div>
+  <div class="radioControls"><button id="radioPlay" type="button" aria-label="Spustiť rádio">▶</button><button id="radioMute" type="button" aria-label="Stlmiť zvuk">🔊</button><input id="radioVolume" aria-label="Hlasitosť" type="range" min="0" max="100" value="60"><output id="radioVolumeLabel">60 %</output><div id="radioSongRow" class="radioSongModern" aria-label="Aktuálne hraná skladba"><span class="radioSongGlyph" aria-hidden="true">♫</span><span id="radioNowPlaying" aria-live="off" title="Aktuálne hraná skladba" hidden></span></div><div class="radioInlineSettings"><label><input id="radioRotate" type="checkbox"> Náhodne každých 30 min</label><label title="Automatické prehrávanie denne od 7:00 do 17:00"><input id="radioSchedule" type="checkbox" checked> 7:00 – 17:00</label></div><small id="radioRotationStatus" class="radioInlineStatus">Automatické striedanie je vypnuté.</small></div>
   <div class="radioFooter"><span id="radioStatus" role="status" aria-live="polite">Vyber stanicu a spusti prehrávanie.</span><a id="radioWebsite" target="_blank" rel="noopener noreferrer">Web rádia ↗</a></div>
   <audio id="radioAudio" preload="none"></audio>
 </section>
@@ -6221,7 +7153,8 @@ function getISOWeek(d){
 let lastHeaderKey="";
 function updateTime(){
   const n=new Date();
-  time.innerText=n.toLocaleTimeString("sk-SK",{hour12:false});
+  time.innerText=n.toLocaleTimeString("sk-SK",{hour12:false,timeZone:'Europe/Bratislava'});
+  updateWorldTimes(n);
   const headerKey=n.toDateString()+"|"+getNameday(n);
   if(headerKey===lastHeaderKey)return;
   lastHeaderKey=headerKey;
@@ -6825,6 +7758,10 @@ const WORLD_CITIES = [
 let worldWeatherCache = readWeatherCache(DASHBOARD_WORLD_CACHE_KEY)?.data || {};
 if(!worldWeatherCache || typeof worldWeatherCache!=='object' || Array.isArray(worldWeatherCache)) worldWeatherCache={};
 let worldTableBuilt = false;
+let lastWorldMinute = -1;
+const worldClockFormats = WORLD_CITIES.map(c=>new Intl.DateTimeFormat('sk-SK',{
+  timeZone:c.tz,hourCycle:'h23',hour:'2-digit',minute:'2-digit'
+}));
 
 function buildWorldTable(){
   const box=document.getElementById('world');
@@ -6846,11 +7783,13 @@ function buildWorldTable(){
   updateWorldTimes();updateWorldWeatherCells();
 }
 
-function updateWorldTimes(){
-  if(!worldTableBuilt)return;
-  WORLD_CITIES.forEach((c,i)=>{
+function updateWorldTimes(now = new Date()){
+  const minute=Math.floor(now.getTime()/60000);
+  if(!worldTableBuilt || minute===lastWorldMinute)return;
+  lastWorldMinute=minute;
+  worldClockFormats.forEach((format,i)=>{
     const cell=document.getElementById('worldTime_'+i);
-    if(cell)cell.textContent=new Date().toLocaleTimeString('sk-SK',{timeZone:c.tz,hour12:false,hour:'2-digit',minute:'2-digit'});
+    if(cell)cell.textContent=format.format(now);
   });
 }
 
@@ -8037,8 +8976,8 @@ setInterval(()=>{
   
 },1000);
 
-// SVETOVÉ ČASY – aktualizácia každú hodinu
-setInterval(world,60*60000);
+// Po návrate z režimu spánku zosúlaď všetky hodiny aj pred prvým časovačom.
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateTime();});
 
 // MINÚTOVÁ SLUČKA
 setInterval(()=>{
@@ -8546,12 +9485,6 @@ document.addEventListener('click', (e)=>{
 
 </div>
 <!-- /stage -->
-
-
-
-
-
-
 <div id="miniDatePicker"></div>
 
 <script type="application/x-dashboard-awaiting-auth">
@@ -8671,7 +9604,7 @@ if(typeof ResizeObserver!=='undefined'){
   nowPlaying.textContent=song;
   nowPlaying.title=song?('Aktuálna skladba: '+song):'Údaje o skladbe nie sú dostupné';
  }
- function resetSong(){metadataToken++;metadataRequest++;metadataMisses=0;showSong('');try{metadataBusy=false;}catch(e){}}
+ function resetSong(){metadataToken++;metadataRequest++;metadataMisses=0;showSong('');}
  function getMountSong(data,mount){
   const source=data?.icestats?.source;
   const sources=Array.isArray(source)?source:[source].filter(Boolean);
@@ -8685,18 +9618,8 @@ if(typeof ResizeObserver!=='undefined'){
  }
  // Europa 2 a Expres publikujú playlist na vlastných stránkach.
  // Úvodné audio reklamy však pridáva samotný poskytovateľ streamu (Bauer Media).
- const officialPlaylistPages={'Europa 2':'https://www.europa2.sk/stream/','Expres':'https://www.expres.sk/stream/','Rádio Melody':'https://www.radiomelody.sk/stream/'};
+ const officialPlaylistPages={'Europa 2':'https://www.europa2.sk/stream/','Expres':'https://www.expres.sk/stream/'};
  const icecastMetadata={'Rádio Vlna':['https://stream.radiovlna.sk/status-json.xsl','vlna-hi.mp3']};
- // Záložné playlisty pre stanice, ktorých stream neposiela čitateľné ICY metadáta do prehliadača.
- const playlistFallbackPages={
-  'Europa 2':'https://www.radia.sk/radia/europa2/playlist',
-  'Expres':'https://www.radia.sk/radia/expres/playlist',
-  'Rádio Vlna':'https://www.radia.sk/radia/vlna/playlist',
-  'Rádio Melody':'https://www.radia.sk/radia/melody/playlist',
-  'Fun Rádio':'https://onlineradiobox.com/sk/fun/playlist/',
-  'Fun Dance':'https://onlineradiobox.com/sk/funradiodance/playlist/',
-  'Fun Milenialky':'https://onlineradiobox.com/sk/funradiomilenialky/playlist/'
- };
  function extractOfficialSong(html,station){
   if(!html||typeof html!=='string')return '';
   const doc=new DOMParser().parseFromString(html,'text/html');
@@ -8712,7 +9635,7 @@ if(typeof ResizeObserver!=='undefined'){
   const marker=station==='Expres'?nodes.findIndex(t=>/posledn[eé] hran[eé]/i.test(t)):-1;
   const start=Math.max(0,marker);
   const slice=nodes.slice(start);
-  const skip=/^(?:64|128|kbps|kvalita|poč[uú]vať|posledn[eé] hran[eé]|live|naživo|playlist|play|pause|rádio expres|europa 2|rádio melody|hity vášho života|zobraziť všetky|viac|[•-])$/i;
+  const skip=/^(?:64|128|kbps|kvalita|poč[uú]vať|posledn[eé] hran[eé]|live|naživo|playlist|play|pause|rádio expres|europa 2|zobraziť všetky|viac|[•-])$/i;
   for(let i=0;i<slice.length-2;i++){
    if(!/^(?:dnes\s*)?\d{1,2}:\d{2}$/.test(slice[i]))continue;
    const parts=[];
@@ -8742,82 +9665,13 @@ if(typeof ResizeObserver!=='undefined'){
   if(!html){try{html=await fetchTextViaCorsProxy(url,3500);}catch(e){}}
   return extractOfficialSong(html,station);
  }
-
-
- function extractRadiaSkSong(html){
-  if(!html||typeof html!=='string')return '';
-  const doc=new DOMParser().parseFromString(html,'text/html');
-  doc.querySelectorAll('script,style,noscript,svg,nav,footer,header').forEach(el=>el.remove());
-  // DOMParser dokument sa nevykresľuje, preto innerText spája texty bez medzier.
-  // Čítame jednotlivé textové uzly, rovnako ako pri oficiálnych stránkach.
-  const nodes=[];const walk=doc.createTreeWalker(doc.body,NodeFilter.SHOW_TEXT);
-  while(walk.nextNode()){const v=(walk.currentNode.nodeValue||'').replace(/\s+/g,' ').trim();if(v&&v.length<200)nodes.push(v);}
-  const isTime=v=>/^(?:dnes|teraz|naživo)?\s*\d{1,2}:\d{2}$/i.test(v);
-  const skip=/^(?:dnes|včera|teraz|naživo|videoklip|audio|playlist|zoznam odohraní.*|top skladby.*|[•\-–|])$/i;
-  for(let i=0;i<nodes.length-1;i++){
-   if(!isTime(nodes[i]))continue;
-   const parts=[];
-   for(let j=i+1;j<Math.min(i+6,nodes.length);j++){
-    const v=nodes[j];if(isTime(v))break;if(skip.test(v))continue;
-    if(v.length>1&&v.length<120)parts.push(v);if(parts.length===2)break;
-   }
-   if(parts.length===2)return cleanSong(parts[0]+' – '+parts[1]);
-   if(parts.length===1&&/\s[-–]\s/.test(parts[0]))return cleanSong(parts[0]);
-  }
-  return '';
- }
- const orbAliases={'Europa 2':'sk.europa2','Expres':'sk.expres','Rádio Melody':'sk.melody'};
- async function fetchOrbMetadata(station){
-  const alias=orbAliases[station];if(!alias)return '';
-  const url='https://scraper2.onlineradiobox.com/'+alias+'?l=0&_='+Date.now();
-  let raw='';
-  try{const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(4000)});if(r.ok)raw=await r.text();}catch(e){}
-  if(!raw){try{raw=await fetchTextViaCorsProxy(url,4000)||'';}catch(e){}}
-  try{const d=JSON.parse(raw);const t=cleanSong(d?.title||'');return /^(europa 2|expres|rádio melody|melody)$/i.test(t)?'':t;}catch(e){return '';}
- }
- async function firstSong(tasks){
-  return new Promise(resolve=>{
-   let left=tasks.length;if(!left)return resolve('');
-   tasks.forEach(p=>Promise.resolve(p).then(v=>{if(v){resolve(v);}else if(--left===0)resolve('');},()=>{if(--left===0)resolve('');}));
-  });
- }
- function extractFallbackSong(html){
-  if(!html||typeof html!=='string')return '';
-  const doc=new DOMParser().parseFromString(html,'text/html');
-  const selectors=['.current-song','.current_playing','.playing','.playlist .active','[class*="current"] [class*="song"]','[class*="now-playing"]'];
-  for(const selector of selectors){
-   const el=doc.querySelector(selector);const value=cleanSong(el?.textContent||'');
-   if(value&&value.length>3&&!/playlist|naživo|live|práve hrá/i.test(value))return value;
-  }
-  const text=(doc.body?.innerText||'').replace(/\s+/g,' ').trim();
-  const patterns=[/Naživo\s+(.{3,150}?)(?=\s+\d{1,2}:\d{2}|$)/i,/Práve hrá\s*[:\-]?\s*(.{3,150}?)(?=\s+\d{1,2}:\d{2}|$)/i,/On Air\s*[:\-]?\s*(.{3,150}?)(?=\s+\d{1,2}:\d{2}|$)/i];
-  for(const re of patterns){const m=text.match(re);if(m){const value=cleanSong(m[1]);if(value)return value;}}
-  const timed=text.match(/(?:dnes\s+)?\d{1,2}:\d{2}\s+(.{3,150}?)(?=\s+(?:dnes\s+)?\d{1,2}:\d{2}|$)/i);
-  return timed?cleanSong(timed[1]):'';
- }
- async function fetchFallbackMetadata(station){
-  const page=playlistFallbackPages[station];if(!page)return '';
-  const url=page+(page.includes('?')?'&':'?')+'_='+Date.now();
-  let html='';
-  try{const res=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(4500)});if(res.ok)html=await res.text();}catch(e){}
-  if(!html){try{html=await fetchTextViaCorsProxy(url,5000)||'';}catch(e){}}
-  if(/radia\.sk\/radia\//i.test(page)){const value=extractRadiaSkSong(html);if(value)return value;}
-  return extractFallbackSong(html);
- }
- let metadataBusy=false;
  async function fetchSongMetadata(){
-  if(metadataBusy)return;metadataBusy=true;
-  try{await fetchSongMetadataInner();}finally{metadataBusy=false;}
- }
- async function fetchSongMetadataInner(){
   if(!wanted||audio.paused||document.hidden)return;
   const station=selected[0],mount=funMounts[station];
-  if(!mount&&!officialPlaylistPages[station]&&!icecastMetadata[station]&&!playlistFallbackPages[station]){showSong('');return;}
+  if(!mount&&!officialPlaylistPages[station]&&!icecastMetadata[station]){showSong('');return;}
   const token=metadataToken,request=++metadataRequest;
   let song='';
-  if(orbAliases[station]){
-   song=await firstSong([fetchOfficialMetadata(station),fetchFallbackMetadata(station),fetchOrbMetadata(station)]);
-  }else if(officialPlaylistPages[station]){
+  if(officialPlaylistPages[station]){
    song=await fetchOfficialMetadata(station);
   }else if(icecastMetadata[station]){
    const [base,mountName]=icecastMetadata[station];
@@ -8837,13 +9691,12 @@ if(typeof ResizeObserver!=='undefined'){
    if(!data){try{const raw=await fetchTextViaCorsProxy(url,4500);if(raw)data=JSON.parse(raw);}catch(e){}}
    song=data?getMountSong(data,mount):'';
   }
-  if(!song&&!orbAliases[station]) song=await fetchFallbackMetadata(station);
   if(token!==metadataToken||request!==metadataRequest||!wanted||audio.paused||selected[0]!==station)return;
   if(song){metadataMisses=0;showSong(song);}
-  else if(++metadataMisses>=4){showSong('');}
+  else if(++metadataMisses>=2){showSong('');}
  }
- // Aktualizácia každých 10 sekúnd; obnova aj po návrate na kartu.
- setInterval(fetchSongMetadata,10000);
+ // Aktualizácia každých 5 sekúnd; obnova aj po návrate na kartu.
+ setInterval(fetchSongMetadata,5000);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)fetchSongMetadata();});
  const stored=read('dashboardRadioVolume');vol.value=stored!==null&&Number.isFinite(+stored)?Math.max(0,Math.min(100,+stored)):60;
  function volume(){audio.volume=+vol.value/100;$('radioVolumeLabel').textContent=vol.value+' %';save('dashboardRadioVolume',vol.value)}volume();
@@ -9320,17 +10173,20 @@ document.addEventListener('keydown',e=>{
     const d=new Date(iso);
     return Number.isFinite(d.getTime())?d:null;
   }
-  function meetingEvents(){
+  function normalizedMeetings(){
     const raw=Array.isArray(meetingPayload)?meetingPayload:meetingPayload?.udalosti;
     if(!Array.isArray(raw))return [];
-    // Po 16:00 zobrazíme aj zajtrajšie rezervácie, ak ich Firebase poskytuje.
-    const now=new Date(), tomorrow=new Date(now);
-    tomorrow.setDate(tomorrow.getDate()+1);
-    const dateKey=d=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
-    const today=dateKey(now),lastVisibleDay=now.getHours()>=16?dateKey(tomorrow):today;
-    return raw.map(e=>({nazov:String(e.nazov||e.subject||'Bez názvu'),zaciatok:parseMeetingDate(e.zaciatok||e.start),koniec:parseMeetingDate(e.koniec||e.end),showAs:e.showAs||e.showas||''}))
-      .filter(e=>e.zaciatok&&e.koniec&&e.koniec>e.zaciatok&&dateKey(e.zaciatok)<=lastVisibleDay&&dateKey(new Date(e.koniec.getTime()-1))>=today)
+    return raw.filter(Boolean).map(e=>({
+      nazov:String(e.nazov||e.subject||'Bez názvu'),
+      zaciatok:parseMeetingDate(e.zaciatok||e.start),koniec:parseMeetingDate(e.koniec||e.end),
+      showAs:String(e.showAs||e.showas||e.status||'').toLowerCase()
+    })).filter(e=>e.zaciatok&&e.koniec&&e.koniec>e.zaciatok&&e.showAs!=='free')
       .sort((a,b)=>a.zaciatok-b.zaciatok);
+  }
+  function meetingEvents(){
+    const now=new Date();
+    const today=localDateSk(now),lastVisibleDay=qmeDefaultDay()==='tomorrow'?qmeDatePlusDay(now,1):today;
+    return normalizedMeetings().filter(e=>localDateSk(e.zaciatok)<=lastVisibleDay&&localDateSk(new Date(e.koniec-1))>=today);
   }
   function meetingIsFresh(){
     // Denný e-mail obsahuje dnešok aj zajtrajšok. Po polnoci sa deň
@@ -9349,11 +10205,7 @@ document.addEventListener('keydown',e=>{
     // Povolíme iba rozpis z PREDCHÁDZAJÚCEHO dňa, v ktorom sú
     // preukázateľne rezervácie zasahujúce do nového dnešného dňa.
     // Nepovoľujeme starý prázdny rozpis (ten by falošne hlásil voľnú Q_ME).
-    const yesterday=new Date(now);
-    yesterday.setDate(yesterday.getDate()-1);
-    const yesterdayKey=new Intl.DateTimeFormat('en-CA',{
-      timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'
-    }).format(yesterday);
+    const yesterdayKey=qmeDatePlusDay(now,-1);
     if(meetingPayload.datum!==yesterdayKey)return false;
     const raw=meetingPayload.udalosti;
     return raw.some(e=>{
@@ -9365,9 +10217,12 @@ document.addEventListener('keydown',e=>{
       return localDateSk(start)<=today && localDateSk(new Date(end.getTime()-1))>=today;
     });
   }
+  const localDayFormat=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'});
+  const calendarDayLabel=new Intl.DateTimeFormat('sk-SK',{timeZone:'Europe/Bratislava',weekday:'long',day:'numeric',month:'numeric'});
+  const importDateLabel=new Intl.DateTimeFormat('sk-SK',{timeZone:'Europe/Bratislava',day:'numeric',month:'numeric'});
   const meetingClock=new Intl.DateTimeFormat('sk-SK',{timeZone:'Europe/Bratislava',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
   function localDateSk(d){
-    return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
+    return localDayFormat.format(d);
   }
   // Časová os vždy počíta so slovenským časom, nie s časovou zónou počítača.
   const qmeTimelineZone='Europe/Bratislava';
@@ -9378,19 +10233,16 @@ document.addEventListener('keydown',e=>{
     return get('hour')*60+get('minute');
   }
   function qmeDatePlusDay(date,n){
-    // Calendar addition in local TZ for day selection; date key derived from a noon-like safe time.
-    const d=new Date(date);d.setDate(d.getDate()+n);return localDateSk(d);
+    const day=new Date(localDateSk(date)+'T12:00:00Z');
+    day.setUTCDate(day.getUTCDate()+n);
+    return day.toISOString().slice(0,10);
   }
   function qmeDefaultDay(){
     const now=new Date();
     return qmeLocalMinute(now)>=16*60?'tomorrow':'today';
   }
   function timelineMeetingEvents(dayKey){
-    const raw=Array.isArray(meetingPayload)?meetingPayload:meetingPayload?.udalosti;
-    if(!Array.isArray(raw))return [];
-    return raw.map(e=>({nazov:String(e.nazov||e.subject||'Bez názvu'),zaciatok:parseMeetingDate(e.zaciatok||e.start),koniec:parseMeetingDate(e.koniec||e.end),showAs:e.showAs||e.showas||''}))
-      .filter(e=>e.zaciatok&&e.koniec&&e.koniec>e.zaciatok&&String(e.showAs).toLowerCase()!=='free'&&localDateSk(e.zaciatok)<=dayKey&&localDateSk(new Date(e.koniec.getTime()-1))>=dayKey)
-      .sort((a,b)=>a.zaciatok-b.zaciatok);
+    return normalizedMeetings().filter(e=>localDateSk(e.zaciatok)<=dayKey&&localDateSk(new Date(e.koniec-1))>=dayKey);
   }
   function updateMeetingTimeline(){
     const root=document.getElementById('weekQmeTimeline');
@@ -9398,14 +10250,16 @@ document.addEventListener('keydown',e=>{
     const nowLine=document.getElementById('qmeTimelineNow');
     const nowDot=document.getElementById('qmeTimelineNowDot');
     const tooltip=document.getElementById('qmeTimelineTooltip');
-    const dayLabel=document.getElementById('qmeTimelineDay');
+    const dayLabel=document.getElementById('qmeAxisDate');
     if(!root||!busyLayer||!nowLine||!nowDot)return;
     const now=new Date();
     const selectedDay=qmeDefaultDay();
     const dayKey=selectedDay==='today'?localDateSk(now):qmeDatePlusDay(now,1);
     const startMin=420,endMin=960,total=endMin-startMin;
-    if(dayLabel)dayLabel.textContent=selectedDay==='today'?'Dnes':'Zajtra';
-    const events=meetingIsFresh()?timelineMeetingEvents(dayKey):[];
+    const covered=meetingIsFresh()&&(selectedDay==='today'||meetingPayload.datum===localDateSk(now));
+    if(dayLabel)dayLabel.textContent=(selectedDay==='today'?'Dnes':'Zajtra')+' · '+calendarDayLabel.format(new Date(dayKey+'T12:00:00Z'))+(covered?'':' · bez údajov');
+    root.classList.toggle('qmeUnknown',!covered);
+    const events=covered?timelineMeetingEvents(dayKey):[];
     const segments=[];
     for(const e of events){
       // Začiatky a konce môžu zasahovať do iného kalendárneho dňa.
@@ -9435,7 +10289,7 @@ document.addEventListener('keydown',e=>{
     });
     if(tooltip)tooltip.hidden=true;
     // Pohyblivý ukazovateľ platí len pre dnešnú os. Na zajtrajšej ho skryjeme.
-    const showNow=selectedDay==='today';
+    const showNow=selectedDay==='today' && qmeLocalMinute(now)>=startMin && qmeLocalMinute(now)<endMin;
     nowLine.style.display=showNow?'block':'none';
     nowDot.style.display=showNow?'block':'none';
     if(showNow){
@@ -9443,14 +10297,14 @@ document.addEventListener('keydown',e=>{
       const pct=Math.max(0,Math.min(100,(roundedMinute-startMin)/total*100));
       nowLine.style.left=pct+'%';nowDot.style.left=pct+'%';
     }
-    root.style.opacity=meetingIsFresh()?'1':'.65';
+    root.style.opacity=covered?'1':'.8';
     // Palička ukazuje polohu času iba graficky; žiadny textový čas/tooltip.
     nowLine.removeAttribute('title');
     nowDot.removeAttribute('title');
     nowLine.textContent='';
     nowDot.textContent='';
     root.removeAttribute('title');
-    root.setAttribute('aria-label',meetingIsFresh()?'Q_ME – '+(selectedDay==='today'?'dnes':'zajtra')+' 07:00 až 16:00':'Rozpis Q_ME nie je aktuálny');
+    root.setAttribute('aria-label',covered?'Q_ME – '+(selectedDay==='today'?'dnes':'zajtra')+' 07:00 až 16:00':'Rozpis Q_ME nie je aktuálny');
   }
   const qmeTooltip=document.getElementById('qmeTimelineTooltip');
   const qmeBusyLayer=document.getElementById('qmeTimelineBusyLayer');
@@ -9480,20 +10334,19 @@ document.addEventListener('keydown',e=>{
     }
     const next=reservations.find(e=>e.zaciatok>now);
     const busy=Boolean(current);
-    const remaining=until=>{
-      const mins=Math.max(0,Math.ceil((until-now)/60000));
-      if(mins<60)return mins+' min';
-      const h=Math.floor(mins/60),m=mins%60;
-      return h+' h'+(m?' '+m+' min':'');
-    };
+    const today=localDateSk(now), tomorrow=qmeDatePlusDay(now,1);
+    const timeLabel=d=>meetingClock.format(d)+(localDateSk(d)===today?'':localDateSk(d)===tomorrow?' zajtra':' · '+importDateLabel.format(d));
     meetingIndicator.className='meetingRoomIndicator '+(!fresh?'unknown':busy?'busy':'free');
-    meetingIndicator.textContent=!fresh?'Q_ME · Údaje nedostupné':
-      busy?'Q_ME · Obsadená ešte '+remaining(occupiedUntil):
-      next?'Q_ME · Voľná ešte '+remaining(next.zaciatok):'Q_ME · Voľná · bez ďalšej rezervácie';
-    meetingIndicator.title=!fresh?'Čaká sa na aktuálne údaje z Firebase':
-      busy?'Obsadená do '+meetingClock.format(occupiedUntil):
-      next?'Najbližšia rezervácia o '+meetingClock.format(next.zaciatok):
-      'V dostupnom rozpise nie je ďalšia rezervácia';
+    meetingIndicator.textContent=!fresh?(meetingInitialLoadDone?'Stav neznámy':'Načítavam rozpis'):
+      busy?'Rezervovaná do '+timeLabel(occupiedUntil):
+      next?'Voľná do '+timeLabel(next.zaciatok):'Teraz bez rezervácie';
+    const detail=document.getElementById('qmeCurrentSubject');
+    detail.textContent=!fresh?'Čaká sa na aktuálny rozpis':busy?current.nazov:'';
+    detail.title=detail.textContent;
+    const stamp=parseMeetingDate(meetingPayload?.aktualizovane||meetingPayload?.updatedAt);
+    const importLabel=document.getElementById('qmeImportStamp');
+    importLabel.textContent=stamp?'Import '+(localDateSk(stamp)===today?'dnes':importDateLabel.format(stamp))+' '+meetingClock.format(stamp):'Čas importu neznámy';
+    importLabel.title='Posledná aktualizácia údajov kalendára Q_ME';
   }
   function renderMeeting(){
     refreshMeetingIndicator();
@@ -9684,8 +10537,7 @@ document.addEventListener('keydown',e=>{
         ? 'o '+Math.max(1,Math.ceil(msToStart/60000))+' min'
         : 'o '+Math.ceil(msToStart/3600000)+' h';
     }
-    // Zvýrazniť iba udalosti, ktoré prebiehajú dnes. Zajtrajšie majú len hodinový odpočet.
-    return {highlight:currentDay,comingSoon,countdown};
+    return {highlight:currentDay||comingSoon,comingSoon,countdown};
   }
   function countWord(n){
     return n===1?'udalosť':n>=2&&n<=4?'udalosti':'udalostí';
@@ -9709,7 +10561,7 @@ document.addEventListener('keydown',e=>{
       const cell=el,computed=getComputedStyle(el);
       const width=cell.clientWidth-(parseFloat(computed.paddingLeft)||0)-(parseFloat(computed.paddingRight)||0)-3;
       if(width<=0)return;
-      let size=32;
+      let size=cell.closest('.workScheduleRow')&&window.innerWidth>900?Math.min(50,Math.max(32,Math.floor(cell.parentElement.clientHeight*0.73))):32;
       while(size>16){
         ctx.font=(computed.fontWeight||'700')+' '+size+'px '+(computed.fontFamily||'sans-serif');
         if(ctx.measureText(el.textContent.trim()).width<=width)break;
@@ -9741,7 +10593,7 @@ document.addEventListener('keydown',e=>{
     holder.querySelectorAll('.weekDay, .weekWhen').forEach(el=>{
       const style=getComputedStyle(el);
       const available=el.clientWidth-(parseFloat(style.paddingLeft)||0)-(parseFloat(style.paddingRight)||0)-4;
-      let size=25;
+      let size=el.closest('.workScheduleRow')&&window.innerWidth>900?Math.min(34,Math.max(25,Math.floor(el.parentElement.clientHeight*0.57))):25;
       while(size>17){
         ctx.font=(style.fontWeight||'700')+' '+size+'px '+(style.fontFamily||'sans-serif');
         if(ctx.measureText(el.textContent.trim()).width<=available)break;
@@ -9824,7 +10676,7 @@ document.addEventListener('keydown',e=>{
       });
     });
     // Udalosti, ktoré už prebiehajú, zostávajú hore podľa aktuálneho dňa.
-    return out.sort((a,b)=>a.show-b.show||
+    return out.sort((a,b)=>a.show-b.show||a.start-b.start||
       (['audit','leave'].indexOf(a.type)-['audit','leave'].indexOf(b.type))||
       a.title.localeCompare(b.title,'sk'));
   }
@@ -9848,46 +10700,13 @@ document.addEventListener('keydown',e=>{
       const now=new Date(),today=atMidnight(now);
       const all=allItems(today);
       const work=groupWorkItems(all.filter(it=>it.type==='audit'||it.type==='leave'),today);
-      const workRows=work.map(it=>({...it,sortDay:isoDate(it.show),sortMoment:0}));
-      const localDate=d=>{const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(d);const v=k=>parts.find(p=>p.type===k)?.value;return v('year')+'-'+v('month')+'-'+v('day');};
-      const tomorrow=new Date(today);tomorrow.setDate(tomorrow.getDate()+1);
-      const visibleEnd=now.getHours()>=16?localDate(tomorrow):localDate(today);
-      const meetingRows=meetingIsFresh()?meetingEvents()
-        .filter(e=>e.koniec>now && localDate(e.zaciatok)<=visibleEnd && localDate(e.koniec)>=''+localDate(today))
-        .map(e=>({type:'meeting',title:e.nazov,start:e.zaciatok,end:e.koniec,
-          show:e.zaciatok,sortDay:localDate(e.zaciatok),sortMoment:e.zaciatok.getTime(),
-          meta:'Meetingovka Q_ME'})):[];
-      // Najskôr všetky dnešné udalosti (Q_ME, audity, neprítomnosti),
-      // potom medzera približne na pol riadku a ostatné dni.
-      const todayKey=localDate(today);
-      // Porovnávať kalendárne dni, nie polnoc s dátumami uloženými na 12:00.
-      // Vďaka tomu aj neprítomnosť/audit, ktorý začína dnes, patrí hore.
-      const tomorrowKey=localDate(tomorrow);
-      // Tri prehľadné skupiny: dnes, zajtra a všetky ďalšie dni.
-      // Viacdňová neprítomnosť, ktorá prebieha už dnes, zostáva v skupine DNES.
-      const dayGroup=it=>{
-        if(it.type==='meeting'){
-          const day=localDate(it.start);
-          return day===todayKey?0:day===tomorrowKey?1:2;
-        }
-        const start=isoDate(it.start),end=isoDate(it.end);
-        if(start<=todayKey&&end>=todayKey)return 0;
-        if(start<=tomorrowKey&&end>=tomorrowKey)return 1;
-        return 2;
-      };
-      const rows=[...meetingRows,...workRows].sort((a,b)=>{
-        const groupDifference=dayGroup(a)-dayGroup(b);
-        if(groupDifference!==0)return groupDifference;
-        const aMeeting=a.type==='meeting',bMeeting=b.type==='meeting';
-        if(aMeeting!==bMeeting)return aMeeting?-1:1;
-        return a.sortDay.localeCompare(b.sortDay)||a.sortMoment-b.sortMoment||
-          a.title.localeCompare(b.title,'sk');
-      });
-      // Zobraziť vždy najbližších maximálne 9 aktuálnych udalostí.
-      // Keď meeting skončí (alebo uplynie posledný deň auditu/neprítomnosti),
-      // pri ďalšom existujúcom prekreslení sa uvoľnené miesto automaticky doplní.
-      const MAX_VISIBLE_WORK_EVENTS=9;
-      const visibleRows=rows.slice(0,MAX_VISIBLE_WORK_EVENTS);
+      const todayKey=localDateSk(now);
+      const meetingRows=meetingIsFresh()?meetingEvents().filter(e=>e.koniec>now)
+        .map(e=>({type:'meeting',title:e.nazov,start:e.zaciatok,end:e.koniec,show:e.zaciatok,meta:'Q_ME'})):[];
+      const maxRows=9;
+      const shownMeetings=meetingRows.slice(0,maxRows-(work.length?1:0));
+      const visibleRows=[...shownMeetings,...work.slice(0,maxRows-shownMeetings.length)];
+      list.classList.toggle('qmeDense',visibleRows.length>=8);
       list.classList.remove('weekNearestOnly');
       list.classList.add('weekScrollable');
       const range=document.getElementById('weekDateRange');
@@ -9895,19 +10714,12 @@ document.addEventListener('keydown',e=>{
       const sub=document.getElementById('weekDashboardSubline');
       if(sub)sub.textContent='Audity · Neprítomnosť · Meetingovka Q_ME';
       const counter=document.getElementById('weekEventCounter');
-      let html='',lastKey='',previousWasMeeting=false,previousGroup=null;
+      let html='',previousGroup='';
       visibleRows.forEach(it=>{
-        const group=dayGroup(it);
-        if(previousGroup!==null&&group!==previousGroup){
-          const label=group===1?'Oddelenie dnešných a zajtrajších udalostí':'Oddelenie zajtrajších a ďalších udalostí';
-          html+='<div class="weekTodayFutureGap" role="separator" aria-label="'+label+'"></div>';
-        }
-        previousGroup=group;
         const isMeeting=it.type==='meeting';
-        const key=it.sortDay;
-        // Po skupine meetingov zobraz dátum prvého auditu/neprítomnosti,
-        // aj keď ide o rovnaký kalendárny deň.
-        const first=true; // Každý riadok má vlastný dátum, Q_ME vlastný čas.
+        const group=isMeeting?(localDateSk(it.start)>todayKey?'Rezervácie · zajtra':'Rezervácie · dnes'):'Audity a neprítomnosti';
+        if(previousGroup!==group)html+='<div class="qmeGroupHeading" role="heading" aria-level="3">'+group+'</div>';
+        previousGroup=group;
         const live=isMeeting&&it.start<=now&&now<it.end;
         const status=isMeeting?null:workEventStatus(it,now);
         const isRange=!isMeeting&&daysDiff(it.end,it.start)>0;
@@ -9921,16 +10733,14 @@ document.addEventListener('keydown',e=>{
           `data-edit-kind="leave" data-edit-ids="${encodeURIComponent(JSON.stringify(it.editEntries))}" title="Klikni a vyber osobu na úpravu"`:
           `data-edit-kind="${it.type}" data-edit-id="${escapeText(it.id)}" title="Klikni na úpravu záznamu"`):'';
         const symbol=isMeeting?'📅':it.type==='leave'?'<span class="weekPalePerson" aria-hidden="true"></span>':'<span class="weekPaleAudit" aria-hidden="true"></span>';
-        const kind=isMeeting?'Q_ME':it.type==='audit'?(it.meta||'Audit'):kinds[it.type];
+        const kind=isMeeting?'Porada':it.type==='audit'?(it.meta||'Audit'):kinds[it.type];
         const when=isMeeting?(live?'Prebieha':meetingCountdown(it.start,now)):status.countdown;
-        html+=`<div class="weekEventRow ${!isMeeting&&status.highlight?'weekToday':''} ${live?'qmeLive':''} ${!isMeeting&&status.comingSoon?'weekComingSoon':''} ${editable?'weekEditable':''}" role="listitem" ${rowEditAttrs}>`+
+        html+=`<div class="weekEventRow ${isMeeting?"reservationRow":"workScheduleRow"} ${!isMeeting&&status.highlight?'weekToday':''} ${live?'qmeLive':''} ${!isMeeting&&status.comingSoon?'weekComingSoon':''} ${editable?'weekEditable':''}" role="listitem" ${rowEditAttrs}>`+
           `<div class="weekDay" title="${escapeText(isMeeting?kind+' '+meetingClock.format(it.start)+' – '+meetingClock.format(it.end):shortDate(it.start)+(isRange?' – '+shortDate(it.end):''))}">${dayName}</div>`+
           `<div class="weekSymbol">${symbol}</div>`+
           `<div class="weekEventText" title="${escapeText(it.title)}">${escapeText(it.title)}</div>`+
           `<div class="weekKind" title="${escapeText(kind)}">${isMeeting?escapeText(kind):formatWorkTypes(kind)}</div>`+
           `<div class="weekWhen">${escapeText(when)}</div></div>`;
-        lastKey=key;
-        previousWasMeeting=isMeeting;
       });
       const scroll=list.scrollTop;
       list.innerHTML=html||'<div class="weekEmpty">Žiadne nadchádzajúce udalosti.</div>';
@@ -9949,7 +10759,8 @@ document.addEventListener('keydown',e=>{
         }
       }catch(e){console.warn('Šírka dátumu:',e);}
       requestAnimationFrame(()=>fitWorkRows(list));
-      if(counter)counter.textContent=visibleRows.length+' z '+rows.length+' '+countWord(rows.length);
+      const total=meetingRows.length+work.length;
+      if(counter)counter.textContent=visibleRows.length+' z '+total+' '+countWord(total);
       renderCelebrations(all,today,now);
     }catch(err){console.warn('Prehľad udalostí:',err);list.innerHTML='<div class="weekEmpty">Údaje sa momentálne nepodarilo zobraziť.</div>';}
   }
@@ -10237,7 +11048,7 @@ document.addEventListener('keydown',e=>{
    ['weekQuickLeave','weekQuickAudit'].forEach(id=>$(id)?.addEventListener('click',()=>setTimeout(updateDuration,0)));
  }
  // Rýchla lišta je vypnutá; funkcie ostávajú dostupné pre interné použitie.
- const w=$('weekDashboard')?.querySelector('.weekTitle');if(w){w.tabIndex=0;w.setAttribute('role','button');w.title='Otvoriť archív';w.addEventListener('click',archives);w.addEventListener('keydown',e=>{if(e.key==='Enter')archives();});}
+ const w=$('qmeAxisDate');if(w){w.tabIndex=0;w.setAttribute('role','button');w.title='Otvoriť archív';w.addEventListener('click',archives);w.addEventListener('keydown',e=>{if(e.key==='Enter')archives();});}
  const c=$('celebrationsDashboard')?.querySelector('.celebrateTitle');if(c){c.tabIndex=0;c.setAttribute('role','button');c.title='Všetky meniny, narodeniny a sviatky';c.addEventListener('click',celebrations);c.addEventListener('keydown',e=>{if(e.key==='Enter')celebrations();});}
  // (3) per-record sync. Existing legacy arrays used only to initialize an empty V2 collection.
  // In degraded/offline mode localStorage continues to work; never erase local records on an empty network response.
@@ -10373,6 +11184,15 @@ document.addEventListener('keydown',e=>{
       document.dispatchEvent(new Event('DOMContentLoaded',{bubbles:true}));
       document.getElementById('stage').style.setProperty('visibility','visible','important');
       cover.style.display='none';logout.style.display='block';
+      const openFormFromQr=()=>{
+        if(location.hash!=='#pridat')return;
+        document.getElementById('weekUnifiedAdd').click();
+        if(document.getElementById('weekEditorOverlay').classList.contains('isOpen')){
+          history.replaceState(history.state,'',location.pathname+location.search);
+        }
+      };
+      window.addEventListener('hashchange',openFormFromQr);
+      openFormFromQr();
     }catch(e){console.error('Dashboard inicializácia:',e);err.textContent='Prihlásenie bolo úspešné, no pri štarte dashboardu nastala chyba. Pozri konzolu.';ready=false;}
   }
   auth.onAuthStateChanged(user=>{
@@ -10557,31 +11377,17 @@ document.addEventListener('keydown',e=>{
   let scheduled=false;
   function fitCountdowns(){
     scheduled=false;
-    if(window.innerWidth<=900)return;
-    const vals=document.querySelectorAll('#shiftBox .countdownCard .workValue');
-    if(!vals.length)return;
-    const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
+    const ctx=fitCountdowns.ctx||(fitCountdowns.ctx=document.createElement('canvas').getContext('2d'));
     if(!ctx)return;
-    vals.forEach(el=>{
-      const card=el.closest('.countdownCard');
-      const main=el.closest('.workMain');
-      if(!card||!main)return;
-      if(card.classList.contains('textMode')){
-        if(el.style.fontSize) el.style.removeProperty('font-size');
-        return;
-      }
+    document.querySelectorAll('#shiftBox .countdownCard .workdayTitle,#shiftBox .countdownCard .workValue').forEach(el=>{
+      const area=el.parentElement, text=el.textContent.trim();
+      if(!text||!area.clientWidth||!area.clientHeight)return;
       const style=getComputedStyle(el);
-      const font=style.fontFamily||'Arial, sans-serif';
-      const available=Math.max(80,main.clientWidth-6);
-      const text=el.textContent.trim();
-      if(!text)return;
-      let best=32;
-      for(let size=78;size>=32;size-=0.5){
-        ctx.font=`900 ${size}px ${font}`;
-        const spacing=-2.3*(Math.max(0,text.length-1));
-        if(ctx.measureText(text).width+spacing<=available && size*.98<=72){best=size;break;}
-      }
-      el.style.setProperty('font-size',best+'px','important');
+      ctx.font=style.fontWeight+' 100px '+style.fontFamily;
+      const width=ctx.measureText(text).width;
+      if(!width)return;
+      const size=Math.floor(Math.min((area.clientWidth-6)*100/width,(area.clientHeight-2)/1.04));
+      el.style.setProperty('font-size',Math.max(1,size)+'px','important');
     });
   }
   function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(fitCountdowns);}
@@ -10591,10 +11397,16 @@ document.addEventListener('keydown',e=>{
     if(!box)return;
     const observer=new MutationObserver(schedule);
     observer.observe(box,{subtree:true,childList:true,characterData:true});
+    if(window.ResizeObserver)new ResizeObserver(schedule).observe(box);
+    if(document.fonts)document.fonts.ready.then(schedule);
     window.addEventListener('resize',schedule,{passive:true});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
+
+
+
+
 </body>
 </html>
