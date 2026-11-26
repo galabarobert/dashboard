@@ -6727,7 +6727,7 @@ body{background-image:radial-gradient(ellipse 68% 55% at 28% 19%,rgba(17,103,169
   <div class="radioHeading"><strong>Rádiá</strong><span>ONLINE</span></div>
   <div id="radioStations" aria-label="Výber stanice"></div>
   <div class="radioDivider" aria-hidden="true"></div>
-  <div class="radioControls"><button id="radioPlay" type="button" aria-label="Spustiť rádio">▶</button><button id="radioMute" type="button" aria-label="Stlmiť zvuk">🔊</button><input id="radioVolume" aria-label="Hlasitosť" type="range" min="0" max="100" value="60"><output id="radioVolumeLabel">60 %</output><div id="radioSongRow" class="radioSongModern" aria-label="Aktuálne hraná skladba"><span class="radioSongGlyph" aria-hidden="true">♫</span><span id="radioNowPlaying" aria-live="off" title="Aktuálne hraná skladba" hidden></span></div><div class="radioInlineSettings"><label><input id="radioRotate" type="checkbox"> Náhodne každých 30 min</label><label title="Automatické prehrávanie denne od 7:00 do 17:00"><input id="radioSchedule" type="checkbox" checked> 7:00 – 17:00</label></div><small id="radioRotationStatus" class="radioInlineStatus">Automatické striedanie je vypnuté.</small></div>
+  <div class="radioControls"><button id="radioPlay" type="button" aria-label="Spustiť rádio">▶</button><button id="radioMute" type="button" aria-label="Stlmiť zvuk">🔊</button><input id="radioVolume" aria-label="Hlasitosť" type="range" min="0" max="100" value="60"><output id="radioVolumeLabel">60 %</output><div id="radioSongRow" class="radioSongModern" aria-label="Aktuálne hraná skladba"><span class="radioSongGlyph" aria-hidden="true">♫</span><span id="radioNowPlaying" aria-live="off" title="Aktuálne hraná skladba" hidden></span></div><div class="radioInlineSettings"><label><input id="radioRotate" type="checkbox"> Náhodne každých 60 min</label><label title="Automatické prehrávanie denne od 6:00 do 17:00. Ručné spustenie je možné kedykoľvek."><input id="radioSchedule" type="checkbox" checked> 6:00 – 17:00</label></div><small id="radioRotationStatus" class="radioInlineStatus">Automatické striedanie je vypnuté.</small></div>
   <div class="radioFooter"><span id="radioStatus" role="status" aria-live="polite">Vyber stanicu a spusti prehrávanie.</span><a id="radioWebsite" target="_blank" rel="noopener noreferrer">Web rádia ↗</a></div>
   <audio id="radioAudio" preload="none"></audio>
 </section>
@@ -9727,8 +9727,10 @@ if(typeof ResizeObserver!=='undefined'){
  refreshRadioHealth();
  const $=id=>document.getElementById(id),audio=$('radioAudio'),status=$('radioStatus'),play=$('radioPlay'),vol=$('radioVolume');
  let selected=stations[0],wanted=false,attempt=0,timer,sourceIndex=0,nextSwitchAt=0;
+ // Ručné prehrávanie mimo časového plánu je lokálna, dočasná výnimka.
+ let manualOutsideSchedule=false;
  const schedule=$('radioSchedule');
- const rotation=$('radioRotate'),rotationStatus=$('radioRotationStatus'),hour=30*60*1000;
+ const rotation=$('radioRotate'),rotationStatus=$('radioRotationStatus'),hour=60*60*1000;
  const read=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
  const save=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
  const legacyNames={'Rádio Expres':'Expres','Rádio Viva':'Rádio Melody','Fun SK/CZ':'Fun Rádio','Fun CZ/SK':'Fun Rádio','Fun 80’s – 90’s':'Fun 80/90'};
@@ -9739,7 +9741,7 @@ if(typeof ResizeObserver!=='undefined'){
  let remainingStations=stations.slice(),startedDay='';
  const scheduleClock=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Bratislava',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
  function clock(){const parts=Object.fromEntries(scheduleClock.formatToParts(new Date()).map(p=>[p.type,p.value]));return {day:parts.year+'-'+parts.month+'-'+parts.day,minute:Number(parts.hour)*60+Number(parts.minute)};}
- function inWindow(){const t=clock().minute;return t>=420&&t<1020;}
+ function inWindow(){const t=clock().minute;return t>=360&&t<1020;}
  function nextRandom(){
   // Každá stanica zaznie raz v náhodnom kole. Po vyčerpaní začni nové kolo.
   // Posledná stanica starého kola sa nesmie hneď zopakovať na začiatku nového.
@@ -9861,13 +9863,15 @@ if(typeof ResizeObserver!=='undefined'){
  function volume(){audio.volume=+vol.value/100;$('radioVolumeLabel').textContent=vol.value+' %';save('dashboardRadioVolume',vol.value)}volume();
  function controls(){play.textContent=wanted?'■':'▶';play.setAttribute('aria-label',wanted?'Zastaviť rádio':'Spustiť rádio');$('radioPanel').classList.toggle('radioIsPlaying',wanted);}
  function selection(){$('radioWebsite').textContent='Web rádia ↗';[...$('radioStations').children].forEach((b,i)=>b.setAttribute('aria-pressed',String(stations[i]===selected)));$('radioWebsite').hidden=!selected[2];if(selected[2])$('radioWebsite').href=selected[2];}
- function stop(){resetSong();wanted=false;attempt++;nextSwitchAt=0;updateRotation();clearTimeout(timer);audio.pause();audio.removeAttribute('src');audio.load();controls();}
+ function stop(){resetSong();wanted=false;manualOutsideSchedule=false;attempt++;nextSwitchAt=0;updateRotation();clearTimeout(timer);audio.pause();audio.removeAttribute('src');audio.load();controls();}
  function fail(message){stop();status.textContent=message;}
- function start(){
-  if(schedule.checked&&!inWindow()){stop();status.textContent='Čakám na 7:00 • pre ručné hranie vypni automatický čas.';return;}
-  if(schedule.checked)startedDay=clock().day;
+ function start(mode='auto'){
+  const outside=!inWindow();
+  const allowManualOutside=outside&&schedule.checked&&(mode==='manual'||(mode==='rotation'&&manualOutsideSchedule));
+  if(schedule.checked&&outside&&!allowManualOutside){stop();status.textContent='Čakám na 6:00 • rádio môžeš spustiť aj ručne.';return;}
+  if(schedule.checked&&!outside)startedDay=clock().day;
   remainingStations=remainingStations.filter(s=>s!==selected);
-  stop();wanted=true;const token=++attempt;controls();
+  stop();manualOutsideSchedule=allowManualOutside;wanted=true;const token=++attempt;controls();
   sourceIndex=0;
   const sources=selected[0]==='Fun Rádio'?[selected[1],'https://stream.funradio.sk/fun192.mp3','https://stream.funradio.sk/fun128.mp3']:[selected[1]];
   function connect(){
@@ -9896,17 +9900,17 @@ if(typeof ResizeObserver!=='undefined'){
   const name=document.createElement('span');name.className='radioStationName';name.textContent=s[0];
   if(s[0]==='Fun Milenialky')b.classList.add('radioLongName');
   b.appendChild(eq);b.appendChild(name);
-  b.onclick=()=>{selected=s;save('dashboardRadioStation',s[0]);selection();start();};
+  b.onclick=()=>{selected=s;save('dashboardRadioStation',s[0]);selection();start('manual');};
   $('radioStations').appendChild(b);
  });
  selection();status.textContent=selected[0]+' • pripravené na prehrávanie';
- play.onclick=()=>{if(wanted){stop();status.textContent=selected[0]+' • zastavené';}else start();};
+ play.onclick=()=>{if(wanted){stop();status.textContent=selected[0]+' • zastavené';}else start('manual');};
  vol.oninput=volume;
  $('radioMute').onclick=()=>{audio.muted=!audio.muted;$('radioMute').textContent=audio.muted?'🔇':'🔊';$('radioMute').setAttribute('aria-label',audio.muted?'Zapnúť zvuk':'Stlmiť zvuk');};
  // Schedule relative to playback start (not the next clock-hour).
  function updateRotation(){
   if(!rotation.checked){rotationStatus.textContent='--:--';rotationStatus.title='Náhodné prepínanie je vypnuté';return;}
-  if(!wanted||!nextSwitchAt){rotationStatus.textContent='30:00';rotationStatus.title='30-minútový interval; odpočet sa začne pri prehrávaní';return;}
+  if(!wanted||!nextSwitchAt){rotationStatus.textContent='60:00';rotationStatus.title='60-minútový interval; odpočet sa začne pri prehrávaní';return;}
   const remaining=Math.max(0,Math.ceil((nextSwitchAt-Date.now())/1000));
   const minutes=Math.floor(remaining/60),seconds=remaining%60;
   rotationStatus.textContent=String(minutes).padStart(2,'0')+':'+String(seconds).padStart(2,'0');
@@ -9916,17 +9920,19 @@ if(typeof ResizeObserver!=='undefined'){
   checkSchedule();
   if(rotation.checked&&wanted&&nextSwitchAt&&Date.now()>=nextSwitchAt){
    selected=nextRandom();
-   save('dashboardRadioStation',selected[0]);selection();start();
+   save('dashboardRadioStation',selected[0]);selection();start('rotation');
   }
   updateRotation();
  }
  function checkSchedule(){
   if(!schedule.checked)return;
   const t=clock();
-  if(t.minute<420||t.minute>=1020){
-   if(wanted){stop();status.textContent='Rádio vypnuté • ďalší štart o 7:00.';}
+  if(t.minute<360||t.minute>=1020){
+   if(wanted&&!manualOutsideSchedule){stop();status.textContent='Rádio vypnuté • ďalší štart o 6:00.';}
    return;
   }
+  // Od 6:00 opäť platí bežný plán vrátane vypnutia o 17:00.
+  manualOutsideSchedule=false;
   if(startedDay!==t.day){
    startedDay=t.day;
    if(!wanted){selected=nextRandom();save('dashboardRadioStation',selected[0]);selection();start();}
